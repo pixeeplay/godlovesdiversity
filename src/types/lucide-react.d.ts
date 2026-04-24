@@ -13,6 +13,8 @@ declare module 'lucide-react' {
   // Common icons used across the app
   export const AlertCircle: LucideIcon;
   export const ArrowRight: LucideIcon;
+  export const ArrowUp: LucideIcon;
+  export const ArrowDown: LucideIcon;
   export const BarChart3: LucideIcon;
   export const BookOpen: LucideIcon;
   export const Camera: LucideIcon;
