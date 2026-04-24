@@ -250,6 +250,68 @@ body::after {
     100% { transform: translateX(-33.33%); }
   }
 
+  /* Marquee photos — défilement continu horizontal */
+  .photo-marquee {
+    position: relative;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent 0%, black 4%, black 96%, transparent 100%);
+  }
+  .photo-marquee-track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    animation: photoMarquee 60s linear infinite;
+  }
+  .photo-marquee:hover .photo-marquee-track { animation-play-state: paused; }
+  @keyframes photoMarquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(calc(-50%)); }
+  }
+
+  /* Animations subtiles par type de lieu */
+  @keyframes photo-float {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-6px); }
+  }
+  @keyframes photo-pulse {
+    0%,100% { transform: scale(1); filter: brightness(1); }
+    50%     { transform: scale(1.03); filter: brightness(1.1); }
+  }
+  @keyframes photo-shine {
+    0%,100% { filter: brightness(1) saturate(1); }
+    50%     { filter: brightness(1.2) saturate(1.2); }
+  }
+  @keyframes photo-spin {
+    0%,100% { transform: rotate(0deg); }
+    50%     { transform: rotate(1.5deg); }
+  }
+  @keyframes photo-sway {
+    0%,100% { transform: translateX(0); }
+    50%     { transform: translateX(4px); }
+  }
+  .photo-float { animation: photo-float 4s ease-in-out infinite; }
+  .photo-pulse { animation: photo-pulse 3.5s ease-in-out infinite; }
+  .photo-shine { animation: photo-shine 3s ease-in-out infinite; }
+  .photo-spin  { animation: photo-spin 5s ease-in-out infinite; }
+  .photo-sway  { animation: photo-sway 4.5s ease-in-out infinite; }
+
+  /* Halo lumineux au survol de la card */
+  .photo-card {
+    transition: transform .4s ease, box-shadow .4s ease;
+    position: relative;
+  }
+  .photo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px var(--card-color, rgba(255,43,177,.3));
+  }
+  .photo-card:hover::after {
+    content: '';
+    position: absolute; inset: -1px;
+    border-radius: inherit;
+    border: 1px solid var(--card-color, rgba(255,43,177,.6));
+    pointer-events: none;
+  }
+
   /* Bandeau lieux saints défilants */
   .skyline-track {
     animation: skylineScroll 60s linear infinite;

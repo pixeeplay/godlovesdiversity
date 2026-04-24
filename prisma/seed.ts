@@ -164,7 +164,8 @@ async function main() {
     { label: 'PHOTOS', href: '/galerie', order: 3 },
     { label: 'AFFICHES', href: '/affiches', order: 4 },
     { label: 'À PROPOS', href: '/a-propos', order: 5 },
-    { label: 'BLOG', href: '/blog', order: 6 }
+    { label: 'BLOG', href: '/blog', order: 6 },
+    { label: 'NEWSLETTERS', href: '/newsletters', order: 7 }
   ];
   for (const m of menu) {
     const existing = await prisma.menuItem.findFirst({ where: { href: m.href, locale: 'fr' } });
