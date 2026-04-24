@@ -3,6 +3,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Heart, BookOpen, Handshake, Users, Download } from 'lucide-react';
 import { getAllSettings } from '@/lib/settings';
 import { HeroBannerCarousel } from '@/components/HeroBannerCarousel';
+import { NeonHeart } from '@/components/NeonHeart';
 import { PhotoCarousel } from '@/components/PhotoCarousel';
 import { NewsCarousel } from '@/components/NewsCarousel';
 import { prisma } from '@/lib/prisma';
