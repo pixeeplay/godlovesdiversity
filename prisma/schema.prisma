@@ -174,11 +174,9 @@ model Article {
   @@index([published, publishedAt])
 }
 
-/**
- * Section riche d'une page publique (argumentaire, message, à-propos…).
- * Chaque page est composée de plusieurs Sections empilées verticalement.
- * Une section peut avoir une image OU une vidéo OU juste du texte.
- */
+/// Section riche d'une page publique (argumentaire, message, à-propos…).
+/// Chaque page est composée de plusieurs Sections empilées verticalement.
+/// Une section peut avoir une image OU une vidéo OU juste du texte.
 model Section {
   id          String   @id @default(cuid())
   pageSlug    String   // 'argumentaire' | 'message' | 'a-propos' | autre
