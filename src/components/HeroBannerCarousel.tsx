@@ -56,28 +56,31 @@ export function HeroBannerCarousel({ banners, logoUrl }: { banners: Banner[]; lo
             {b.mediaUrl && (
               <div className="absolute inset-0">
                 {b.mediaType === 'video' ? (
-                  <video src={b.mediaUrl} muted autoPlay loop playsInline className="w-full h-full object-cover opacity-30" />
+                  <video src={b.mediaUrl} muted autoPlay loop playsInline className="w-full h-full object-cover" />
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={b.mediaUrl} alt="" className="w-full h-full object-cover opacity-30" />
+                  <img src={b.mediaUrl} alt="" className="w-full h-full object-cover" />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                {/* Voile pour lisibilité du texte — léger pour ne pas masquer la vidéo */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/30" />
               </div>
             )}
 
-            <div className="container-wide relative grid lg:grid-cols-2 gap-12 items-center min-h-[620px] py-20">
-              {/* Cœur néon ou logo */}
-              <div className="flex justify-center lg:justify-start">
-                {logoUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={logoUrl} alt="" className="max-h-72 object-contain heart-glow" />
-                ) : (
-                  <NeonHeart size={320} />
-                )}
-              </div>
+            <div className={`container-wide relative grid gap-12 items-center min-h-[620px] py-20 ${b.mediaUrl ? 'lg:grid-cols-1' : 'lg:grid-cols-2'}`}>
+              {/* Cœur néon ou logo — masqué si la bannière a son propre média (image/vidéo) */}
+              {!b.mediaUrl && (
+                <div className="flex justify-center lg:justify-start">
+                  {logoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={logoUrl} alt="" className="max-h-72 object-contain heart-glow" />
+                  ) : (
+                    <NeonHeart size={320} />
+                  )}
+                </div>
+              )}
 
               {/* Texte */}
-              <div>
+              <div className={b.mediaUrl ? 'max-w-2xl' : ''}>
                 {b.eyebrow && (
                   <p className="text-xs uppercase tracking-[0.4em] mb-4" style={{ color: b.accentColor || '#FF2BB1' }}>
                     {b.eyebrow}
