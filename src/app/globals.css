@@ -241,6 +241,15 @@ body::after {
     98% { opacity: 0.9; }
   }
 
+  /* Ticker Times Square */
+  .animate-ticker {
+    animation: ticker 30s linear infinite;
+  }
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-33.33%); }
+  }
+
   /* Bandeau lieux saints défilants */
   .skyline-track {
     animation: skylineScroll 60s linear infinite;

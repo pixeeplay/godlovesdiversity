@@ -6,6 +6,8 @@ import { HeroBannerCarousel } from '@/components/HeroBannerCarousel';
 import { NeonHeart } from '@/components/NeonHeart';
 import { PhotoCarousel } from '@/components/PhotoCarousel';
 import { NewsCarousel } from '@/components/NewsCarousel';
+import { YoutubeCarousel } from '@/components/YoutubeCarousel';
+import { TickerDonate } from '@/components/TickerDonate';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
 
@@ -75,6 +77,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     country: p.country,
     author: p.authorName
   }));
+
+  // Vidéos YouTube
+  const videos = await prisma.youtubeVideo.findMany({
+    where: { published: true },
+    orderBy: { order: 'asc' },
+    take: 12
+  });
+
+  // Ticker items + montants donation depuis settings
+  const tickerRaw = s['donate.tickerItems'] || '';
+  const tickerItems = tickerRaw.split('\n').map(x => x.trim()).filter(Boolean);
+  const amountsRaw = s['donate.amounts'] || '5,10';
+  const donateAmounts = amountsRaw.split(',').map(x => Number(x.trim())).filter(n => n > 0);
 
   const recentArticles = await prisma.article.findMany({
     where: { published: true, locale },
@@ -148,8 +163,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {/* ═══ TÉLÉCHARGEZ L'AFFICHE ═══ */}
       <PostersShowcase title={postersTitle} text={postersText} />
 
-      {/* ═══ CARROUSELS DYNAMIQUES (gardés) ═══ */}
+      {/* ═══ TICKER TIMES SQUARE + DONATIONS ═══ */}
+      <TickerDonate
+        items={tickerItems.length > 0 ? tickerItems : undefined}
+        defaultAmounts={donateAmounts.length > 0 ? donateAmounts : [5, 10]}
+      />
+
+      {/* ═══ CARROUSEL PHOTOS (auto-scroll infini) ═══ */}
       <PhotoCarousel photos={photoItems} title="Galerie" />
+
+      {/* ═══ CARROUSEL VIDÉOS YOUTUBE ═══ */}
+      {videos.length > 0 && <YoutubeCarousel videos={videos} />}
+
+      {/* ═══ CARROUSEL ACTUS ═══ */}
       {articleItems.length > 0 && <NewsCarousel articles={articleItems} />}
     </>
   );

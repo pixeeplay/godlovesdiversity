@@ -34,6 +34,7 @@ declare module 'lucide-react' {
   export const GalleryHorizontalEnd: LucideIcon;
   export const Globe: LucideIcon;
   export const Handshake: LucideIcon;
+  export const HandHeart: LucideIcon;
   export const Heart: LucideIcon;
   export const Instagram: LucideIcon;
   export const Home: LucideIcon;
@@ -72,6 +73,8 @@ declare module 'lucide-react' {
   export const Youtube: LucideIcon;
   export const Video: LucideIcon;
   export const Wand2: LucideIcon;
+  export const Play: LucideIcon;
+  export const Youtube: LucideIcon;
   export const X: LucideIcon;
 
   // Catch-all for any other icon names
