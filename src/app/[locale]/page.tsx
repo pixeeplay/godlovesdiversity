@@ -1,9 +1,8 @@
 import { Link } from '@/i18n/routing';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { ArrowRight, Heart, BookOpen, Handshake, Users, Download } from 'lucide-react';
+import { Heart, BookOpen, Handshake, Users, Download } from 'lucide-react';
 import { getAllSettings } from '@/lib/settings';
-import { NeonHeart } from '@/components/NeonHeart';
-import { SacredSkyline } from '@/components/SacredSkyline';
+import { HeroBannerCarousel } from '@/components/HeroBannerCarousel';
 import { PhotoCarousel } from '@/components/PhotoCarousel';
 import { NewsCarousel } from '@/components/NewsCarousel';
 import { prisma } from '@/lib/prisma';
@@ -87,46 +86,34 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     publishedAt: a.publishedAt?.toISOString() || null, tags: a.tags
   }));
 
+  // Récupère bannières dynamiques (FR par défaut, fallback hardcodé)
+  let banners = await prisma.banner.findMany({
+    where: { locale, published: true },
+    orderBy: { order: 'asc' }
+  });
+  if (banners.length === 0 && locale !== 'fr') {
+    banners = await prisma.banner.findMany({
+      where: { locale: 'fr', published: true },
+      orderBy: { order: 'asc' }
+    });
+  }
+  if (banners.length === 0) {
+    banners = [{
+      id: 'default', order: 1, locale, published: true,
+      eyebrow: 'Mouvement interreligieux • 2026',
+      title: 'GOD LOVES DIVERSITY',
+      subtitle, accentColor: '#FF2BB1',
+      cta1Text: 'COMPRENDRE LE MESSAGE', cta1Url: '/argumentaire',
+      cta2Text: 'VOIR LES PHOTOS', cta2Url: '/galerie',
+      mediaUrl: null, mediaType: null,
+      createdAt: new Date(), updatedAt: new Date()
+    } as any];
+  }
+
   return (
     <>
-      {/* ═══ HERO ═══ */}
-      <section className="relative overflow-hidden" style={{ background: '#0a0314' }}>
-        <SacredSkyline height={620} />
-        <div className="container-wide relative z-10 grid lg:grid-cols-2 gap-12 items-center min-h-[620px] py-20">
-          {/* Cœur néon gauche */}
-          <div className="flex justify-center lg:justify-start">
-            {logoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={logoUrl} alt="" className="max-h-80 object-contain heart-glow" />
-            ) : (
-              <NeonHeart size={360} />
-            )}
-          </div>
-          {/* Texte droite */}
-          <div>
-            <h1 className="font-display font-black leading-[0.85] tracking-tight">
-              <span className="block text-7xl md:text-8xl lg:text-[8rem] text-brand-pink neon-title">
-                {titleA}
-              </span>
-              <span className="block text-4xl md:text-5xl lg:text-6xl mt-2">
-                <span className="text-white">LOVES </span>
-                <span className="text-brand-pink">{titleB.replace('LOVES ', '')}</span>
-              </span>
-            </h1>
-            <p className="mt-8 text-lg md:text-xl text-white/85 max-w-lg leading-relaxed">
-              {subtitle}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/argumentaire" className="btn-primary uppercase text-xs tracking-widest">
-                {ctaPrimary} <ArrowRight size={14} />
-              </Link>
-              <Link href="/galerie" className="btn-ghost uppercase text-xs tracking-widest">
-                {ctaSecondary}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ═══ HERO BANNER CAROUSEL ═══ */}
+      <HeroBannerCarousel banners={banners} logoUrl={logoUrl || null} />
 
       {/* ═══ PILIERS « L'AMOUR EST UNIVERSEL » ═══ */}
       <section className="py-20" style={{ background: 'var(--bg)' }}>

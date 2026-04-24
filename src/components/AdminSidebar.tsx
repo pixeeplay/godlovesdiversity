@@ -4,11 +4,13 @@ import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import {
   LayoutDashboard, ShieldCheck, FileText, Mail, Calendar,
-  Sparkles, Users, Settings, LogOut, Heart, UploadCloud, MapPin, Home, Image as ImageIcon, Video, Layers
+  Sparkles, Users, Settings, LogOut, Heart, UploadCloud, MapPin, Home, Image as ImageIcon, Video, Layers, GalleryHorizontalEnd, Menu as MenuIcon
 } from 'lucide-react';
 
 const NAV = [
   { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
+  { href: '/admin/banners', label: 'Bannières (hero)', icon: GalleryHorizontalEnd },
+  { href: '/admin/menu', label: 'Menu nav', icon: MenuIcon },
   { href: '/admin/home', label: 'Page d\'accueil', icon: Home },
   { href: '/admin/moderation', label: 'Modération', icon: ShieldCheck },
   { href: '/admin/import', label: 'Import en masse', icon: UploadCloud },

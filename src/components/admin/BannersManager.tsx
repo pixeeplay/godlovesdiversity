@@ -1,0 +1,240 @@
+'use client';
+import { useState, useRef } from 'react';
+import { Plus, Pencil, Trash2, Save, X, Loader2, ArrowUp, ArrowDown, UploadCloud, Image as ImageIcon, Eye, EyeOff } from 'lucide-react';
+
+type Banner = {
+  id: string;
+  eyebrow: string | null;
+  title: string;
+  subtitle: string | null;
+  mediaUrl: string | null;
+  mediaType: string | null;
+  cta1Text: string | null;
+  cta1Url: string | null;
+  cta2Text: string | null;
+  cta2Url: string | null;
+  accentColor: string | null;
+  order: number;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export function BannersManager({ initial }: { initial: Banner[] }) {
+  const [banners, setBanners] = useState(initial);
+  const [editing, setEditing] = useState<Banner | null>(null);
+  const [creating, setCreating] = useState(false);
+
+  async function move(b: Banner, dir: 1 | -1) {
+    const sorted = [...banners].sort((a, b) => a.order - b.order);
+    const idx = sorted.findIndex((x) => x.id === b.id);
+    const target = sorted[idx + dir];
+    if (!target) return;
+    await Promise.all([
+      fetch(`/api/admin/banners/${b.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ order: target.order }) }),
+      fetch(`/api/admin/banners/${target.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ order: b.order }) })
+    ]);
+    setBanners((arr) => arr.map((x) => {
+      if (x.id === b.id) return { ...x, order: target.order };
+      if (x.id === target.id) return { ...x, order: b.order };
+      return x;
+    }));
+  }
+
+  async function togglePub(b: Banner) {
+    const r = await fetch(`/api/admin/banners/${b.id}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ published: !b.published })
+    });
+    if (r.ok) setBanners((arr) => arr.map((x) => x.id === b.id ? { ...x, published: !b.published } : x));
+  }
+
+  async function del(b: Banner) {
+    if (!confirm('Supprimer cette bannière ?')) return;
+    const r = await fetch(`/api/admin/banners/${b.id}`, { method: 'DELETE' });
+    if (r.ok) setBanners((arr) => arr.filter((x) => x.id !== b.id));
+  }
+
+  return (
+    <>
+      <div className="flex items-center justify-between mb-6">
+        <a href="/" target="_blank" rel="noreferrer" className="btn-ghost text-xs"><Eye size={12} /> Voir le résultat sur la home</a>
+        <button onClick={() => setCreating(true)} className="btn-primary text-sm">
+          <Plus size={14} /> Nouvelle bannière
+        </button>
+      </div>
+
+      <div className="space-y-3">
+        {banners.length === 0 && (
+          <p className="text-zinc-500 italic text-center py-12 border border-dashed border-zinc-800 rounded-xl">
+            Aucune bannière.
+          </p>
+        )}
+        {banners.sort((a, b) => a.order - b.order).map((b, i) => (
+          <article key={b.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex gap-4">
+            <div className="w-32 h-20 rounded-lg shrink-0 bg-zinc-800 flex items-center justify-center overflow-hidden relative"
+                 style={b.accentColor ? { borderLeft: `4px solid ${b.accentColor}` } : undefined}>
+              {b.mediaUrl ? (
+                b.mediaType === 'video'
+                  ? <video src={b.mediaUrl} muted className="w-full h-full object-cover" />
+                  // eslint-disable-next-line @next/next/no-img-element
+                  : <img src={b.mediaUrl} alt="" className="w-full h-full object-cover" />
+              ) : (
+                <ImageIcon className="text-zinc-600" />
+              )}
+              <div className="absolute top-1 left-1 text-[10px] bg-black/70 px-1.5 py-0.5 rounded font-bold">#{i + 1}</div>
+            </div>
+            <div className="flex-1 min-w-0">
+              {b.eyebrow && <div className="text-[10px] uppercase tracking-widest text-brand-pink mb-1">{b.eyebrow}</div>}
+              <div className="font-bold">{b.title}</div>
+              {b.subtitle && <p className="text-xs text-zinc-400 line-clamp-2 mt-1">{b.subtitle}</p>}
+              <div className="flex gap-1 mt-2">
+                {b.cta1Text && <span className="text-[10px] px-2 py-0.5 rounded bg-brand-pink/15 text-brand-pink">{b.cta1Text}</span>}
+                {b.cta2Text && <span className="text-[10px] px-2 py-0.5 rounded bg-zinc-700 text-zinc-300">{b.cta2Text}</span>}
+              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <button onClick={() => move(b, -1)} disabled={i === 0} className="text-zinc-400 hover:text-white p-1 disabled:opacity-30"><ArrowUp size={14} /></button>
+              <button onClick={() => move(b, 1)} disabled={i === banners.length - 1} className="text-zinc-400 hover:text-white p-1 disabled:opacity-30"><ArrowDown size={14} /></button>
+              <button onClick={() => setEditing(b)} className="text-zinc-400 hover:text-white p-1"><Pencil size={14} /></button>
+              <button onClick={() => togglePub(b)} className="text-zinc-400 hover:text-white p-1">
+                {b.published ? <EyeOff size={14} /> : <Eye size={14} />}
+              </button>
+              <button onClick={() => del(b)} className="text-red-400 hover:text-red-300 p-1"><Trash2 size={14} /></button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {(editing || creating) && (
+        <BannerEditor
+          banner={editing}
+          onClose={() => { setEditing(null); setCreating(false); }}
+          onSaved={(b) => {
+            setBanners((arr) => {
+              const idx = arr.findIndex((x) => x.id === b.id);
+              return idx === -1 ? [...arr, b] : arr.map((x) => x.id === b.id ? b : x);
+            });
+            setEditing(null); setCreating(false);
+          }}
+        />
+      )}
+    </>
+  );
+}
+
+function BannerEditor({ banner, onClose, onSaved }: {
+  banner: Banner | null; onClose: () => void; onSaved: (b: Banner) => void;
+}) {
+  const [eyebrow, setEyebrow] = useState(banner?.eyebrow || '');
+  const [title, setTitle] = useState(banner?.title || '');
+  const [subtitle, setSubtitle] = useState(banner?.subtitle || '');
+  const [mediaUrl, setMediaUrl] = useState(banner?.mediaUrl || '');
+  const [mediaType, setMediaType] = useState(banner?.mediaType || '');
+  const [cta1Text, setCta1Text] = useState(banner?.cta1Text || '');
+  const [cta1Url, setCta1Url] = useState(banner?.cta1Url || '');
+  const [cta2Text, setCta2Text] = useState(banner?.cta2Text || '');
+  const [cta2Url, setCta2Url] = useState(banner?.cta2Url || '');
+  const [accentColor, setAccentColor] = useState(banner?.accentColor || '#FF2BB1');
+  const [busy, setBusy] = useState(false);
+  const [uploadBusy, setUploadBusy] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function uploadMedia(f: File) {
+    setUploadBusy(true);
+    const fd = new FormData();
+    fd.append('files', f);
+    const r = await fetch('/api/admin/media', { method: 'POST', body: fd });
+    const j = await r.json();
+    if (j.ok) {
+      const file = j.files[0];
+      setMediaUrl(file.url);
+      setMediaType(file.mime.startsWith('video/') ? 'video' : 'image');
+    }
+    setUploadBusy(false);
+  }
+
+  async function save() {
+    setBusy(true);
+    const url = banner ? `/api/admin/banners/${banner.id}` : '/api/admin/banners';
+    const method = banner ? 'PATCH' : 'POST';
+    const r = await fetch(url, {
+      method, headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ eyebrow, title, subtitle, mediaUrl, mediaType, cta1Text, cta1Url, cta2Text, cta2Url, accentColor })
+    });
+    const j = await r.json();
+    setBusy(false);
+    if (j.ok) onSaved(j.banner);
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+        <div className="border-b border-zinc-800 flex items-center justify-between p-4">
+          <h2 className="font-bold">{banner ? 'Éditer la bannière' : 'Nouvelle bannière'}</h2>
+          <button onClick={onClose} className="text-zinc-400 hover:text-white"><X size={20} /></button>
+        </div>
+        <div className="p-6 space-y-3 overflow-y-auto">
+          <input value={eyebrow} onChange={(e) => setEyebrow(e.target.value)} placeholder="Sur-titre (« Manifeste », « Galerie », etc.)"
+            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm uppercase tracking-widest" />
+          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Titre principal"
+            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xl font-bold" />
+          <textarea value={subtitle} onChange={(e) => setSubtitle(e.target.value)} rows={3} placeholder="Sous-titre"
+            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm" />
+
+          {/* Media */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-zinc-400">Image ou vidéo de fond (optionnel)</span>
+              <button onClick={() => fileRef.current?.click()} disabled={uploadBusy} className="btn-ghost text-xs">
+                {uploadBusy ? <Loader2 size={12} className="animate-spin" /> : <UploadCloud size={12} />} Téléverser
+              </button>
+              <input ref={fileRef} type="file" accept="image/*,video/*" hidden
+                onChange={(e) => e.target.files?.[0] && uploadMedia(e.target.files[0])} />
+            </div>
+            {mediaUrl && (
+              <div className="rounded-lg overflow-hidden bg-zinc-800 mb-2 max-h-48">
+                {mediaType === 'video'
+                  ? <video src={mediaUrl} controls className="w-full max-h-48" />
+                  // eslint-disable-next-line @next/next/no-img-element
+                  : <img src={mediaUrl} alt="" className="w-full max-h-48 object-cover" />
+                }
+              </div>
+            )}
+          </div>
+
+          {/* CTAs */}
+          <div className="grid grid-cols-2 gap-2">
+            <input value={cta1Text} onChange={(e) => setCta1Text(e.target.value)} placeholder="Bouton 1 — texte"
+              className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm" />
+            <input value={cta1Url} onChange={(e) => setCta1Url(e.target.value)} placeholder="Bouton 1 — URL"
+              className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm" />
+            <input value={cta2Text} onChange={(e) => setCta2Text(e.target.value)} placeholder="Bouton 2 — texte"
+              className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm" />
+            <input value={cta2Url} onChange={(e) => setCta2Url(e.target.value)} placeholder="Bouton 2 — URL"
+              className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm" />
+          </div>
+
+          {/* Couleur */}
+          <div>
+            <label className="text-xs text-zinc-400 block mb-1">Couleur d'accent</label>
+            <div className="flex gap-2 items-center">
+              <input type="color" value={accentColor} onChange={(e) => setAccentColor(e.target.value)} className="w-12 h-10 rounded cursor-pointer bg-transparent" />
+              <input value={accentColor} onChange={(e) => setAccentColor(e.target.value)} className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm font-mono w-32" />
+              {['#FF2BB1', '#FBBF24', '#34D399', '#22D3EE', '#8B5CF6'].map((c) => (
+                <button key={c} onClick={() => setAccentColor(c)} className="w-7 h-7 rounded-full border-2 border-white/10" style={{ background: c }} />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="border-t border-zinc-800 p-4 flex justify-end gap-2">
+          <button onClick={onClose} className="btn-ghost text-sm">Annuler</button>
+          <button onClick={save} disabled={busy || !title} className="btn-primary text-sm">
+            {busy ? <Loader2 className="animate-spin" size={14} /> : <Save size={14} />}
+            {banner ? 'Enregistrer' : 'Créer'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

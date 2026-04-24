@@ -2,7 +2,7 @@
 import { useState, useRef } from 'react';
 import {
   Plus, Pencil, Trash2, Save, X, Loader2, ArrowUp, ArrowDown,
-  UploadCloud, Image as ImageIcon, Video, Sparkles, Eye, EyeOff
+  UploadCloud, Image as ImageIcon, Video, Sparkles, Eye, EyeOff, Languages
 } from 'lucide-react';
 
 type Section = {
@@ -45,7 +45,20 @@ export function PagesEditor({ pages, initialSections }: { pages: string[]; initi
   const [editing, setEditing] = useState<Section | null>(null);
   const [creating, setCreating] = useState(false);
 
-  const pageSections = sections.filter((s) => s.pageSlug === activePage);
+  const pageSections = sections.filter((s) => s.pageSlug === activePage && s.locale === 'fr');
+  const [translating, setTranslating] = useState(false);
+
+  async function translatePage() {
+    if (!confirm(`Traduire toutes les sections de "${activePage}" en EN/ES/PT via IA ?`)) return;
+    setTranslating(true);
+    const r = await fetch('/api/admin/sections/translate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pageSlug: activePage })
+    });
+    const j = await r.json();
+    setTranslating(false);
+    alert(j.ok ? `${j.count} traductions générées ✅` : `Erreur : ${j.error || 'inconnue'}`);
+  }
 
   async function move(s: Section, dir: 1 | -1) {
     const sorted = pageSections;
@@ -92,13 +105,19 @@ export function PagesEditor({ pages, initialSections }: { pages: string[]; initi
       </div>
 
       {/* Header actions */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <a href={`/${activePage}`} target="_blank" rel="noreferrer" className="btn-ghost text-xs">
           <Eye size={12} /> Voir la page publique
         </a>
-        <button onClick={() => setCreating(true)} className="btn-primary text-sm">
-          <Plus size={14} /> Nouvelle section
-        </button>
+        <div className="flex gap-2">
+          <button onClick={translatePage} disabled={translating} className="btn-ghost text-xs">
+            {translating ? <Loader2 size={12} className="animate-spin" /> : <Languages size={12} />}
+            Traduire EN/ES/PT (IA)
+          </button>
+          <button onClick={() => setCreating(true)} className="btn-primary text-sm">
+            <Plus size={14} /> Nouvelle section
+          </button>
+        </div>
       </div>
 
       {/* Liste des sections de la page */}

@@ -111,6 +111,67 @@ async function main() {
   }
   console.log('✅ Sections riches créées');
 
+  // ─── 5 bannières par défaut ───
+  const banners = [
+    {
+      eyebrow: 'Mouvement interreligieux • 2026',
+      title: 'GOD LOVES DIVERSITY',
+      subtitle: 'Dieu n\'est pas opposé aux personnes LGBT. L\'amour, la justice et la compassion sont au cœur des grandes religions monothéistes.',
+      cta1Text: 'COMPRENDRE LE MESSAGE', cta1Url: '/argumentaire',
+      cta2Text: 'VOIR LES PHOTOS', cta2Url: '/galerie',
+      accentColor: '#FF2BB1', order: 1
+    },
+    {
+      eyebrow: 'Manifeste',
+      title: 'L\'AMOUR EST UNIVERSEL',
+      subtitle: 'Chaque tradition spirituelle l\'enseigne : aimer son prochain comme soi-même. C\'est le fil rouge qui relie toutes les religions du monde.',
+      cta1Text: 'LIRE LE MESSAGE', cta1Url: '/message',
+      accentColor: '#FBBF24', order: 2
+    },
+    {
+      eyebrow: 'Galerie mondiale',
+      title: 'PARTAGEZ VOTRE LUMIÈRE',
+      subtitle: 'Photographiez-vous devant un lieu de culte avec l\'affiche, et rejoignez des centaines de croyants partout dans le monde.',
+      cta1Text: 'PARTICIPER', cta1Url: '/participer',
+      cta2Text: 'VOIR LA CARTE', cta2Url: '/galerie',
+      accentColor: '#34D399', order: 3
+    },
+    {
+      eyebrow: 'Argumentaire',
+      title: 'QUATRE VÉRITÉS SIMPLES',
+      subtitle: 'Une lecture inclusive des textes sacrés ne combat aucune religion : elle redonne aux croyants LGBT la place que les principes fondateurs leur ont toujours promise.',
+      cta1Text: 'DÉCOUVRIR', cta1Url: '/argumentaire',
+      accentColor: '#22D3EE', order: 4
+    },
+    {
+      eyebrow: 'Affiches',
+      title: 'TÉLÉCHARGEZ. IMPRIMEZ. PARTAGEZ.',
+      subtitle: 'Affiche officielle disponible en plusieurs formats. Imprimez-la, posez-la, photographiez-vous avec, devenez acteur du changement.',
+      cta1Text: 'TÉLÉCHARGER L\'AFFICHE', cta1Url: '/affiches',
+      accentColor: '#8B5CF6', order: 5
+    }
+  ];
+  for (const b of banners) {
+    const existing = await prisma.banner.findFirst({ where: { order: b.order, locale: 'fr' } });
+    if (!existing) await prisma.banner.create({ data: { ...b, locale: 'fr', published: true } });
+  }
+  console.log('✅ 5 bannières créées');
+
+  // ─── Menu de navigation ───
+  const menu = [
+    { label: 'LE MESSAGE', href: '/message', order: 1 },
+    { label: 'ARGUMENTAIRE', href: '/argumentaire', order: 2 },
+    { label: 'PHOTOS', href: '/galerie', order: 3 },
+    { label: 'AFFICHES', href: '/affiches', order: 4 },
+    { label: 'À PROPOS', href: '/a-propos', order: 5 },
+    { label: 'BLOG', href: '/blog', order: 6 }
+  ];
+  for (const m of menu) {
+    const existing = await prisma.menuItem.findFirst({ where: { href: m.href, locale: 'fr' } });
+    if (!existing) await prisma.menuItem.create({ data: { ...m, locale: 'fr', published: true } });
+  }
+  console.log('✅ Menu de navigation créé');
+
   // Settings par défaut
   const settings = [
     { key: 'site.title', value: 'God Loves Diversity' },

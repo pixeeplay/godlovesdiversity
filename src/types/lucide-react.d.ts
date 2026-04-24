@@ -21,6 +21,7 @@ declare module 'lucide-react' {
   export const Calendar: LucideIcon;
   export const ChevronLeft: LucideIcon;
   export const ChevronRight: LucideIcon;
+  export const ChevronDown: LucideIcon;
   export const CheckCircle2: LucideIcon;
   export const Check: LucideIcon;
   export const Copy: LucideIcon;
@@ -30,6 +31,7 @@ declare module 'lucide-react' {
   export const ExternalLink: LucideIcon;
   export const FileText: LucideIcon;
   export const Facebook: LucideIcon;
+  export const GalleryHorizontalEnd: LucideIcon;
   export const Globe: LucideIcon;
   export const Handshake: LucideIcon;
   export const Heart: LucideIcon;

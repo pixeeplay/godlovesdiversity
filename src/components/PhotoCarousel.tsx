@@ -1,30 +1,45 @@
 'use client';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 
 const TYPE_LABEL: Record<string, string> = {
-  CHURCH: '⛪ Église',
-  MOSQUE: '🕌 Mosquée',
-  SYNAGOGUE: '✡️ Synagogue',
-  TEMPLE: '🛕 Temple',
-  PUBLIC_SPACE: '🌆 Espace public',
-  OTHER: '📍 Lieu'
+  CHURCH: '⛪ Église', MOSQUE: '🕌 Mosquée', SYNAGOGUE: '✡️ Synagogue',
+  TEMPLE: '🛕 Temple', PUBLIC_SPACE: '🌆 Espace public', OTHER: '📍 Lieu'
 };
 
 type Photo = {
-  id: string;
-  url: string;
-  isDemo: boolean;
-  caption: string | null;
-  placeName: string | null;
-  placeType: string | null;
-  city: string | null;
-  country: string | null;
-  author: string | null;
+  id: string; url: string; isDemo: boolean;
+  caption: string | null; placeName: string | null; placeType: string | null;
+  city: string | null; country: string | null; author: string | null;
 };
 
 export function PhotoCarousel({ photos, title }: { photos: Photo[]; title: string }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+
+  // Auto-rotation : marquee continu (translateX), pause au survol
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || photos.length === 0) return;
+    let raf = 0;
+    let lastTs = performance.now();
+    const speed = 30; // px/seconde
+
+    function tick(ts: number) {
+      const dt = ts - lastTs;
+      lastTs = ts;
+      if (!paused && el && el.scrollWidth > el.clientWidth) {
+        el.scrollLeft += (speed * dt) / 1000;
+        // Boucle infinie : quand on a dépassé la moitié, on repart à 0
+        if (el.scrollLeft >= el.scrollWidth / 2) {
+          el.scrollLeft = 0;
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [paused, photos.length]);
 
   if (!photos.length) return null;
 
@@ -32,6 +47,9 @@ export function PhotoCarousel({ photos, title }: { photos: Photo[]; title: strin
     const el = ref.current; if (!el) return;
     el.scrollBy({ left: dir === 'left' ? -400 : 400, behavior: 'smooth' });
   }
+
+  // On duplique la liste pour l'effet boucle infinie
+  const items = [...photos, ...photos];
 
   return (
     <section className="container-wide py-16">
@@ -50,13 +68,15 @@ export function PhotoCarousel({ photos, title }: { photos: Photo[]; title: strin
 
       <div
         ref={ref}
-        className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-6 px-6"
-        style={{ scrollbarWidth: 'none' }}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        className="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6 scrollbar-hide"
+        style={{ scrollbarWidth: 'none', scrollBehavior: 'auto' }}
       >
-        {photos.map((p) => (
+        {items.map((p, i) => (
           <article
-            key={p.id}
-            className="snap-start shrink-0 w-72 stained-card overflow-hidden group cursor-pointer"
+            key={`${p.id}-${i}`}
+            className="shrink-0 w-72 stained-card overflow-hidden group cursor-pointer"
           >
             <div className="aspect-[4/5] bg-zinc-900 relative">
               {p.isDemo ? (
