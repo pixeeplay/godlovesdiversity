@@ -14,6 +14,7 @@ declare module 'lucide-react' {
   export const AlertCircle: LucideIcon;
   export const ArrowRight: LucideIcon;
   export const BarChart3: LucideIcon;
+  export const BookOpen: LucideIcon;
   export const Camera: LucideIcon;
   export const Calendar: LucideIcon;
   export const ChevronLeft: LucideIcon;
@@ -26,8 +27,11 @@ declare module 'lucide-react' {
   export const EyeOff: LucideIcon;
   export const ExternalLink: LucideIcon;
   export const FileText: LucideIcon;
+  export const Facebook: LucideIcon;
   export const Globe: LucideIcon;
+  export const Handshake: LucideIcon;
   export const Heart: LucideIcon;
+  export const Instagram: LucideIcon;
   export const Home: LucideIcon;
   export const Image: LucideIcon;
   export const ImageIcon: LucideIcon;
@@ -56,9 +60,11 @@ declare module 'lucide-react' {
   export const Sparkles: LucideIcon;
   export const Sun: LucideIcon;
   export const Trash2: LucideIcon;
+  export const Twitter: LucideIcon;
   export const Type: LucideIcon;
   export const UploadCloud: LucideIcon;
   export const Users: LucideIcon;
+  export const Youtube: LucideIcon;
   export const Video: LucideIcon;
   export const Wand2: LucideIcon;
   export const X: LucideIcon;

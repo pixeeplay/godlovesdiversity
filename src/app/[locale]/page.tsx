@@ -1,6 +1,6 @@
 import { Link } from '@/i18n/routing';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { ArrowRight, Image as ImageIcon, Download, MessageSquare, Heart } from 'lucide-react';
+import { ArrowRight, Heart, BookOpen, Handshake, Users, Download } from 'lucide-react';
 import { getAllSettings } from '@/lib/settings';
 import { NeonHeart } from '@/components/NeonHeart';
 import { SacredSkyline } from '@/components/SacredSkyline';
@@ -19,27 +19,46 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const s = await getAllSettings();
 
   const v = (key: string, fallback: string) => s[`home.${key}`] || fallback;
-  const eyebrow = s['home.hero.eyebrow'] || 'Mouvement interreligieux • 2026';
   const titleA = s['home.hero.titleA'] || 'GOD';
   const titleB = s['home.hero.titleB'] || 'LOVES DIVERSITY';
-  const subtitle = v('hero.subtitle', t('subtitle'));
-  const ctaPrimary = v('hero.ctaPrimary', t('cta_participate'));
-  const ctaSecondary = v('hero.ctaSecondary', t('cta_understand'));
-  const manifestoTitle = v('manifesto.title', t('manifesto_title'));
-  const manifestoText = v('manifesto.text', t('manifesto_text'));
-  const pillarsTitle = v('pillars.title', t('pillars_title'));
-  const ctaTitle = v('cta.title', t('join_title'));
-  const ctaText = v('cta.text', t('join_text'));
+  const subtitle = v('hero.subtitle',
+    "Dieu n'est pas opposé aux personnes LGBT. L'amour, la justice et la compassion sont au cœur des grandes religions monothéistes."
+  );
+  const ctaPrimary = v('hero.ctaPrimary', 'Comprendre le message');
+  const ctaSecondary = v('hero.ctaSecondary', 'Voir les photos');
+  const pillarsTitle = v('pillars.title', 'L\'AMOUR EST UNIVERSEL');
+  const postersTitle = v('posters.title', 'TÉLÉCHARGEZ L\'AFFICHE');
+  const postersText = v('posters.text', 'Imprimez, affichez, prenez une photo et soyez acteur du changement !');
   const logoUrl = s['site.logoUrl'];
   const hashtag = s['campaign.hashtag'] || '#GodLovesDiversity';
 
-  const pillars = [1, 2, 3, 4].map((i) => ({
-    n: i,
-    title: v(`pillar${i}.title`, t(`pillar${i}_title` as any)),
-    text: v(`pillar${i}.text`, t(`pillar${i}_text` as any))
-  }));
+  const pillars = [
+    {
+      icon: Heart,
+      color: '#FF2BB1',
+      title: v('pillar1.title', 'DIEU EST AMOUR'),
+      text: v('pillar1.text', 'Au cœur des trois grandes religions monothéistes, Dieu est amour, miséricorde et compassion.')
+    },
+    {
+      icon: BookOpen,
+      color: '#FBBF24',
+      title: v('pillar2.title', 'LES TEXTES SONT CONTEXTUALISÉS'),
+      text: v('pillar2.text', 'Les passages souvent cités doivent être compris dans leur contexte historique, culturel et social.')
+    },
+    {
+      icon: Handshake,
+      color: '#34D399',
+      title: v('pillar3.title', 'L\'INTERPRÉTATION EST HUMAINE'),
+      text: v('pillar3.text', 'Les traductions et interprétations ont été influencées par des normes culturelles pas toujours en accord avec l\'amour universel.')
+    },
+    {
+      icon: Users,
+      color: '#8B5CF6',
+      title: v('pillar4.title', 'FOI ET DIVERSITÉ SONT COMPATIBLES'),
+      text: v('pillar4.text', 'De nombreuses communautés religieuses inclusives existent et accueillent les personnes LGBT+.')
+    }
+  ];
 
-  // Données pour les carrousels
   const recentPhotos = await prisma.photo.findMany({
     where: { status: 'APPROVED' },
     orderBy: { createdAt: 'desc' },
@@ -63,139 +82,143 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     take: 8
   });
   const articleItems = recentArticles.map((a) => ({
-    id: a.id,
-    title: a.title,
-    slug: a.slug,
-    excerpt: a.excerpt,
-    coverImage: a.coverImage,
-    coverVideo: a.coverVideo,
-    publishedAt: a.publishedAt?.toISOString() || null,
-    tags: a.tags
+    id: a.id, title: a.title, slug: a.slug, excerpt: a.excerpt,
+    coverImage: a.coverImage, coverVideo: a.coverVideo,
+    publishedAt: a.publishedAt?.toISOString() || null, tags: a.tags
   }));
 
   return (
     <>
-      {/* HERO — 2 colonnes + skyline défilante en bas */}
-      <section className="relative min-h-[88vh] flex flex-col">
-        <div className="container-wide flex-1 flex items-center pt-12 pb-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
-            {/* Cœur néon — gauche */}
-            <div className="flex justify-center lg:justify-start">
-              {logoUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={logoUrl} alt="" className="max-h-80 object-contain" />
-              ) : (
-                <NeonHeart size={340} />
-              )}
-            </div>
-
-            {/* Texte — droite */}
-            <div className="text-center lg:text-left">
-              <p className="text-xs uppercase tracking-[0.4em] text-white/60 mb-5">{eyebrow}</p>
-              <h1 className="font-display font-black leading-[0.9] tracking-tight">
-                <span className="block text-7xl md:text-8xl lg:text-[8rem] text-brand-pink neon-title">
-                  {titleA}
-                </span>
-                <span className="block text-5xl md:text-6xl lg:text-7xl text-white mt-1">
-                  {titleB}
-                </span>
-              </h1>
-              <p className="mt-6 text-lg md:text-xl text-white/80 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
-                {subtitle}
-              </p>
-              <div className="mt-8 flex flex-wrap justify-center lg:justify-start gap-3">
-                <Link href="/participer" className="btn-primary">
-                  {ctaPrimary} <ArrowRight size={18} />
-                </Link>
-                <Link href="/argumentaire" className="btn-ghost">
-                  {ctaSecondary}
-                </Link>
-                <Link href="/galerie" className="btn-ghost">
-                  <ImageIcon size={18} /> {t('cta_gallery')}
-                </Link>
-              </div>
+      {/* ═══ HERO ═══ */}
+      <section className="relative overflow-hidden" style={{ background: '#0a0314' }}>
+        <SacredSkyline height={620} />
+        <div className="container-wide relative z-10 grid lg:grid-cols-2 gap-12 items-center min-h-[620px] py-20">
+          {/* Cœur néon gauche */}
+          <div className="flex justify-center lg:justify-start">
+            {logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={logoUrl} alt="" className="max-h-80 object-contain heart-glow" />
+            ) : (
+              <NeonHeart size={360} />
+            )}
+          </div>
+          {/* Texte droite */}
+          <div>
+            <h1 className="font-display font-black leading-[0.85] tracking-tight">
+              <span className="block text-7xl md:text-8xl lg:text-[8rem] text-brand-pink neon-title">
+                {titleA}
+              </span>
+              <span className="block text-4xl md:text-5xl lg:text-6xl mt-2">
+                <span className="text-white">LOVES </span>
+                <span className="text-brand-pink">{titleB.replace('LOVES ', '')}</span>
+              </span>
+            </h1>
+            <p className="mt-8 text-lg md:text-xl text-white/85 max-w-lg leading-relaxed">
+              {subtitle}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/argumentaire" className="btn-primary uppercase text-xs tracking-widest">
+                {ctaPrimary} <ArrowRight size={14} />
+              </Link>
+              <Link href="/galerie" className="btn-ghost uppercase text-xs tracking-widest">
+                {ctaSecondary}
+              </Link>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Skyline défilante en bas du hero */}
-        <div className="relative">
-          <SacredSkyline height={220} />
+      {/* ═══ PILIERS « L'AMOUR EST UNIVERSEL » ═══ */}
+      <section className="py-20" style={{ background: 'var(--bg)' }}>
+        <div className="container-wide">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-3xl md:text-5xl font-black tracking-wide">{pillarsTitle}</h2>
+            <div className="mx-auto mt-3 h-1 w-16 bg-brand-pink rounded-full" />
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-0 max-w-6xl mx-auto">
+            {pillars.map((p, i) => {
+              const Icon = p.icon;
+              return (
+                <div
+                  key={i}
+                  className={`px-6 py-4 text-center ${i < 3 ? 'md:border-r md:border-white/10' : ''}`}
+                >
+                  <div className="flex justify-center mb-5">
+                    <Icon size={56} strokeWidth={1.5} style={{ color: p.color }} />
+                  </div>
+                  <h3 className="font-display font-bold text-sm tracking-widest mb-3">{p.title}</h3>
+                  <div className="mx-auto h-px w-10 bg-white/20 mb-3" />
+                  <p className="text-sm text-white/70 leading-relaxed">{p.text}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      <div className="container-wide"><div className="gothic-divider" /></div>
+      {/* ═══ TÉLÉCHARGEZ L'AFFICHE ═══ */}
+      <PostersShowcase title={postersTitle} text={postersText} />
 
-      {/* CARROUSEL PHOTOS */}
+      {/* ═══ CARROUSELS DYNAMIQUES (gardés) ═══ */}
       <PhotoCarousel photos={photoItems} title="Galerie" />
-
-      <div className="container-wide"><div className="gothic-divider" /></div>
-
-      {/* MANIFESTE */}
-      <section className="container-tight py-24 relative">
-        <p className="text-sm uppercase tracking-[0.3em] text-brand-pink mb-4">Manifeste</p>
-        <h2 className="font-display text-4xl md:text-6xl font-bold mb-8 neon-title">
-          {manifestoTitle}
-        </h2>
-        <p className="text-2xl text-white/80 leading-relaxed font-light max-w-3xl">
-          {manifestoText}
-        </p>
-      </section>
-
-      <div className="container-wide"><div className="gothic-divider" /></div>
-
-      {/* PILIERS */}
-      <section className="container-wide py-24">
-        <div className="text-center mb-16">
-          <p className="text-sm uppercase tracking-[0.3em] text-white/50 mb-4">Argumentaire</p>
-          <h2 className="font-display text-4xl md:text-6xl font-bold neon-title">
-            {pillarsTitle}
-          </h2>
-        </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          {pillars.map((p) => (
-            <article key={p.n} className="stained-card p-8 group transition-all duration-500">
-              <div className="flex items-start gap-6">
-                <div className="pillar-num text-7xl font-display group-hover:scale-110 transition-transform">
-                  {String(p.n).padStart(2, '0')}
-                </div>
-                <div>
-                  <h3 className="font-bold text-2xl mb-3 text-white">{p.title}</h3>
-                  <p className="text-white/70 leading-relaxed">{p.text}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <div className="container-wide"><div className="gothic-divider" /></div>
-
-      {/* CARROUSEL ACTUS / VIDÉOS */}
-      <NewsCarousel articles={articleItems} />
-
-      <div className="container-wide"><div className="gothic-divider" /></div>
-
-      {/* CTA FINAL — avec skyline en bas */}
-      <section className="relative py-24 text-center">
-        <div className="container-tight relative z-10">
-          <h2 className="font-display text-4xl md:text-6xl font-bold mb-6 neon-title">
-            {ctaTitle}
-          </h2>
-          <p className="text-lg text-white/70 max-w-2xl mx-auto mb-10 leading-relaxed">
-            {ctaText}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link href="/affiches" className="btn-primary">
-              <Download size={18} /> Télécharger l'affiche
-            </Link>
-            <Link href="/participer" className="btn-ghost">
-              <MessageSquare size={18} /> {t('cta_participate')}
-            </Link>
-          </div>
-          <p className="mt-12 font-mono text-sm text-white/40">{hashtag}</p>
-        </div>
-      </section>
+      {articleItems.length > 0 && <NewsCarousel articles={articleItems} />}
     </>
   );
 }
+
+/* ─── Section affiches ─── */
+function PostersShowcase({ title, text }: { title: string; text: string }) {
+  return (
+    <section className="py-20" style={{ background: '#0a0314' }}>
+      <div className="container-wide grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 className="font-display text-3xl md:text-5xl font-black tracking-wide">{title}</h2>
+          <div className="mt-3 h-1 w-16 bg-brand-pink rounded-full" />
+          <p className="mt-6 text-white/75 max-w-md leading-relaxed">{text}</p>
+          <Link
+            href="/affiches"
+            className="mt-8 inline-flex items-center gap-2 bg-brand-pink hover:bg-brand-rose text-white font-bold uppercase text-xs tracking-widest px-6 py-3 rounded-full transition shadow-[0_0_30px_rgba(255,43,177,.4)]"
+          >
+            <Download size={14} /> Télécharger
+          </Link>
+        </div>
+        {/* Mockups */}
+        <div className="flex items-end justify-center gap-4">
+          <PosterMockup label="A3" w={140} h={196} />
+          <PosterMockup label="A4" w={110} h={155} />
+          <PosterMockup label="STORIES" w={70} h={140} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PosterMockup({ label, w, h }: { label: string; w: number; h: number }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div
+        className="rounded-lg flex flex-col items-center justify-center bg-black border border-white/10 shadow-[0_0_30px_rgba(255,43,177,.2)] relative overflow-hidden"
+        style={{ width: w, height: h }}
+      >
+        <div className="text-brand-pink font-display font-black tracking-wider" style={{ fontSize: w * 0.18 }}>
+          GOD
+        </div>
+        <div style={{ width: w * 0.5, height: w * 0.5 }} className="my-2">
+          <NeonHeart size={w * 0.5} />
+        </div>
+        <div className="text-brand-pink font-display font-black tracking-wider" style={{ fontSize: w * 0.13 }}>
+          DIVERSITY
+        </div>
+        {/* QR code stylisé */}
+        <div className="absolute bottom-2 right-2 w-6 h-6 bg-white rounded-sm grid grid-cols-3 gap-px p-0.5">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <div key={i} className={`${[0, 2, 4, 6, 8].includes(i) ? 'bg-black' : ''} rounded-[1px]`} />
+          ))}
+        </div>
+      </div>
+      <span className="text-xs text-white/50 font-mono">{label}</span>
+    </div>
+  );
+}
+

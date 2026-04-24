@@ -49,16 +49,16 @@ export function GalleryClient({ photos }: { photos: Photo[] }) {
 
   return (
     <>
-      {/* Filtres pills */}
-      <div className="flex flex-wrap gap-2 justify-center mb-8">
+      {/* Filtres pills façon image 1 */}
+      <div className="container-wide flex flex-wrap gap-2 mb-6">
         {FILTERS.map((f) => (
           <button
             key={f.v}
             onClick={() => setFilter(f.v)}
-            className={`px-5 py-2 rounded-full text-xs font-bold tracking-widest uppercase border transition
+            className={`px-5 py-2 rounded-full text-xs font-bold tracking-widest uppercase transition
               ${filter === f.v
-                ? 'bg-brand-pink border-brand-pink text-white shadow-[0_0_30px_rgba(255,43,177,.5)]'
-                : 'border-white/15 text-white/70 hover:border-brand-pink hover:text-brand-pink'}`}
+                ? 'bg-brand-pink text-white shadow-[0_0_20px_rgba(255,43,177,.5)]'
+                : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'}`}
           >
             {f.l}
           </button>
@@ -66,7 +66,7 @@ export function GalleryClient({ photos }: { photos: Photo[] }) {
       </div>
 
       {/* Layout 2 colonnes : MAP gauche + GRID droite */}
-      <div className="grid lg:grid-cols-[420px,1fr] gap-6">
+      <div className="container-wide grid lg:grid-cols-[420px,1fr] gap-6">
         {/* MAP */}
         <div className="stained-card p-3 lg:sticky lg:top-24 self-start">
           <WorldMap markers={markers} height={520} />

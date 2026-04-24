@@ -14,12 +14,12 @@ type Marker = {
 };
 
 const COLORS: Record<string, string> = {
-  CHURCH: '#FF1493',     // rose
-  MOSQUE: '#22C55E',     // vert
-  SYNAGOGUE: '#3B82F6',  // bleu
-  TEMPLE: '#FB923C',     // orange
-  PUBLIC_SPACE: '#A855F7', // violet
-  OTHER: '#94A3B8'       // gris
+  CHURCH: '#FF2BB1',
+  MOSQUE: '#FF2BB1',
+  SYNAGOGUE: '#FF2BB1',
+  TEMPLE: '#FF2BB1',
+  PUBLIC_SPACE: '#FF2BB1',
+  OTHER: '#FF2BB1'
 };
 const LABEL: Record<string, string> = {
   CHURCH: '⛪ Église',
