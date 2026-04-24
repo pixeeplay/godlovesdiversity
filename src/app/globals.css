@@ -1,0 +1,320 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Thème sombre par défaut (Neon Cathedral) */
+:root, .dark {
+  --bg: #050208;
+  --bg-2: #0a0414;
+  --fg: #ffffff;
+  --fg-muted: rgba(255,255,255,.7);
+  --fg-subtle: rgba(255,255,255,.5);
+  --border: rgba(255,255,255,.1);
+  --surface: rgba(255,255,255,.04);
+  --surface-strong: rgba(255,255,255,.08);
+  --accent: #ff1493;
+  --neon-rose: #ff2bb1;
+  --neon-violet: #8b5cf6;
+  --neon-cyan: #22d3ee;
+  --neon-amber: #fbbf24;
+  --neon-emerald: #34d399;
+  --neon-ruby: #ef4444;
+  --halo-1: rgba(255,43,177,.18);
+  --halo-2: rgba(139,92,246,.16);
+  --halo-3: rgba(34,211,238,.12);
+  --halo-4: rgba(251,191,36,.10);
+  --grain-opacity: .6;
+  --grain-blend: overlay;
+  --skyline-fade: #050208;
+}
+
+/* Thème clair (Cathédrale lumineuse) */
+.light {
+  --bg: #fff8f3;            /* ivoire chaud */
+  --bg-2: #fef0e6;
+  --fg: #1a0d20;            /* prune sombre */
+  --fg-muted: rgba(26,13,32,.7);
+  --fg-subtle: rgba(26,13,32,.45);
+  --border: rgba(26,13,32,.12);
+  --surface: rgba(255,255,255,.7);
+  --surface-strong: rgba(255,255,255,.95);
+  --accent: #d6177e;
+  --neon-rose: #d6177e;
+  --neon-violet: #7c3aed;
+  --neon-cyan: #0891b2;
+  --neon-amber: #d97706;
+  --neon-emerald: #059669;
+  --neon-ruby: #dc2626;
+  --halo-1: rgba(214,23,126,.10);
+  --halo-2: rgba(124,58,237,.08);
+  --halo-3: rgba(8,145,178,.06);
+  --halo-4: rgba(217,119,6,.06);
+  --grain-opacity: .15;
+  --grain-blend: multiply;
+  --skyline-fade: #fff8f3;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+  transition: background-color .3s ease, color .3s ease;
+}
+
+/* Halos de vitrail en arrière-plan global */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(900px 700px at 12% 8%, var(--halo-1), transparent 60%),
+    radial-gradient(800px 600px at 88% 18%, var(--halo-2), transparent 65%),
+    radial-gradient(700px 500px at 50% 95%, var(--halo-3), transparent 60%),
+    radial-gradient(600px 400px at 8% 95%, var(--halo-4), transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity .3s ease;
+}
+
+/* Grain texture (subtle) */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .04 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  pointer-events: none;
+  z-index: -1;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold transition-all duration-300;
+  }
+  .btn-primary {
+    @apply btn text-white;
+    background: linear-gradient(135deg, #ff2bb1 0%, #8b5cf6 100%);
+    box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 10px 30px rgba(255,43,177,.3);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 0 1px rgba(255,255,255,.16), 0 14px 40px rgba(255,43,177,.55), 0 0 60px rgba(139,92,246,.35);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    @apply btn;
+    color: var(--fg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+  }
+  .btn-ghost:hover {
+    background: var(--surface-strong);
+    border-color: var(--accent);
+  }
+  .container-tight { @apply mx-auto max-w-5xl px-6; }
+  .container-wide  { @apply mx-auto max-w-7xl px-6; }
+
+  .heart-rainbow {
+    background: conic-gradient(from 0deg,#ff0018,#ffa52c,#ffff41,#008018,#0000f9,#86007d,#ff0018);
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 21s-7-4.35-9.5-8.86C.5 8.5 3 4 7 4c2.05 0 3.5 1 5 3 1.5-2 2.95-3 5-3 4 0 6.5 4.5 4.5 8.14C19 16.65 12 21 12 21z' fill='black'/></svg>") center/contain no-repeat;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 21s-7-4.35-9.5-8.86C.5 8.5 3 4 7 4c2.05 0 3.5 1 5 3 1.5-2 2.95-3 5-3 4 0 6.5 4.5 4.5 8.14C19 16.65 12 21 12 21z' fill='black'/></svg>") center/contain no-repeat;
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg,#ff0018,#ff1493,#ffa52c,#ffff41,#008018,#0000f9,#86007d);
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+  }
+
+  /* Vitrail néon — texte (fort en sombre, doux en clair) */
+  .neon-title {
+    color: var(--fg);
+    text-shadow:
+      0 0 20px rgba(255,43,177,.65),
+      0 0 60px rgba(139,92,246,.45),
+      0 0 120px rgba(34,211,238,.25);
+    letter-spacing: -0.02em;
+  }
+  .light .neon-title {
+    text-shadow:
+      0 0 8px rgba(214,23,126,.25),
+      0 0 24px rgba(124,58,237,.15);
+  }
+
+  /* Carte sacrée (vitrail) */
+  .stained-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+  }
+  .stained-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(120% 80% at 0% 0%, var(--halo-1), transparent 50%),
+                radial-gradient(120% 80% at 100% 100%, var(--halo-2), transparent 50%);
+    pointer-events: none;
+  }
+  .stained-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--halo-1), 0 20px 60px var(--halo-1);
+  }
+
+  /* Vitrail rosace */
+  .rose-window {
+    width: 380px; height: 380px;
+    border-radius: 50%;
+    background:
+      conic-gradient(from 0deg,
+        #ff2bb1 0deg, #ff2bb1 30deg,
+        #fbbf24 30deg, #fbbf24 60deg,
+        #34d399 60deg, #34d399 90deg,
+        #22d3ee 90deg, #22d3ee 120deg,
+        #8b5cf6 120deg, #8b5cf6 150deg,
+        #ef4444 150deg, #ef4444 180deg,
+        #ff2bb1 180deg, #ff2bb1 210deg,
+        #fbbf24 210deg, #fbbf24 240deg,
+        #34d399 240deg, #34d399 270deg,
+        #22d3ee 270deg, #22d3ee 300deg,
+        #8b5cf6 300deg, #8b5cf6 330deg,
+        #ef4444 330deg, #ef4444 360deg);
+    position: relative;
+    filter: blur(28px) saturate(180%);
+    opacity: .55;
+    animation: rosaceSpin 80s linear infinite;
+  }
+  @keyframes rosaceSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Halo pulsant pour le cœur */
+  .heart-glow {
+    filter:
+      drop-shadow(0 0 12px rgba(255,43,177,.7))
+      drop-shadow(0 0 30px rgba(139,92,246,.5))
+      drop-shadow(0 0 60px rgba(34,211,238,.3));
+    animation: pulseGlow 4s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%,100% { filter: drop-shadow(0 0 12px rgba(255,43,177,.7)) drop-shadow(0 0 30px rgba(139,92,246,.5)) drop-shadow(0 0 60px rgba(34,211,238,.3)); }
+    50%     { filter: drop-shadow(0 0 24px rgba(255,43,177,.9)) drop-shadow(0 0 60px rgba(139,92,246,.7)) drop-shadow(0 0 100px rgba(34,211,238,.45)); }
+  }
+
+  /* Liseré arc-en-ciel pour le numéro de pilier */
+  .pillar-num {
+    background: linear-gradient(135deg, #ff2bb1, #fbbf24, #34d399, #22d3ee, #8b5cf6);
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    font-feature-settings: "tnum";
+  }
+
+  /* Section divider gothique */
+  .gothic-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,43,177,.4), rgba(139,92,246,.4), rgba(34,211,238,.4), transparent);
+  }
+
+  /* Cœur néon style enseigne lumineuse */
+  .neon-heart {
+    width: 320px; height: 320px;
+    position: relative;
+  }
+  .neon-heart svg {
+    width: 100%; height: 100%;
+    filter:
+      drop-shadow(0 0 6px #ff2bb1)
+      drop-shadow(0 0 16px #ff2bb1)
+      drop-shadow(0 0 28px rgba(255,43,177,.7));
+    animation: neonFlicker 6s ease-in-out infinite;
+  }
+  @keyframes neonFlicker {
+    0%, 95%, 100% { opacity: 1; }
+    96% { opacity: 0.85; }
+    97% { opacity: 1; }
+    98% { opacity: 0.9; }
+  }
+
+  /* Bandeau lieux saints défilants */
+  .skyline-track {
+    animation: skylineScroll 60s linear infinite;
+    width: 3600px;
+  }
+  @keyframes skylineScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-1800px); }
+  }
+  .sacred-skyline {
+    mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+
+  /* Pill nav (Wix-style header) */
+  .pill-nav-link {
+    @apply text-sm tracking-wide uppercase font-semibold transition;
+    color: var(--fg);
+    opacity: .9;
+  }
+  .pill-nav-link:hover, .pill-nav-link.active { color: var(--accent); opacity: 1; }
+}
+
+::selection { background: var(--accent); color: white; }
+
+/* ─── Overrides automatiques mode clair ─── */
+/* On garde "text-white" partout dans le code mais on remappe en clair → fg sombre */
+.light .text-white          { color: var(--fg) !important; }
+.light .text-white\/95      { color: rgba(26,13,32,.95) !important; }
+.light .text-white\/90      { color: rgba(26,13,32,.9) !important; }
+.light .text-white\/80      { color: rgba(26,13,32,.85) !important; }
+.light .text-white\/70      { color: rgba(26,13,32,.7) !important; }
+.light .text-white\/60      { color: rgba(26,13,32,.55) !important; }
+.light .text-white\/50      { color: rgba(26,13,32,.5) !important; }
+.light .text-white\/40      { color: rgba(26,13,32,.4) !important; }
+.light .text-white\/30      { color: rgba(26,13,32,.3) !important; }
+
+/* Surfaces blanches translucides → grises chaudes en clair */
+.light .bg-white\/5         { background-color: rgba(26,13,32,.04) !important; }
+.light .bg-white\/10        { background-color: rgba(26,13,32,.06) !important; }
+
+/* Bordures blanches translucides → ombrées en clair */
+.light .border-white\/5     { border-color: rgba(26,13,32,.06) !important; }
+.light .border-white\/10    { border-color: rgba(26,13,32,.10) !important; }
+.light .border-white\/15    { border-color: rgba(26,13,32,.15) !important; }
+.light .border-white\/20    { border-color: rgba(26,13,32,.18) !important; }
+
+/* Le brand-pink en mode clair = accent foncé pour contraste */
+.light .text-brand-pink     { color: var(--accent) !important; }
+.light .border-brand-pink   { border-color: var(--accent) !important; }
+.light .bg-brand-pink       { background-color: var(--accent) !important; }
+.light .bg-brand-pink\/10   { background-color: rgba(214,23,126,.10) !important; }
+.light .bg-brand-pink\/15   { background-color: rgba(214,23,126,.15) !important; }
+.light .bg-brand-pink\/20   { background-color: rgba(214,23,126,.20) !important; }
+
+/* Fond noir en clair = blanc translucide */
+.light .bg-black            { background-color: var(--bg-2) !important; }
+.light .bg-black\/60        { background-color: rgba(255,255,255,.6) !important; }
+.light .bg-black\/70        { background-color: rgba(255,255,255,.7) !important; }
+.light .bg-black\/80        { background-color: rgba(255,255,255,.8) !important; }
+.light .bg-black\/90        { background-color: rgba(255,255,255,.9) !important; }
+
+/* Backgrounds dégradés brand-pink/X */
+.light .from-black          { --tw-gradient-from: rgba(255,248,243,1) !important; }
+.light .via-black\/70       { --tw-gradient-via: rgba(255,248,243,.7) !important; }
+
+/* Diviseur gothique plus marqué en clair */
+.light .gothic-divider {
+  background: linear-gradient(90deg, transparent, rgba(214,23,126,.5), rgba(124,58,237,.5), rgba(8,145,178,.5), transparent);
+}
+
+/* Forçage des dégradés purple/blue dans cartes démos pour rester visibles */
+.light .from-brand-pink\/30 { --tw-gradient-from: rgba(214,23,126,.18) !important; }
+.light .via-purple-700\/20  { --tw-gradient-via: rgba(124,58,237,.10) !important; }
+.light .to-blue-700\/30     { --tw-gradient-to: rgba(29,78,216,.12) !important; }
+.light .from-purple-700\/30 { --tw-gradient-from: rgba(124,58,237,.15) !important; }
+.light .to-brand-pink\/30   { --tw-gradient-to: rgba(214,23,126,.15) !important; }
+

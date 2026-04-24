@@ -1,0 +1,21 @@
+node_modules
+.next
+out
+build
+dist
+.env
+.env.local
+*.log
+.DS_Store
+.vscode/*
+!.vscode/settings.json
+prisma/migrations/dev.db*
+.coolify
+coverage
+
+# Brief / source assets fournis par l'utilisateur (à ne pas push)
+/A3*.pdf
+/God\ Loves\ Diversity.docx
+/cbc1c5c0-*.png
+/PLAN_PROJET_GodLovesDiversity.md
+.DS_Store

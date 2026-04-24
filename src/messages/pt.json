@@ -1,0 +1,89 @@
+{
+  "nav": {
+    "home": "Início",
+    "message": "A mensagem",
+    "argumentaire": "Argumentos",
+    "participate": "Participar",
+    "gallery": "Galeria",
+    "posters": "Cartazes",
+    "about": "Sobre",
+    "newsletter": "Newsletter",
+    "blog": "Blog"
+  },
+  "home": {
+    "tagline": "Deus ama a diversidade",
+    "subtitle": "Nenhuma leitura é definitiva. A fé conjuga-se no plural.",
+    "cta_participate": "Participar",
+    "cta_understand": "Compreender",
+    "cta_gallery": "Ver as fotos",
+    "manifesto_title": "A mensagem",
+    "manifesto_text": "Deus não se opõe às pessoas LGBT. Esta rejeição é produto de interpretações históricas e humanas dos textos sagrados.",
+    "pillars_title": "Quatro verdades simples",
+    "pillar1_title": "Deus é amor universal",
+    "pillar1_text": "As grandes religiões monoteístas baseiam-se no amor, na compaixão e na justiça. Jesus não condenou explicitamente a homossexualidade e pregou a inclusão.",
+    "pillar2_title": "Os textos são contextuais",
+    "pillar2_text": "Os trechos usados contra pessoas LGBT devem ser entendidos no seu contexto histórico: ritos, normas sociais antigas.",
+    "pillar3_title": "A interpretação é humana",
+    "pillar3_text": "As leituras religiosas foram influenciadas por normas culturais: patriarcado, heterocentrismo, poder.",
+    "pillar4_title": "Fé e diversidade são compatíveis",
+    "pillar4_text": "Existem hoje muitas comunidades religiosas inclusivas em todo o mundo.",
+    "join_title": "Junte-se ao movimento",
+    "join_text": "Baixe o cartaz, fotografe-o em frente a um local de culto e compartilhe com #GodLovesDiversity."
+  },
+  "footer": {
+    "tagline": "Deus é amor. A fé é plural.",
+    "rights": "Todos os direitos reservados",
+    "legal": "Legal",
+    "privacy": "Privacidade",
+    "contact": "Contato"
+  },
+  "participate": {
+    "title": "Compartilhe sua luz",
+    "subtitle": "Tire uma foto sua em frente a um local de culto com o cartaz, e junte-se ao movimento mundial.",
+    "drop_label": "Solte sua foto aqui ou clique para procurar",
+    "name_label": "Seu nome (opcional)",
+    "place_label": "Nome do local",
+    "place_type_label": "Tipo de local",
+    "city_label": "Cidade",
+    "country_label": "País",
+    "caption_label": "Depoimento curto (opcional)",
+    "submit": "Enviar minha foto",
+    "submitting": "Enviando…",
+    "success_title": "Obrigado!",
+    "success_text": "Sua foto foi enviada. Será publicada após uma breve revisão.",
+    "error": "Ocorreu um erro. Tente novamente."
+  },
+  "gallery": {
+    "title": "Galeria mundial",
+    "subtitle": "Cada foto é um testemunho. Cada testemunho é um passo.",
+    "filter_all": "Todos",
+    "filter_country": "País",
+    "filter_place": "Local",
+    "empty": "Ainda não há fotos para estes filtros."
+  },
+  "posters": {
+    "title": "Baixe os cartazes",
+    "subtitle": "Imprima. Cole. Fotografe. Compartilhe.",
+    "format": "Formato",
+    "download": "Baixar",
+    "tip_title": "Dicas",
+    "tip1": "Coloque o cartaz no espaço público ou segure-o em frente a um local de culto.",
+    "tip2": "Tire a foto e compartilhe com #GodLovesDiversity.",
+    "tip3": "Envie-a aqui diretamente para participar da galeria mundial."
+  },
+  "newsletter": {
+    "title": "Receba as notícias do movimento",
+    "subtitle": "Uma vez por mês: testemunhos, encontros, inspirações.",
+    "email_label": "Seu e-mail",
+    "subscribe": "Inscrever-se",
+    "success": "Verifique seu e-mail para confirmar a inscrição.",
+    "error": "Erro, tente novamente mais tarde."
+  },
+  "about": {
+    "title": "Sobre",
+    "intro": "God Loves Diversity é um movimento cidadão, inter-religioso e internacional para reconciliar fé e diversidade."
+  },
+  "message": { "title": "A mensagem" },
+  "argumentaire": { "title": "Argumentos" },
+  "common": { "loading": "Carregando…", "error": "Erro", "back": "Voltar" }
+}

@@ -1,0 +1,284 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────────────────────────────────────────
+// AUTH (NextAuth Prisma adapter)
+// ───────────────────────────────────────────────
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String?
+  image          String?
+  passwordHash   String?
+  role           Role      @default(VIEWER)
+  emailVerified  DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  accounts       Account[]
+  sessions       Session[]
+  photosUploaded Photo[]   @relation("uploader")
+  photosReviewed Photo[]   @relation("reviewer")
+  articles       Article[]
+  auditLogs      AuditLog[]
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  MODERATOR
+  VIEWER
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ───────────────────────────────────────────────
+// PHOTOS UGC (cœur du projet)
+// ───────────────────────────────────────────────
+model Photo {
+  id            String        @id @default(cuid())
+  storageKey    String        // chemin MinIO/S3
+  thumbnailKey  String?
+  caption       String?
+  authorName    String?       // nom affiché (peut être anonyme)
+  authorEmail   String?
+  locale        String        @default("fr")
+  status        PhotoStatus   @default(PENDING)
+  rejectionReason String?
+
+  // Géolocalisation
+  latitude      Float?
+  longitude     Float?
+  city          String?
+  country       String?
+  placeName     String?       // nom du lieu de culte
+  placeType     PlaceType?
+
+  // Modération
+  uploadedById  String?
+  uploadedBy    User?         @relation("uploader", fields: [uploadedById], references: [id])
+  reviewedById  String?
+  reviewedBy    User?         @relation("reviewer", fields: [reviewedById], references: [id])
+  reviewedAt    DateTime?
+  aiModerationScore Float?
+  aiModerationFlags Json?
+
+  // Engagement
+  likes         Int           @default(0)
+  source        Source        @default(WEB)
+  ipHash        String?
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([country])
+  @@index([placeType])
+}
+
+enum PhotoStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+}
+
+enum PlaceType {
+  CHURCH
+  MOSQUE
+  SYNAGOGUE
+  TEMPLE
+  PUBLIC_SPACE
+  OTHER
+}
+
+enum Source {
+  WEB
+  IOS
+  ANDROID
+  IMPORT
+}
+
+// ───────────────────────────────────────────────
+// CONTENU (CMS)
+// ───────────────────────────────────────────────
+model Page {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  locale    String   @default("fr")
+  title     String
+  content   Json
+  published Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([slug, locale])
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  slug        String
+  locale      String   @default("fr")
+  title       String
+  excerpt     String?
+  content     Json
+  coverImage  String?
+  coverVideo  String?
+  tags        String[]
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  authorId    String?
+  author      User?    @relation(fields: [authorId], references: [id])
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+
+  @@unique([slug, locale])
+  @@index([published, publishedAt])
+}
+
+model Poster {
+  id           String   @id @default(cuid())
+  title        String
+  description  String?
+  format       String   // ex: "A1", "A2", "A3", "Story", "Carré"
+  fileKey      String   // chemin du PDF dans MinIO
+  thumbnailKey String?  // image preview
+  size         String?  // ex: "594×841 mm"
+  order        Int      @default(0)
+  published    Boolean  @default(true)
+  downloads    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([published, order])
+}
+
+// ───────────────────────────────────────────────
+// NEWSLETTER
+// ───────────────────────────────────────────────
+model NewsletterSubscriber {
+  id           String              @id @default(cuid())
+  email        String              @unique
+  locale       String              @default("fr")
+  status       SubscriberStatus    @default(PENDING)
+  confirmToken String?             @unique
+  unsubToken   String              @unique @default(cuid())
+  source       String?
+  createdAt    DateTime            @default(now())
+  confirmedAt  DateTime?
+}
+
+enum SubscriberStatus {
+  PENDING
+  ACTIVE
+  UNSUBSCRIBED
+  BOUNCED
+}
+
+model NewsletterCampaign {
+  id          String   @id @default(cuid())
+  subject     String
+  htmlContent String   @db.Text
+  textContent String?  @db.Text
+  status      CampaignStatus @default(DRAFT)
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  recipients  Int      @default(0)
+  opens       Int      @default(0)
+  clicks      Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  FAILED
+}
+
+// ───────────────────────────────────────────────
+// CALENDRIER SOCIAL
+// ───────────────────────────────────────────────
+model ScheduledPost {
+  id           String         @id @default(cuid())
+  title        String?
+  content      String         @db.Text
+  mediaKeys    String[]
+  channels     String[]       // ['INSTAGRAM','X','LINKEDIN','TIKTOK','FACEBOOK']
+  scheduledAt  DateTime
+  status       PostStatus     @default(PENDING)
+  publishedAt  DateTime?
+  results      Json?          // logs par canal
+  createdById  String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([scheduledAt, status])
+}
+
+enum PostStatus {
+  PENDING
+  PUBLISHED
+  FAILED
+  CANCELLED
+}
+
+// ───────────────────────────────────────────────
+// PARAMÈTRES & AUDIT
+// ───────────────────────────────────────────────
+model Setting {
+  key   String  @id
+  value String  @db.Text
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String
+  target     String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+}

@@ -1,0 +1,89 @@
+{
+  "nav": {
+    "home": "Home",
+    "message": "The message",
+    "argumentaire": "Argument",
+    "participate": "Participate",
+    "gallery": "Gallery",
+    "posters": "Posters",
+    "about": "About",
+    "newsletter": "Newsletter",
+    "blog": "Blog"
+  },
+  "home": {
+    "tagline": "God loves diversity",
+    "subtitle": "No reading is final. Faith is conjugated in the plural.",
+    "cta_participate": "Participate",
+    "cta_understand": "Understand",
+    "cta_gallery": "See the photos",
+    "manifesto_title": "The message",
+    "manifesto_text": "God is not opposed to LGBT people. This rejection is the product of historical and human interpretations of sacred texts.",
+    "pillars_title": "Four simple truths",
+    "pillar1_title": "God is universal love",
+    "pillar1_text": "The great monotheistic religions are based on love, compassion and justice. No explicit condemnation of homosexuality was made by Jesus, who preached inclusion.",
+    "pillar2_title": "Texts are contextual",
+    "pillar2_text": "Passages used against LGBT people must be understood in their historical context: rituals, social norms, ancient codes.",
+    "pillar3_title": "Interpretation is human",
+    "pillar3_text": "Religious readings have been influenced by cultural norms: patriarchy, heterocentrism, power.",
+    "pillar4_title": "Faith and diversity are compatible",
+    "pillar4_text": "Many inclusive religious communities exist today across the world.",
+    "join_title": "Join the movement",
+    "join_text": "Download the poster, take a photo with it in front of a place of worship, and share with #GodLovesDiversity."
+  },
+  "footer": {
+    "tagline": "God is love. Faith is plural.",
+    "rights": "All rights reserved",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "contact": "Contact"
+  },
+  "participate": {
+    "title": "Share your light",
+    "subtitle": "Take a photo of yourself in front of a place of worship with the poster, and join the global movement.",
+    "drop_label": "Drop your photo here or click to browse",
+    "name_label": "Your first name (optional)",
+    "place_label": "Place name",
+    "place_type_label": "Place type",
+    "city_label": "City",
+    "country_label": "Country",
+    "caption_label": "Short statement (optional)",
+    "submit": "Send my photo",
+    "submitting": "Sending…",
+    "success_title": "Thank you!",
+    "success_text": "Your photo has been sent. It will be published after a quick review.",
+    "error": "An error occurred. Please try again."
+  },
+  "gallery": {
+    "title": "Global gallery",
+    "subtitle": "Every photo is a testimony. Every testimony is a step.",
+    "filter_all": "All",
+    "filter_country": "Country",
+    "filter_place": "Place",
+    "empty": "No photo for these filters yet."
+  },
+  "posters": {
+    "title": "Download the posters",
+    "subtitle": "Print. Stick. Photograph. Share.",
+    "format": "Format",
+    "download": "Download",
+    "tip_title": "Tips",
+    "tip1": "Place the poster in public space or hold it in front of a place of worship.",
+    "tip2": "Take a photo and share it with #GodLovesDiversity.",
+    "tip3": "Upload it here directly to join the global gallery."
+  },
+  "newsletter": {
+    "title": "Get the movement's news",
+    "subtitle": "Once a month: stories, meetings, inspirations.",
+    "email_label": "Your email",
+    "subscribe": "Subscribe",
+    "success": "Check your inbox to confirm your subscription.",
+    "error": "Error, please try again later."
+  },
+  "about": {
+    "title": "About",
+    "intro": "God Loves Diversity is a citizen, interfaith, international movement to reconcile faith and diversity."
+  },
+  "message": { "title": "The message" },
+  "argumentaire": { "title": "Argument" },
+  "common": { "loading": "Loading…", "error": "Error", "back": "Back" }
+}

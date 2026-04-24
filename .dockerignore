@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.env
+.env.local
+*.log
+.DS_Store
+README.md
+PLAN_PROJET_GodLovesDiversity.md
+*.docx
+*.pdf
+!public/posters/*.pdf
+*.png
+!public/**/*.png

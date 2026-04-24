@@ -1,0 +1,63 @@
+# Stack DEV : DB + Redis + MinIO + Mailpit uniquement
+# Le front Next.js tourne en local (npm run dev) pour un hot-reload rapide.
+# Lancer :  docker compose -f docker-compose.dev.yml up -d
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: gld-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: godlovesdiversity
+      POSTGRES_USER: gld
+      POSTGRES_PASSWORD: gld
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: gld-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  minio:
+    image: minio/minio:latest
+    container_name: gld-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: gldminio
+      MINIO_ROOT_PASSWORD: gldminio-secret
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on: [minio]
+    entrypoint: >
+      /bin/sh -c "
+      sleep 5 &&
+      mc alias set local http://minio:9000 gldminio gldminio-secret &&
+      mc mb -p local/godlovesdiversity || true &&
+      mc anonymous set download local/godlovesdiversity || true
+      "
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: gld-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  pgdata:
+  redisdata:
+  miniodata:
