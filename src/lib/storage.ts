@@ -12,9 +12,17 @@ export const minioClient = new Minio.Client({
 
 export const BUCKET = process.env.S3_BUCKET || 'godlovesdiversity';
 
+/**
+ * URL d'une ressource pour le navigateur.
+ * On utilise systématiquement le proxy `/api/storage/...` qui marche
+ * partout (local + prod Coolify) sans exposer MinIO publiquement.
+ * Si tu configures un CDN (Cloudflare R2, etc.), set S3_PUBLIC_ENDPOINT pour bypass.
+ */
 export function publicUrl(key: string) {
-  const base = process.env.S3_PUBLIC_ENDPOINT || 'http://localhost:9000';
-  return `${base}/${BUCKET}/${key}`;
+  if (process.env.S3_PUBLIC_ENDPOINT && process.env.S3_PUBLIC_ENDPOINT !== process.env.S3_ENDPOINT) {
+    return `${process.env.S3_PUBLIC_ENDPOINT}/${BUCKET}/${key}`;
+  }
+  return `/api/storage/${key}`;
 }
 
 export async function ensureBucket() {
