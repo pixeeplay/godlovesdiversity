@@ -18,4 +18,8 @@ coverage
 /God\ Loves\ Diversity.docx
 /cbc1c5c0-*.png
 /PLAN_PROJET_GodLovesDiversity.md
-.DS_Store
+
+# docker-compose.override.yml = ports host pour dev local uniquement
+# (Coolify ne doit pas le voir, sinon ça réintroduit le conflit de ports)
+docker-compose.override.yml
+COOLIFY_DEPLOY.md
