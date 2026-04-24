@@ -1,0 +1,86 @@
+{
+  "expo": {
+    "name": "God Loves Diversity",
+    "slug": "godlovesdiversity",
+    "scheme": "gld",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0314"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pixeeplay.godlovesdiversity",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "L'application a besoin de l'appareil photo pour vous permettre de partager une photo devant un lieu de culte.",
+        "NSMicrophoneUsageDescription": "Le micro est utilisé pour enregistrer vos témoignages vidéo.",
+        "NSLocationWhenInUseUsageDescription": "La position permet de placer votre photo sur la carte mondiale du mouvement (précision réduite à ~1 km).",
+        "NSPhotoLibraryUsageDescription": "Accès à la photothèque pour partager une photo existante.",
+        "NSPhotoLibraryAddUsageDescription": "Sauvegarde des photos prises depuis l'application.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.pixeeplay.godlovesdiversity",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#0a0314"
+      },
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "L'application a besoin de la caméra pour prendre des photos devant les lieux de culte.",
+          "microphonePermission": "Le micro est utilisé pour les témoignages vidéo.",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permettre à $(PRODUCT_NAME) de localiser vos contributions sur la carte mondiale."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Accès à la photothèque pour partager une image."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Accès à la photothèque.",
+          "savePhotosPermission": "Sauvegarde des photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ],
+    "extra": {
+      "apiBase": "https://gld.pixeeplay.com",
+      "eas": {
+        "projectId": "your-eas-project-id-here"
+      }
+    },
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

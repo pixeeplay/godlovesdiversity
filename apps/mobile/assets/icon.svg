@@ -1,0 +1,8 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'>
+  <rect width='1024' height='1024' fill='#0a0314'/>
+  <g transform='translate(512 512) scale(8)'>
+    <path d='M0,80 C-60,30 -90,-10 -60,-50 C-40,-75 -10,-65 0,-40 C10,-65 40,-75 60,-50 C90,-10 60,30 0,80 Z' fill='none' stroke='#FF2BB1' stroke-width='3'/>
+    <path transform='scale(.85)' d='M0,80 C-60,30 -90,-10 -60,-50 C-40,-75 -10,-65 0,-40 C10,-65 40,-75 60,-50 C90,-10 60,30 0,80 Z' fill='none' stroke='#8B5CF6' stroke-width='3'/>
+    <path transform='scale(.7)' d='M0,80 C-60,30 -90,-10 -60,-50 C-40,-75 -10,-65 0,-40 C10,-65 40,-75 60,-50 C90,-10 60,30 0,80 Z' fill='none' stroke='#22D3EE' stroke-width='3'/>
+  </g>
+</svg>
