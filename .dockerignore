@@ -12,3 +12,6 @@ PLAN_PROJET_GodLovesDiversity.md
 !public/posters/*.pdf
 *.png
 !public/**/*.png
+
+# Mobile apps (Expo + iOS native) — pas dans le build web
+apps/
