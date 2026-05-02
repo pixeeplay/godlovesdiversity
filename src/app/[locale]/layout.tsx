@@ -7,7 +7,6 @@ import { Footer } from '@/components/Footer';
 import { AskGldWidget } from '@/components/AskGldWidget';
 import { AskGldAvatar } from '@/components/AskGldAvatar';
 import { TickerDonate } from '@/components/TickerDonate';
-import { getSettings } from '@/lib/settings';
 import { AmbientPlayer } from '@/components/AmbientPlayer';
 import { PageTracker } from '@/components/PageTracker';
 import { ThemeProvider, themeInitScript } from '@/components/ThemeProvider';
@@ -27,8 +26,6 @@ export default async function LocaleLayout({
   if (!routing.locales.includes(locale as any)) notFound();
   setRequestLocale(locale);
   const messages = await getMessages();
-  const cfg = await getSettings(['avatar.enabled']).catch(() => ({} as Record<string, string>));
-  const avatarEnabled = cfg['avatar.enabled'] === '1';
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -46,7 +43,7 @@ export default async function LocaleLayout({
             <main className="flex-1">{children}</main>
             <Footer />
             <AskGldWidget />
-            {avatarEnabled && <AskGldAvatar />}
+            <AskGldAvatar />
             <AmbientPlayer />
             <PageTracker />
           </NextIntlClientProvider>

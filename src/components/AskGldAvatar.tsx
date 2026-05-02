@@ -12,6 +12,7 @@ type State = 'idle' | 'asking' | 'rendering' | 'ready' | 'error';
  * S'affiche à côté du widget chat texte si avatar.enabled = '1'.
  */
 export function AskGldAvatar() {
+  const [enabled, setEnabled] = useState(false);
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState('');
   const [state, setState] = useState<State>('idle');
@@ -22,7 +23,17 @@ export function AskGldAvatar() {
   const [error, setError] = useState<string>('');
   const pollRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Vérifie côté client si la fonctionnalité est activée
+  useEffect(() => {
+    fetch('/api/avatar/enabled')
+      .then((r) => r.json())
+      .then((j) => setEnabled(!!j.enabled))
+      .catch(() => setEnabled(false));
+  }, []);
+
   useEffect(() => () => { if (pollRef.current) clearTimeout(pollRef.current); }, []);
+
+  if (!enabled) return null;
 
   async function ask() {
     const q = question.trim();

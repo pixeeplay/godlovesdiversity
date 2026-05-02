@@ -17,8 +17,9 @@ export async function POST(req: NextRequest) {
     const file = fd.get('file') as File | null;
     if (!file) return NextResponse.json({ error: 'fichier manquant' }, { status: 400 });
     const buf = Buffer.from(await file.arrayBuffer());
-    // import dynamique car pdf-parse est node-only
-    const pdfParse = (await import('pdf-parse')).default as any;
+    // import dynamique direct du lib interne pour éviter le bug du test file en prod
+    // (cf. https://gitlab.com/autokent/pdf-parse/-/issues/24)
+    const pdfParse = (await import('pdf-parse/lib/pdf-parse.js' as any)).default as any;
     const result = await pdfParse(buf);
     return NextResponse.json({
       text: (result?.text || '').trim().slice(0, 200000),
