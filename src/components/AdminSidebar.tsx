@@ -152,7 +152,7 @@ export function AdminSidebar({
   };
 
   return (
-    <aside className="w-64 shrink-0 bg-zinc-900 border-r border-zinc-800 flex flex-col">
+    <aside className="w-72 sm:w-64 h-screen lg:h-auto shrink-0 bg-zinc-900 border-r border-zinc-800 flex flex-col">
       <div className="p-5 border-b border-zinc-800 flex items-center gap-2">
         <Heart className="text-brand-pink" />
         <span className="font-display font-bold">GLD Admin</span>
