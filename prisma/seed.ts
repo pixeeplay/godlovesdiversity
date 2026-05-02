@@ -183,6 +183,36 @@ async function main() {
     await prisma.setting.upsert({ where: { key: s.key }, update: {}, create: s });
   }
   console.log('✅ Réglages par défaut');
+
+  // Partenaires de base — visibles dès le 1er déploiement
+  const partners = [
+    {
+      name: 'Arc-en-Ciel',
+      url: 'https://www.arc-en-ciel.com',
+      description: 'Association inclusive pour les chrétiens LGBT+.',
+      category: 'Association',
+      order: 1
+    },
+    {
+      name: 'Beit Haverim',
+      url: 'https://www.beit-haverim.com',
+      description: 'Communauté juive LGBT+ de France.',
+      category: 'Association',
+      order: 2
+    },
+    {
+      name: '1946 — The Movie',
+      url: 'https://www.1946themovie.com',
+      description: 'Documentaire sur l\'origine de la traduction biblique du mot "homosexuel".',
+      category: 'Film',
+      order: 3
+    }
+  ];
+  for (const p of partners) {
+    const exists = await prisma.partner.findFirst({ where: { url: p.url } });
+    if (!exists) await prisma.partner.create({ data: p });
+  }
+  console.log('✅ Partenaires par défaut');
 }
 
 main()

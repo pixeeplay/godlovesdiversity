@@ -7,6 +7,7 @@ import { NeonHeart } from '@/components/NeonHeart';
 import { PhotoCarousel } from '@/components/PhotoCarousel';
 import { NewsCarousel } from '@/components/NewsCarousel';
 import { YoutubeCarousel } from '@/components/YoutubeCarousel';
+import { PartnersBand } from '@/components/PartnersBand';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
 
@@ -170,6 +171,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       {/* ═══ CARROUSEL ACTUS ═══ */}
       {articleItems.length > 0 && <NewsCarousel articles={articleItems} />}
+
+      {/* ═══ PARTENAIRES ═══ */}
+      <PartnersBand />
     </>
   );
 }

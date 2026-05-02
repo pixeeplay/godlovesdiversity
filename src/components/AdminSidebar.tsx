@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import {
   LayoutDashboard, ShieldCheck, FileText, Mail, Calendar,
-  Sparkles, Users, Settings, LogOut, Heart, UploadCloud, MapPin, Home, Image as ImageIcon, Video, Layers, GalleryHorizontalEnd, Menu as MenuIcon, Youtube, HandHeart
+  Sparkles, Users, Settings, LogOut, Heart, UploadCloud, MapPin, Home, Image as ImageIcon, Video, Layers, GalleryHorizontalEnd, Menu as MenuIcon, Youtube, HandHeart, Handshake, ShoppingBag
 } from 'lucide-react';
 
 const NAV = [
@@ -19,6 +19,8 @@ const NAV = [
   { href: '/admin/news', label: 'Actualités', icon: Video },
   { href: '/admin/videos', label: 'Vidéos YouTube', icon: Youtube },
   { href: '/admin/donate', label: 'Dons & ticker', icon: HandHeart },
+  { href: '/admin/partners', label: 'Partenaires', icon: Handshake },
+  { href: '/admin/shop', label: 'Boutique', icon: ShoppingBag },
   { href: '/admin/pages', label: 'Pages riches', icon: Layers },
   { href: '/admin/content', label: 'Pages & blog', icon: FileText },
   { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
