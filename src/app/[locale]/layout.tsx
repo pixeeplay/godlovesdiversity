@@ -32,10 +32,11 @@ export default async function LocaleLayout({
       <body className="min-h-screen flex flex-col">
         <ThemeProvider>
           <NextIntlClientProvider messages={messages} locale={locale}>
-            <div className="sticky top-0 z-50 shadow-lg shadow-black/20">
+            {/* Bandeau sticky : ticker DON + navbar empilés, jamais de chevauchement */}
+            <div className="sticky top-0 z-50 shadow-xl shadow-black/40">
               <TickerDonate />
+              <Navbar />
             </div>
-            <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />
             <AskGldWidget />

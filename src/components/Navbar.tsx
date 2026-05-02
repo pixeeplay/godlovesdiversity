@@ -47,7 +47,7 @@ export function Navbar() {
   const items = menu.length > 0 ? menu : fallback;
 
   return (
-    <header className={`sticky top-0 z-40 transition-all duration-300 ${scrolled ? 'backdrop-blur-xl bg-[color:var(--bg)]/70 border-b border-[color:var(--border)] py-2' : 'py-4'}`}>
+    <header className={`transition-all duration-300 backdrop-blur-xl bg-[color:var(--bg)]/95 border-b border-[color:var(--border)] ${scrolled ? 'py-2' : 'py-3'}`}>
       <div className="container-wide flex items-center justify-between">
         <a href="/" className="flex flex-row items-center gap-3 shrink-0">
           {/* Cœur battant rainbow — toujours visible, taille fixe */}
@@ -85,7 +85,7 @@ export function Navbar() {
                   {hasChildren && <ChevronDown size={12} />}
                 </a>
                 {hasChildren && openSub === m.id && (
-                  <div className="absolute top-full left-0 mt-2 min-w-[200px] py-2 bg-[color:var(--bg)] border border-[color:var(--border)] rounded-lg shadow-2xl z-50">
+                  <div className="absolute top-full left-0 mt-2 min-w-[200px] py-2 bg-[color:var(--bg)] border border-[color:var(--border)] rounded-lg shadow-2xl z-[60]">
                     {m.children.map((c) => (
                       <a key={c.id} href={c.external ? c.href : `${localePrefix}${c.href}`}
                          target={c.external ? '_blank' : undefined}
