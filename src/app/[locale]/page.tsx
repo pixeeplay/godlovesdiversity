@@ -9,6 +9,7 @@ import { NewsCarousel } from '@/components/NewsCarousel';
 import { YoutubeCarousel } from '@/components/YoutubeCarousel';
 import { PartnersBand } from '@/components/PartnersBand';
 import { ProductsCarousel } from '@/components/ProductsCarousel';
+import { PosterThumbnail } from '@/components/PosterThumbnail';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
 
@@ -182,8 +183,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   );
 }
 
-/* ─── Section affiches ─── */
-function PostersShowcase({ title, text }: { title: string; text: string }) {
+/* ─── Section affiches — utilise les VRAIES affiches en DB (image preview ou page 1 du PDF) ─── */
+async function PostersShowcase({ title, text }: { title: string; text: string }) {
+  // Charge les 3 premières affiches publiées
+  let posters: any[] = [];
+  try {
+    posters = await prisma.poster.findMany({
+      where: { published: true },
+      orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
+      take: 3
+    });
+  } catch { posters = []; }
+
   return (
     <section className="py-20" style={{ background: '#0a0314' }}>
       <div className="container-wide grid lg:grid-cols-2 gap-12 items-center">
@@ -198,42 +209,42 @@ function PostersShowcase({ title, text }: { title: string; text: string }) {
             <Download size={14} /> Télécharger
           </Link>
         </div>
-        {/* Mockups */}
-        <div className="flex items-end justify-center gap-4">
-          <PosterMockup label="A3" w={140} h={196} />
-          <PosterMockup label="A4" w={110} h={155} />
-          <PosterMockup label="STORIES" w={70} h={140} />
+        {/* Vraies miniatures depuis la DB */}
+        <div className="flex items-end justify-center gap-4 flex-wrap">
+          {posters.length === 0 ? (
+            <p className="text-white/40 text-sm italic">Affiches en préparation…</p>
+          ) : posters.map((p, i) => {
+            // Tailles décroissantes pour effet "vitrine"
+            const sizes = [{ w: 160, h: 226 }, { w: 130, h: 184 }, { w: 100, h: 178 }];
+            const sz = sizes[i] || sizes[0];
+            const hasImage = !!p.thumbnailKey;
+            const isImageFile = /\.(png|jpe?g|webp|gif)$/i.test(p.fileKey || '');
+            // Si on a un thumbnailKey → image. Sinon si fileKey est une image → l'utiliser comme thumbnail.
+            const imageUrl = hasImage ? publicUrl(p.thumbnailKey) : (isImageFile ? publicUrl(p.fileKey) : null);
+            return (
+              <Link key={p.id} href="/affiches" className="flex flex-col items-center gap-2 group">
+                <div
+                  className="rounded-lg overflow-hidden bg-black border border-white/10 shadow-[0_0_30px_rgba(255,43,177,.25)] relative group-hover:scale-105 transition"
+                  style={{ width: sz.w, height: sz.h }}
+                >
+                  {imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={imageUrl} alt={p.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <PosterThumbnail pdfUrl={publicUrl(p.fileKey)} format={p.format} alt={p.title} />
+                  )}
+                  <div className="absolute top-2 left-2 bg-brand-pink text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                    {p.format}
+                  </div>
+                </div>
+                <span className="text-xs text-white/60 font-mono">{p.format}</span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
 
-function PosterMockup({ label, w, h }: { label: string; w: number; h: number }) {
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <div
-        className="rounded-lg flex flex-col items-center justify-center bg-black border border-white/10 shadow-[0_0_30px_rgba(255,43,177,.2)] relative overflow-hidden"
-        style={{ width: w, height: h }}
-      >
-        <div className="text-brand-pink font-display font-black tracking-wider" style={{ fontSize: w * 0.18 }}>
-          GOD
-        </div>
-        <div style={{ width: w * 0.5, height: w * 0.5 }} className="my-2">
-          <NeonHeart size={w * 0.5} />
-        </div>
-        <div className="text-brand-pink font-display font-black tracking-wider" style={{ fontSize: w * 0.13 }}>
-          DIVERSITY
-        </div>
-        {/* QR code stylisé */}
-        <div className="absolute bottom-2 right-2 w-6 h-6 bg-white rounded-sm grid grid-cols-3 gap-px p-0.5">
-          {Array.from({ length: 9 }).map((_, i) => (
-            <div key={i} className={`${[0, 2, 4, 6, 8].includes(i) ? 'bg-black' : ''} rounded-[1px]`} />
-          ))}
-        </div>
-      </div>
-      <span className="text-xs text-white/50 font-mono">{label}</span>
-    </div>
-  );
-}
 

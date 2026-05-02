@@ -7,6 +7,7 @@ type Video = {
   videoId: string;
   title: string;
   description: string | null;
+  thumbnailUrl?: string | null;
 };
 
 export function YoutubeCarousel({ videos }: { videos: Video[] }) {
@@ -61,16 +62,20 @@ export function YoutubeCarousel({ videos }: { videos: Video[] }) {
             <button onClick={() => setPlaying(true)} className="relative w-full h-full group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`https://i.ytimg.com/vi/${cur.videoId}/maxresdefault.jpg`}
+                src={cur.thumbnailUrl || `https://i.ytimg.com/vi/${cur.videoId}/maxresdefault.jpg`}
                 alt={cur.title}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  // Si maxresdefault n'existe pas (vidéo trop ancienne ou pas en HD), fallback sur hqdefault qui existe toujours
+                  // Si custom thumbnail cassée OU maxresdefault absent → fallback en cascade
                   const img = e.currentTarget;
-                  if (img.src.includes('maxresdefault')) {
+                  if (cur.thumbnailUrl && img.src === cur.thumbnailUrl) {
+                    img.src = `https://i.ytimg.com/vi/${cur.videoId}/maxresdefault.jpg`;
+                  } else if (img.src.includes('maxresdefault')) {
                     img.src = `https://i.ytimg.com/vi/${cur.videoId}/hqdefault.jpg`;
                   } else if (img.src.includes('hqdefault')) {
                     img.src = `https://i.ytimg.com/vi/${cur.videoId}/mqdefault.jpg`;
+                  } else if (img.src.includes('mqdefault')) {
+                    img.src = `https://i.ytimg.com/vi/${cur.videoId}/sddefault.jpg`;
                   }
                 }}
               />
@@ -99,7 +104,9 @@ export function YoutubeCarousel({ videos }: { videos: Video[] }) {
             >
               <div className="relative shrink-0 w-24 aspect-video rounded overflow-hidden bg-black">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg`} alt="" className="w-full h-full object-cover" />
+                <img src={v.thumbnailUrl || `https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg`} alt="" className="w-full h-full object-cover"
+                     onError={(e) => { const img = e.currentTarget; if (v.thumbnailUrl && img.src === v.thumbnailUrl) img.src = `https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg`; }}
+                />
                 {i === index && (
                   <div className="absolute inset-0 bg-brand-pink/20 flex items-center justify-center">
                     <Play size={14} fill="white" className="text-white" />

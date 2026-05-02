@@ -323,6 +323,99 @@ Cadre non inclus. Livraison roulée dans un tube en carton recyclé.
     }
   }
   console.log('✅ 5 produits boutique seedés');
+
+  // ───── 3 commandes de démo (uniquement si aucune commande n'existe encore) ─────
+  const ordersCount = await prisma.order.count().catch(() => -1);
+  if (ordersCount === 0) {
+    const seededProducts = await prisma.product.findMany({ where: { slug: { in: ['t-shirt-arc-en-ciel', 'bougie-vitrail', 'mug-foi-inclusive', 'tote-bag-gld', 'affiche-cathedrale-lumiere'] } } });
+    if (seededProducts.length >= 3) {
+      const find = (slug: string) => seededProducts.find((p) => p.slug === slug)!;
+
+      // Commande 1 : PAID, prête à expédier (la démo principale)
+      await prisma.order.create({
+        data: {
+          email: 'sophie.martin@example.com',
+          name: 'Sophie Martin',
+          phone: '+33612345678',
+          shippingAddress: '12 rue de la République',
+          shippingCity: 'Lyon',
+          shippingZip: '69001',
+          shippingCountry: 'FR',
+          totalCents: find('t-shirt-arc-en-ciel').priceCents + find('mug-foi-inclusive').priceCents,
+          currency: 'EUR',
+          status: 'PAID',
+          paymentProvider: 'STRIPE',
+          paymentId: 'cs_demo_001',
+          weightGrams: 620,
+          notes: 'Commande de démonstration #1 — Cliquer pour ouvrir l\'éditeur Colissimo et générer l\'étiquette.',
+          items: {
+            create: [
+              { productId: find('t-shirt-arc-en-ciel').id, quantity: 1, priceCents: find('t-shirt-arc-en-ciel').priceCents, variant: { Taille: 'M', Couleur: 'Rose pastel' } },
+              { productId: find('mug-foi-inclusive').id, quantity: 1, priceCents: find('mug-foi-inclusive').priceCents, variant: { Couleur: 'Blanc' } }
+            ]
+          }
+        }
+      });
+
+      // Commande 2 : SHIPPED (avec tracking pour montrer le suivi client)
+      await prisma.order.create({
+        data: {
+          email: 'paul.durand@example.com',
+          name: 'Paul Durand',
+          phone: '+33687654321',
+          shippingAddress: '47 boulevard Saint-Germain',
+          shippingCity: 'Paris',
+          shippingZip: '75005',
+          shippingCountry: 'FR',
+          totalCents: find('bougie-vitrail').priceCents * 2 + find('affiche-cathedrale-lumiere').priceCents,
+          currency: 'EUR',
+          status: 'SHIPPED',
+          paymentProvider: 'SQUARE',
+          paymentId: 'sq_demo_002',
+          weightGrams: 850,
+          carrier: 'colissimo',
+          shippingCost: 870,
+          trackingNumber: '6A12345678901',
+          trackingUrl: 'https://www.laposte.fr/outils/suivre-vos-envois?code=6A12345678901',
+          shippedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+          notes: 'Commande de démonstration #2 — Déjà expédiée. Le client a reçu email + SMS.',
+          items: {
+            create: [
+              { productId: find('bougie-vitrail').id, quantity: 2, priceCents: find('bougie-vitrail').priceCents, variant: { Couleur: 'Rouge rubis' } },
+              { productId: find('affiche-cathedrale-lumiere').id, quantity: 1, priceCents: find('affiche-cathedrale-lumiere').priceCents, variant: { Format: 'A2 (42×59cm)' } }
+            ]
+          }
+        }
+      });
+
+      // Commande 3 : PENDING (en attente de paiement, pour la démo)
+      await prisma.order.create({
+        data: {
+          email: 'amina.berkani@example.com',
+          name: 'Amina Berkani',
+          phone: '+33756789012',
+          shippingAddress: '8 rue Victor Hugo, Bât B, Apt 4',
+          shippingCity: 'Marseille',
+          shippingZip: '13002',
+          shippingCountry: 'FR',
+          totalCents: find('tote-bag-gld').priceCents + find('mug-foi-inclusive').priceCents * 2,
+          currency: 'EUR',
+          status: 'PENDING',
+          paymentProvider: 'STRIPE',
+          weightGrams: 980,
+          notes: 'Commande de démonstration #3 — En attente de confirmation paiement.',
+          items: {
+            create: [
+              { productId: find('tote-bag-gld').id, quantity: 1, priceCents: find('tote-bag-gld').priceCents, variant: { Couleur: 'Naturel' } },
+              { productId: find('mug-foi-inclusive').id, quantity: 2, priceCents: find('mug-foi-inclusive').priceCents, variant: { Couleur: 'Noir mat' } }
+            ]
+          }
+        }
+      });
+
+      console.log('✅ 3 commandes de démo seedées (PAID / SHIPPED / PENDING)');
+    }
+  }
 }
 
 main()

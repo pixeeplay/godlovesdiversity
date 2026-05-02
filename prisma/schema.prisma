@@ -176,14 +176,15 @@ model Article {
 
 /// Vidéo YouTube embed pour le carousel vidéos de la home.
 model YoutubeVideo {
-  id          String   @id @default(cuid())
-  videoId     String   // ex: "dQw4w9WgXcQ" (portion après v=)
-  title       String
-  description String?
-  order       Int      @default(0)
-  published   Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  videoId      String   // ex: "dQw4w9WgXcQ" (portion après v=)
+  title        String
+  description  String?
+  thumbnailUrl String?  // URL d'une vignette personnalisée (sinon fallback img.youtube.com)
+  order        Int      @default(0)
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@index([published, order])
 }

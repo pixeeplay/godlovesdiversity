@@ -4,6 +4,7 @@ import { Plus, Pencil, Trash2, Save, X, Loader2, ArrowUp, ArrowDown, Eye, EyeOff
 
 type Video = {
   id: string; videoId: string; title: string; description: string | null;
+  thumbnailUrl?: string | null;
   order: number; published: boolean; createdAt: string; updatedAt: string;
 };
 
