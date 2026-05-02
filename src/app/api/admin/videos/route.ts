@@ -30,6 +30,7 @@ export async function POST(req: Request) {
       videoId,
       title: body.title || 'Vidéo sans titre',
       description: body.description || null,
+      thumbnailUrl: body.thumbnailUrl || null,
       order: body.order ?? ((last?.order || 0) + 1),
       published: body.published !== false
     }

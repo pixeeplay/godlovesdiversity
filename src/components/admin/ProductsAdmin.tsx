@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import { Plus, Trash2, Save, Eye, EyeOff, ExternalLink, Sparkles, Loader2 } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Plus, Trash2, Save, Eye, EyeOff, ExternalLink, Sparkles, Loader2, UploadCloud, X } from 'lucide-react';
 
 type Product = {
   id: string;
@@ -22,6 +22,31 @@ export function ProductsAdmin({ initialItems }: { initialItems: Product[] }) {
   const [draft, setDraft] = useState({ title: '', priceEuros: 25, category: 'Vêtement', stock: '', imagesText: '' });
   const [saving, setSaving] = useState<string | null>(null);
   const [generating, setGenerating] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<string | null>(null);
+  const fileInputs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  async function uploadImage(p: Product, file: File) {
+    setUploading(p.id);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const r = await fetch(`/api/admin/products/${p.id}/upload-image`, { method: 'POST', body: fd });
+      const j = await r.json();
+      if (j.error) alert(j.error);
+      else if (j.images) setItems(items.map((x) => (x.id === p.id ? { ...x, images: j.images } : x)));
+    } catch (e: any) { alert(e.message); }
+    setUploading(null);
+  }
+
+  async function removeImage(p: Product, idx: number) {
+    if (!confirm('Supprimer cette image ?')) return;
+    const r = await fetch(`/api/admin/products/${p.id}/upload-image`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ removeIndex: idx })
+    });
+    const j = await r.json();
+    if (j.images) setItems(items.map((x) => (x.id === p.id ? { ...x, images: j.images } : x)));
+  }
 
   async function generateImage(p: Product, customPrompt?: string) {
     setGenerating(p.id);
@@ -164,10 +189,37 @@ export function ProductsAdmin({ initialItems }: { initialItems: Product[] }) {
                      value={p.order} onChange={(e) => setField(p.id, 'order', Number(e.target.value))} />
             </div>
 
-            <textarea className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" rows={2}
-                      value={(p.images || []).join('\n')}
-                      onChange={(e) => setField(p.id, 'images', e.target.value.split('\n').map((s) => s.trim()).filter(Boolean))}
-                      placeholder="URLs images (1 par ligne)" />
+            {/* Galerie d'images interactive */}
+            <div>
+              <label className="block text-xs text-zinc-400 mb-2">Images du produit ({p.images?.length || 0})</label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2">
+                {(p.images || []).map((img, idx) => (
+                  <div key={idx} className="relative group aspect-square rounded-lg overflow-hidden border border-zinc-700 bg-zinc-950">
+                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    {idx === 0 && <span className="absolute top-1 left-1 bg-brand-pink text-white text-[9px] font-bold px-1.5 py-0.5 rounded">Cover</span>}
+                    <button onClick={() => removeImage(p, idx)}
+                            className="absolute top-1 right-1 w-6 h-6 bg-red-600 hover:bg-red-700 text-white rounded-full opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                      <X size={12} />
+                    </button>
+                  </div>
+                ))}
+                {/* Bouton + Upload */}
+                <button
+                  type="button"
+                  onClick={() => fileInputs.current[p.id]?.click()}
+                  disabled={uploading === p.id}
+                  className="aspect-square rounded-lg border-2 border-dashed border-zinc-700 hover:border-brand-pink hover:bg-brand-pink/5 flex flex-col items-center justify-center text-zinc-400 hover:text-brand-pink transition disabled:opacity-50">
+                  {uploading === p.id ? <Loader2 size={20} className="animate-spin" /> : <UploadCloud size={20} />}
+                  <span className="text-[10px] mt-1">{uploading === p.id ? 'Upload…' : 'Ajouter'}</span>
+                </button>
+                <input
+                  ref={(el) => { fileInputs.current[p.id] = el; }}
+                  type="file" accept="image/*" className="hidden"
+                  onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImage(p, f); e.target.value = ''; }}
+                />
+              </div>
+              <p className="text-[10px] text-zinc-500 mt-2">La 1ʳᵉ image = couverture (vignette boutique). Survole une image pour la supprimer.</p>
+            </div>
 
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs text-zinc-500">slug : <code className="text-zinc-300">{p.slug}</code></span>

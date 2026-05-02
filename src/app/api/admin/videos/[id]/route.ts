@@ -9,7 +9,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const { id } = await params;
   const body = await req.json();
   const data: any = {};
-  for (const k of ['videoId','title','description','order','published']) {
+  for (const k of ['videoId','title','description','thumbnailUrl','order','published']) {
     if (body[k] !== undefined) data[k] = body[k];
   }
   const video = await prisma.youtubeVideo.update({ where: { id }, data });
