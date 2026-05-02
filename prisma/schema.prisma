@@ -372,20 +372,40 @@ model Product {
   slug        String   @unique
   title       String
   description String?  @db.Text
-  priceCents  Int      // prix en centimes (ex: 2500 = 25.00 €)
+  priceCents  Int      // prix de base en centimes (ex: 2500 = 25.00 €) — override possible par variant
   currency    String   @default("EUR")
-  images      String[] // URLs / object keys
-  stock       Int?     // null = stock illimité
-  category    String?  // ex: "Vêtement", "Affiche", "Accessoire", "Livre"
-  variants    Json?    // ex: { "size": ["S","M","L","XL"], "color": ["Rose","Noir"] }
+  images      String[] // URLs (cover + galerie produit principal)
+  stock       Int?     // null = stock illimité — si productVariants[], la somme des stocks de variants prime
+  category    String?
+  variants    Json?    // legacy : options simples { Taille:[…], Couleur:[…] }
   order       Int      @default(0)
   published   Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  orderItems  OrderItem[]
+  orderItems       OrderItem[]
+  productVariants  ProductVariant[]
 
   @@index([published, order])
+}
+
+/// Variants détaillés : prix, stock et images par combinaison (Taille M Rose, Taille L Noir, etc.)
+model ProductVariant {
+  id            String   @id @default(cuid())
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name          String   // ex: "T-shirt M Rose pastel"
+  sku           String?  // référence interne (optionnel)
+  options       Json     // ex: { "Taille": "M", "Couleur": "Rose pastel" }
+  priceCents    Int?     // null = utilise le prix de base du produit
+  stock         Int?     // null = stock illimité
+  images        String[] // images spécifiques à ce variant (sinon fallback images produit)
+  order         Int      @default(0)
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([productId, order])
 }
 
 enum OrderStatus {

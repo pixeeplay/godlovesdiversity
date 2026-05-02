@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef } from 'react';
 import { Plus, Trash2, Save, Eye, EyeOff, ExternalLink, Sparkles, Loader2, UploadCloud, X } from 'lucide-react';
+import { VariantsManager } from './VariantsManager';
 
 type Product = {
   id: string;
@@ -220,6 +221,13 @@ export function ProductsAdmin({ initialItems }: { initialItems: Product[] }) {
               </div>
               <p className="text-[10px] text-zinc-500 mt-2">La 1ʳᵉ image = couverture (vignette boutique). Survole une image pour la supprimer.</p>
             </div>
+
+            {/* ─── VARIANTS (prix/stock/images par déclinaison) ─── */}
+            <VariantsManager
+              productId={p.id}
+              productPriceCents={p.priceCents}
+              optionLabels={p.variants && typeof p.variants === 'object' && !Array.isArray(p.variants) ? Object.keys(p.variants as any) : ['Taille', 'Couleur']}
+            />
 
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs text-zinc-500">slug : <code className="text-zinc-300">{p.slug}</code></span>

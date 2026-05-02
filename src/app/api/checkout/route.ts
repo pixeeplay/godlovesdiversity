@@ -19,9 +19,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Panier vide' }, { status: 400 });
   }
 
-  // Récupérer les produits + calculer le total côté serveur (sécurité : on ne fait pas confiance au client)
+  // Récupérer les produits + variants + calculer le total côté serveur (sécurité)
   const productIds: string[] = items.map((it: any) => String(it.productId)).filter(Boolean);
-  const products = await prisma.product.findMany({ where: { id: { in: productIds }, published: true } });
+  const products = await prisma.product.findMany({
+    where: { id: { in: productIds }, published: true },
+    include: { productVariants: true }
+  });
   const productMap = new Map(products.map((p) => [p.id, p]));
 
   let total = 0;
@@ -30,8 +33,18 @@ export async function POST(req: NextRequest) {
     const p = productMap.get(it.productId);
     if (!p) continue;
     const qty = Math.max(1, Math.min(99, Number(it.quantity) || 1));
-    total += p.priceCents * qty;
-    orderItemsData.push({ productId: p.id, quantity: qty, priceCents: p.priceCents, variant: it.variant || null });
+
+    // Si un variant est précisé et qu'on trouve un ProductVariant correspondant, on prend SON prix
+    let unitPrice = p.priceCents;
+    if (it.variant && typeof it.variant === 'object' && p.productVariants?.length > 0) {
+      const matched = p.productVariants.find((pv) =>
+        pv.published && pv.options && JSON.stringify(pv.options) === JSON.stringify(it.variant)
+      );
+      if (matched && matched.priceCents !== null) unitPrice = matched.priceCents;
+    }
+
+    total += unitPrice * qty;
+    orderItemsData.push({ productId: p.id, quantity: qty, priceCents: unitPrice, variant: it.variant || null });
   }
   if (total === 0) return NextResponse.json({ error: 'Produits invalides' }, { status: 400 });
 
