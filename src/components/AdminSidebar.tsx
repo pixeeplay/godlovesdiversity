@@ -8,8 +8,10 @@ import {
   Sparkles, Users, Settings, LogOut, Heart, UploadCloud, MapPin, Home,
   Image as ImageIcon, Video, Layers, GalleryHorizontalEnd, Menu as MenuIcon,
   Youtube, HandHeart, Handshake, ShoppingBag, ChevronDown, ChevronRight,
-  Package, Truck, type LucideIcon
+  Package, Truck, ShieldAlert, type LucideIcon
 } from 'lucide-react';
+import type { MenuPermissions } from '@/lib/menu-permissions';
+import { isItemVisible } from '@/lib/menu-permissions';
 
 type Item = { href: string; label: string; icon: LucideIcon; badge?: string };
 type Group = { id: string; label: string; icon: LucideIcon; children: Item[] };
@@ -75,6 +77,7 @@ const NAV: Entry[] = [
     children: [
       { href: '/admin/menu', label: 'Menu nav', icon: MenuIcon },
       { href: '/admin/home', label: 'Page d\'accueil', icon: Home },
+      { href: '/admin/menu-permissions', label: 'Visibilité menu (admin)', icon: ShieldAlert },
       { href: '/admin/users', label: 'Utilisateurs', icon: Users },
       { href: '/admin/settings', label: 'Paramètres', icon: Settings }
     ]
@@ -83,13 +86,33 @@ const NAV: Entry[] = [
 
 const STORAGE_KEY = 'gld-admin-sidebar-open';
 
-export function AdminSidebar() {
+export function AdminSidebar({
+  role = 'EDITOR',
+  perms = { hidden: [], editorHidden: [] }
+}: {
+  role?: string;
+  perms?: MenuPermissions;
+} = {}) {
   const path = usePathname();
   const { data } = useSession();
+  const isAdmin = role === 'ADMIN';
+
+  // Filtre la nav : retire les items cachés (sauf l'item de gestion lui-même pour l'ADMIN)
+  const filteredNav: Entry[] = NAV.map((entry) => {
+    if (!isGroup(entry)) {
+      return isItemVisible(entry.href, role, perms) ? entry : null;
+    }
+    const visibleChildren = entry.children.filter((c) => {
+      // L'item "menu-permissions" reste toujours visible pour l'ADMIN
+      if (c.href === '/admin/menu-permissions') return isAdmin;
+      return isItemVisible(c.href, role, perms);
+    });
+    return visibleChildren.length === 0 ? null : { ...entry, children: visibleChildren };
+  }).filter((x): x is Entry => x !== null);
 
   // Détecte le groupe actif à partir du chemin
   const findActiveGroupId = (): string | null => {
-    for (const e of NAV) {
+    for (const e of filteredNav) {
       if (isGroup(e) && e.children.some((c) => path === c.href || path.startsWith(c.href + '/'))) {
         return e.id;
       }
@@ -134,7 +157,7 @@ export function AdminSidebar() {
       </div>
 
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-        {NAV.map((entry) => {
+        {filteredNav.map((entry) => {
           // Item simple (Tableau de bord)
           if (!isGroup(entry)) {
             const Icon = entry.icon;
