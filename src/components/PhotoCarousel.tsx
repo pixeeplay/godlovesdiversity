@@ -59,10 +59,12 @@ export function PhotoCarousel({ photos, title }: { photos: Photo[]; title: strin
         <div className="photo-marquee-track">
           {items.map((p, i) => {
             const meta = TYPE_META[p.placeType || 'OTHER'] || TYPE_META.OTHER;
+            const href = p.isDemo ? '/galerie' : `/galerie?photo=${p.id}`;
             return (
-              <article
+              <a
                 key={`${p.id}-${i}`}
-                className="photo-card shrink-0 w-72 stained-card overflow-hidden group"
+                href={href}
+                className="photo-card shrink-0 w-72 stained-card overflow-hidden group block cursor-pointer hover:scale-[1.02] transition-transform"
                 style={{ '--card-color': meta.color } as React.CSSProperties}
               >
                 <div className="aspect-[4/5] bg-zinc-900 relative overflow-hidden">
@@ -100,7 +102,7 @@ export function PhotoCarousel({ photos, title }: { photos: Photo[]; title: strin
                   {p.caption && <p className="text-white/70 text-sm line-clamp-3 italic">"{p.caption}"</p>}
                   {p.author && <p className="text-white/40 text-xs mt-2">— {p.author}</p>}
                 </div>
-              </article>
+              </a>
             );
           })}
         </div>

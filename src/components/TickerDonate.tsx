@@ -66,9 +66,10 @@ export function TickerDonate({ items = DEFAULT_ITEMS, defaultAmounts = [5, 10] }
         </div>
       </div>
 
-      {/* Donation buttons (right side) */}
-      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-black/40 backdrop-blur-sm border-l border-white/20 shrink-0">
-        <span className="hidden sm:inline text-white/90 text-[11px] font-bold uppercase tracking-wider mr-1">Don :</span>
+      {/* Donation buttons (right side) — fond transparent, juste un léger fade pour lisibilité */}
+      <div className="flex items-center gap-1.5 px-3 py-1.5 shrink-0 relative"
+           style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.25) 100%)' }}>
+        <span className="hidden sm:inline text-white text-[11px] font-bold uppercase tracking-wider mr-1 drop-shadow-sm">Don :</span>
         {defaultAmounts.map((amt) => (
           <button
             key={amt}
