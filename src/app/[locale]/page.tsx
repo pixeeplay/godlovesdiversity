@@ -7,7 +7,6 @@ import { NeonHeart } from '@/components/NeonHeart';
 import { PhotoCarousel } from '@/components/PhotoCarousel';
 import { NewsCarousel } from '@/components/NewsCarousel';
 import { YoutubeCarousel } from '@/components/YoutubeCarousel';
-import { TickerDonate } from '@/components/TickerDonate';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
 
@@ -162,12 +161,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       {/* ═══ TÉLÉCHARGEZ L'AFFICHE ═══ */}
       <PostersShowcase title={postersTitle} text={postersText} />
-
-      {/* ═══ TICKER TIMES SQUARE + DONATIONS ═══ */}
-      <TickerDonate
-        items={tickerItems.length > 0 ? tickerItems : undefined}
-        defaultAmounts={donateAmounts.length > 0 ? donateAmounts : [5, 10]}
-      />
 
       {/* ═══ CARROUSEL PHOTOS (auto-scroll infini) ═══ */}
       <PhotoCarousel photos={photoItems} title="Galerie" />

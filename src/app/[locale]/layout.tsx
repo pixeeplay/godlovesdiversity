@@ -5,6 +5,7 @@ import { routing } from '@/i18n/routing';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { AskGldWidget } from '@/components/AskGldWidget';
+import { TickerDonate } from '@/components/TickerDonate';
 import { ThemeProvider, themeInitScript } from '@/components/ThemeProvider';
 
 export function generateStaticParams() {
@@ -31,6 +32,9 @@ export default async function LocaleLayout({
       <body className="min-h-screen flex flex-col">
         <ThemeProvider>
           <NextIntlClientProvider messages={messages} locale={locale}>
+            <div className="sticky top-0 z-50 shadow-lg shadow-black/20">
+              <TickerDonate />
+            </div>
             <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />

@@ -241,6 +241,44 @@ body::after {
     98% { opacity: 0.9; }
   }
 
+  /* ───────── Cœur qui bat à 100 bpm (= 0,6 s/cycle) avec rainbow shift ───────── */
+  /* Le wrapper pulse = effet "battement" cardiaque (deux compressions par cycle) */
+  .neon-heart-beat {
+    animation: heartBeat 0.6s ease-in-out infinite;
+    transform-origin: center;
+  }
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    14%      { transform: scale(1.18); }
+    28%      { transform: scale(1); }
+    42%      { transform: scale(1.10); }
+    70%      { transform: scale(1); }
+  }
+  /* Chaque couche reçoit un délai différent pour faire tourner les couleurs façon arc-en-ciel */
+  .neon-heart-beat .neon-heart-layer {
+    animation: rainbowShift 3s linear infinite;
+  }
+  .neon-heart-beat .neon-heart-layer-0 { animation-delay: 0s;    }
+  .neon-heart-beat .neon-heart-layer-1 { animation-delay: -0.5s; }
+  .neon-heart-beat .neon-heart-layer-2 { animation-delay: -1s;   }
+  .neon-heart-beat .neon-heart-layer-3 { animation-delay: -1.5s; }
+  .neon-heart-beat .neon-heart-layer-4 { animation-delay: -2s;   }
+  .neon-heart-beat .neon-heart-layer_5 { animation-delay: -2.5s; }
+  @keyframes rainbowShift {
+    0%   { stroke: #FF2BB1; filter: drop-shadow(0 0 6px #FF2BB1); }
+    16%  { stroke: #FBBF24; filter: drop-shadow(0 0 6px #FBBF24); }
+    33%  { stroke: #34D399; filter: drop-shadow(0 0 6px #34D399); }
+    50%  { stroke: #22D3EE; filter: drop-shadow(0 0 6px #22D3EE); }
+    66%  { stroke: #8B5CF6; filter: drop-shadow(0 0 6px #8B5CF6); }
+    83%  { stroke: #EF4444; filter: drop-shadow(0 0 6px #EF4444); }
+    100% { stroke: #FF2BB1; filter: drop-shadow(0 0 6px #FF2BB1); }
+  }
+  /* Respect du préférence utilisateur "moins d'animations" */
+  @media (prefers-reduced-motion: reduce) {
+    .neon-heart-beat,
+    .neon-heart-beat .neon-heart-layer { animation: none !important; }
+  }
+
   /* Ticker Times Square */
   .animate-ticker {
     animation: ticker 30s linear infinite;
