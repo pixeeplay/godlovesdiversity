@@ -26,6 +26,7 @@ const NAV = [
   { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
   { href: '/admin/calendar', label: 'Calendrier social', icon: Calendar },
   { href: '/admin/ai', label: 'Studio IA', icon: Sparkles },
+  { href: '/admin/integrations', label: 'Intégrations', icon: Layers },
   { href: '/admin/users', label: 'Utilisateurs', icon: Users },
   { href: '/admin/settings', label: 'Paramètres', icon: Settings }
 ];

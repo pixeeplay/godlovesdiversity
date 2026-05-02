@@ -1,7 +1,8 @@
 'use client';
 import { useState, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import { MapPin, X } from 'lucide-react';
+import { MapPin, X, ExternalLink } from 'lucide-react';
+import { SharePhoto } from './SharePhoto';
 
 const WorldMap = dynamic(() => import('./admin/WorldMap').then((m) => m.WorldMap), { ssr: false });
 
@@ -137,6 +138,18 @@ export function GalleryClient({ photos }: { photos: Photo[] }) {
               )}
               {active.author && (
                 <p className="mt-2 text-xs text-white/40">— {active.author}</p>
+              )}
+              {/* Boutons partage + voir détail */}
+              {!active.isDemo && (
+                <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+                  <SharePhoto
+                    url={`${typeof window !== 'undefined' ? window.location.origin : ''}/photo/${active.id}`}
+                    title={active.placeName || 'Photo — God Loves Diversity'}
+                  />
+                  <a href={`/photo/${active.id}`} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-white text-sm font-bold transition">
+                    <ExternalLink size={14} /> Page complète + commentaires
+                  </a>
+                </div>
               )}
             </div>
           </div>

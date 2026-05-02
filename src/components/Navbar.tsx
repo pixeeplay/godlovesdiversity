@@ -2,10 +2,11 @@
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from '@/i18n/routing';
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, ShoppingCart } from 'lucide-react';
+import { Menu, X, ChevronDown, ShoppingCart, MessageCircle, FileText, Image as ImageIcon, ShoppingBag, Sparkles } from 'lucide-react';
 import { NeonHeart } from './NeonHeart';
 import { ThemeToggle } from './ThemeToggle';
 import { CartBadge } from './CartBadge';
+import { MegaMenuTrigger } from './MegaMenu';
 
 const LOCALES = ['fr', 'en', 'es', 'pt'] as const;
 
@@ -37,14 +38,12 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [locale]);
 
-  // Fallback hardcodé si DB vide
+  // Menu compact simplifié — À propos / Blog / Newsletter sont déplacés vers le footer
+  // Pour Photos et Boutique on utilise des mega-menus interactifs (voir <MegaMenuTrigger />)
   const fallback: MenuItem[] = [
     { id: 'm', label: t('message'), href: '/message', external: false, children: [] },
     { id: 'a', label: t('argumentaire'), href: '/argumentaire', external: false, children: [] },
-    { id: 'g', label: 'Photos', href: '/galerie', external: false, children: [] },
-    { id: 'p', label: t('posters'), href: '/affiches', external: false, children: [] },
-    { id: 's', label: 'Boutique', href: '/boutique', external: false, children: [] },
-    { id: 'b', label: t('about'), href: '/a-propos', external: false, children: [] }
+    { id: 'p', label: t('posters'), href: '/affiches', external: false, children: [] }
   ];
   const items = menu.length > 0 ? menu : fallback;
 
@@ -68,11 +67,15 @@ export function Navbar() {
           )}
         </a>
 
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-6">
           {items.map((m) => {
             const hasChildren = m.children?.length > 0;
             const localePrefix = locale !== 'fr' ? `/${locale}` : '';
             const fullHref = m.external ? m.href : `${localePrefix}${m.href}`;
+            // Détection des icônes par label/href
+            const Icon = /message/i.test(m.href) ? MessageCircle :
+                         /argument/i.test(m.href) ? FileText :
+                         /affiche|poster/i.test(m.href) ? ImageIcon : null;
             return (
               <div key={m.id} className="relative"
                    onMouseEnter={() => hasChildren && setOpenSub(m.id)}
@@ -81,8 +84,9 @@ export function Navbar() {
                   href={fullHref}
                   target={m.external ? '_blank' : undefined}
                   rel={m.external ? 'noreferrer' : undefined}
-                  className={`pill-nav-link inline-flex items-center gap-1 ${pathname === m.href ? 'active' : ''}`}
+                  className={`pill-nav-link inline-flex items-center gap-1.5 ${pathname === m.href ? 'active' : ''}`}
                 >
+                  {Icon && <Icon size={14} />}
                   {m.label}
                   {hasChildren && <ChevronDown size={12} />}
                 </a>
@@ -101,6 +105,9 @@ export function Navbar() {
               </div>
             );
           })}
+          {/* Mega-menus interactifs avec données live */}
+          <MegaMenuTrigger label="Photos" type="gallery" locale={locale} />
+          <MegaMenuTrigger label="Boutique" type="shop" locale={locale} />
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
