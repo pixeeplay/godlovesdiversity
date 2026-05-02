@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Send, Slack, Webhook, Bot, MessageSquare, Mail, Save, Check, ExternalLink, Loader2, Power, PowerOff, X, ChevronRight } from 'lucide-react';
+import { Send, Slack, Webhook, Bot, MessageSquare, Mail, Save, Check, ExternalLink, Loader2, Power, PowerOff, X, ChevronRight, Github, Calendar, Cloud, Zap, Database, FileText, Video, CreditCard, BookOpen, Globe } from 'lucide-react';
 
 type Integration = {
   id: string;
@@ -123,6 +123,216 @@ const INTEGRATIONS: Integration[] = [
     fields: [
       { key: 'integrations.mailchimp.apiKey', label: 'API Key', type: 'password', placeholder: 'xxxxx-us1' },
       { key: 'integrations.mailchimp.audienceId', label: 'Audience ID', placeholder: 'a1b2c3d4e5' }
+    ]
+  },
+  {
+    id: 'brevo',
+    name: 'Brevo (ex-Sendinblue)',
+    description: 'Email marketing français RGPD-friendly, alternative Mailchimp. Free 300 emails/jour.',
+    icon: Mail,
+    color: 'from-blue-500 to-cyan-500',
+    docsUrl: 'https://developers.brevo.com',
+    externalUrl: 'https://app.brevo.com/settings/keys/api',
+    externalLabel: 'Brevo API',
+    setupInstructions: [
+      'Va sur app.brevo.com → SMTP & API → API Keys → Generate a new API key.',
+      'Crée ou sélectionne une liste d\'abonnés et note son ID.'
+    ],
+    fields: [
+      { key: 'integrations.brevo.apiKey', label: 'API Key', type: 'password', placeholder: 'xkeysib-…' },
+      { key: 'integrations.brevo.listId', label: 'List ID', placeholder: '5' }
+    ]
+  },
+  {
+    id: 'github',
+    name: 'GitHub',
+    description: 'Crée des issues automatiquement (bug report, feedback) ou push des données dans un repo.',
+    icon: Github,
+    color: 'from-zinc-700 to-zinc-900',
+    docsUrl: 'https://docs.github.com/en/rest',
+    externalUrl: 'https://github.com/settings/tokens',
+    externalLabel: 'Personal access tokens',
+    setupInstructions: [
+      'Va sur github.com/settings/tokens → Generate new token (classic).',
+      'Coche le scope `repo`.',
+      'Copie le token (commence par `ghp_…`).',
+      'Renseigne owner/repo de la forme `pixeeplay/godlovesdiversity`.'
+    ],
+    fields: [
+      { key: 'integrations.github.token', label: 'Personal Access Token', type: 'password', placeholder: 'ghp_…' },
+      { key: 'integrations.github.repo', label: 'Repository (owner/repo)', placeholder: 'pixeeplay/godlovesdiversity' }
+    ]
+  },
+  {
+    id: 'notion',
+    name: 'Notion',
+    description: 'Push automatiquement les nouvelles photos / témoignages / commandes dans une base Notion.',
+    icon: FileText,
+    color: 'from-zinc-600 to-zinc-800',
+    docsUrl: 'https://developers.notion.com',
+    externalUrl: 'https://www.notion.so/my-integrations',
+    externalLabel: 'Notion integrations',
+    setupInstructions: [
+      'Crée une intégration sur notion.so/my-integrations → Internal integration.',
+      'Copie le secret (`secret_…`).',
+      'Sur ta base Notion : Share → Connect to → ton intégration.',
+      'Copie l\'ID de la base (URL : notion.so/workspace/{DATABASE_ID}?v=…).'
+    ],
+    fields: [
+      { key: 'integrations.notion.token', label: 'Internal Integration Secret', type: 'password', placeholder: 'secret_…' },
+      { key: 'integrations.notion.databaseId', label: 'Database ID', placeholder: '32 caractères hex' }
+    ]
+  },
+  {
+    id: 'airtable',
+    name: 'Airtable',
+    description: 'Sync les commandes / abonnés newsletter / témoignages vers une base Airtable.',
+    icon: Database,
+    color: 'from-yellow-400 to-amber-500',
+    docsUrl: 'https://airtable.com/developers/web/api/introduction',
+    externalUrl: 'https://airtable.com/create/tokens',
+    externalLabel: 'Airtable tokens',
+    setupInstructions: [
+      'Va sur airtable.com/create/tokens → Create new token.',
+      'Sélectionne les scopes `data.records:write` et `schema.bases:read`.',
+      'Choisis ta base, copie le token (`pat…`) et l\'ID de la base.'
+    ],
+    fields: [
+      { key: 'integrations.airtable.token', label: 'Personal Access Token', type: 'password', placeholder: 'pat…' },
+      { key: 'integrations.airtable.baseId', label: 'Base ID', placeholder: 'app…' },
+      { key: 'integrations.airtable.tableName', label: 'Table name', placeholder: 'Commandes' }
+    ]
+  },
+  {
+    id: 'google-sheets',
+    name: 'Google Sheets',
+    description: 'Ajoute automatiquement chaque commande / abonné dans une feuille Google.',
+    icon: Cloud,
+    color: 'from-green-500 to-emerald-500',
+    docsUrl: 'https://developers.google.com/sheets/api',
+    externalUrl: 'https://console.cloud.google.com/apis/credentials',
+    externalLabel: 'Google Cloud Console',
+    setupInstructions: [
+      'Crée un projet sur Google Cloud Console.',
+      'Active "Google Sheets API".',
+      'Crée un compte de service → télécharge la clé JSON.',
+      'Partage ta feuille avec l\'email du compte de service (Edit access).',
+      'Colle l\'ID de la feuille (depuis l\'URL) et le JSON complet.'
+    ],
+    fields: [
+      { key: 'integrations.gsheets.spreadsheetId', label: 'Spreadsheet ID', placeholder: '1AbCdEf…' },
+      { key: 'integrations.gsheets.serviceAccountJson', label: 'Service Account JSON', type: 'textarea', placeholder: '{"type":"service_account",…}' }
+    ]
+  },
+  {
+    id: 'zapier',
+    name: 'Zapier',
+    description: 'Connecte le site à 6000+ apps (CRM, Trello, Notion, Gmail…) via webhook Zapier.',
+    icon: Zap,
+    color: 'from-orange-500 to-amber-500',
+    docsUrl: 'https://zapier.com/apps/webhook/integrations',
+    externalUrl: 'https://zapier.com/app/zaps',
+    externalLabel: 'Zapier dashboard',
+    setupInstructions: [
+      'Sur Zapier, crée un nouveau Zap.',
+      'Trigger → Webhooks by Zapier → Catch Hook.',
+      'Copie l\'URL générée.',
+      'Configure ton action (Notion, Trello, Gmail, etc.).'
+    ],
+    fields: [
+      { key: 'integrations.zapier.url', label: 'Webhook URL Zapier', type: 'url', placeholder: 'https://hooks.zapier.com/…' }
+    ]
+  },
+  {
+    id: 'make',
+    name: 'Make (ex-Integromat)',
+    description: 'Alternative européenne à Zapier, plus puissante. Webhook-based.',
+    icon: Zap,
+    color: 'from-purple-500 to-fuchsia-500',
+    docsUrl: 'https://www.make.com/en/help/tools/webhooks',
+    externalUrl: 'https://www.make.com/en/scenarios',
+    externalLabel: 'Make scenarios',
+    setupInstructions: [
+      'Sur make.com, crée un scénario.',
+      'Trigger → Webhooks → Custom webhook.',
+      'Copie l\'URL.',
+      'Configure les modules suivants (Slack, Notion, Sheets, etc.).'
+    ],
+    fields: [
+      { key: 'integrations.make.url', label: 'Webhook URL Make', type: 'url', placeholder: 'https://hook.eu1.make.com/…' }
+    ]
+  },
+  {
+    id: 'calendly',
+    name: 'Calendly',
+    description: 'Affiche un bouton de prise de RDV pour discuter avec l\'équipe (via embed).',
+    icon: Calendar,
+    color: 'from-blue-600 to-indigo-600',
+    docsUrl: 'https://developer.calendly.com',
+    externalUrl: 'https://calendly.com/event_types/user/me',
+    externalLabel: 'Mes Event Types',
+    setupInstructions: [
+      'Crée un event type sur calendly.com.',
+      'Copie l\'URL publique (calendly.com/your-name/30min).'
+    ],
+    fields: [
+      { key: 'integrations.calendly.eventUrl', label: 'URL Calendly publique', type: 'url', placeholder: 'https://calendly.com/your-name/30min' }
+    ]
+  },
+  {
+    id: 'youtube-api',
+    name: 'YouTube Data API',
+    description: 'Importe automatiquement les vidéos d\'une chaîne YouTube dans le carrousel home.',
+    icon: Video,
+    color: 'from-red-500 to-rose-500',
+    docsUrl: 'https://developers.google.com/youtube/v3',
+    externalUrl: 'https://console.cloud.google.com/apis/credentials',
+    externalLabel: 'Google Cloud Console',
+    setupInstructions: [
+      'Crée une clé API sur console.cloud.google.com.',
+      'Active "YouTube Data API v3".',
+      'Récupère l\'ID de ta chaîne (URL youtube.com/channel/UC…).'
+    ],
+    fields: [
+      { key: 'integrations.youtube.apiKey', label: 'API Key', type: 'password', placeholder: 'AIza…' },
+      { key: 'integrations.youtube.channelId', label: 'Channel ID', placeholder: 'UC…' }
+    ]
+  },
+  {
+    id: 'stripe-webhook',
+    name: 'Stripe Webhooks',
+    description: 'Reçoit les events Stripe (paiement réussi, remboursement, échec) → marque automatiquement les commandes payées.',
+    icon: CreditCard,
+    color: 'from-violet-500 to-indigo-500',
+    docsUrl: 'https://stripe.com/docs/webhooks',
+    externalUrl: 'https://dashboard.stripe.com/webhooks',
+    externalLabel: 'Stripe Dashboard',
+    setupInstructions: [
+      'Sur dashboard.stripe.com → Developers → Webhooks → Add endpoint.',
+      'URL : https://gld.pixeeplay.com/api/webhooks/stripe',
+      'Events : `checkout.session.completed`, `payment_intent.succeeded`.',
+      'Copie le Signing secret (`whsec_…`).'
+    ],
+    fields: [
+      { key: 'integrations.stripe.webhookSecret', label: 'Webhook Signing Secret', type: 'password', placeholder: 'whsec_…' }
+    ]
+  },
+  {
+    id: 'medium',
+    name: 'Medium',
+    description: 'Cross-poste automatiquement les articles du blog vers Medium.',
+    icon: BookOpen,
+    color: 'from-zinc-800 to-black',
+    docsUrl: 'https://github.com/Medium/medium-api-docs',
+    externalUrl: 'https://medium.com/me/settings/security',
+    externalLabel: 'Medium settings',
+    setupInstructions: [
+      'Va sur medium.com → Settings → Security → Integration tokens.',
+      'Crée un nouveau token.'
+    ],
+    fields: [
+      { key: 'integrations.medium.token', label: 'Integration Token', type: 'password', placeholder: '2…' },
+      { key: 'integrations.medium.userId', label: 'Medium User ID', placeholder: '1abc…' }
     ]
   }
 ];

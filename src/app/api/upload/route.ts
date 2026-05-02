@@ -6,6 +6,7 @@ import { notifyAdmin } from '@/lib/email';
 import { extractExif } from '@/lib/exif';
 import { reverseGeocode, detectPlaceType } from '@/lib/geocode';
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
+import { notify } from '@/lib/notify';
 import crypto from 'crypto';
 
 export const runtime = 'nodejs';
@@ -97,6 +98,15 @@ export async function POST(req: Request) {
        <p>${parsed.data.caption || ''}</p>
        <p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/admin/moderation">Modérer</a></p>`
     ).catch(() => {});
+
+    // Notification multi-canal (Telegram/Slack/Discord/Webhook si configurés)
+    void notify({
+      event: 'photo.uploaded',
+      title: 'Nouvelle photo à modérer',
+      body: `${parsed.data.authorName || 'Anonyme'} · ${parsed.data.placeName || autoPlace || 'Lieu non précisé'} · ${autoCity || ''} ${autoCountry || ''}`.trim(),
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://gld.pixeeplay.com'}/admin/moderation`,
+      level: 'info'
+    });
 
     return NextResponse.json({ ok: true, id: photo.id });
   } catch (e: any) {

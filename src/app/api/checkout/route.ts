@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSettings } from '@/lib/settings';
+import { notify } from '@/lib/notify';
 
 /**
  * Crée une commande + redirige vers le checkout choisi (Stripe ou Square).
@@ -62,6 +63,15 @@ export async function POST(req: NextRequest) {
       items: { create: orderItemsData }
     },
     include: { items: { include: { product: true } } }
+  });
+
+  // Notification multi-canal (Telegram/Slack/Discord/Webhook si configurés)
+  void notify({
+    event: 'order.created',
+    title: `Nouvelle commande #${order.id.slice(0, 8).toUpperCase()}`,
+    body: `${order.email}${order.name ? ` (${order.name})` : ''} · ${order.items.length} article${order.items.length > 1 ? 's' : ''} · ${(total / 100).toFixed(2)} €`,
+    url: `${req.nextUrl.origin}/admin/shop/orders/${order.id}`,
+    level: 'success'
   });
 
   const settings = await getSettings([
