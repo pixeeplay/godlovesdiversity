@@ -450,6 +450,20 @@ model OrderItem {
   variant    Json?   // ex: { "size": "M", "color": "Rose" }
 }
 
+/// Tracking simple des pages vues (analytics interne, RGPD-friendly : pas d'IP, juste un hash anonyme)
+model PageView {
+  id          String   @id @default(cuid())
+  path        String
+  visitorHash String   // hash anonyme (IP+UA+date) — un visiteur unique par jour
+  referrer    String?
+  country     String?
+  createdAt   DateTime @default(now())
+
+  @@index([path, createdAt])
+  @@index([createdAt])
+  @@unique([path, visitorHash, createdAt])
+}
+
 /// Commentaires sur les photos (modération avant publication)
 model PhotoComment {
   id          String   @id @default(cuid())

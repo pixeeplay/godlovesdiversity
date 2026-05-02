@@ -7,6 +7,7 @@ import { Footer } from '@/components/Footer';
 import { AskGldWidget } from '@/components/AskGldWidget';
 import { TickerDonate } from '@/components/TickerDonate';
 import { AmbientPlayer } from '@/components/AmbientPlayer';
+import { PageTracker } from '@/components/PageTracker';
 import { ThemeProvider, themeInitScript } from '@/components/ThemeProvider';
 
 export function generateStaticParams() {
@@ -42,6 +43,7 @@ export default async function LocaleLayout({
             <Footer />
             <AskGldWidget />
             <AmbientPlayer />
+            <PageTracker />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

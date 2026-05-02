@@ -43,6 +43,7 @@ export function Navbar() {
     { id: 'a', label: t('argumentaire'), href: '/argumentaire', external: false, children: [] },
     { id: 'g', label: 'Photos', href: '/galerie', external: false, children: [] },
     { id: 'p', label: t('posters'), href: '/affiches', external: false, children: [] },
+    { id: 's', label: 'Boutique', href: '/boutique', external: false, children: [] },
     { id: 'b', label: t('about'), href: '/a-propos', external: false, children: [] }
   ];
   const items = menu.length > 0 ? menu : fallback;
