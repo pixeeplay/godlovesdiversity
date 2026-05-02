@@ -30,7 +30,6 @@ type Tab = 'library' | 'add' | 'voice' | 'queue';
 
 const SOURCE_TYPES = [
   { id: 'text', label: 'Texte libre', icon: FileText, color: 'from-violet-500 to-purple-600' },
-  { id: 'pdf',  label: 'PDF',         icon: FileText, color: 'from-red-500 to-rose-600' },
   { id: 'url',  label: 'URL',         icon: Link2,    color: 'from-blue-500 to-cyan-600' }
 ];
 
@@ -244,7 +243,7 @@ function LibraryTab({ docs, setDocs }: { docs: Doc[]; setDocs: (d: Doc[]) => voi
 /* ─── AJOUTER ──────────────────────────────────────────────── */
 
 function AddTab({ onAdded }: { onAdded: (d: Doc) => void }) {
-  const [sourceType, setSourceType] = useState<'text' | 'pdf' | 'url'>('text');
+  const [sourceType, setSourceType] = useState<'text' | 'url'>('text');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [source, setSource] = useState('');
@@ -262,24 +261,6 @@ function AddTab({ onAdded }: { onAdded: (d: Doc) => void }) {
       if (j.title) setTitle(j.title);
       if (j.content) setContent(j.content);
     } catch {}
-    setBusy(false);
-  }
-
-  async function handlePdfUpload(file: File) {
-    setBusy(true);
-    const fd = new FormData();
-    fd.append('file', file);
-    try {
-      const r = await fetch('/api/admin/knowledge/extract-pdf', { method: 'POST', body: fd });
-      const j = await r.json();
-      if (j.text) {
-        setContent(j.text);
-        if (!title) setTitle(file.name.replace(/\.pdf$/i, ''));
-        setSource(file.name);
-      }
-    } catch (e: any) {
-      setResult({ ok: false, message: 'Extraction PDF impossible : ' + (e.message || 'erreur') });
-    }
     setBusy(false);
   }
 
@@ -336,7 +317,6 @@ function AddTab({ onAdded }: { onAdded: (d: Doc) => void }) {
                 <div className="font-bold text-sm">{t.label}</div>
                 <div className={`text-[10px] ${active ? 'opacity-80' : 'opacity-60'}`}>
                   {t.id === 'text' && 'Coller du texte direct'}
-                  {t.id === 'pdf' && 'Uploader un fichier PDF'}
                   {t.id === 'url' && 'Scraper depuis une URL'}
                 </div>
               </div>
@@ -347,24 +327,6 @@ function AddTab({ onAdded }: { onAdded: (d: Doc) => void }) {
 
       {/* FORMULAIRE */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4">
-        {sourceType === 'pdf' && (
-          <div>
-            <label className="block">
-              <span className="text-xs font-bold uppercase text-zinc-400">Fichier PDF</span>
-              <div className="mt-2 border-2 border-dashed border-zinc-700 rounded-xl p-8 text-center hover:border-brand-pink transition cursor-pointer relative">
-                <input
-                  type="file" accept=".pdf"
-                  className="absolute inset-0 opacity-0 cursor-pointer"
-                  onChange={(e) => e.target.files?.[0] && handlePdfUpload(e.target.files[0])}
-                />
-                <FileText size={32} className="mx-auto text-zinc-500 mb-2" />
-                <p className="text-sm font-semibold text-zinc-300">Glisse un PDF ici ou clique</p>
-                <p className="text-xs text-zinc-500">Le texte sera extrait automatiquement</p>
-              </div>
-            </label>
-          </div>
-        )}
-
         {sourceType === 'url' && (
           <div>
             <label className="block">

@@ -6,27 +6,16 @@ export const runtime = 'nodejs';
 export const maxDuration = 60;
 
 /**
- * Extrait le texte d'un PDF uploadé via FormData (champ "file").
- * Utilise pdf-parse (déjà installé pour les miniatures affiches).
+ * Extraction PDF temporairement désactivée — pdf-parse cassait le build Next.js.
+ * Workaround utilisateur : ouvrir le PDF dans Acrobat, sélectionner tout,
+ * copier-coller dans le champ « Contenu » du formulaire d'ajout.
+ *
+ * TODO: remplacer par pdfjs-dist (Mozilla, propre, maintenu).
  */
 export async function POST(req: NextRequest) {
   const s = await getServerSession(authOptions);
   if (!s) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
-  try {
-    const fd = await req.formData();
-    const file = fd.get('file') as File | null;
-    if (!file) return NextResponse.json({ error: 'fichier manquant' }, { status: 400 });
-    const buf = Buffer.from(await file.arrayBuffer());
-    // import dynamique direct du lib interne pour éviter le bug du test file en prod
-    // (cf. https://gitlab.com/autokent/pdf-parse/-/issues/24)
-    const pdfParse = (await import('pdf-parse/lib/pdf-parse.js' as any)).default as any;
-    const result = await pdfParse(buf);
-    return NextResponse.json({
-      text: (result?.text || '').trim().slice(0, 200000),
-      pages: result?.numpages || 0,
-      info: result?.info || {}
-    });
-  } catch (e: any) {
-    return NextResponse.json({ error: e?.message || 'Extraction PDF impossible' }, { status: 500 });
-  }
+  return NextResponse.json({
+    error: 'Extraction PDF temporairement désactivée. Copie-colle le texte du PDF dans le champ "Contenu" pour l\'ingérer.'
+  }, { status: 501 });
 }
