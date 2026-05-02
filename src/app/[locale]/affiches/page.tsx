@@ -1,8 +1,9 @@
 import { useTranslations } from 'next-intl';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { Download, FileText } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
+import { PosterThumbnail } from '@/components/PosterThumbnail';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -27,18 +28,15 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {posters.map((p) => (
             <article key={p.id} className="stained-card overflow-hidden group">
-              <div className="aspect-[3/4] bg-black relative">
-                {p.thumbnailKey ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={publicUrl(p.thumbnailKey)} alt={p.title}
-                       className="w-full h-full object-cover group-hover:scale-105 transition" />
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center text-white/30">
-                    <FileText size={42} />
-                    <span className="text-xs mt-2">PDF</span>
-                  </div>
-                )}
-                <div className="absolute top-3 left-3 bg-brand-pink text-white text-xs font-bold px-2 py-1 rounded">
+              <div className="aspect-[3/4] bg-black relative overflow-hidden">
+                <PosterThumbnail
+                  pdfUrl={publicUrl(p.fileKey)}
+                  thumbnailUrl={p.thumbnailKey ? publicUrl(p.thumbnailKey) : null}
+                  format={p.format}
+                  alt={p.title}
+                  className="group-hover:scale-105 transition"
+                />
+                <div className="absolute top-3 left-3 bg-brand-pink text-white text-xs font-bold px-2 py-1 rounded shadow-lg">
                   {p.format}
                 </div>
               </div>

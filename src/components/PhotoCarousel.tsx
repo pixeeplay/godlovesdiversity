@@ -59,7 +59,7 @@ export function PhotoCarousel({ photos, title }: { photos: Photo[]; title: strin
         <div className="photo-marquee-track">
           {items.map((p, i) => {
             const meta = TYPE_META[p.placeType || 'OTHER'] || TYPE_META.OTHER;
-            const href = p.isDemo ? '/galerie' : `/galerie?photo=${p.id}`;
+            const href = p.isDemo ? '/galerie' : `/photo/${p.id}`;
             return (
               <a
                 key={`${p.id}-${i}`}
