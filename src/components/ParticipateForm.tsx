@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { useDropzone } from 'react-dropzone';
 import { UploadCloud, MapPin, Loader2, CheckCircle2 } from 'lucide-react';
+import { UploadConsentModal } from './UploadConsentModal';
 
 const PLACE_TYPES = [
   { v: 'CHURCH', l: 'Église' },
@@ -21,6 +22,8 @@ export function ParticipateForm() {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState('');
+  const [consentOpen, setConsentOpen] = useState(false);
+  const [pendingCountry, setPendingCountry] = useState<string>('');
   const formRef = useRef<HTMLFormElement>(null);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -42,17 +45,29 @@ export function ParticipateForm() {
     );
   }
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!file) return setError('Photo requise');
+    setError('');
+    // 1) ouvre le modal de consentement avec le pays saisi
+    const fd = new FormData(e.currentTarget);
+    setPendingCountry(String(fd.get('country') || ''));
+    setConsentOpen(true);
+  }
+
+  async function reallySubmit() {
+    setConsentOpen(false);
+    if (!file || !formRef.current) return;
     setSubmitting(true);
     setError('');
     try {
-      const fd = new FormData(e.currentTarget);
+      const fd = new FormData(formRef.current);
       fd.append('file', file);
       if (coords.lat) fd.append('latitude', String(coords.lat));
       if (coords.lng) fd.append('longitude', String(coords.lng));
       fd.append('source', 'WEB');
+      fd.append('consentGiven', 'true');
+      fd.append('consentTimestamp', new Date().toISOString());
 
       const r = await fetch('/api/upload', { method: 'POST', body: fd });
       if (!r.ok) throw new Error(await r.text());
@@ -121,6 +136,13 @@ export function ParticipateForm() {
       <button disabled={submitting || !file} className="btn-primary self-start disabled:opacity-50">
         {submitting ? (<><Loader2 className="animate-spin" size={16} /> {t('submitting')}</>) : t('submit')}
       </button>
+
+      <UploadConsentModal
+        open={consentOpen}
+        countryName={pendingCountry}
+        onAccept={reallySubmit}
+        onCancel={() => setConsentOpen(false)}
+      />
     </form>
   );
 }

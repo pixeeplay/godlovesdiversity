@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import {
   Save, Loader2, CheckCircle2, Eye, EyeOff,
-  Sparkles, Mail, MapPin, Globe, KeyRound
+  Sparkles, Mail, MapPin, Globe, KeyRound, ShieldAlert, HandHeart
 } from 'lucide-react';
 
 type Field = {
@@ -93,6 +93,24 @@ const GROUPS: Group[] = [
     fields: [
       { key: 'integrations.tiktok.clientKey', label: 'Client Key' },
       { key: 'integrations.tiktok.clientSecret', label: 'Client Secret', type: 'password' }
+    ]
+  },
+  {
+    title: 'Consentement upload de photos',
+    icon: ShieldAlert,
+    description: 'Texte affiché dans le modal de consentement avant l\'envoi d\'une photo. Doit décrire le droit à l\'image et l\'usage promotionnel.',
+    fields: [
+      { key: 'upload.consentText', label: 'Texte de consentement', type: 'textarea',
+        placeholder: 'En envoyant cette photo, vous certifiez…',
+        help: 'Apparaît dans la pop-up. Garde le ton humain et explicite. Si vide, un texte par défaut est utilisé.' }
+    ]
+  },
+  {
+    title: 'HelloAsso (don alternatif)',
+    icon: HandHeart,
+    description: 'Permet de recevoir des dons via HelloAsso (associatif, sans frais). Crée ta campagne sur https://www.helloasso.com puis colle l\'URL ici.',
+    fields: [
+      { key: 'donate.helloAssoUrl', label: 'URL de la cagnotte HelloAsso', placeholder: 'https://www.helloasso.com/associations/.../formulaires/1' }
     ]
   }
 ];
