@@ -8,7 +8,7 @@ import {
   Sparkles, Users, Settings, LogOut, Heart, UploadCloud, MapPin, Home,
   Image as ImageIcon, Video, Layers, GalleryHorizontalEnd, Menu as MenuIcon,
   Youtube, HandHeart, Handshake, ShoppingBag, ChevronDown, ChevronRight,
-  Package, Truck, ShieldAlert, type LucideIcon
+  Package, Truck, ShieldAlert, Video, type LucideIcon
 } from 'lucide-react';
 import type { MenuPermissions } from '@/lib/menu-permissions';
 import { isItemVisible } from '@/lib/menu-permissions';
@@ -67,6 +67,7 @@ const NAV: Entry[] = [
     children: [
       { href: '/admin/ai', label: 'Studio IA', icon: Sparkles },
       { href: '/admin/ai/knowledge', label: 'Cerveau de GLD (RAG)', icon: Sparkles },
+      { href: '/admin/ai/avatar', label: 'GLD Live (avatar vidéo)', icon: Video },
       { href: '/admin/integrations', label: 'Intégrations', icon: Layers },
       { href: '/admin/setup', label: 'Assistant configuration', icon: Sparkles }
     ]

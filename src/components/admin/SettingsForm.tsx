@@ -74,6 +74,14 @@ const GROUPS: Group[] = [
     ]
   },
   {
+    title: 'HeyGen (avatar vidéo « GLD Live »)',
+    icon: Sparkles, category: 'ai',
+    description: 'Avatar humain qui répond aux visiteurs en vidéo, branché sur le RAG. Compte gratuit sur https://www.heygen.com puis Settings → API → Generate token. Configure ensuite l\'avatar et la voix dans IA & Outils → GLD Live.',
+    fields: [
+      { key: 'integrations.heygen.apiKey', label: 'Clé API HeyGen', type: 'password', placeholder: 'NjE…' }
+    ]
+  },
+  {
     title: 'Audio d\'ambiance',
     icon: Sparkles, category: 'ai',
     description: 'Liste JSON des morceaux disponibles dans le lecteur ambiant en bas-gauche du site. Format : [{"url":"...","title":"..."}]',

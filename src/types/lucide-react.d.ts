@@ -70,6 +70,7 @@ declare module 'lucide-react' {
   export const Play: LucideIcon;
   export const Plus: LucideIcon;
   export const Printer: LucideIcon;
+  export const RefreshCw: LucideIcon;
   export const Save: LucideIcon;
   export const ScanFace: LucideIcon;
   export const Search: LucideIcon;
