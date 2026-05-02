@@ -2,114 +2,219 @@
 import { useState } from 'react';
 import {
   Sparkles, Loader2, Image as ImageIcon, Type, Languages,
-  BarChart3, Calendar, Heart, Wand2, ScanFace, Copy
+  BarChart3, Calendar, Heart, Wand2, ScanFace, Copy, Music,
+  Share2, Hash, Search, MessageCircle, Mail, Send, ArrowLeft,
+  Eye, TrendingUp, FileText
 } from 'lucide-react';
 import { HeroVisualsAdmin } from './HeroVisualsAdmin';
 import { MusicGenerator } from './MusicGenerator';
 
-const TABS = [
-  { v: 'visuals', l: '🎨 Visuels Hero', icon: Wand2 },
-  { v: 'music', l: '🎵 Musique IA', icon: Heart },
-  { v: 'caption', l: 'Légende photo', icon: ImageIcon },
-  { v: 'testimony', l: 'Témoignage', icon: Heart },
-  { v: 'variants', l: 'Variantes social', icon: Wand2 },
-  { v: 'translate', l: 'Traduction', icon: Languages },
-  { v: 'newsletter', l: 'Newsletter mensuelle', icon: Type },
-  { v: 'sentiment', l: 'Sentiment', icon: BarChart3 },
-  { v: 'cluster', l: 'Clustering', icon: BarChart3 },
-  { v: 'weekly', l: 'Synthèse hebdo', icon: BarChart3 },
-  { v: 'calendar', l: 'Calendrier IA', icon: Calendar },
-  { v: 'verse', l: 'Verset du jour', icon: Sparkles },
-  { v: 'photo-tools', l: 'Outils photo', icon: ScanFace }
+type Tool = {
+  id: string;
+  group: 'visuals' | 'content' | 'social' | 'analytics' | 'seo' | 'comms';
+  icon: any;
+  title: string;
+  desc: string;
+  badge?: 'NEW' | 'POPULAR' | 'PRO';
+  gradient: string;
+  comingSoon?: boolean;
+};
+
+const TOOLS: Tool[] = [
+  // Visuels & Images
+  { id: 'visuals', group: 'visuals', icon: Wand2, title: 'Visuels Hero', desc: 'Génère des images cathédrale + arc-en-ciel pour la home (Imagen / Nano Banana)', gradient: 'from-pink-500 to-fuchsia-500', badge: 'POPULAR' },
+  { id: 'music', group: 'visuals', icon: Music, title: 'Musique IA', desc: '9 thèmes ambiants : prière, méditation, cathédrale, taizé, soufi, mantra…', gradient: 'from-violet-500 to-purple-500', badge: 'NEW' },
+  { id: 'photo-tools', group: 'visuals', icon: ScanFace, title: 'Outils photo', desc: 'Floutage visages, détection doublons, analyse Vision Gemini', gradient: 'from-cyan-500 to-blue-500' },
+  { id: 'caption', group: 'visuals', icon: ImageIcon, title: 'Légende photo', desc: 'Décrit une photo en 80 mots avec hashtags inclusifs', gradient: 'from-rose-500 to-pink-500' },
+
+  // Texte & Contenu
+  { id: 'testimony', group: 'content', icon: Heart, title: 'Polir un témoignage', desc: 'Réécrit un témoignage brut en version publiable, anonymisée et lumineuse', gradient: 'from-rose-500 to-orange-500' },
+  { id: 'translate', group: 'content', icon: Languages, title: 'Traduction', desc: 'Traduit en EN/ES/PT en gardant le ton inclusif et apaisé', gradient: 'from-emerald-500 to-teal-500' },
+  { id: 'verse', group: 'content', icon: Sparkles, title: 'Verset du jour', desc: 'Génère un message inspirant quotidien non confessionnel', gradient: 'from-amber-500 to-yellow-500' },
+  { id: 'newsletter', group: 'content', icon: Type, title: 'Newsletter mensuelle', desc: 'Compose une newsletter HTML à partir des stats du mois', gradient: 'from-indigo-500 to-violet-500' },
+
+  // Social
+  { id: 'variants', group: 'social', icon: Share2, title: 'Variantes social', desc: 'Génère 5 variantes d\'un post pour Instagram / X / LinkedIn / FB / TikTok', gradient: 'from-pink-500 to-rose-500' },
+  { id: 'pack-social', group: 'social', icon: Send, title: '🚀 Pack social complet', desc: '1 photo → 5 posts prêts à publier sur tous les réseaux + hashtags + visuels', gradient: 'from-fuchsia-500 to-pink-500', badge: 'NEW' },
+  { id: 'hashtags', group: 'social', icon: Hash, title: 'Hashtags optimaux', desc: 'Top hashtags par plateforme, par thème, par localisation', gradient: 'from-purple-500 to-pink-500', badge: 'NEW' },
+  { id: 'calendar', group: 'social', icon: Calendar, title: 'Calendrier éditorial IA', desc: 'Suggère un planning de posts pour 30 jours basé sur les fêtes interreligieuses', gradient: 'from-blue-500 to-indigo-500' },
+
+  // Analytics
+  { id: 'sentiment', group: 'analytics', icon: BarChart3, title: 'Analyse sentiment', desc: 'Détecte l\'émotion dominante d\'un témoignage (joie/espoir/colère…)', gradient: 'from-emerald-500 to-green-500' },
+  { id: 'cluster', group: 'analytics', icon: BarChart3, title: 'Clustering thèmes', desc: 'Regroupe automatiquement les témoignages par thématique', gradient: 'from-cyan-500 to-teal-500' },
+  { id: 'weekly', group: 'analytics', icon: TrendingUp, title: 'Synthèse hebdo', desc: 'Rapport hebdomadaire pour l\'équipe avec actions prioritaires', gradient: 'from-blue-500 to-cyan-500' },
+
+  // SEO
+  { id: 'seo-meta', group: 'seo', icon: Search, title: 'Meta SEO auto', desc: 'Génère titre + description Google optimisés pour chaque page', gradient: 'from-orange-500 to-red-500', badge: 'NEW' },
+  { id: 'seo-keywords', group: 'seo', icon: Hash, title: 'Mots-clés SEO', desc: 'Suggère les meilleurs mots-clés pour ranker sur Google', gradient: 'from-yellow-500 to-orange-500', badge: 'NEW' },
+
+  // Communication
+  { id: 'comment-reply', group: 'comms', icon: MessageCircle, title: 'Réponse commentaires', desc: 'Suggère des réponses bienveillantes aux commentaires des photos', gradient: 'from-pink-500 to-violet-500', badge: 'NEW' },
+  { id: 'email-reply', group: 'comms', icon: Mail, title: 'Réponse email IA', desc: 'Brouillon de réponse à un email de soutien ou de question', gradient: 'from-violet-500 to-pink-500', badge: 'NEW' }
 ];
 
+const GROUPS = [
+  { id: 'visuals',   label: '🎨 Visuels & Images',   color: 'text-pink-400' },
+  { id: 'content',   label: '📝 Textes & Contenu',   color: 'text-amber-400' },
+  { id: 'social',    label: '📱 Réseaux sociaux',    color: 'text-fuchsia-400' },
+  { id: 'analytics', label: '📊 Analytics',          color: 'text-emerald-400' },
+  { id: 'seo',       label: '🔍 SEO Google/Bing',    color: 'text-orange-400' },
+  { id: 'comms',     label: '💬 Communication',      color: 'text-violet-400' }
+] as const;
+
 export function AIStudio() {
-  const [tab, setTab] = useState('caption');
-  return (
-    <div>
-      <div className="flex flex-wrap gap-2 mb-6">
-        {TABS.map((t) => {
-          const I = t.icon;
+  const [active, setActive] = useState<string | null>(null);
+
+  if (!active) {
+    return (
+      <div className="space-y-8">
+        {/* Hero stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <Stat icon={Wand2} value={TOOLS.length} label="Outils IA dispo" gradient="from-pink-500 to-violet-500" />
+          <Stat icon={Sparkles} value="Gemini" label="Texte + Vision" gradient="from-cyan-500 to-blue-500" />
+          <Stat icon={ImageIcon} value="Imagen" label="Génération image" gradient="from-emerald-500 to-teal-500" />
+          <Stat icon={Music} value="ElevenLabs" label="Musique ambient" gradient="from-violet-500 to-fuchsia-500" />
+        </div>
+
+        {/* Tools grouped */}
+        {GROUPS.map((g) => {
+          const tools = TOOLS.filter((t) => t.group === g.id);
+          if (tools.length === 0) return null;
           return (
-            <button key={t.v} onClick={() => setTab(t.v)}
-              className={`px-3 py-2 rounded-full text-xs border flex items-center gap-1 transition
-                ${tab === t.v ? 'border-brand-pink text-brand-pink bg-brand-pink/10' : 'border-zinc-800 text-zinc-400 hover:border-zinc-600'}`}>
-              <I size={12} /> {t.l}
-            </button>
+            <section key={g.id}>
+              <h2 className={`text-sm uppercase tracking-widest font-bold mb-3 ${g.color}`}>{g.label}</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                {tools.map((t) => <ToolCard key={t.id} t={t} onClick={() => setActive(t.id)} />)}
+              </div>
+            </section>
           );
         })}
       </div>
+    );
+  }
 
-      {tab === 'visuals' && <HeroVisualsAdmin />}
-      {tab === 'music' && <MusicGenerator />}
-      {tab === 'caption' && <CaptionTab />}
-      {tab === 'testimony' && <TestimonyTab />}
-      {tab === 'variants' && <VariantsTab />}
-      {tab === 'translate' && <TranslateTab />}
-      {tab === 'newsletter' && <NewsletterTab />}
-      {tab === 'sentiment' && <SentimentTab />}
-      {tab === 'cluster' && <ClusterTab />}
-      {tab === 'weekly' && <WeeklyTab />}
-      {tab === 'calendar' && <CalendarTab />}
-      {tab === 'verse' && <VerseTab />}
-      {tab === 'photo-tools' && <PhotoToolsTab />}
+  const tool = TOOLS.find((t) => t.id === active);
+
+  return (
+    <div>
+      <button onClick={() => setActive(null)} className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-6 text-sm">
+        <ArrowLeft size={16} /> Retour au Studio IA
+      </button>
+
+      {tool && (
+        <div className={`bg-gradient-to-br ${tool.gradient} rounded-2xl p-6 mb-6 text-white`}>
+          <div className="flex items-center gap-4">
+            <div className="bg-white/20 rounded-xl p-3"><tool.icon size={32} /></div>
+            <div>
+              <h1 className="text-2xl font-bold">{tool.title}</h1>
+              <p className="text-white/85 text-sm">{tool.desc}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {active === 'visuals' && <HeroVisualsAdmin />}
+      {active === 'music' && <MusicGenerator />}
+      {active === 'caption' && <CaptionTab />}
+      {active === 'testimony' && <TestimonyTab />}
+      {active === 'variants' && <VariantsTab />}
+      {active === 'translate' && <TranslateTab />}
+      {active === 'newsletter' && <NewsletterTab />}
+      {active === 'sentiment' && <SentimentTab />}
+      {active === 'cluster' && <ClusterTab />}
+      {active === 'weekly' && <WeeklyTab />}
+      {active === 'calendar' && <CalendarTab />}
+      {active === 'verse' && <VerseTab />}
+      {active === 'photo-tools' && <PhotoToolsTab />}
+      {active === 'pack-social' && <PackSocialTab />}
+      {active === 'hashtags' && <HashtagsTab />}
+      {active === 'seo-meta' && <SeoMetaTab />}
+      {active === 'seo-keywords' && <SeoKeywordsTab />}
+      {active === 'comment-reply' && <CommentReplyTab />}
+      {active === 'email-reply' && <EmailReplyTab />}
     </div>
   );
 }
 
+function ToolCard({ t, onClick }: { t: Tool; onClick: () => void }) {
+  const Icon = t.icon;
+  return (
+    <button onClick={onClick}
+            className="group text-left bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-brand-pink/40 rounded-2xl p-4 transition relative overflow-hidden">
+      {t.badge && (
+        <span className={`absolute top-2 right-2 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase ${t.badge === 'NEW' ? 'bg-emerald-500 text-white' : t.badge === 'POPULAR' ? 'bg-brand-pink text-white' : 'bg-amber-500 text-black'}`}>
+          {t.badge}
+        </span>
+      )}
+      <div className={`inline-flex w-12 h-12 rounded-xl bg-gradient-to-br ${t.gradient} items-center justify-center mb-3 group-hover:scale-110 transition shadow-lg`}>
+        <Icon size={22} className="text-white" />
+      </div>
+      <h3 className="font-bold text-white mb-1 group-hover:text-brand-pink transition">{t.title}</h3>
+      <p className="text-xs text-zinc-400 line-clamp-2">{t.desc}</p>
+    </button>
+  );
+}
+
+function Stat({ icon: Icon, value, label, gradient }: any) {
+  return (
+    <div className={`bg-gradient-to-br ${gradient} rounded-2xl p-4 text-white shadow-lg`}>
+      <Icon size={20} className="opacity-90 mb-2" />
+      <div className="text-xl font-bold leading-none">{value}</div>
+      <div className="text-[10px] uppercase tracking-wider opacity-90 mt-1">{label}</div>
+    </div>
+  );
+}
+
+/* ─── Helpers ────────────────────────────── */
+
 function CallButton({ busy, children, ...props }: any) {
   return (
-    <button disabled={busy} {...props} className="btn-primary text-sm">
+    <button disabled={busy} {...props} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-pink hover:bg-pink-600 disabled:opacity-50 text-white font-bold text-sm">
       {busy ? <Loader2 className="animate-spin" size={14} /> : <Sparkles size={14} />} {children}
     </button>
   );
 }
 
-function ResultBox({ text, json }: { text: string; json?: any }) {
-  if (!text && !json) return null;
+function ResultBox({ output, mock }: { output: string; mock?: boolean }) {
+  if (!output) return null;
   return (
-    <div className="mt-4 bg-zinc-950 border border-zinc-800 rounded-2xl p-5">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-zinc-500">Résultat</span>
-        {text && (
-          <button onClick={() => navigator.clipboard.writeText(text)}
-            className="text-xs text-brand-pink hover:underline flex items-center gap-1">
-            <Copy size={12} /> Copier
-          </button>
-        )}
-      </div>
-      {json ? (
-        <pre className="text-xs text-white/80 whitespace-pre-wrap">{JSON.stringify(json, null, 2)}</pre>
-      ) : (
-        <p className="text-white/90 whitespace-pre-wrap leading-relaxed">{text}</p>
-      )}
+    <div className="mt-4 bg-zinc-950 border border-zinc-800 rounded-xl p-4 relative">
+      {mock && <p className="text-amber-400 text-xs mb-2">⚠️ Mode démo (clé Gemini absente)</p>}
+      <button onClick={() => navigator.clipboard.writeText(output)}
+              className="absolute top-2 right-2 p-1.5 bg-zinc-800 hover:bg-zinc-700 rounded text-zinc-400" title="Copier">
+        <Copy size={14} />
+      </button>
+      <pre className="whitespace-pre-wrap text-sm text-white/90 font-sans">{output}</pre>
     </div>
   );
 }
 
-/* ─────────────── TABS ─────────────── */
+function Card({ children, hint }: { children: any; hint?: string }) {
+  return (
+    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-3">
+      {hint && <p className="text-xs text-zinc-400 italic">{hint}</p>}
+      {children}
+    </div>
+  );
+}
+
+/* ─── ONGLETS EXISTANTS ────────────────────── */
 
 function CaptionTab() {
   const [url, setUrl] = useState('');
   const [out, setOut] = useState('');
   const [busy, setBusy] = useState(false);
   async function go() {
-    setBusy(true);
-    const r = await fetch('/api/ai/caption', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageUrl: url }) });
-    const j = await r.json();
-    setOut(j.text || j.error);
-    setBusy(false);
+    setBusy(true); setOut('');
+    const r = await fetch('/api/admin/ai/caption-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageUrl: url }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
   return (
-    <div>
-      <p className="text-zinc-400 text-sm mb-3">Colle l'URL d'une photo de la galerie. Gemini Vision la décrit en 80 mots avec hashtags.</p>
-      <div className="flex gap-2">
-        <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…ou /api/storage/uploads/2026-04-24/…"
-          className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm" />
-        <CallButton busy={busy} onClick={go}>Générer</CallButton>
-      </div>
-      <ResultBox text={out} />
-    </div>
+    <Card hint="Colle une URL d'image (de la galerie ou ailleurs). Gemini Vision la décrit en 80 mots avec hashtags inclusifs.">
+      <input className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="https://gld.pixeeplay.com/api/storage/..." value={url} onChange={(e) => setUrl(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Générer la légende</CallButton>
+      <ResultBox output={out} />
+    </Card>
   );
 }
 
@@ -117,69 +222,39 @@ function TestimonyTab() {
   const [text, setText] = useState('');
   const [out, setOut] = useState('');
   const [busy, setBusy] = useState(false);
-  const [anon, setAnon] = useState(true);
   async function go() {
-    setBusy(true);
-    const r = await fetch('/api/ai/testimony', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, anonymize: anon }) });
-    const j = await r.json();
-    setOut(j.text);
-    setBusy(false);
+    setBusy(true); setOut('');
+    const r = await fetch('/api/admin/ai/polish-testimony', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, anonymize: true }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
   return (
-    <div>
-      <p className="text-zinc-400 text-sm mb-3">Colle un témoignage brut, l'IA le retravaille pour publication.</p>
-      <textarea value={text} onChange={(e) => setText(e.target.value)} rows={5}
-        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm mb-2" />
-      <label className="flex items-center gap-2 text-xs text-zinc-400 mb-3">
-        <input type="checkbox" checked={anon} onChange={(e) => setAnon(e.target.checked)} /> Anonymiser
-      </label>
-      <CallButton busy={busy} onClick={go}>Réécrire</CallButton>
-      <ResultBox text={out} />
-    </div>
+    <Card hint="Colle le texte brut d'un témoignage. L'IA va le réécrire en gardant l'intention, anonymisé, en max 100 mots.">
+      <textarea rows={6} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="Colle le témoignage brut ici…" value={text} onChange={(e) => setText(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Polir le témoignage</CallButton>
+      <ResultBox output={out} />
+    </Card>
   );
 }
 
 function VariantsTab() {
   const [brief, setBrief] = useState('');
   const [network, setNetwork] = useState('Instagram');
-  const [count, setCount] = useState(5);
-  const [variants, setVariants] = useState<any[]>([]);
+  const [out, setOut] = useState('');
   const [busy, setBusy] = useState(false);
   async function go() {
-    setBusy(true);
-    const r = await fetch('/api/ai/variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief, network, count }) });
-    const j = await r.json();
-    setVariants(j.variants || []);
-    setBusy(false);
+    setBusy(true); setOut('');
+    const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief, network, count: 5 }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
   return (
-    <div>
-      <p className="text-zinc-400 text-sm mb-3">Décris brièvement le post → l'IA en propose {count} versions.</p>
-      <textarea value={brief} onChange={(e) => setBrief(e.target.value)} rows={3} placeholder="Ex: Annoncer notre 1000ᵉ photo collectée"
-        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm mb-2" />
-      <div className="flex gap-2 mb-3">
-        <select value={network} onChange={(e) => setNetwork(e.target.value)}
-          className="bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm">
-          {['Instagram', 'X / Twitter', 'LinkedIn', 'Facebook', 'TikTok'].map((n) => <option key={n}>{n}</option>)}
-        </select>
-        <input type="number" min={2} max={10} value={count} onChange={(e) => setCount(Number(e.target.value))}
-          className="w-20 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm" />
-        <CallButton busy={busy} onClick={go}>Générer</CallButton>
-      </div>
-      <div className="space-y-2">
-        {variants.map((v: any, i) => (
-          <div key={i} className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
-            <div className="flex justify-between text-xs text-zinc-500 mb-2">
-              <span>Version {v.version}</span>
-              <button onClick={() => navigator.clipboard.writeText(v.content)} className="text-brand-pink hover:underline flex items-center gap-1">
-                <Copy size={11} /> Copier
-              </button>
-            </div>
-            <p className="text-sm text-white/90 whitespace-pre-wrap">{v.content}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Card hint="Décris ton message (1-2 phrases) et choisis le réseau. L'IA produit 5 variantes différentes adaptées.">
+      <select className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" value={network} onChange={(e) => setNetwork(e.target.value)}>
+        <option>Instagram</option><option>X / Twitter</option><option>LinkedIn</option><option>Facebook</option><option>TikTok</option>
+      </select>
+      <textarea rows={4} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="Brief : annoncer la sortie d'une nouvelle affiche…" value={brief} onChange={(e) => setBrief(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Générer 5 variantes</CallButton>
+      <ResultBox output={out} />
+    </Card>
   );
 }
 
@@ -187,195 +262,83 @@ function TranslateTab() {
   const [text, setText] = useState('');
   const [target, setTarget] = useState<'en' | 'es' | 'pt'>('en');
   const [out, setOut] = useState('');
-  const [mode, setMode] = useState<'translate' | 'detect' | 'adapt'>('translate');
-  const [market, setMarket] = useState('latino-américain');
   const [busy, setBusy] = useState(false);
   async function go() {
-    setBusy(true);
-    const r = await fetch('/api/ai/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode, text, target, market }) });
-    const j = await r.json();
-    setOut(j.text);
-    setBusy(false);
+    setBusy(true); setOut('');
+    const r = await fetch('/api/admin/ai/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, target }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
   return (
-    <div>
-      <div className="flex gap-2 mb-3">
-        {[
-          { v: 'translate', l: 'Traduire' },
-          { v: 'detect', l: 'Détecter langue' },
-          { v: 'adapt', l: 'Adapter culture' }
-        ].map((m) => (
-          <button key={m.v} onClick={() => setMode(m.v as any)}
-            className={`px-3 py-1 rounded-full text-xs border ${mode === m.v ? 'border-brand-pink text-brand-pink' : 'border-zinc-800 text-zinc-500'}`}>
-            {m.l}
-          </button>
-        ))}
-      </div>
-      <textarea value={text} onChange={(e) => setText(e.target.value)} rows={5}
-        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm mb-2" />
-      <div className="flex gap-2 items-center mb-3">
-        {mode === 'translate' && (
-          <select value={target} onChange={(e) => setTarget(e.target.value as any)}
-            className="bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm">
-            <option value="en">→ Anglais</option>
-            <option value="es">→ Espagnol</option>
-            <option value="pt">→ Portugais</option>
-          </select>
-        )}
-        {mode === 'adapt' && (
-          <input value={market} onChange={(e) => setMarket(e.target.value)}
-            className="bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="public cible…" />
-        )}
-        <CallButton busy={busy} onClick={go}>Lancer</CallButton>
-      </div>
-      <ResultBox text={out} />
-    </div>
+    <Card hint="Traduit en gardant le ton chaleureux et inclusif. Conserve le formatage (gras, listes…).">
+      <select className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" value={target} onChange={(e) => setTarget(e.target.value as any)}>
+        <option value="en">English 🇬🇧</option><option value="es">Español 🇪🇸</option><option value="pt">Português 🇵🇹</option>
+      </select>
+      <textarea rows={5} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" value={text} onChange={(e) => setText(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Traduire</CallButton>
+      <ResultBox output={out} />
+    </Card>
   );
 }
 
 function NewsletterTab() {
+  const [stats, setStats] = useState('{ "newPhotos": 12, "newSubs": 5 }');
   const [out, setOut] = useState('');
   const [busy, setBusy] = useState(false);
   async function go() {
-    setBusy(true);
-    const r = await fetch('/api/ai/newsletter', { method: 'POST' });
-    const j = await r.json();
-    setOut(j.text);
-    setBusy(false);
+    setBusy(true); setOut('');
+    const r = await fetch('/api/admin/ai/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: stats });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
   return (
-    <div>
-      <p className="text-zinc-400 text-sm mb-3">Génère la newsletter du mois automatiquement à partir des stats des 30 derniers jours.</p>
-      <CallButton busy={busy} onClick={go}>Générer la newsletter du mois</CallButton>
-      {out && <div className="mt-4 bg-white/5 border border-zinc-800 rounded-2xl p-6 prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: out }} />}
-    </div>
+    <Card hint="L'IA génère une newsletter HTML complète à partir des stats du mois (max 250 mots).">
+      <textarea rows={4} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm font-mono" value={stats} onChange={(e) => setStats(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Générer la newsletter</CallButton>
+      <ResultBox output={out} />
+    </Card>
   );
 }
 
 function SentimentTab() {
   const [text, setText] = useState('');
-  const [out, setOut] = useState<any>(null);
+  const [out, setOut] = useState('');
   const [busy, setBusy] = useState(false);
   async function go() {
-    setBusy(true);
-    const r = await fetch('/api/ai/insights', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'sentiment', text }) });
-    const j = await r.json();
-    setOut(j.parsed);
-    setBusy(false);
+    setBusy(true); setOut('');
+    const r = await fetch('/api/admin/ai/sentiment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
   return (
-    <div>
-      <p className="text-zinc-400 text-sm mb-3">Analyse émotionnelle d'un témoignage.</p>
-      <textarea value={text} onChange={(e) => setText(e.target.value)} rows={4}
-        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm mb-2" />
-      <CallButton busy={busy} onClick={go}>Analyser</CallButton>
-      {out && (
-        <div className="mt-4 bg-zinc-950 border border-zinc-800 rounded-2xl p-5 space-y-2">
-          <div><span className="text-zinc-500 text-xs">Émotion principale :</span> <span className="text-brand-pink font-bold">{out.primary}</span></div>
-          {out.secondary && <div><span className="text-zinc-500 text-xs">Secondaires :</span> {out.secondary?.join(', ')}</div>}
-          <div><span className="text-zinc-500 text-xs">Intensité :</span> {out.intensity}/10</div>
-          <p className="text-sm text-white/80 italic">{out.summary}</p>
-        </div>
-      )}
-    </div>
+    <Card hint="Renvoie un JSON avec l'émotion dominante, intensité 1-10, et synthèse en 1 phrase.">
+      <textarea rows={5} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" value={text} onChange={(e) => setText(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Analyser le sentiment</CallButton>
+      <ResultBox output={out} />
+    </Card>
   );
 }
 
 function ClusterTab() {
-  const [items, setItems] = useState('');
-  const [out, setOut] = useState<any>(null);
-  const [busy, setBusy] = useState(false);
-  async function go() {
-    setBusy(true);
-    const lines = items.split('\n').filter(Boolean).map((l, i) => ({ id: `t${i}`, text: l }));
-    const r = await fetch('/api/ai/insights', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'cluster', items: lines }) });
-    const j = await r.json();
-    setOut(j.parsed);
-    setBusy(false);
-  }
-  return (
-    <div>
-      <p className="text-zinc-400 text-sm mb-3">Colle plusieurs témoignages (1 par ligne), l'IA les regroupe par thème.</p>
-      <textarea value={items} onChange={(e) => setItems(e.target.value)} rows={8}
-        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm mb-2 font-mono" />
-      <CallButton busy={busy} onClick={go}>Clusteriser</CallButton>
-      {out?.clusters && (
-        <div className="mt-4 space-y-2">
-          {out.clusters.map((c: any, i: number) => (
-            <div key={i} className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
-              <div className="font-bold text-brand-pink">{c.theme}</div>
-              <p className="text-sm text-white/70 mt-1">{c.summary}</p>
-              <div className="text-xs text-zinc-500 mt-2">{c.ids?.join(', ')}</div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <Card hint="🔧 Importer N témoignages et l'IA les regroupe en 3-6 clusters thématiques. À brancher sur un picker de témoignages."><p className="text-zinc-500 text-sm">Disponible via API directe — UI picker à venir V2.</p></Card>;
 }
 
 function WeeklyTab() {
-  const [out, setOut] = useState('');
-  const [stats, setStats] = useState<any>(null);
-  const [busy, setBusy] = useState(false);
-  async function go() {
-    setBusy(true);
-    const r = await fetch('/api/ai/insights', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'weekly' }) });
-    const j = await r.json();
-    setOut(j.text);
-    setStats(j.stats);
-    setBusy(false);
-  }
-  return (
-    <div>
-      <p className="text-zinc-400 text-sm mb-3">Synthèse de l'activité des 7 derniers jours.</p>
-      <CallButton busy={busy} onClick={go}>Générer la synthèse</CallButton>
-      {stats && (
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
-          {Object.entries(stats).map(([k, v]) => (
-            <div key={k} className="bg-zinc-900 rounded-lg p-3">
-              <div className="text-2xl font-bold text-brand-pink">{String(v)}</div>
-              <div className="text-zinc-500">{k}</div>
-            </div>
-          ))}
-        </div>
-      )}
-      <ResultBox text={out} />
-    </div>
-  );
+  return <Card hint="Synthèse hebdomadaire automatique générée chaque lundi via le scheduled task admin."><p className="text-zinc-500 text-sm">Configure dans /admin/calendar → tâche récurrente.</p></Card>;
 }
 
 function CalendarTab() {
   const [month, setMonth] = useState(new Date().toISOString().slice(0, 7));
-  const [out, setOut] = useState<any[]>([]);
+  const [out, setOut] = useState('');
   const [busy, setBusy] = useState(false);
   async function go() {
-    setBusy(true);
-    const r = await fetch('/api/ai/insights', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'calendar', monthDate: month }) });
-    const j = await r.json();
-    setOut(j.parsed?.events || []);
-    setBusy(false);
+    setBusy(true); setOut('');
+    const r = await fetch('/api/admin/ai/calendar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ month }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
   return (
-    <div>
-      <p className="text-zinc-400 text-sm mb-3">Liste les événements religieux et inclusifs du mois + propose un post pour chacun.</p>
-      <div className="flex gap-2 mb-3">
-        <input type="month" value={month} onChange={(e) => setMonth(e.target.value)}
-          className="bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm" />
-        <CallButton busy={busy} onClick={go}>Générer</CallButton>
-      </div>
-      <div className="space-y-2">
-        {out.map((e: any, i: number) => (
-          <div key={i} className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-1">
-              <span className="font-bold">{e.name}</span>
-              <span className="text-xs text-zinc-500">{e.date} · {e.category}</span>
-            </div>
-            <p className="text-sm text-white/80 italic">💡 {e.post_idea}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Card hint="Pour le mois choisi, l'IA liste les événements religieux + LGBT+ et propose un post pour chacun.">
+      <input type="month" className="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" value={month} onChange={(e) => setMonth(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Générer le calendrier</CallButton>
+      <ResultBox output={out} />
+    </Card>
   );
 }
 
@@ -384,62 +347,159 @@ function VerseTab() {
   const [out, setOut] = useState('');
   const [busy, setBusy] = useState(false);
   async function go() {
-    setBusy(true);
-    const r = await fetch(`/api/ai/verse?theme=${encodeURIComponent(theme)}`);
-    const j = await r.json();
-    setOut(j.text);
-    setBusy(false);
+    setBusy(true); setOut('');
+    const r = await fetch('/api/admin/ai/verse', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ theme }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
   return (
-    <div>
-      <p className="text-zinc-400 text-sm mb-3">Génère un message inspirant quotidien, prêt à publier ou à envoyer en push.</p>
-      <div className="flex gap-2 mb-3">
-        <input value={theme} onChange={(e) => setTheme(e.target.value)} placeholder="Thème (optionnel)"
-          className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm" />
-        <CallButton busy={busy} onClick={go}>Générer</CallButton>
-      </div>
-      {out && (
-        <div className="bg-gradient-to-r from-brand-pink/10 to-purple-600/10 border border-brand-pink/30 rounded-2xl p-8 text-center">
-          <p className="font-display text-xl text-white/90 italic">"{out}"</p>
-        </div>
-      )}
-    </div>
+    <Card hint="Message inspirant non-confessionnel (1-2 phrases lumineuses). Utile pour le verset du jour.">
+      <input className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="Thème (optionnel) : pardon, amour, courage…" value={theme} onChange={(e) => setTheme(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Générer un verset</CallButton>
+      <ResultBox output={out} />
+    </Card>
   );
 }
 
 function PhotoToolsTab() {
-  const [photoId, setPhotoId] = useState('');
-  const [out, setOut] = useState<any>(null);
+  return (
+    <div className="grid md:grid-cols-2 gap-4">
+      <Card hint="Floute automatiquement les visages d'une photo (Gemini Vision + Sharp).">
+        <p className="text-sm text-zinc-300">Endpoint : <code className="text-brand-pink">POST /api/admin/photos/[id]/blur</code></p>
+        <p className="text-xs text-zinc-500">Disponible aussi depuis la page Modération.</p>
+      </Card>
+      <Card hint="Détecte les doublons via perceptual hash (image-hash).">
+        <p className="text-sm text-zinc-300">Endpoint : <code className="text-brand-pink">POST /api/admin/photos/dedup</code></p>
+      </Card>
+    </div>
+  );
+}
+
+/* ─── NOUVEAUX OUTILS ─────────────────────── */
+
+function PackSocialTab() {
+  const [imageUrl, setImageUrl] = useState('');
+  const [topic, setTopic] = useState('');
+  const [out, setOut] = useState('');
   const [busy, setBusy] = useState(false);
-  async function blurFaces() {
-    setBusy(true);
-    const r = await fetch('/api/ai/photo/blur', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ photoId }) });
-    const j = await r.json();
-    setOut(j);
-    setBusy(false);
-  }
-  async function dedup() {
-    setBusy(true);
-    const r = await fetch('/api/ai/photo/dedup', { method: 'POST' });
-    const j = await r.json();
-    setOut(j);
-    setBusy(false);
+  async function go() {
+    setBusy(true); setOut('');
+    // Génère 5 posts en 1 appel via post-variants × 5 réseaux
+    const networks = ['Instagram', 'X / Twitter', 'LinkedIn', 'Facebook', 'TikTok'];
+    let combined = '';
+    for (const net of networks) {
+      const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: topic + (imageUrl ? `\nImage: ${imageUrl}` : ''), network: net, count: 1 }) });
+      const j = await r.json();
+      combined += `\n\n━━━ ${net.toUpperCase()} ━━━\n${j.text || ''}`;
+    }
+    setOut(combined.trim()); setBusy(false);
   }
   return (
-    <div className="space-y-6">
-      <div>
-        <p className="text-zinc-400 text-sm mb-3">📸 Floutage automatique des visages (utilise Gemini Vision pour détecter, sharp pour flouter).</p>
-        <div className="flex gap-2">
-          <input value={photoId} onChange={(e) => setPhotoId(e.target.value)} placeholder="ID de la photo (depuis /admin/moderation)"
-            className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm font-mono" />
-          <CallButton busy={busy} onClick={blurFaces}>Flouter visages</CallButton>
-        </div>
-      </div>
-      <div>
-        <p className="text-zinc-400 text-sm mb-3">🔍 Détection de doublons (perceptual hash) sur les 500 dernières photos.</p>
-        <CallButton busy={busy} onClick={dedup}>Lancer la détection</CallButton>
-      </div>
-      {out && <ResultBox text="" json={out} />}
-    </div>
+    <Card hint="🚀 1 photo + 1 idée = 5 posts prêts à publier (FB / IG / X / LinkedIn / TikTok). Idéal pour ne pas réécrire 5 fois.">
+      <input className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="URL image (optionnel)" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+      <textarea rows={3} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="Sujet : annoncer la marche des fiertés interreligieuse du 14 juin…" value={topic} onChange={(e) => setTopic(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>{busy ? 'Génération 5 réseaux…' : 'Générer le pack 5 réseaux'}</CallButton>
+      <ResultBox output={out} />
+    </Card>
+  );
+}
+
+function HashtagsTab() {
+  const [topic, setTopic] = useState('');
+  const [platform, setPlatform] = useState('Instagram');
+  const [out, setOut] = useState('');
+  const [busy, setBusy] = useState(false);
+  async function go() {
+    setBusy(true); setOut('');
+    const prompt = `Liste les 30 meilleurs hashtags ${platform} pour le sujet : "${topic}". Mix : 10 grands tags (>1M), 10 moyens (100k-1M), 10 niches (<100k). Domaine : foi inclusive LGBT+. Format : un hashtag par ligne, du plus large au plus niche, sans numérotation.`;
+    const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: prompt, network: platform, count: 1 }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
+  }
+  return (
+    <Card hint="30 hashtags optimisés (10 large + 10 moyen + 10 niche) pour le sujet et la plateforme choisie.">
+      <select className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" value={platform} onChange={(e) => setPlatform(e.target.value)}>
+        <option>Instagram</option><option>TikTok</option><option>LinkedIn</option><option>X / Twitter</option><option>YouTube</option>
+      </select>
+      <input className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="Sujet : marche fiertés Paris, témoignage musulman gay…" value={topic} onChange={(e) => setTopic(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Générer 30 hashtags</CallButton>
+      <ResultBox output={out} />
+    </Card>
+  );
+}
+
+function SeoMetaTab() {
+  const [pageUrl, setPageUrl] = useState('');
+  const [pageContent, setPageContent] = useState('');
+  const [out, setOut] = useState('');
+  const [busy, setBusy] = useState(false);
+  async function go() {
+    setBusy(true); setOut('');
+    const prompt = `Tu es un expert SEO. Pour cette page :\nURL: ${pageUrl}\nContenu (extrait):\n"""${pageContent.slice(0, 1500)}"""\n\nGénère :\n1. UN TITLE optimisé Google (max 60 caractères, contient mot-clé principal, mention "God Loves Diversity")\n2. UNE META DESCRIPTION (max 155 caractères, incitative, contient verbe d'action)\n3. 5 MOTS-CLÉS principaux (par ordre de priorité)\n4. SUGGESTION OG IMAGE alt (description courte de l'image idéale)\n\nFormat clair avec labels.`;
+    const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: prompt, network: 'LinkedIn', count: 1 }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
+  }
+  return (
+    <Card hint="🔍 Génère le title et la meta description optimaux Google pour une page (max 60 + 155 caractères).">
+      <input className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="URL : /argumentaire" value={pageUrl} onChange={(e) => setPageUrl(e.target.value)} />
+      <textarea rows={6} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="Colle un extrait du contenu de la page…" value={pageContent} onChange={(e) => setPageContent(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Générer meta SEO</CallButton>
+      <ResultBox output={out} />
+    </Card>
+  );
+}
+
+function SeoKeywordsTab() {
+  const [topic, setTopic] = useState('');
+  const [out, setOut] = useState('');
+  const [busy, setBusy] = useState(false);
+  async function go() {
+    setBusy(true); setOut('');
+    const prompt = `Liste les 30 meilleurs mots-clés SEO français pour le sujet : "${topic}", dans le contexte du mouvement God Loves Diversity (foi inclusive LGBT+).\nMix : 10 mots-clés courts/concurrentiels, 10 longue traîne (3-5 mots), 10 questions exactes que les gens tapent dans Google.\nFormat : un par ligne, sans numérotation, sans caractère spécial.`;
+    const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: prompt, network: 'LinkedIn', count: 1 }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
+  }
+  return (
+    <Card hint="30 mots-clés SEO classés (concurrentiels / longue traîne / questions Google).">
+      <input className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="Sujet : église inclusive Paris" value={topic} onChange={(e) => setTopic(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Générer les mots-clés</CallButton>
+      <ResultBox output={out} />
+    </Card>
+  );
+}
+
+function CommentReplyTab() {
+  const [comment, setComment] = useState('');
+  const [out, setOut] = useState('');
+  const [busy, setBusy] = useState(false);
+  async function go() {
+    setBusy(true); setOut('');
+    const prompt = `Quelqu'un a posté ce commentaire sur le site God Loves Diversity :\n"""${comment}"""\n\nPropose 3 réponses bienveillantes différentes (tons : chaleureux, factuel, spirituel). Chacune en 2-3 phrases max, ton inclusif et apaisé. Format : "Option 1: ..." etc.`;
+    const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: prompt, network: 'LinkedIn', count: 1 }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
+  }
+  return (
+    <Card hint="3 propositions de réponse bienveillante à un commentaire (chaleureux / factuel / spirituel).">
+      <textarea rows={4} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="Colle le commentaire reçu…" value={comment} onChange={(e) => setComment(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Suggérer 3 réponses</CallButton>
+      <ResultBox output={out} />
+    </Card>
+  );
+}
+
+function EmailReplyTab() {
+  const [email, setEmail] = useState('');
+  const [out, setOut] = useState('');
+  const [busy, setBusy] = useState(false);
+  async function go() {
+    setBusy(true); setOut('');
+    const prompt = `Quelqu'un a écrit cet email à God Loves Diversity :\n"""${email}"""\n\nRédige un brouillon de réponse (max 200 mots) :\n- Ton chaleureux et personnel\n- Reformule pour montrer qu'on a bien compris\n- Réponds aux questions s'il y en a\n- Termine par une formule humaine (pas "cordialement")\nSi l'email est sensible (souffrance, doute spirituel), oriente avec délicatesse vers une ressource.`;
+    const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: prompt, network: 'LinkedIn', count: 1 }) });
+    const j = await r.json(); setOut(j.text || ''); setBusy(false);
+  }
+  return (
+    <Card hint="Brouillon de réponse à un email (max 200 mots, ton chaleureux). Toujours à relire avant envoi.">
+      <textarea rows={6} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" placeholder="Colle l'email reçu…" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <CallButton busy={busy} onClick={go}>Rédiger un brouillon</CallButton>
+      <ResultBox output={out} />
+    </Card>
   );
 }
