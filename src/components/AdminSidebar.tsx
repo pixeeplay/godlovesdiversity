@@ -9,6 +9,7 @@ import {
 
 const NAV = [
   { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
+  { href: '/admin/setup', label: 'Assistant configuration', icon: Sparkles },
   { href: '/admin/banners', label: 'Bannières (hero)', icon: GalleryHorizontalEnd },
   { href: '/admin/menu', label: 'Menu nav', icon: MenuIcon },
   { href: '/admin/home', label: 'Page d\'accueil', icon: Home },

@@ -86,12 +86,34 @@ export default async function Dashboard() {
     { label: 'Posts programmés', value: scheduled, icon: Calendar, gradient: 'from-violet-500 to-purple-500', href: '/admin/calendar' }
   ];
 
+  // Check si setup incomplet (au moins 1 indispensable manquant)
+  const setupSettings = await prisma.setting.findMany({
+    where: { key: { in: ['integrations.gemini.apiKey', 'integrations.resend.apiKey'] } }
+  }).catch(() => []);
+  const hasGemini = setupSettings.some((x) => x.key === 'integrations.gemini.apiKey' && !!x.value);
+  const hasResend = setupSettings.some((x) => x.key === 'integrations.resend.apiKey' && !!x.value);
+  const setupIncomplete = !hasGemini || !hasResend;
+
   return (
     <div className="p-6 md:p-8 max-w-7xl space-y-10">
       <header>
         <h1 className="text-3xl md:text-4xl font-display font-bold mb-1">Tableau de bord</h1>
         <p className="text-zinc-400">Bienvenue, <strong>{s.user?.name || s.user?.email}</strong> · {new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
       </header>
+
+      {/* Bandeau Assistant si config incomplète */}
+      {setupIncomplete && (
+        <a href="/admin/setup" className="block bg-gradient-to-r from-brand-pink via-violet-500 to-cyan-500 rounded-2xl p-5 hover:scale-[1.01] transition shadow-xl">
+          <div className="flex items-center gap-4 text-white">
+            <div className="bg-white/20 rounded-xl p-3"><Sparkles size={28} /></div>
+            <div className="flex-1">
+              <h2 className="font-bold text-lg">🚀 Configure ton site en 5 minutes</h2>
+              <p className="text-sm text-white/90">Il manque {!hasGemini && 'la clé Gemini'}{!hasGemini && !hasResend && ' et '}{!hasResend && 'Resend (email)'} pour activer toutes les fonctions. L'assistant te guide étape par étape.</p>
+            </div>
+            <span className="bg-white text-brand-pink font-bold px-4 py-2 rounded-full text-sm whitespace-nowrap">Démarrer →</span>
+          </div>
+        </a>
+      )}
 
       <section>
         <h2 className="text-sm uppercase tracking-widest text-zinc-500 font-bold mb-3 flex items-center gap-2"><ShoppingBag size={14} /> Boutique &amp; Ventes</h2>
