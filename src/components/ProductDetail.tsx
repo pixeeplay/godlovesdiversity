@@ -4,6 +4,15 @@ import { useRouter } from 'next/navigation';
 import { ShoppingCart, Check, Plus, Minus } from 'lucide-react';
 import { addToCart, formatPrice } from '@/lib/cart';
 
+type ProductVariant = {
+  id: string;
+  name: string;
+  options: Record<string, string>;
+  priceCents: number | null;
+  stock: number | null;
+  images: string[];
+};
+
 type Product = {
   id: string;
   slug: string;
@@ -15,6 +24,7 @@ type Product = {
   stock: number | null;
   category: string | null;
   variants: Record<string, string[]> | null;
+  productVariants?: ProductVariant[];
 };
 
 export function ProductDetail({ product }: { product: Product }) {
@@ -22,9 +32,37 @@ export function ProductDetail({ product }: { product: Product }) {
   const [activeImage, setActiveImage] = useState(0);
   const [qty, setQty] = useState(1);
   const [variantValues, setVariantValues] = useState<Record<string, string>>({});
+  const [hoverPreview, setHoverPreview] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
 
   const variantsObj = (product.variants && typeof product.variants === 'object') ? product.variants : null;
+  const productVariants = product.productVariants || [];
+
+  /** Trouve le variant qui correspond aux options actuelles */
+  function findMatchingVariant(opts: Record<string, string>): ProductVariant | null {
+    if (productVariants.length === 0) return null;
+    return productVariants.find((pv) =>
+      Object.entries(opts).every(([k, v]) => !v || pv.options[k] === v)
+    ) || null;
+  }
+
+  /** Variant actuellement sélectionné (selon variantValues) */
+  const selectedVariant = findMatchingVariant(variantValues);
+
+  /** Prix affiché : variant override > prix produit */
+  const displayPrice = selectedVariant?.priceCents ?? product.priceCents;
+
+  /** Quand on survole une option, on cherche le variant qui matche cette option en fixant celle-ci (et en gardant les autres déjà choisies) */
+  function previewVariantImage(key: string, value: string): string | null {
+    const testOpts = { ...variantValues, [key]: value };
+    const v = findMatchingVariant(testOpts);
+    return v?.images?.[0] || null;
+  }
+
+  /** Image principale affichée : preview hover > variant sélectionné > image produit */
+  const mainImageUrl = hoverPreview
+    || (selectedVariant?.images?.[0])
+    || product.images?.[activeImage];
 
   function handleAdd() {
     if (variantsObj) {
@@ -57,20 +95,41 @@ export function ProductDetail({ product }: { product: Product }) {
       {/* IMAGES */}
       <div>
         <div className="aspect-square bg-zinc-900 rounded-2xl overflow-hidden mb-3 relative">
-          {product.images?.[activeImage] ? (
+          {mainImageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={product.images[activeImage]} alt={product.title} className="w-full h-full object-cover" />
+            <img src={mainImageUrl} alt={product.title} className="w-full h-full object-cover transition-opacity duration-200" />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-white/30">Aucune image</div>
           )}
+          {hoverPreview && (
+            <div className="absolute top-3 left-3 bg-brand-pink/90 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+              👀 Aperçu variant
+            </div>
+          )}
         </div>
-        {product.images?.length > 1 && (
+        {product.images?.length > 1 && !selectedVariant && (
           <div className="flex gap-2 overflow-x-auto">
             {product.images.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setActiveImage(i)}
                 className={`w-20 h-20 shrink-0 rounded-lg overflow-hidden border-2 ${i === activeImage ? 'border-brand-pink' : 'border-transparent'}`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={img} alt="" className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
+        {selectedVariant && selectedVariant.images.length > 1 && (
+          <div className="flex gap-2 overflow-x-auto">
+            {selectedVariant.images.map((img, i) => (
+              <button
+                key={i}
+                onClick={() => setHoverPreview(img)}
+                onMouseEnter={() => setHoverPreview(img)}
+                onMouseLeave={() => setHoverPreview(null)}
+                className="w-20 h-20 shrink-0 rounded-lg overflow-hidden border-2 border-brand-pink/40 hover:border-brand-pink"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={img} alt="" className="w-full h-full object-cover" />
@@ -89,25 +148,39 @@ export function ProductDetail({ product }: { product: Product }) {
         )}
         <h1 className="text-3xl md:text-4xl font-display font-black text-white">{product.title}</h1>
         <div className="text-3xl font-bold text-brand-pink">
-          {formatPrice(product.priceCents, product.currency)}
+          {formatPrice(displayPrice, product.currency)}
+          {selectedVariant?.priceCents && selectedVariant.priceCents !== product.priceCents && (
+            <span className="text-sm text-white/40 line-through ml-3">{formatPrice(product.priceCents, product.currency)}</span>
+          )}
         </div>
         {product.description && (
           <p className="text-white/80 whitespace-pre-line">{product.description}</p>
         )}
 
-        {/* VARIANTS */}
+        {/* VARIANTS — boutons avec ROLLOVER : hover = preview image, click = sélectionner */}
         {variantsObj && Object.entries(variantsObj).map(([key, options]) => (
           <div key={key}>
-            <p className="text-sm font-bold text-white/70 uppercase tracking-wider mb-2">{key}</p>
+            <p className="text-sm font-bold text-white/70 uppercase tracking-wider mb-2">
+              {key}
+              {variantValues[key] && <span className="ml-2 text-brand-pink normal-case font-normal">— {variantValues[key]}</span>}
+            </p>
             <div className="flex flex-wrap gap-2">
               {(options as string[]).map((opt) => {
                 const sel = variantValues[key] === opt;
+                const previewUrl = previewVariantImage(key, opt);
+                const hasImage = !!previewUrl;
                 return (
                   <button
                     key={opt}
                     onClick={() => setVariantValues({ ...variantValues, [key]: opt })}
-                    className={`px-4 py-2 rounded-full border transition ${sel ? 'bg-brand-pink border-brand-pink text-white' : 'border-white/20 text-white/80 hover:border-white/40'}`}
+                    onMouseEnter={() => previewUrl && setHoverPreview(previewUrl)}
+                    onMouseLeave={() => setHoverPreview(null)}
+                    className={`px-4 py-2 rounded-full border transition flex items-center gap-2 ${sel ? 'bg-brand-pink border-brand-pink text-white' : 'border-white/20 text-white/80 hover:border-brand-pink hover:text-white'}`}
+                    title={hasImage ? 'Survole pour voir l\'image de ce variant' : ''}
                   >
+                    {hasImage && (
+                      <img src={previewUrl} alt="" className="w-6 h-6 rounded-full object-cover ring-2 ring-white/20" />
+                    )}
                     {opt}
                   </button>
                 );
@@ -115,6 +188,19 @@ export function ProductDetail({ product }: { product: Product }) {
             </div>
           </div>
         ))}
+
+        {/* Stock du variant sélectionné */}
+        {selectedVariant && selectedVariant.stock !== null && (
+          <p className="text-xs">
+            {selectedVariant.stock > 5 ? (
+              <span className="text-emerald-400">✓ En stock</span>
+            ) : selectedVariant.stock > 0 ? (
+              <span className="text-amber-400">⚠ Plus que {selectedVariant.stock} disponibles</span>
+            ) : (
+              <span className="text-red-400">✕ Épuisé</span>
+            )}
+          </p>
+        )}
 
         {/* QUANTITY */}
         <div className="flex items-center gap-3">

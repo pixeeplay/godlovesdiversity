@@ -10,7 +10,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   let product: any = null;
   try {
-    product = await prisma.product.findUnique({ where: { slug } });
+    product = await prisma.product.findUnique({
+      where: { slug },
+      include: {
+        productVariants: {
+          where: { published: true },
+          orderBy: [{ order: 'asc' }, { createdAt: 'asc' }]
+        }
+      }
+    });
   } catch { product = null; }
   if (!product || !product.published) notFound();
 
