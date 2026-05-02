@@ -1,8 +1,9 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, Send, X, Loader2, Sparkles } from 'lucide-react';
+import { MessageCircle, Send, X, Loader2, Sparkles, BookOpen } from 'lucide-react';
 
-type Msg = { role: 'user' | 'model'; text: string };
+type Source = { title: string; source: string | null; score: number };
+type Msg = { role: 'user' | 'model'; text: string; sources?: Source[]; offTopic?: boolean };
 
 const SUGGESTIONS = [
   'Que dit la Bible sur l\'homosexualité ?',
@@ -30,13 +31,18 @@ export function AskGldWidget() {
     setInput('');
     setBusy(true);
     try {
-      const r = await fetch('/api/ai/chat', {
+      const r = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, history })
+        body: JSON.stringify({ question, locale: 'fr' })
       });
       const j = await r.json();
-      setHistory([...next, { role: 'model', text: j.text || 'Désolé, une erreur est survenue.' }]);
+      setHistory([...next, {
+        role: 'model',
+        text: j.answer || j.text || 'Désolé, une erreur est survenue.',
+        sources: j.sources || [],
+        offTopic: !!j.offTopic
+      }]);
     } catch {
       setHistory([...next, { role: 'model', text: 'Désolé, je ne peux pas répondre pour le moment.' }]);
     }
@@ -111,9 +117,9 @@ export function AskGldWidget() {
               </div>
             )}
             {history.map((m, i) => (
-              <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div key={i} className={`flex flex-col gap-1 ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
                 <div
-                  className="max-w-[85%] rounded-2xl px-3 py-2"
+                  className="max-w-[85%] rounded-2xl px-3 py-2 whitespace-pre-wrap"
                   style={
                     m.role === 'user'
                       ? { background: 'var(--accent)', color: '#fff' }
@@ -122,6 +128,21 @@ export function AskGldWidget() {
                 >
                   {m.text}
                 </div>
+                {m.role === 'model' && m.sources && m.sources.length > 0 && !m.offTopic && (
+                  <div className="max-w-[85%] flex flex-wrap gap-1 px-1">
+                    {m.sources.slice(0, 3).map((src, k) => (
+                      <span
+                        key={k}
+                        title={src.source || ''}
+                        className="inline-flex items-center gap-1 text-[10px] rounded-full px-2 py-0.5"
+                        style={{ background: 'var(--surface)', color: 'var(--fg-muted)', border: '1px solid var(--border)' }}
+                      >
+                        <BookOpen size={9} />
+                        {src.title.length > 28 ? src.title.slice(0, 28) + '…' : src.title}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
             {busy && (

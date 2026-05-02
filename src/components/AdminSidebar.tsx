@@ -66,6 +66,7 @@ const NAV: Entry[] = [
     icon: Sparkles,
     children: [
       { href: '/admin/ai', label: 'Studio IA', icon: Sparkles },
+      { href: '/admin/ai/knowledge', label: 'Cerveau de GLD (RAG)', icon: Sparkles },
       { href: '/admin/integrations', label: 'Intégrations', icon: Layers },
       { href: '/admin/setup', label: 'Assistant configuration', icon: Sparkles }
     ]

@@ -515,3 +515,51 @@ model AuditLog {
 
   @@index([createdAt])
 }
+
+/// RAG « Demandez à GLD » — bibliothèque de connaissances thématiques
+model KnowledgeDoc {
+  id          String           @id @default(cuid())
+  title       String
+  source      String?          // URL d'origine, nom de fichier PDF, "manuel"
+  sourceType  String           @default("text") // text | pdf | url | photo
+  author      String?          // Auteur original / référence
+  content     String           @db.Text         // Texte complet (avant chunking)
+  tags        String[]         @default([])     // ex ["chrétien", "lgbtq", "sermon"]
+  locale      String           @default("fr")
+  enabled     Boolean          @default(true)
+  chunks      KnowledgeChunk[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([enabled, locale])
+}
+
+/// Chunk indexé d'un document, avec son embedding sérialisé
+model KnowledgeChunk {
+  id         String       @id @default(cuid())
+  docId      String
+  doc        KnowledgeDoc @relation(fields: [docId], references: [id], onDelete: Cascade)
+  position   Int          // Ordre dans le document
+  text       String       @db.Text
+  /// Embedding stocké comme tableau JSON de floats (768 dim Gemini text-embedding-004)
+  /// Recherche cosinus en JS — suffisant jusqu'à ~10k chunks
+  embedding  Json
+  tokens     Int          @default(0)
+  createdAt  DateTime     @default(now())
+
+  @@index([docId])
+}
+
+/// Question posée au chat à laquelle le RAG n'a pas su répondre
+/// → file d'attente que l'admin peut traiter pour enrichir la base
+model UnansweredQuery {
+  id          String   @id @default(cuid())
+  question    String   @db.Text
+  locale      String   @default("fr")
+  topScore    Float    @default(0)        // Meilleure similarité trouvée
+  status      String   @default("PENDING") // PENDING | ANSWERED | DISCARDED
+  adminAnswer String?  @db.Text            // Si l'admin a répondu, ajouté à la base
+  createdAt   DateTime @default(now())
+
+  @@index([status, createdAt])
+}
