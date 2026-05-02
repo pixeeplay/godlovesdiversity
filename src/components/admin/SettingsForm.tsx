@@ -112,6 +112,25 @@ const GROUPS: Group[] = [
     fields: [
       { key: 'donate.helloAssoUrl', label: 'URL de la cagnotte HelloAsso', placeholder: 'https://www.helloasso.com/associations/.../formulaires/1' }
     ]
+  },
+  {
+    title: 'Stripe (boutique CB)',
+    icon: KeyRound,
+    description: 'Paiement par carte sur la boutique. Récupère tes clés sur https://dashboard.stripe.com/apikeys',
+    fields: [
+      { key: 'integrations.stripe.secretKey', label: 'Clé secrète Stripe', type: 'password', placeholder: 'sk_live_…' },
+      { key: 'integrations.stripe.publicKey', label: 'Clé publique Stripe', placeholder: 'pk_live_…' }
+    ]
+  },
+  {
+    title: 'Square (boutique Apple Pay)',
+    icon: KeyRound,
+    description: 'Paiement Apple Pay/CB pour la boutique. Crée une App sur https://developer.squareup.com',
+    fields: [
+      { key: 'integrations.square.accessToken', label: 'Access Token', type: 'password', placeholder: 'EAAA…' },
+      { key: 'integrations.square.locationId', label: 'Location ID', placeholder: 'L1234ABCDE' },
+      { key: 'integrations.square.environment', label: 'Environnement', placeholder: 'sandbox ou production', help: 'sandbox = test, production = vrai' }
+    ]
   }
 ];
 

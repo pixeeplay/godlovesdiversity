@@ -2,9 +2,10 @@
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from '@/i18n/routing';
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, ShoppingCart } from 'lucide-react';
 import { NeonHeart } from './NeonHeart';
 import { ThemeToggle } from './ThemeToggle';
+import { CartBadge } from './CartBadge';
 
 const LOCALES = ['fr', 'en', 'es', 'pt'] as const;
 
@@ -102,6 +103,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
+          <CartBadge />
           <ThemeToggle />
           <select
             value={locale}
@@ -125,6 +127,7 @@ export function Navbar() {
         </div>
 
         <div className="lg:hidden flex items-center gap-2">
+          <CartBadge />
           <ThemeToggle />
           <button onClick={() => setOpen(!open)} aria-label="menu" style={{ color: 'var(--fg)' }}>
             {open ? <X /> : <Menu />}

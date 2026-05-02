@@ -365,6 +365,74 @@ model Partner {
   @@index([order])
 }
 
+/// Boutique de produits dérivés (T-shirts, mugs, posters, livres…)
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?  @db.Text
+  priceCents  Int      // prix en centimes (ex: 2500 = 25.00 €)
+  currency    String   @default("EUR")
+  images      String[] // URLs / object keys
+  stock       Int?     // null = stock illimité
+  category    String?  // ex: "Vêtement", "Affiche", "Accessoire", "Livre"
+  variants    Json?    // ex: { "size": ["S","M","L","XL"], "color": ["Rose","Noir"] }
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems  OrderItem[]
+
+  @@index([published, order])
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentProvider {
+  STRIPE
+  SQUARE
+  HELLOASSO
+  MANUAL
+}
+
+model Order {
+  id              String          @id @default(cuid())
+  email           String
+  name            String?
+  phone           String?
+  shippingAddress String?         @db.Text
+  totalCents      Int
+  currency        String          @default("EUR")
+  status          OrderStatus     @default(PENDING)
+  paymentProvider PaymentProvider?
+  paymentId       String?         // ID externe (Stripe session, Square checkout)
+  notes           String?         @db.Text
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  items           OrderItem[]
+
+  @@index([status, createdAt])
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String
+  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product @relation(fields: [productId], references: [id])
+  quantity   Int
+  priceCents Int     // snapshot du prix au moment de la commande
+  variant    Json?   // ex: { "size": "M", "color": "Rose" }
+}
+
 model AuditLog {
   id         String   @id @default(cuid())
   userId     String?
