@@ -143,6 +143,16 @@ const GROUPS: Group[] = [
     ]
   },
   {
+    title: 'Sendcloud (étiquettes officielles Colissimo / Mondial Relay / Chronopost)',
+    icon: KeyRound,
+    description: 'Génération automatique des vraies étiquettes prépayées + tracking number officiel. Sendcloud = agrégateur français multi-transporteurs (compte gratuit jusqu\'à 100 colis/mois). Créer le compte sur https://app.sendcloud.com puis Settings → API → générer une clé.',
+    fields: [
+      { key: 'integrations.sendcloud.publicKey', label: 'Clé publique Sendcloud', type: 'password', placeholder: 'xxxx-xxxx' },
+      { key: 'integrations.sendcloud.secretKey', label: 'Clé secrète Sendcloud', type: 'password', placeholder: 'xxxx' },
+      { key: 'integrations.sendcloud.senderAddressId', label: 'ID adresse expéditeur', placeholder: 'ex: 12345 (depuis Sendcloud Settings → Addresses)', help: 'L\'ID numérique de ton adresse expéditeur dans Sendcloud' }
+    ]
+  },
+  {
     title: 'ElevenLabs (musique IA)',
     icon: Sparkles,
     description: 'Génération de musique d\'ambiance par IA (prière, méditation, cathédrale…). Récupère ta clé sur https://elevenlabs.io',

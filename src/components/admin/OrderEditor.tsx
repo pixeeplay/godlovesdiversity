@@ -1,6 +1,6 @@
 'use client';
 import { useState, useMemo } from 'react';
-import { Save, Truck, Package, Mail, MessageCircle, ExternalLink, Loader2, Calculator, Printer } from 'lucide-react';
+import { Save, Truck, Package, Mail, MessageCircle, ExternalLink, Loader2, Calculator, Printer, Sparkles } from 'lucide-react';
 import { CARRIERS, calculateShippingCost, estimateWeight, type CarrierId } from '@/lib/shipping';
 
 type Order = any;
@@ -14,6 +14,31 @@ const STATUS_OPTIONS = ['PENDING', 'PAID', 'SHIPPED', 'CANCELLED', 'REFUNDED'];
 export function OrderEditor({ initial }: { initial: Order }) {
   const [order, setOrder] = useState<Order>(initial);
   const [saving, setSaving] = useState(false);
+  const [creatingShipment, setCreatingShipment] = useState(false);
+  const [shipmentResult, setShipmentResult] = useState<{ trackingNumber?: string; labelPdfUrl?: string | null } | null>(null);
+
+  async function createSendcloudShipment() {
+    if (!confirm('Créer une vraie expédition Sendcloud ? Une étiquette sera facturée selon le transporteur choisi.')) return;
+    setCreatingShipment(true);
+    setShipmentResult(null);
+    try {
+      const r = await fetch(`/api/admin/orders/${order.id}/create-shipment`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ carrier: order.carrier === 'mondial-relay' ? 'mondial_relay' : (order.carrier || 'colissimo') })
+      });
+      const j = await r.json();
+      if (j.error) {
+        alert(`Erreur Sendcloud : ${j.error}`);
+      } else {
+        setOrder(j.order);
+        setShipmentResult({ trackingNumber: j.trackingNumber, labelPdfUrl: j.labelPdfUrl });
+        if (j.labelPdfUrl) window.open(j.labelPdfUrl, '_blank');
+      }
+    } catch (e: any) {
+      alert(e.message || 'Erreur réseau');
+    }
+    setCreatingShipment(false);
+  }
 
   // Auto-estime poids et calcule tarif
   const estimatedWeight = useMemo(() => {
@@ -155,6 +180,12 @@ export function OrderEditor({ initial }: { initial: Order }) {
                     className="bg-brand-pink hover:bg-pink-600 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-2">
               {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />} Sauvegarder
             </button>
+            <button onClick={createSendcloudShipment} disabled={creatingShipment}
+                    title="Crée une vraie étiquette + tracking number via Sendcloud"
+                    className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50">
+              {creatingShipment ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+              {creatingShipment ? 'Création…' : '🚀 Étiquette officielle Sendcloud'}
+            </button>
             {order.status !== 'SHIPPED' && order.status === 'PAID' && (
               <button onClick={markShipped} disabled={saving}
                       className="bg-violet-500 hover:bg-violet-600 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-2">
@@ -163,9 +194,20 @@ export function OrderEditor({ initial }: { initial: Order }) {
             )}
             <a href={`/api/admin/orders/${order.id}/label`} target="_blank" rel="noopener noreferrer"
                className="bg-zinc-800 hover:bg-zinc-700 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-2">
-              <Printer size={14} /> Étiquette PDF
+              <Printer size={14} /> Étiquette HTML (mockup)
             </a>
           </div>
+
+          {shipmentResult && (
+            <div className="mt-4 bg-emerald-950/40 border border-emerald-700 rounded-lg p-4 text-sm">
+              <p className="font-bold text-emerald-300 mb-2">✅ Étiquette officielle créée !</p>
+              <p>Numéro de suivi : <code className="font-mono text-white">{shipmentResult.trackingNumber}</code></p>
+              {shipmentResult.labelPdfUrl && (
+                <a href={shipmentResult.labelPdfUrl} target="_blank" rel="noopener noreferrer"
+                   className="inline-block mt-2 text-emerald-300 hover:underline">→ Télécharger le PDF de l'étiquette</a>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
