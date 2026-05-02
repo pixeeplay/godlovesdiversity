@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
-import { Plus, Trash2, Save, Eye, EyeOff, ExternalLink, Sparkles, Loader2, UploadCloud, X, Truck, TrendingUp } from 'lucide-react';
+import { Plus, Trash2, Save, Eye, EyeOff, ExternalLink, Sparkles, Loader2, UploadCloud, X, Truck, TrendingUp, Search } from 'lucide-react';
 import { VariantsManager } from './VariantsManager';
 
 type Product = {
@@ -25,6 +25,23 @@ export function ProductsAdmin({ initialItems }: { initialItems: Product[] }) {
   const [generating, setGenerating] = useState<string | null>(null);
   const [uploading, setUploading] = useState<string | null>(null);
   const fileInputs = useRef<Record<string, HTMLInputElement | null>>({});
+  // Recherche / filtres / vue
+  const [search, setSearch] = useState('');
+  const [filterCat, setFilterCat] = useState('');
+  const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'draft'>('all');
+  const [showCreate, setShowCreate] = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  // Catégories uniques pour le filtre
+  const categories = Array.from(new Set(items.map((i) => i.category).filter(Boolean))) as string[];
+
+  const filtered = items.filter((p) => {
+    if (search && !p.title.toLowerCase().includes(search.toLowerCase()) && !p.slug.toLowerCase().includes(search.toLowerCase())) return false;
+    if (filterCat && p.category !== filterCat) return false;
+    if (filterStatus === 'published' && !p.published) return false;
+    if (filterStatus === 'draft' && p.published) return false;
+    return true;
+  });
 
   async function uploadImage(p: Product, file: File) {
     setUploading(p.id);
@@ -111,50 +128,127 @@ export function ProductsAdmin({ initialItems }: { initialItems: Product[] }) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* New */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-3">
-        <h2 className="font-bold flex items-center gap-2"><Plus size={18} /> Nouveau produit</h2>
-        <input className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm"
-               placeholder="Titre du produit (ex: T-shirt arc-en-ciel)"
-               value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div>
-            <label className="text-xs text-zinc-400">Prix (€)</label>
-            <input type="number" step="0.01" min="0"
-                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm"
-                   value={draft.priceEuros} onChange={(e) => setDraft({ ...draft, priceEuros: Number(e.target.value) })} />
-          </div>
-          <div>
-            <label className="text-xs text-zinc-400">Catégorie</label>
-            <select className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm"
-                    value={draft.category} onChange={(e) => setDraft({ ...draft, category: e.target.value })}>
-              <option>Vêtement</option><option>Affiche</option><option>Accessoire</option>
-              <option>Livre</option><option>Autocollant</option><option>Autre</option>
-            </select>
-          </div>
-          <div>
-            <label className="text-xs text-zinc-400">Stock (vide = illimité)</label>
-            <input type="number" min="0" placeholder="vide"
-                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm"
-                   value={draft.stock} onChange={(e) => setDraft({ ...draft, stock: e.target.value })} />
-          </div>
+    <div className="space-y-4">
+      {/* TOOLBAR */}
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-3 flex flex-wrap items-center gap-2">
+        <div className="flex-1 min-w-[200px] relative">
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
+          <input value={search} onChange={(e) => setSearch(e.target.value)}
+                 placeholder="Rechercher un produit…"
+                 className="w-full bg-zinc-950 border border-zinc-800 rounded-lg pl-9 pr-3 py-2 text-sm focus:border-brand-pink outline-none" />
         </div>
-        <textarea className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" rows={2}
-                  placeholder="URLs des images (1 par ligne)"
-                  value={draft.imagesText} onChange={(e) => setDraft({ ...draft, imagesText: e.target.value })} />
-        <button onClick={add} disabled={saving === 'new'}
-                className="bg-brand-pink hover:bg-pink-600 text-white font-bold px-5 py-2 rounded-lg disabled:opacity-50">
-          {saving === 'new' ? 'Ajout…' : 'Ajouter le produit'}
+        <select value={filterCat} onChange={(e) => setFilterCat(e.target.value)}
+                className="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm">
+          <option value="">Toutes catégories</option>
+          {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+        </select>
+        <div className="flex gap-1 bg-zinc-950 border border-zinc-800 rounded-lg p-1">
+          {[{ v: 'all', l: `Tous (${items.length})` }, { v: 'published', l: `✓ Publiés (${items.filter((p) => p.published).length})` }, { v: 'draft', l: `Brouillons (${items.filter((p) => !p.published).length})` }].map((f) => (
+            <button key={f.v} onClick={() => setFilterStatus(f.v as any)}
+                    className={`px-3 py-1.5 rounded text-xs font-bold transition ${filterStatus === f.v ? 'bg-brand-pink text-white' : 'text-zinc-400 hover:text-white'}`}>
+              {f.l}
+            </button>
+          ))}
+        </div>
+        <button onClick={() => setShowCreate(!showCreate)}
+                className="bg-gradient-to-r from-brand-pink to-violet-500 hover:from-pink-600 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-2 text-sm">
+          <Plus size={16} /> Nouveau produit
         </button>
       </div>
 
-      {/* List */}
+      {/* New (collapsible) */}
+      {showCreate && (
+        <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 border-2 border-brand-pink/40 rounded-2xl p-5 space-y-3">
+          <h2 className="font-bold flex items-center gap-2 text-brand-pink"><Plus size={18} /> Nouveau produit</h2>
+          <input className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm"
+                 placeholder="Titre du produit (ex: T-shirt arc-en-ciel)"
+                 value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label className="text-xs text-zinc-400">Prix (€)</label>
+              <input type="number" step="0.01" min="0"
+                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm"
+                     value={draft.priceEuros} onChange={(e) => setDraft({ ...draft, priceEuros: Number(e.target.value) })} />
+            </div>
+            <div>
+              <label className="text-xs text-zinc-400">Catégorie</label>
+              <select className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm"
+                      value={draft.category} onChange={(e) => setDraft({ ...draft, category: e.target.value })}>
+                <option>Vêtement</option><option>Affiche</option><option>Accessoire</option>
+                <option>Livre</option><option>Autocollant</option><option>Bougie</option><option>Autre</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-400">Stock (vide = illimité)</label>
+              <input type="number" min="0" placeholder="vide"
+                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm"
+                     value={draft.stock} onChange={(e) => setDraft({ ...draft, stock: e.target.value })} />
+            </div>
+          </div>
+          <textarea className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" rows={2}
+                    placeholder="URLs des images (1 par ligne) — tu pourras uploader directement après création"
+                    value={draft.imagesText} onChange={(e) => setDraft({ ...draft, imagesText: e.target.value })} />
+          <div className="flex gap-2 justify-end">
+            <button onClick={() => setShowCreate(false)} className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-lg text-sm">Annuler</button>
+            <button onClick={() => { add(); setShowCreate(false); }} disabled={saving === 'new'}
+                    className="bg-brand-pink hover:bg-pink-600 text-white font-bold px-5 py-2 rounded-lg disabled:opacity-50 text-sm">
+              {saving === 'new' ? 'Création…' : '✨ Créer le produit'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* GRID PRODUITS — vue liste compacte avec expansion */}
       <div className="space-y-3">
-        {items.length === 0 ? (
-          <p className="text-zinc-500 text-sm italic">Aucun produit. Crée le premier ci-dessus !</p>
-        ) : items.map((p) => (
-          <div key={p.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3">
+        {filtered.length === 0 ? (
+          items.length === 0 ? (
+            <div className="bg-zinc-900 border border-dashed border-zinc-800 rounded-2xl p-12 text-center">
+              <p className="text-zinc-500 text-sm">Aucun produit pour l'instant.</p>
+              <button onClick={() => setShowCreate(true)} className="mt-4 bg-brand-pink hover:bg-pink-600 text-white font-bold px-4 py-2 rounded-full text-sm">
+                <Plus size={14} className="inline mr-1" /> Créer le premier produit
+              </button>
+            </div>
+          ) : (
+            <p className="text-zinc-500 text-sm italic text-center py-8">Aucun produit ne correspond aux filtres.</p>
+          )
+        ) : filtered.map((p) => (
+          <div key={p.id} className={`bg-zinc-900 border ${expanded === p.id ? 'border-brand-pink/50' : 'border-zinc-800 hover:border-zinc-700'} rounded-2xl transition`}>
+            {/* Bandeau résumé cliquable */}
+            <button onClick={() => setExpanded(expanded === p.id ? null : p.id)}
+                    className="w-full p-4 flex items-center gap-4 text-left">
+              {p.images?.[0] ? (
+                <img src={p.images[0]} alt="" className="w-16 h-16 rounded-lg object-cover shrink-0 border border-zinc-700" />
+              ) : (
+                <div className="w-16 h-16 rounded-lg bg-zinc-800 flex items-center justify-center text-xs text-zinc-500 shrink-0">no img</div>
+              )}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="font-bold text-white truncate">{p.title}</h3>
+                  {!p.published && <span className="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded">Brouillon</span>}
+                  {(p as any).dropProvider && <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">📦 Dropship {(p as any).dropProvider}</span>}
+                </div>
+                <p className="text-xs text-zinc-500 truncate">
+                  {p.category && <>{p.category} · </>}
+                  <code className="text-zinc-600">{p.slug}</code>
+                  {(p.images || []).length > 0 && <> · {(p.images || []).length} image{(p.images || []).length > 1 ? 's' : ''}</>}
+                </p>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-lg font-bold text-brand-pink">{(p.priceCents / 100).toFixed(2)} €</p>
+                {(p as any).costCents && (
+                  <p className="text-[10px] text-emerald-400 flex items-center justify-end gap-1">
+                    <TrendingUp size={10} /> +{((p.priceCents - (p as any).costCents) / 100).toFixed(2)} € marge
+                  </p>
+                )}
+                {p.stock !== null && p.stock !== undefined && p.stock <= 5 && p.stock > 0 && <p className="text-[10px] text-amber-400">⚠ stock {p.stock}</p>}
+                {p.stock === 0 && <p className="text-[10px] text-red-400">Épuisé</p>}
+              </div>
+              <div className="text-zinc-500 shrink-0">{expanded === p.id ? '▾' : '▸'}</div>
+            </button>
+
+            {/* Contenu détaillé seulement si expanded */}
+            {expanded === p.id && (
+              <div className="border-t border-zinc-800 p-4 space-y-3">
             <div className="flex items-center gap-3">
               {p.images?.[0] ? (
                 <img src={p.images[0]} alt="" className="w-16 h-16 rounded-lg object-cover shrink-0" />
@@ -302,6 +396,8 @@ export function ProductsAdmin({ initialItems }: { initialItems: Product[] }) {
                 <Trash2 size={14} /> Supprimer
               </button>
             </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
