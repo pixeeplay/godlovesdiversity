@@ -24,7 +24,7 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
   try {
     photo = await prisma.photo.findUnique({ where: { id } });
   } catch { photo = null; }
-  if (!photo || photo.status !== 'PUBLISHED') notFound();
+  if (!photo || photo.status !== 'APPROVED') notFound();
   const url = photo.storageKey ? publicUrl(photo.storageKey) : null;
 
   // URL absolue pour le partage

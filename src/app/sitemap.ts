@@ -35,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Photos publiées
   try {
     const photos = await prisma.photo.findMany({
-      where: { status: 'PUBLISHED' },
+      where: { status: 'APPROVED' },
       select: { id: true, updatedAt: true },
       orderBy: { updatedAt: 'desc' },
       take: 1000
