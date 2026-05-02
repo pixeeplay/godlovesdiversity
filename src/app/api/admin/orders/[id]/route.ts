@@ -62,27 +62,24 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
 
     // Email
     if (updated.email) {
-      await sendEmail({
-        to: updated.email,
-        subject: `📦 Ta commande #${updated.id.slice(0, 8)} est expédiée !`,
-        html: `
-          <div style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:20px">
-            <h1 style="color:#FF2BB1">📦 Ta commande est en route !</h1>
-            <p>Bonjour ${updated.name || ''},</p>
-            <p>Bonne nouvelle : ta commande <strong>#${updated.id.slice(0, 8)}</strong> vient d'être expédiée par <strong>${updated.carrier || 'La Poste'}</strong>.</p>
-            ${updated.trackingNumber ? `
-              <div style="background:#fff5fc;padding:16px;border-radius:12px;margin:20px 0">
-                <p style="margin:0 0 8px"><strong>Numéro de suivi :</strong></p>
-                <p style="font-family:monospace;font-size:16px;margin:0">${updated.trackingNumber}</p>
-                ${updated.trackingUrl ? `<p style="margin:12px 0 0"><a href="${updated.trackingUrl}" style="color:#FF2BB1">→ Suivre le colis</a></p>` : ''}
-              </div>
-            ` : ''}
-            <p><a href="${followLink}" style="display:inline-block;background:#FF2BB1;color:white;padding:12px 24px;border-radius:24px;text-decoration:none;font-weight:bold">Voir ma commande</a></p>
-            <p style="color:#666;font-size:14px;margin-top:30px">Merci de soutenir le mouvement 🌈<br>L'équipe God Loves Diversity</p>
-          </div>
-        `,
-        text: `Ta commande #${updated.id.slice(0, 8)} est expédiée !${trackingPart}\n\nSuivi : ${followLink}`
-      }).catch((e) => console.error('Email shipped failed', e));
+      const subject = `📦 Ta commande #${updated.id.slice(0, 8)} est expédiée !`;
+      const html = `
+        <div style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:20px">
+          <h1 style="color:#FF2BB1">📦 Ta commande est en route !</h1>
+          <p>Bonjour ${updated.name || ''},</p>
+          <p>Bonne nouvelle : ta commande <strong>#${updated.id.slice(0, 8)}</strong> vient d'être expédiée par <strong>${updated.carrier || 'La Poste'}</strong>.</p>
+          ${updated.trackingNumber ? `
+            <div style="background:#fff5fc;padding:16px;border-radius:12px;margin:20px 0">
+              <p style="margin:0 0 8px"><strong>Numéro de suivi :</strong></p>
+              <p style="font-family:monospace;font-size:16px;margin:0">${updated.trackingNumber}</p>
+              ${updated.trackingUrl ? `<p style="margin:12px 0 0"><a href="${updated.trackingUrl}" style="color:#FF2BB1">→ Suivre le colis</a></p>` : ''}
+            </div>
+          ` : ''}
+          <p><a href="${followLink}" style="display:inline-block;background:#FF2BB1;color:white;padding:12px 24px;border-radius:24px;text-decoration:none;font-weight:bold">Voir ma commande</a></p>
+          <p style="color:#666;font-size:14px;margin-top:30px">Merci de soutenir le mouvement 🌈<br>L'équipe God Loves Diversity</p>
+        </div>`;
+      void sendEmail(updated.email, subject, html).catch((e: any) => console.error('Email shipped failed', e));
+      void trackingPart; // keep var used
     }
 
     // SMS
