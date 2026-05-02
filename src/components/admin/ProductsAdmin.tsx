@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Plus, Trash2, Save, Eye, EyeOff, ExternalLink } from 'lucide-react';
+import { Plus, Trash2, Save, Eye, EyeOff, ExternalLink, Sparkles, Loader2 } from 'lucide-react';
 
 type Product = {
   id: string;
@@ -21,6 +21,27 @@ export function ProductsAdmin({ initialItems }: { initialItems: Product[] }) {
   const [items, setItems] = useState<Product[]>(initialItems);
   const [draft, setDraft] = useState({ title: '', priceEuros: 25, category: 'Vêtement', stock: '', imagesText: '' });
   const [saving, setSaving] = useState<string | null>(null);
+  const [generating, setGenerating] = useState<string | null>(null);
+
+  async function generateImage(p: Product, customPrompt?: string) {
+    setGenerating(p.id);
+    try {
+      const r = await fetch(`/api/admin/products/${p.id}/generate-image`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: customPrompt || undefined })
+      });
+      const j = await r.json();
+      if (j.error) {
+        alert(`Erreur génération : ${j.error}`);
+      } else if (j.images) {
+        setItems(items.map((x) => (x.id === p.id ? { ...x, images: j.images } : x)));
+      }
+    } catch (e: any) {
+      alert(e.message || 'Erreur réseau');
+    }
+    setGenerating(null);
+  }
 
   async function add() {
     if (!draft.title) { alert('Titre requis'); return; }
@@ -156,6 +177,12 @@ export function ProductsAdmin({ initialItems }: { initialItems: Product[] }) {
               </button>
               <a href={`/boutique/${p.slug}`} target="_blank" rel="noopener noreferrer"
                  className="px-3 py-1.5 text-xs rounded bg-zinc-800 hover:bg-zinc-700 flex items-center gap-1"><ExternalLink size={14} /> Voir</a>
+              <button onClick={() => generateImage(p)} disabled={generating === p.id}
+                      title="Générer une image avec Gemini Nano Banana"
+                      className="px-3 py-1.5 text-xs rounded bg-gradient-to-r from-yellow-500 to-pink-500 hover:from-yellow-600 hover:to-pink-600 text-white font-bold flex items-center gap-1 disabled:opacity-50">
+                {generating === p.id ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                {generating === p.id ? 'Génération…' : '🍌 Générer image IA'}
+              </button>
               <div className="flex-1" />
               <button onClick={() => update(p)} disabled={saving === p.id}
                       className="px-4 py-1.5 text-xs rounded bg-brand-pink hover:bg-pink-600 text-white font-bold flex items-center gap-1 disabled:opacity-50">

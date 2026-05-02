@@ -15,7 +15,13 @@ const PRESETS = {
   hero_praying: 'A photorealistic image of a person kneeling in prayer in a softly lit chapel, a rainbow stained glass window above them casts colored light, golden particles in the air, peaceful, painterly, no text',
   mosque: 'A photorealistic image of a person standing in a mosque under a colorful tiled dome, soft rainbow reflections on the walls from a stained skylight, divine light beam, peaceful and inclusive mood, no text',
   synagogue: 'A photorealistic image of a person standing under a Star of David stained glass window, rainbow colored light cast on the floor, prayer shawl, golden ambiance, cinematic, no text',
-  temple: 'A photorealistic image of a person seated in lotus position in a temple, rainbow light filtering through windows, lotus flowers, golden glow, serene, no text'
+  temple: 'A photorealistic image of a person seated in lotus position in a temple, rainbow light filtering through windows, lotus flowers, golden glow, serene, no text',
+  // ─── Produits boutique ───
+  product_tshirt: 'Studio product photography of a folded white organic cotton t-shirt on a soft rose pink gradient background, with a small rainbow heart embroidery visible on the chest, soft daylight, minimalist, premium e-commerce style, no text on the t-shirt',
+  product_candle: 'Studio product photography of a single artisan candle in a stained glass holder (red, blue and emerald glass facets), warm flame glowing inside, dark velvet background, golden bokeh particles, premium spiritual atmosphere, photorealistic e-commerce',
+  product_mug: 'Studio product photography of a white ceramic mug with a delicate rainbow heart design and a small cross/crescent/star symbol, on a soft pink minimal background, steam rising softly, daylight, premium e-commerce',
+  product_tote: 'Studio product photography of a natural canvas tote bag hanging on a hook, with golden cathedral typography "GOD LOVES DIVERSITY" and a rainbow heart printed on it, soft window light, premium e-commerce style',
+  product_poster: 'Studio product photography of a framed art poster showing a silhouette in front of a gothic cathedral rose window with a rainbow light beam, hung on a clean wall, soft daylight, minimal interior, premium e-commerce'
 };
 
 export async function POST(req: NextRequest) {
@@ -33,7 +39,8 @@ export async function POST(req: NextRequest) {
   const settings = await getSettings(['integrations.gemini.apiKey', 'integrations.gemini.imageModel'])
     .catch(() => ({} as Record<string, string>));
   const key = settings['integrations.gemini.apiKey'] || process.env.GEMINI_API_KEY;
-  const model = settings['integrations.gemini.imageModel'] || process.env.GEMINI_IMAGE_MODEL || 'imagen-3.0-generate-002';
+  // Modèle par défaut : gemini-2.5-flash-image (alias "Nano Banana") — moins cher et plus rapide qu'Imagen
+  const model = settings['integrations.gemini.imageModel'] || process.env.GEMINI_IMAGE_MODEL || 'gemini-2.5-flash-image';
 
   if (!key) {
     return NextResponse.json({
@@ -41,15 +48,50 @@ export async function POST(req: NextRequest) {
     }, { status: 400 });
   }
 
-  // Appel Imagen via REST
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:predict?key=${key}`;
+  // Routing : Nano Banana (gemini-2.5-flash-image) vs Imagen (imagen-*)
+  const isNanoBanana = model.includes('flash-image') || model.startsWith('gemini-');
+
   try {
+    if (isNanoBanana) {
+      // Gemini 2.5 Flash Image (Nano Banana) via :generateContent
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+      const images: { data: string; mimeType: string }[] = [];
+      // Nano Banana ne fait qu'1 image par appel — on boucle
+      for (let i = 0; i < count; i++) {
+        const r = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseModalities: ['IMAGE'] }
+          })
+        });
+        const j = await r.json();
+        if (j.error) {
+          if (i === 0) return NextResponse.json({ error: j.error.message || 'Erreur Nano Banana' }, { status: 500 });
+          break;
+        }
+        const parts = j?.candidates?.[0]?.content?.parts || [];
+        for (const p of parts) {
+          if (p.inlineData?.data) {
+            images.push({ data: p.inlineData.data, mimeType: p.inlineData.mimeType || 'image/png' });
+          }
+        }
+      }
+      if (images.length === 0) {
+        return NextResponse.json({ error: 'Aucune image générée. Vérifie ton quota Gemini.' }, { status: 500 });
+      }
+      return NextResponse.json({ images, prompt, model });
+    }
+
+    // Imagen via :predict
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:predict?key=${key}`;
     const r = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         instances: [{ prompt }],
-        parameters: { sampleCount: count, aspectRatio: '16:9' }
+        parameters: { sampleCount: count, aspectRatio: '1:1' }
       })
     });
     const j = await r.json();
@@ -60,11 +102,10 @@ export async function POST(req: NextRequest) {
       data: p.bytesBase64Encoded,
       mimeType: p.mimeType || 'image/png'
     })).filter((i: any) => i.data);
-
     if (images.length === 0) {
       return NextResponse.json({ error: 'Aucune image générée. Vérifie ton quota Imagen.' }, { status: 500 });
     }
-    return NextResponse.json({ images, prompt });
+    return NextResponse.json({ images, prompt, model });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
