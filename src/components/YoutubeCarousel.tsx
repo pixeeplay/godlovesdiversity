@@ -64,16 +64,25 @@ export function YoutubeCarousel({ videos }: { videos: Video[] }) {
                 src={`https://i.ytimg.com/vi/${cur.videoId}/maxresdefault.jpg`}
                 alt={cur.title}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Si maxresdefault n'existe pas (vidéo trop ancienne ou pas en HD), fallback sur hqdefault qui existe toujours
+                  const img = e.currentTarget;
+                  if (img.src.includes('maxresdefault')) {
+                    img.src = `https://i.ytimg.com/vi/${cur.videoId}/hqdefault.jpg`;
+                  } else if (img.src.includes('hqdefault')) {
+                    img.src = `https://i.ytimg.com/vi/${cur.videoId}/mqdefault.jpg`;
+                  }
+                }}
               />
-              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/70 group-hover:from-black/30 group-hover:via-black/40 group-hover:to-black/80 transition" />
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-20 h-20 rounded-full bg-brand-pink/90 group-hover:scale-110 transition flex items-center justify-center shadow-[0_0_40px_rgba(255,43,177,.6)]">
-                  <Play size={32} fill="white" className="text-white ml-1" />
+                <div className="w-20 h-20 rounded-full bg-brand-pink/95 group-hover:scale-110 transition flex items-center justify-center shadow-[0_0_60px_rgba(255,43,177,.8)]">
+                  <Play size={36} fill="white" className="text-white ml-1" />
                 </div>
               </div>
-              <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black to-transparent text-left">
-                <h3 className="font-display text-xl md:text-2xl font-bold">{cur.title}</h3>
-                {cur.description && <p className="text-sm text-white/70 mt-1 line-clamp-2">{cur.description}</p>}
+              <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black via-black/70 to-transparent text-left">
+                <h3 className="font-display text-xl md:text-2xl font-bold text-white drop-shadow-lg">{cur.title}</h3>
+                {cur.description && <p className="text-sm text-white/85 mt-1 line-clamp-2 drop-shadow-md">{cur.description}</p>}
               </div>
             </button>
           )}
