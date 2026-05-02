@@ -49,20 +49,20 @@ export function Navbar() {
   return (
     <header className={`sticky top-0 z-40 transition-all duration-300 ${scrolled ? 'backdrop-blur-xl bg-[color:var(--bg)]/70 border-b border-[color:var(--border)] py-2' : 'py-4'}`}>
       <div className="container-wide flex items-center justify-between">
-        <a href="/" className="flex items-center gap-3 shrink-0">
-          {/* Cœur battant rainbow — toujours visible */}
-          <div className="w-12 h-12 shrink-0">
+        <a href="/" className="flex flex-row items-center gap-3 shrink-0">
+          {/* Cœur battant rainbow — toujours visible, taille fixe */}
+          <span className="block w-12 h-12 flex-none">
             <NeonHeart size={48} />
-          </div>
+          </span>
           {logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={logoUrl} alt="" className="h-12 object-contain" />
+            <img src={logoUrl} alt="" className="h-10 max-w-[180px] w-auto object-contain flex-none" />
           ) : (
-            <div className="font-display font-black leading-none text-[color:var(--accent)] hidden sm:block">
-              <div className="text-base">GOD</div>
-              <div className="text-base">LOVES</div>
-              <div className="text-base">DIVERSITY</div>
-            </div>
+            <span className="font-display font-black leading-none text-[color:var(--accent)] hidden sm:flex flex-col flex-none">
+              <span className="text-base">GOD</span>
+              <span className="text-base">LOVES</span>
+              <span className="text-base">DIVERSITY</span>
+            </span>
           )}
         </a>
 

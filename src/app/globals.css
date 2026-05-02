@@ -221,10 +221,11 @@ body::after {
     background: linear-gradient(90deg, transparent, rgba(255,43,177,.4), rgba(139,92,246,.4), rgba(34,211,238,.4), transparent);
   }
 
-  /* Cœur néon style enseigne lumineuse */
+  /* Cœur néon style enseigne lumineuse — taille pilotée par inline style */
   .neon-heart {
-    width: 320px; height: 320px;
     position: relative;
+    display: inline-block;
+    line-height: 0;
   }
   .neon-heart svg {
     width: 100%; height: 100%;
