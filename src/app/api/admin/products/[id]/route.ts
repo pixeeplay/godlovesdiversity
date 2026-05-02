@@ -20,7 +20,12 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
       category: data.category ?? null,
       variants: data.variants ?? null,
       order: typeof data.order === 'number' ? data.order : undefined,
-      published: typeof data.published === 'boolean' ? data.published : undefined
+      published: typeof data.published === 'boolean' ? data.published : undefined,
+      // Dropshipping
+      dropProvider: data.dropProvider !== undefined ? (data.dropProvider || null) : undefined,
+      dropProductId: data.dropProductId !== undefined ? (data.dropProductId || null) : undefined,
+      dropVariantMap: data.dropVariantMap !== undefined ? data.dropVariantMap : undefined,
+      costCents: data.costCents === null ? null : (typeof data.costCents === 'number' ? Math.round(data.costCents) : undefined)
     }
   });
   return NextResponse.json(updated);

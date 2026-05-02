@@ -143,6 +143,31 @@ const GROUPS: Group[] = [
     ]
   },
   {
+    title: '🌍 Gelato (Print-on-Demand Europe)',
+    icon: KeyRound,
+    description: 'Dropshipping print-on-demand : t-shirts, mugs, posters, tote bags imprimés à la demande. 130+ centres de production en Europe (le + rapide). Récupère ta clé sur https://dashboard.gelato.com/keys',
+    fields: [
+      { key: 'integrations.gelato.apiKey', label: 'API Key Gelato', type: 'password', placeholder: 'gel_…' }
+    ]
+  },
+  {
+    title: '🌱 TPOP (Print-on-Demand français éthique)',
+    icon: KeyRound,
+    description: 'Print-on-demand 100% bio, vegan, packaging recyclé — production France/Pays-Bas. Idéal pour positionnement éthique GLD. Compte sur https://www.tpop.com',
+    fields: [
+      { key: 'integrations.tpop.apiKey', label: 'API Key TPOP', type: 'password', placeholder: 'tpop_…' }
+    ]
+  },
+  {
+    title: '👕 Printful (Print-on-Demand)',
+    icon: KeyRound,
+    description: 'Le + connu, catalogue 250+ produits, entrepôts EU à Riga & Madrid. Récupère ta clé sur https://www.printful.com/dashboard/develop',
+    fields: [
+      { key: 'integrations.printful.apiKey', label: 'API Key Printful', type: 'password', placeholder: 'pf_…' },
+      { key: 'integrations.printful.storeId', label: 'Store ID (optionnel)', placeholder: '12345' }
+    ]
+  },
+  {
     title: 'Sendcloud (étiquettes officielles Colissimo / Mondial Relay / Chronopost)',
     icon: KeyRound,
     description: 'Génération automatique des vraies étiquettes prépayées + tracking number officiel. Sendcloud = agrégateur français multi-transporteurs (compte gratuit jusqu\'à 100 colis/mois). Créer le compte sur https://app.sendcloud.com puis Settings → API → générer une clé.',

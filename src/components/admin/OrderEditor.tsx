@@ -17,6 +17,19 @@ export function OrderEditor({ initial }: { initial: Order }) {
   const [creatingShipment, setCreatingShipment] = useState(false);
   const [shipmentResult, setShipmentResult] = useState<{ trackingNumber?: string; labelPdfUrl?: string | null } | null>(null);
 
+  async function pushToDropship() {
+    if (!confirm('Envoyer cette commande aux fournisseurs dropshipping (Gelato/TPOP/Printful) ? Tu seras facturé par le fournisseur.')) return;
+    try {
+      const r = await fetch(`/api/admin/orders/${order.id}/dropship`, { method: 'POST' });
+      const j = await r.json();
+      if (j.ok) {
+        alert(`✅ Commande envoyée chez ${j.results.map((r: any) => r.provider).join(', ')}.\n${j.message || ''}`);
+      } else {
+        alert(`Erreur dropshipping :\n${j.results?.map((r: any) => `${r.provider}: ${r.error || 'OK'}`).join('\n') || j.error}`);
+      }
+    } catch (e: any) { alert(e.message); }
+  }
+
   async function createSendcloudShipment() {
     if (!confirm('Créer une vraie expédition Sendcloud ? Une étiquette sera facturée selon le transporteur choisi.')) return;
     setCreatingShipment(true);
@@ -185,6 +198,11 @@ export function OrderEditor({ initial }: { initial: Order }) {
                     className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50">
               {creatingShipment ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
               {creatingShipment ? 'Création…' : '🚀 Étiquette officielle Sendcloud'}
+            </button>
+            <button onClick={pushToDropship}
+                    title="Envoie cette commande aux fournisseurs Print-on-Demand (Gelato/TPOP/Printful) qui impriment + expédient directement"
+                    className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-2">
+              📦 Envoyer en dropship
             </button>
             {order.status !== 'SHIPPED' && order.status === 'PAID' && (
               <button onClick={markShipped} disabled={saving}

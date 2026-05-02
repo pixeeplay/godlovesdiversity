@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
-import { Plus, Trash2, Save, Eye, EyeOff, ExternalLink, Sparkles, Loader2, UploadCloud, X } from 'lucide-react';
+import { Plus, Trash2, Save, Eye, EyeOff, ExternalLink, Sparkles, Loader2, UploadCloud, X, Truck, TrendingUp } from 'lucide-react';
 import { VariantsManager } from './VariantsManager';
 
 type Product = {
@@ -220,6 +220,55 @@ export function ProductsAdmin({ initialItems }: { initialItems: Product[] }) {
                 />
               </div>
               <p className="text-[10px] text-zinc-500 mt-2">La 1ʳᵉ image = couverture (vignette boutique). Survole une image pour la supprimer.</p>
+            </div>
+
+            {/* ─── DROPSHIPPING ─── */}
+            <div className="border-t border-zinc-800 pt-3 mt-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Truck size={14} className="text-emerald-400" />
+                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Dropshipping (impression à la demande)</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <select className="bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-sm"
+                        value={(p as any).dropProvider || ''}
+                        onChange={(e) => setField(p.id, 'dropProvider' as any, e.target.value as any)}>
+                  <option value="">— Pas de dropshipping (stock interne) —</option>
+                  <option value="gelato">🌍 Gelato (Europe rapide)</option>
+                  <option value="tpop">🌱 TPOP (France éthique)</option>
+                  <option value="printful">👕 Printful</option>
+                </select>
+                <input className="bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-sm font-mono"
+                       value={(p as any).dropProductId || ''}
+                       onChange={(e) => setField(p.id, 'dropProductId' as any, e.target.value as any)}
+                       placeholder="ID produit chez le fournisseur" />
+                <div>
+                  <input type="number" step="0.01" min="0"
+                         className="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-sm"
+                         value={(p as any).costCents ? (p as any).costCents / 100 : ''}
+                         onChange={(e) => setField(p.id, 'costCents' as any, (e.target.value === '' ? null : Math.round(Number(e.target.value) * 100)) as any)}
+                         placeholder="Prix d'achat HT (€)" />
+                </div>
+              </div>
+              {/* Marge calculée */}
+              {(p as any).costCents && p.priceCents && (
+                <div className="mt-2 flex items-center gap-3 text-xs">
+                  <span className="text-zinc-400">Achat : <strong className="text-white">{((p as any).costCents / 100).toFixed(2)} €</strong></span>
+                  <span className="text-zinc-400">→ Vente : <strong className="text-white">{(p.priceCents / 100).toFixed(2)} €</strong></span>
+                  <span className="text-zinc-400">→</span>
+                  <span className={`px-2 py-1 rounded font-bold flex items-center gap-1 ${
+                    p.priceCents - (p as any).costCents > 0
+                      ? 'bg-emerald-500/20 text-emerald-300'
+                      : 'bg-red-500/20 text-red-300'
+                  }`}>
+                    <TrendingUp size={12} />
+                    {((p.priceCents - (p as any).costCents) / 100).toFixed(2)} € de marge
+                    ({Math.round(((p.priceCents - (p as any).costCents) / p.priceCents) * 100)}%)
+                  </span>
+                </div>
+              )}
+              {(p as any).dropProvider && !(p as any).dropProductId && (
+                <p className="text-amber-400 text-xs mt-2">⚠ Renseigne l'ID du produit chez {(p as any).dropProvider} pour activer le dropshipping auto.</p>
+              )}
             </div>
 
             {/* ─── VARIANTS (prix/stock/images par déclinaison) ─── */}

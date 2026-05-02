@@ -383,6 +383,12 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // Dropshipping print-on-demand
+  dropProvider     String?  // 'gelato' | 'tpop' | 'printful' | null
+  dropProductId    String?  // ID du produit chez le fournisseur (sync depuis catalogue)
+  dropVariantMap   Json?    // map { variantId interne: variantId fournisseur }
+  costCents        Int?     // Prix d'achat unitaire HT (chez le fournisseur)
+
   orderItems       OrderItem[]
   productVariants  ProductVariant[]
 
