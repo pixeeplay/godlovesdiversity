@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 
 export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
@@ -17,6 +18,10 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string
 }
 
 export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
+  // Anti-flood : max 5 commentaires / IP / 5 min
+  const rl = rateLimit(req, { key: 'comment', max: 5, windowMs: 5 * 60_000 });
+  if (!rl.ok) return rateLimitResponse(rl.resetAt);
+
   const { id } = await ctx.params;
   const body = await req.json();
   const authorName = String(body.authorName || '').trim().slice(0, 60);

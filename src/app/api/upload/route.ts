@@ -5,6 +5,7 @@ import { uploadBuffer } from '@/lib/storage';
 import { notifyAdmin } from '@/lib/email';
 import { extractExif } from '@/lib/exif';
 import { reverseGeocode, detectPlaceType } from '@/lib/geocode';
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 import crypto from 'crypto';
 
 export const runtime = 'nodejs';
@@ -24,10 +25,23 @@ const Body = z.object({
 });
 
 export async function POST(req: Request) {
+  // Anti-flood : max 10 uploads / IP / 10 min
+  const rl = rateLimit(req, { key: 'upload', max: 10, windowMs: 10 * 60_000 });
+  if (!rl.ok) return rateLimitResponse(rl.resetAt);
+
   try {
     const fd = await req.formData();
     const file = fd.get('file') as File | null;
     if (!file) return NextResponse.json({ error: 'file required' }, { status: 400 });
+
+    // Limite taille fichier : 20 MB max
+    if (file.size > 20 * 1024 * 1024) {
+      return NextResponse.json({ error: 'Fichier trop lourd (max 20 MB)' }, { status: 413 });
+    }
+    // Limite mime types : image/* ou video/*
+    if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+      return NextResponse.json({ error: 'Type de fichier non autorisé' }, { status: 415 });
+    }
 
     const parsed = Body.safeParse(Object.fromEntries(fd.entries()));
     if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });

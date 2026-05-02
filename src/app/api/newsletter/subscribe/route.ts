@@ -3,6 +3,7 @@ import { z } from 'zod';
 import crypto from 'crypto';
 import { prisma } from '@/lib/prisma';
 import { sendEmail, notifyAdmin } from '@/lib/email';
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit';
 
 const Body = z.object({
   email: z.string().email(),
@@ -10,6 +11,10 @@ const Body = z.object({
 });
 
 export async function POST(req: Request) {
+  // Anti-spam : max 3 inscriptions / IP / heure
+  const rl = rateLimit(req, { key: 'newsletter', max: 3, windowMs: 60 * 60_000 });
+  if (!rl.ok) return rateLimitResponse(rl.resetAt);
+
   const json = await req.json().catch(() => ({}));
   const parsed = Body.safeParse(json);
   if (!parsed.success) return NextResponse.json({ error: 'invalid' }, { status: 400 });
