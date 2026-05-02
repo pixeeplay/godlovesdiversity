@@ -5,9 +5,11 @@ import {
   BarChart3, Calendar, Heart, Wand2, ScanFace, Copy
 } from 'lucide-react';
 import { HeroVisualsAdmin } from './HeroVisualsAdmin';
+import { MusicGenerator } from './MusicGenerator';
 
 const TABS = [
-  { v: 'visuals', l: 'Visuels Hero', icon: Wand2 },
+  { v: 'visuals', l: '🎨 Visuels Hero', icon: Wand2 },
+  { v: 'music', l: '🎵 Musique IA', icon: Heart },
   { v: 'caption', l: 'Légende photo', icon: ImageIcon },
   { v: 'testimony', l: 'Témoignage', icon: Heart },
   { v: 'variants', l: 'Variantes social', icon: Wand2 },
@@ -39,6 +41,7 @@ export function AIStudio() {
       </div>
 
       {tab === 'visuals' && <HeroVisualsAdmin />}
+      {tab === 'music' && <MusicGenerator />}
       {tab === 'caption' && <CaptionTab />}
       {tab === 'testimony' && <TestimonyTab />}
       {tab === 'variants' && <VariantsTab />}

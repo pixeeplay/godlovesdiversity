@@ -408,18 +408,35 @@ model Order {
   name            String?
   phone           String?
   shippingAddress String?         @db.Text
+  shippingCity    String?
+  shippingZip     String?
+  shippingCountry String?         @default("FR")
   totalCents      Int
   currency        String          @default("EUR")
   status          OrderStatus     @default(PENDING)
   paymentProvider PaymentProvider?
   paymentId       String?         // ID externe (Stripe session, Square checkout)
   notes           String?         @db.Text
+
+  // Suivi expédition
+  weightGrams     Int?            // Poids total du colis en grammes
+  carrier         String?         // "colissimo", "mondial-relay", "chronopost", etc.
+  shippingCost    Int?            // En centimes
+  trackingNumber  String?
+  trackingUrl     String?
+  shippedAt       DateTime?
+  deliveredAt     DateTime?
+
+  // Token public pour suivi (URL /commande/{token})
+  publicToken     String          @unique @default(cuid())
+
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
   items           OrderItem[]
 
   @@index([status, createdAt])
+  @@index([publicToken])
 }
 
 model OrderItem {

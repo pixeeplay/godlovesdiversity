@@ -13,7 +13,11 @@ const PUBLIC_KEYS = new Set([
   'site.tagline',
   'campaign.hashtag',
   'donate.enabled',
-  'donate.helloAssoUrl'
+  'donate.helloAssoUrl',
+  'audio.tracks',
+  'audio.enabled',
+  'visuals.heroStyle',
+  'visuals.heroAiUrls'
 ]);
 
 export async function GET(req: NextRequest) {

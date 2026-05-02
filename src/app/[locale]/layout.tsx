@@ -6,6 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { AskGldWidget } from '@/components/AskGldWidget';
 import { TickerDonate } from '@/components/TickerDonate';
+import { AmbientPlayer } from '@/components/AmbientPlayer';
 import { ThemeProvider, themeInitScript } from '@/components/ThemeProvider';
 
 export function generateStaticParams() {
@@ -40,6 +41,7 @@ export default async function LocaleLayout({
             <main className="flex-1">{children}</main>
             <Footer />
             <AskGldWidget />
+            <AmbientPlayer />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

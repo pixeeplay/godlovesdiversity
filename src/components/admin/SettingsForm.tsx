@@ -131,6 +131,32 @@ const GROUPS: Group[] = [
       { key: 'integrations.square.locationId', label: 'Location ID', placeholder: 'L1234ABCDE' },
       { key: 'integrations.square.environment', label: 'Environnement', placeholder: 'sandbox ou production', help: 'sandbox = test, production = vrai' }
     ]
+  },
+  {
+    title: 'Twilio (SMS notifications)',
+    icon: KeyRound,
+    description: 'Envoi SMS au client lors de l\'expédition. Crée un compte sur https://www.twilio.com (essai gratuit avec crédit).',
+    fields: [
+      { key: 'integrations.twilio.accountSid', label: 'Account SID', type: 'password', placeholder: 'ACxxxx…' },
+      { key: 'integrations.twilio.authToken', label: 'Auth Token', type: 'password', placeholder: 'xxxx' },
+      { key: 'integrations.twilio.fromNumber', label: 'Numéro expéditeur', placeholder: '+33756123456' }
+    ]
+  },
+  {
+    title: 'ElevenLabs (musique IA)',
+    icon: Sparkles,
+    description: 'Génération de musique d\'ambiance par IA (prière, méditation, cathédrale…). Récupère ta clé sur https://elevenlabs.io',
+    fields: [
+      { key: 'integrations.elevenlabs.apiKey', label: 'Clé API ElevenLabs', type: 'password', placeholder: 'sk_…' }
+    ]
+  },
+  {
+    title: 'Audio d\'ambiance',
+    icon: Sparkles,
+    description: 'Liste JSON des morceaux disponibles dans le lecteur ambiant en bas-gauche du site. Format : [{"url":"...","title":"..."}]',
+    fields: [
+      { key: 'audio.tracks', label: 'Tracks (JSON)', type: 'textarea', placeholder: '[{"url":"https://...","title":"Prière"}]', help: 'Vide = lecteur masqué. Génère via Studio IA → Musique IA' }
+    ]
   }
 ];
 

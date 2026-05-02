@@ -31,12 +31,14 @@ export default async function OrdersPage() {
       ) : (
         <div className="space-y-3">
           {orders.map((o) => (
-            <div key={o.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
+            <Link key={o.id} href={`/admin/shop/orders/${o.id}`}
+                  className="block bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 hover:border-brand-pink/40 rounded-2xl p-4 transition">
               <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                 <div>
-                  <p className="font-bold">#{o.id.slice(0, 8)} — {o.email}</p>
+                  <p className="font-bold">#{o.id.slice(0, 8).toUpperCase()} — {o.email}</p>
                   <p className="text-xs text-zinc-400">
-                    {new Date(o.createdAt).toLocaleString('fr-FR')} · {o.paymentProvider} · {o.status}
+                    {new Date(o.createdAt).toLocaleString('fr-FR')} · {o.paymentProvider} ·
+                    <span className={`ml-1 px-2 py-0.5 rounded text-[10px] font-bold ${o.status === 'SHIPPED' ? 'bg-violet-500/20 text-violet-300' : o.status === 'PAID' ? 'bg-cyan-500/20 text-cyan-300' : o.status === 'PENDING' ? 'bg-amber-500/20 text-amber-300' : 'bg-zinc-700 text-zinc-300'}`}>{o.status}</span>
                   </p>
                 </div>
                 <p className="font-bold text-brand-pink text-lg">{fmt(o.totalCents)}</p>
@@ -53,10 +55,13 @@ export default async function OrdersPage() {
                 <div className="text-xs text-zinc-400 mt-2 border-t border-zinc-800 pt-2">
                   {o.name && <>👤 {o.name}<br /></>}
                   {o.phone && <>📞 {o.phone}<br /></>}
-                  {o.shippingAddress && <>📦 {o.shippingAddress}</>}
+                  {o.shippingAddress && <>📦 {o.shippingAddress.split('\n')[0]}</>}
                 </div>
               )}
-            </div>
+              {o.trackingNumber && (
+                <p className="text-xs text-violet-300 mt-2">📦 Tracking : <span className="font-mono">{o.trackingNumber}</span></p>
+              )}
+            </Link>
           ))}
         </div>
       )}
