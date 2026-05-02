@@ -50,19 +50,20 @@ export function Navbar() {
     <header className={`sticky top-0 z-40 transition-all duration-300 ${scrolled ? 'backdrop-blur-xl bg-[color:var(--bg)]/70 border-b border-[color:var(--border)] py-2' : 'py-4'}`}>
       <div className="container-wide flex items-center justify-between">
         <a href="/" className="flex items-center gap-3 shrink-0">
+          {/* Cœur battant rainbow — toujours visible */}
+          <div className="w-12 h-12 shrink-0">
+            <NeonHeart size={48} />
+          </div>
           {logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={logoUrl} alt="" className="h-12 object-contain" />
           ) : (
-            <div className="w-12 h-12 shrink-0">
-              <NeonHeart size={48} />
+            <div className="font-display font-black leading-none text-[color:var(--accent)] hidden sm:block">
+              <div className="text-base">GOD</div>
+              <div className="text-base">LOVES</div>
+              <div className="text-base">DIVERSITY</div>
             </div>
           )}
-          <div className="font-display font-black leading-none text-[color:var(--accent)] hidden sm:block">
-            <div className="text-base">GOD</div>
-            <div className="text-base">LOVES</div>
-            <div className="text-base">DIVERSITY</div>
-          </div>
         </a>
 
         <nav className="hidden lg:flex items-center gap-8">
