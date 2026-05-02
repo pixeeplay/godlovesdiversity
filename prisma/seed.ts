@@ -213,6 +213,116 @@ async function main() {
     if (!exists) await prisma.partner.create({ data: p });
   }
   console.log('✅ Partenaires par défaut');
+
+  // ───────── 5 PRODUITS DÉRIVÉS DE DÉMO ─────────
+  const products = [
+    {
+      slug: 't-shirt-arc-en-ciel',
+      title: 'T-shirt arc-en-ciel "God Loves Diversity"',
+      description: `T-shirt unisexe en coton bio (180 g/m²), imprimé en France.
+Devant : grand cœur arc-en-ciel rainbow shift au feutre néon, signé "God Loves Diversity".
+Dos : verset inclusif minimaliste « Aimez-vous les uns les autres » en typographie cathédrale dorée.
+
+Tailles disponibles : XS à 3XL — coupe ample, manches mi-longues. Lavage 30°C, séchage à plat.
+100 % des bénéfices reversés au mouvement (impression d'affiches, animations dans les paroisses inclusives).`,
+      priceCents: 2500,
+      currency: 'EUR',
+      images: [
+        'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&q=80',
+        'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=800&q=80'
+      ],
+      stock: 50,
+      category: 'Vêtement',
+      variants: { Taille: ['XS', 'S', 'M', 'L', 'XL', 'XXL'], Couleur: ['Blanc', 'Noir', 'Rose pastel'] },
+      order: 1
+    },
+    {
+      slug: 'bougie-vitrail',
+      title: 'Bougie parfumée "Vitrail" — Encens & Oud',
+      description: `Bougie en cire de soja 100 % végétale, coulée à la main en France.
+Verre teinté façon vitrail (rouge rubis, bleu cobalt, vert émeraude — au choix), capacité 230 g, durée de combustion 50 h.
+Parfum : encens d'église, oud précieux, note de bois sacré — composé en Provence.
+Mèche en coton naturel, sans phtalate, sans paraffine.
+
+Allume-la pendant ta lecture, ta prière ou ta méditation. Idéale pour créer un espace sacré chez toi.
+Boîte cadeau cartonnée incluse, avec un mot écrit à la main.`,
+      priceCents: 2800,
+      currency: 'EUR',
+      images: [
+        'https://images.unsplash.com/photo-1602874801007-aa20f6566c75?w=800&q=80',
+        'https://images.unsplash.com/photo-1601312378427-822b2b41da35?w=800&q=80'
+      ],
+      stock: 30,
+      category: 'Accessoire',
+      variants: { Couleur: ['Rouge rubis', 'Bleu cobalt', 'Vert émeraude'] },
+      order: 2
+    },
+    {
+      slug: 'mug-foi-inclusive',
+      title: 'Mug céramique "Foi & Diversité"',
+      description: `Mug en céramique fine émaillée (350 ml), résistant au lave-vaisselle et au micro-ondes.
+Décor : cœur arc-en-ciel + croix/croissant/étoile/mandala stylisés en couronne — un même cercle, plusieurs traditions.
+Citation à l'intérieur du fond : « L'amour ne fait pas de différence. »
+
+Idéal pour ton café du dimanche matin, ton thé de retraite spirituelle, ou pour offrir.
+Emballage carton recyclé.`,
+      priceCents: 1500,
+      currency: 'EUR',
+      images: [
+        'https://images.unsplash.com/photo-1572119003128-d110c07af847?w=800&q=80',
+        'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80'
+      ],
+      stock: 80,
+      category: 'Accessoire',
+      variants: { Couleur: ['Blanc', 'Noir mat'] },
+      order: 3
+    },
+    {
+      slug: 'tote-bag-gld',
+      title: 'Tote bag canvas "GLD"',
+      description: `Tote bag en toile de coton bio 240 g/m², anses solides 70 cm, fond renforcé.
+Logo "GOD LOVES DIVERSITY" en typographie cathédrale dorée + cœur arc-en-ciel imprimé écran.
+Format 38 × 42 cm, supporte jusqu'à 8 kg.
+
+Parfait pour aller au marché, à la fac, à la marche des fiertés ou tout simplement pour porter le message au quotidien.`,
+      priceCents: 1800,
+      currency: 'EUR',
+      images: [
+        'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=800&q=80',
+        'https://images.unsplash.com/photo-1591196702196-58c41e9d345f?w=800&q=80'
+      ],
+      stock: 60,
+      category: 'Accessoire',
+      variants: { Couleur: ['Naturel', 'Noir', 'Rose poudré'] },
+      order: 4
+    },
+    {
+      slug: 'affiche-cathedrale-lumiere',
+      title: 'Affiche A2 "Cathédrale de Lumière"',
+      description: `Affiche au format A2 (42 × 59,4 cm), papier mat 250 g/m² certifié FSC, impression haute définition à Paris.
+Visuel original : silhouette devant un vitrail rosace gothique baigné d'un faisceau de lumière arc-en-ciel descendante, particules dorées en suspension.
+
+Cadre non inclus. Livraison roulée dans un tube en carton recyclé.
+Édition signée et numérotée — la première série est limitée à 200 exemplaires.`,
+      priceCents: 1200,
+      currency: 'EUR',
+      images: [
+        'https://images.unsplash.com/photo-1577720580479-7d839d829c73?w=800&q=80',
+        'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=800&q=80'
+      ],
+      stock: 200,
+      category: 'Affiche',
+      variants: { Format: ['A2 (42×59cm)', 'A1 (59×84cm)'] },
+      order: 5
+    }
+  ];
+  for (const p of products) {
+    const exists = await prisma.product.findUnique({ where: { slug: p.slug } });
+    if (!exists) {
+      await prisma.product.create({ data: p as any });
+    }
+  }
+  console.log('✅ 5 produits boutique seedés');
 }
 
 main()
