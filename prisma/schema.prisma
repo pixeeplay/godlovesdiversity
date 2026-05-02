@@ -433,6 +433,19 @@ model OrderItem {
   variant    Json?   // ex: { "size": "M", "color": "Rose" }
 }
 
+/// Commentaires sur les photos (modération avant publication)
+model PhotoComment {
+  id          String   @id @default(cuid())
+  photoId     String
+  authorName  String   // nom affiché (peut être pseudo)
+  authorEmail String?  // pour modération éventuelle
+  content     String   @db.Text
+  approved    Boolean  @default(true)  // mode auto-approve, peut passer en false pour modération
+  createdAt   DateTime @default(now())
+
+  @@index([photoId, createdAt])
+}
+
 model AuditLog {
   id         String   @id @default(cuid())
   userId     String?

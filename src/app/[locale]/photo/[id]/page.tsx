@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, MapPin } from 'lucide-react';
 import { SharePhoto } from '@/components/SharePhoto';
+import { PhotoComments } from '@/components/PhotoComments';
 import { headers } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
@@ -24,7 +25,7 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
     photo = await prisma.photo.findUnique({ where: { id } });
   } catch { photo = null; }
   if (!photo || photo.status !== 'PUBLISHED') notFound();
-  const url = photo.objectKey ? publicUrl(photo.objectKey) : null;
+  const url = photo.storageKey ? publicUrl(photo.storageKey) : null;
 
   // URL absolue pour le partage
   const h = await headers();
@@ -80,6 +81,11 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
               Publié le {new Date(photo.createdAt).toLocaleDateString('fr-FR')}
             </div>
           </aside>
+        </div>
+
+        {/* COMMENTAIRES */}
+        <div className="mt-12 max-w-3xl">
+          <PhotoComments photoId={photo.id} />
         </div>
       </div>
     </div>
