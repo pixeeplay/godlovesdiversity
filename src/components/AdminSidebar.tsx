@@ -27,7 +27,8 @@ const NAV: Entry[] = [
     icon: ShoppingBag,
     children: [
       { href: '/admin/shop', label: 'Produits', icon: Package },
-      { href: '/admin/shop/orders', label: 'Commandes', icon: ShoppingBag }
+      { href: '/admin/shop/orders', label: 'Commandes', icon: ShoppingBag },
+      { href: '/admin/shop/dropshipping', label: 'Dropshipping', icon: Truck }
     ]
   },
   {
