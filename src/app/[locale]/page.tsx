@@ -161,6 +161,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
+      {/* ═══ BOUTIQUE — produits défilants (remonté pour visibilité) ═══ */}
+      <ProductsCarousel />
+
       {/* ═══ TÉLÉCHARGEZ L'AFFICHE ═══ */}
       <PostersShowcase title={postersTitle} text={postersText} />
 
@@ -172,9 +175,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       {/* ═══ CARROUSEL ACTUS ═══ */}
       {articleItems.length > 0 && <NewsCarousel articles={articleItems} />}
-
-      {/* ═══ BOUTIQUE — produits défilants ═══ */}
-      <ProductsCarousel />
 
       {/* ═══ PARTENAIRES ═══ */}
       <PartnersBand />
