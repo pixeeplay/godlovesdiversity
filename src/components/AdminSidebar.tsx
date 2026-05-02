@@ -8,7 +8,7 @@ import {
   Sparkles, Users, Settings, LogOut, Heart, UploadCloud, MapPin, Home,
   Image as ImageIcon, Video, Layers, GalleryHorizontalEnd, Menu as MenuIcon,
   Youtube, HandHeart, Handshake, ShoppingBag, ChevronDown, ChevronRight,
-  Package, Truck, ShieldAlert, Video, type LucideIcon
+  Package, Truck, ShieldAlert, type LucideIcon
 } from 'lucide-react';
 import type { MenuPermissions } from '@/lib/menu-permissions';
 import { isItemVisible } from '@/lib/menu-permissions';
