@@ -86,6 +86,8 @@ declare module 'lucide-react' {
   export const Trash2: LucideIcon;
   export const Trophy: LucideIcon;
   export const Truck: LucideIcon;
+  export const Hash: LucideIcon;
+  export const TrendingUp: LucideIcon;
   export const Twitter: LucideIcon;
   export const Type: LucideIcon;
   export const UploadCloud: LucideIcon;
