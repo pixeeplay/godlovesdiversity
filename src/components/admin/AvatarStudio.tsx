@@ -2,8 +2,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import {
   Video, Sparkles, Save, Loader2, CheckCircle2, AlertCircle, Play, Pause,
-  Volume2, ExternalLink, Power, PowerOff, Eye, KeyRound, Zap, RefreshCw, type LucideIcon
+  Volume2, ExternalLink, Power, PowerOff, Eye, KeyRound, Zap, RefreshCw, Mic, Home, type LucideIcon
 } from 'lucide-react';
+import { AskGldAvatarLocal } from '@/components/AskGldAvatarLocal';
 
 type Avatar = {
   avatar_id: string;
@@ -61,6 +62,33 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, initialC
   const [testQuestion, setTestQuestion] = useState('');
   const [testing, setTesting] = useState(false);
   const [testVideo, setTestVideo] = useState<{ id: string; status: string; url?: string; answer?: string; sources?: any[]; errorMessage?: string } | null>(null);
+
+  // Test Mode Live local — ouvre le même modal que sur le front
+  const [testLocalLive, setTestLocalLive] = useState(false);
+
+  // Test Mode Texte (RAG) — pas besoin d'activer
+  const [testTextQ, setTestTextQ] = useState('');
+  const [testTextBusy, setTestTextBusy] = useState(false);
+  const [testTextAnswer, setTestTextAnswer] = useState<{ text?: string; sources?: any[]; offTopic?: boolean; error?: string } | null>(null);
+
+  async function runTextTest() {
+    if (!testTextQ.trim()) return;
+    setTestTextBusy(true);
+    setTestTextAnswer(null);
+    try {
+      const r = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: testTextQ, locale: 'fr' })
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || 'Erreur');
+      setTestTextAnswer({ text: j.answer || j.text, sources: j.sources, offTopic: !!j.offTopic });
+    } catch (e: any) {
+      setTestTextAnswer({ error: e?.message || 'Erreur réseau' });
+    }
+    setTestTextBusy(false);
+  }
 
   useEffect(() => {
     if (apiKeyConfigured) loadAvatars();
@@ -248,6 +276,23 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, initialC
                   <div className="text-[11px] text-zinc-500">Le bouton « 🎬 Vidéo » apparaîtra dans le chat</div>
                 </div>
               </label>
+
+              {/* Bouton tester ici-même */}
+              <button
+                onClick={() => {
+                  setTestQuestion('Que dit la Bible sur l\'amour et la diversité ?');
+                  setTimeout(() => runTest(), 80);
+                }}
+                disabled={!apiKeyConfigured || !config.avatarId || !config.voiceId || testing}
+                className="w-full bg-fuchsia-500 hover:bg-fuchsia-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-3 py-2 rounded-lg text-xs flex items-center justify-center gap-2"
+                title={!config.avatarId || !config.voiceId ? 'Choisis avatar + voix plus bas' : 'Génère une vraie vidéo de démo'}
+              >
+                {testing ? <Loader2 size={12} className="animate-spin" /> : <Zap size={12} />}
+                Tester maintenant (génère une vidéo démo)
+              </button>
+              {!config.avatarId || !config.voiceId ? (
+                <p className="text-[10px] text-amber-400 text-center">⚠ Choisis un avatar + une voix dans les sections plus bas avant de tester.</p>
+              ) : null}
             </div>
           </div>
 
@@ -316,27 +361,108 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, initialC
                   <div className="text-[11px] text-zinc-500">Le bouton « 🎙 Live » apparaîtra dans le chat (plafond 2 min)</div>
                 </div>
               </label>
+
+              {/* Bouton tester le Mode Live local ici-même */}
+              <button
+                onClick={() => setTestLocalLive(true)}
+                disabled={!hasElevenLabs}
+                className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-3 py-2 rounded-lg text-xs flex items-center justify-center gap-2"
+                title="Ouvre la même conversation vocale que sur le front"
+              >
+                <Mic size={12} />
+                Tester maintenant (parle au micro)
+              </button>
+              {!hasElevenLabs && (
+                <p className="text-[10px] text-amber-400 text-center">⚠ Configure d'abord ta clé ElevenLabs.</p>
+              )}
             </div>
           </div>
         </div>
 
-        {/* BOUTON SAUVEGARDE FLOTTANT haut */}
-        <div className="mt-4 flex items-center justify-end gap-3 bg-zinc-950/80 backdrop-blur border border-zinc-800 rounded-xl p-3">
-          {savedCfg && (
-            <span className="text-emerald-300 text-sm flex items-center gap-1">
-              <CheckCircle2 size={14} /> Sauvegardé !
-            </span>
+        {/* MODE TEXTE — toujours dispo, pas besoin de clé */}
+        <div className="mt-4 rounded-2xl border border-violet-500/30 bg-violet-500/5 p-4">
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <div>
+              <h3 className="font-bold text-sm flex items-center gap-2"><Sparkles size={14} className="text-violet-400" /> Mode Texte (toujours actif)</h3>
+              <p className="text-[11px] text-zinc-500">Réponses RAG instantanées, gratuit. C'est le mode qui s'affiche par défaut sur le chat.</p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <input
+              value={testTextQ}
+              onChange={(e) => setTestTextQ(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && !testTextBusy && runTextTest()}
+              placeholder="Pose une question pour tester la qualité du RAG…"
+              className="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-xs outline-none focus:border-violet-500"
+            />
+            <button
+              onClick={runTextTest}
+              disabled={testTextBusy || !testTextQ.trim()}
+              className="bg-violet-500 hover:bg-violet-600 disabled:opacity-40 text-white font-bold px-4 py-2 rounded-lg text-xs flex items-center gap-2"
+            >
+              {testTextBusy ? <Loader2 size={12} className="animate-spin" /> : <Zap size={12} />}
+              Tester
+            </button>
+          </div>
+          {testTextAnswer && (
+            <div className="mt-3 bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-xs space-y-2">
+              {testTextAnswer.error ? (
+                <div className="text-red-300 flex items-center gap-2"><AlertCircle size={12} /> {testTextAnswer.error}</div>
+              ) : (
+                <>
+                  {testTextAnswer.offTopic && (
+                    <div className="bg-amber-500/10 border border-amber-500/20 rounded p-2 text-amber-300 text-[10px]">
+                      ⚠ Hors sujet — la base RAG n'a pas trouvé de match pertinent
+                    </div>
+                  )}
+                  <div className="text-zinc-200 whitespace-pre-wrap">{testTextAnswer.text}</div>
+                  {testTextAnswer.sources && testTextAnswer.sources.length > 0 && (
+                    <div className="flex flex-wrap gap-1 pt-2 border-t border-zinc-800">
+                      {testTextAnswer.sources.slice(0, 4).map((s: any, i: number) => (
+                        <span key={i} className="text-[10px] bg-zinc-800 border border-zinc-700 rounded px-2 py-0.5 text-zinc-400">
+                          📖 {s.title?.slice(0, 40) || 'Source'}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           )}
-          <button
-            onClick={saveConfig}
-            disabled={savingCfg}
-            className="bg-brand-pink hover:bg-pink-600 text-white font-bold px-5 py-2 rounded-full text-sm flex items-center gap-2"
+        </div>
+
+        {/* BOUTON SAUVEGARDE FLOTTANT haut */}
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 bg-zinc-950/80 backdrop-blur border border-zinc-800 rounded-xl p-3">
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-4 py-2 rounded-full text-sm flex items-center gap-2 border border-zinc-700"
           >
-            {savingCfg ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
-            Sauvegarder mes choix
-          </button>
+            <Home size={14} /> Voir le widget chat sur la home →
+          </a>
+          <div className="flex items-center gap-3">
+            {savedCfg && (
+              <span className="text-emerald-300 text-sm flex items-center gap-1">
+                <CheckCircle2 size={14} /> Sauvegardé !
+              </span>
+            )}
+            <button
+              onClick={saveConfig}
+              disabled={savingCfg}
+              className="bg-brand-pink hover:bg-pink-600 text-white font-bold px-5 py-2 rounded-full text-sm flex items-center gap-2"
+            >
+              {savingCfg ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+              Sauvegarder mes choix
+            </button>
+          </div>
         </div>
       </section>
+
+      {/* Modal Live local pour test depuis l'admin */}
+      {testLocalLive && (
+        <AskGldAvatarLocal onClose={() => setTestLocalLive(false)} />
+      )}
 
       {/* WARN si pas de clé HeyGen (déjà visible dans la carte mais on le garde pour visibilité) */}
       {!apiKeyConfigured && (
