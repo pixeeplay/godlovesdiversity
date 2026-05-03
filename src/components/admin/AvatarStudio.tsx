@@ -56,7 +56,7 @@ export function AvatarStudio({ apiKeyConfigured, initialConfig }: Props) {
   // Test live
   const [testQuestion, setTestQuestion] = useState('');
   const [testing, setTesting] = useState(false);
-  const [testVideo, setTestVideo] = useState<{ id: string; status: string; url?: string; answer?: string; sources?: any[] } | null>(null);
+  const [testVideo, setTestVideo] = useState<{ id: string; status: string; url?: string; answer?: string; sources?: any[]; errorMessage?: string } | null>(null);
 
   useEffect(() => {
     if (apiKeyConfigured) loadAvatars();
@@ -138,7 +138,8 @@ export function AvatarStudio({ apiKeyConfigured, initialConfig }: Props) {
           return;
         }
         if (j.status === 'failed') {
-          setTestVideo((v) => v ? { ...v, status: 'failed' } : null);
+          const errMsg = j.error?.message || j.error || 'Génération vidéo refusée par HeyGen';
+          setTestVideo((v) => v ? { ...v, status: 'failed', errorMessage: errMsg } : null);
           return;
         }
         setTestVideo((v) => v ? { ...v, status: j.status } : null);
@@ -398,8 +399,26 @@ export function AvatarStudio({ apiKeyConfigured, initialConfig }: Props) {
                 {testVideo.status === 'completed' && testVideo.url ? (
                   <video src={testVideo.url} controls autoPlay className="w-full rounded-lg bg-black" />
                 ) : testVideo.status === 'failed' ? (
-                  <div className="bg-red-500/10 border border-red-500/30 text-red-300 rounded-lg p-2 text-xs flex items-center gap-1.5">
-                    <AlertCircle size={12} /> Génération échouée
+                  <div className="bg-red-500/10 border border-red-500/30 text-red-300 rounded-lg p-3 text-xs space-y-2">
+                    <div className="flex items-center gap-1.5 font-bold">
+                      <AlertCircle size={14} /> Génération HeyGen refusée
+                    </div>
+                    {testVideo.errorMessage && (
+                      <div className="bg-red-500/10 rounded p-2 text-[11px] break-words">
+                        {testVideo.errorMessage}
+                      </div>
+                    )}
+                    <div className="text-[10px] text-red-200/70 space-y-1">
+                      <div className="font-bold uppercase">Causes probables :</div>
+                      <div>• Plus de crédits sur ton compte HeyGen → vérifie sur <a href="https://app.heygen.com/billing" target="_blank" rel="noopener noreferrer" className="underline">app.heygen.com/billing</a></div>
+                      <div>• L'avatar choisi n'est pas dans ton plan (essaie un autre)</div>
+                      <div>• La voix n'est pas compatible avec cet avatar</div>
+                      <div>• Le texte dépasse les limites HeyGen</div>
+                    </div>
+                  </div>
+                ) : testVideo.status === 'timeout' ? (
+                  <div className="bg-amber-500/10 border border-amber-500/30 text-amber-300 rounded-lg p-2 text-xs">
+                    Timeout (>2 min) — HeyGen n'a pas fini. Réessaie ou regarde sur <a href="https://app.heygen.com/projects" target="_blank" rel="noopener noreferrer" className="underline">app.heygen.com/projects</a>.
                   </div>
                 ) : (
                   <div className="bg-zinc-800 rounded-lg p-3 text-xs flex items-center gap-2 text-zinc-300">
