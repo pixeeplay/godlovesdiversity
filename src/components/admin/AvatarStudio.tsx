@@ -31,6 +31,8 @@ type Config = {
   liveAvatarEnabled: boolean;
   liveAvatarId: string;
   liveAvatarMaxDur: number;
+  liveAvatarGeminiVoice: string;
+  liveAvatarLanguage: string;
   avatarId: string;
   voiceId: string;
   bgColor: string;
@@ -45,6 +47,9 @@ type Props = {
 };
 
 type LAAvatar = { id: string; name: string; preview_url?: string };
+type LAVoice = { id: string; name: string; language: string; gender: string };
+type LALanguage = { code: string; language: string };
+type GeminiVoice = { id: string; label: string; description: string };
 
 const BG_PRESETS = [
   { color: '#FBEAF0', label: 'Rose GLD' },
@@ -76,8 +81,11 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
   // Test Mode Streaming LiveAvatar
   const [testLiveAvatar, setTestLiveAvatar] = useState(false);
 
-  // Liste avatars LiveAvatar
+  // Liste avatars LiveAvatar + voix + langues
   const [laAvatars, setLaAvatars] = useState<LAAvatar[]>([]);
+  const [laVoices, setLaVoices] = useState<LAVoice[]>([]);
+  const [laLanguages, setLaLanguages] = useState<LALanguage[]>([]);
+  const [laGeminiVoices, setLaGeminiVoices] = useState<GeminiVoice[]>([]);
   const [laCredits, setLaCredits] = useState<string | null>(null);
   const [laLoading, setLaLoading] = useState(false);
   const [laError, setLaError] = useState<string | null>(null);
@@ -95,6 +103,9 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
       const j = await r.json();
       if (r.ok) {
         setLaAvatars(j.avatars || []);
+        setLaVoices(j.voices || []);
+        setLaLanguages(j.languages || []);
+        setLaGeminiVoices(j.geminiVoices || []);
         setLaCredits(j.credits ?? null);
         if (j.errors?.avatars) setLaError(j.errors.avatars);
       } else {
@@ -105,6 +116,12 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
     }
     setLaLoading(false);
   }
+
+  // Avatar choisi (objet complet) pour preview
+  const selectedLaAvatar = useMemo(
+    () => laAvatars.find((a) => a.id === config.liveAvatarId),
+    [laAvatars, config.liveAvatarId]
+  );
 
   // Test Mode Texte (RAG) — pas besoin d'activer
   const [testTextQ, setTestTextQ] = useState('');
@@ -168,6 +185,8 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
         'avatar.liveavatar.enabled': config.liveAvatarEnabled ? '1' : '0',
         'avatar.liveavatar.avatarId': config.liveAvatarId,
         'avatar.liveavatar.maxDurationSec': String(config.liveAvatarMaxDur || 120),
+        'avatar.liveavatar.voice': config.liveAvatarGeminiVoice || 'Puck',
+        'avatar.liveavatar.language': config.liveAvatarLanguage || 'fr',
         'avatar.heygen.avatarId': config.avatarId,
         'avatar.heygen.voiceId': config.voiceId,
         'avatar.heygen.bgColor': config.bgColor,
@@ -478,37 +497,128 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
                 )}
               </div>
 
-              {/* Sélecteur d'avatar LiveAvatar */}
+              {/* Sélecteurs LiveAvatar : galerie + voix + langue */}
               {hasLiveAvatar && (
-                <div>
-                  <label className="text-[11px] font-bold uppercase text-zinc-400 flex items-center justify-between">
-                    <span>Avatar LiveAvatar</span>
-                    <button onClick={loadLaAvatars} disabled={laLoading} className="text-violet-400 hover:text-violet-300 disabled:opacity-50">
-                      {laLoading ? <Loader2 size={10} className="animate-spin" /> : <RefreshCw size={10} />}
-                    </button>
-                  </label>
-                  {laError && (
-                    <div className="bg-red-500/10 border border-red-500/30 text-red-300 rounded p-2 text-[10px] mt-1">{laError}</div>
-                  )}
-                  {laAvatars.length > 0 ? (
-                    <select
-                      value={config.liveAvatarId}
-                      onChange={(e) => setConfig({ ...config, liveAvatarId: e.target.value })}
-                      className="mt-1 w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-violet-500"
-                    >
-                      <option value="">— Choisir un avatar —</option>
-                      {laAvatars.map((a) => (
-                        <option key={a.id} value={a.id}>{a.name}</option>
-                      ))}
-                    </select>
-                  ) : laLoading ? (
-                    <div className="text-zinc-500 text-[10px] mt-1 flex items-center gap-1"><Loader2 size={10} className="animate-spin" /> Chargement…</div>
-                  ) : (
-                    <div className="text-zinc-500 text-[10px] mt-1">Clique pour charger les avatars publics LiveAvatar</div>
-                  )}
+                <div className="space-y-3">
+                  {/* GALERIE D'AVATARS */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-[11px] font-bold uppercase text-zinc-400">
+                        Avatar {laAvatars.length > 0 && <span className="text-zinc-600 normal-case">· {laAvatars.length} dispos</span>}
+                      </span>
+                      <button onClick={loadLaAvatars} disabled={laLoading} className="text-violet-400 hover:text-violet-300 disabled:opacity-50 flex items-center gap-1 text-[10px]">
+                        {laLoading ? <Loader2 size={10} className="animate-spin" /> : <RefreshCw size={10} />}
+                        Recharger
+                      </button>
+                    </div>
+                    {laError && (
+                      <div className="bg-red-500/10 border border-red-500/30 text-red-300 rounded p-2 text-[10px] mb-2">{laError}</div>
+                    )}
 
-                  <label className="block mt-2">
-                    <span className="text-[10px] font-bold uppercase text-zinc-500">Durée max (secondes)</span>
+                    {laAvatars.length > 0 ? (
+                      <>
+                        {selectedLaAvatar && (
+                          <div className="bg-violet-500/10 border border-violet-500/30 rounded-lg px-2 py-1 text-[10px] text-violet-200 mb-2">
+                            ✓ Sélectionné : <strong>{selectedLaAvatar.name}</strong>
+                          </div>
+                        )}
+                        <div className="grid grid-cols-3 gap-1.5 max-h-72 overflow-y-auto pr-1">
+                          {laAvatars.map((a) => {
+                            const active = config.liveAvatarId === a.id;
+                            return (
+                              <button
+                                key={a.id}
+                                onClick={() => setConfig({ ...config, liveAvatarId: a.id })}
+                                className={`relative aspect-[3/4] rounded-lg overflow-hidden bg-zinc-800 border-2 transition group
+                                  ${active ? 'border-violet-500 scale-[1.03] shadow-lg shadow-violet-500/40' : 'border-zinc-800 hover:border-zinc-600'}`}
+                                title={a.name}
+                              >
+                                {a.preview_url ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img src={a.preview_url} alt={a.name} className="w-full h-full object-cover" loading="lazy" />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-zinc-600">
+                                    <Radio size={20} />
+                                  </div>
+                                )}
+                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-1">
+                                  <div className="text-white text-[8px] font-bold truncate leading-tight">{a.name}</div>
+                                </div>
+                                {active && (
+                                  <div className="absolute top-1 right-1 bg-violet-500 rounded-full p-0.5">
+                                    <CheckCircle2 size={10} className="text-white" />
+                                  </div>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </>
+                    ) : laLoading ? (
+                      <div className="text-zinc-500 text-xs py-4 text-center flex items-center justify-center gap-2">
+                        <Loader2 size={12} className="animate-spin" /> Chargement de la galerie LiveAvatar…
+                      </div>
+                    ) : (
+                      <button onClick={loadLaAvatars} className="w-full bg-violet-500/20 hover:bg-violet-500/30 text-violet-200 text-[11px] py-2 rounded-lg">
+                        Charger les avatars publics
+                      </button>
+                    )}
+                  </div>
+
+                  {/* SÉLECTEUR VOIX GEMINI */}
+                  <div>
+                    <span className="text-[11px] font-bold uppercase text-zinc-400 block mb-1.5">
+                      Voix Gemini Live <span className="text-zinc-600 normal-case">· {laGeminiVoices.length} dispos</span>
+                    </span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {laGeminiVoices.map((v) => {
+                        const active = (config.liveAvatarGeminiVoice || 'Puck') === v.id;
+                        return (
+                          <button
+                            key={v.id}
+                            onClick={() => setConfig({ ...config, liveAvatarGeminiVoice: v.id })}
+                            className={`text-left p-2 rounded-lg border transition
+                              ${active ? 'bg-violet-500/15 border-violet-500/50' : 'bg-zinc-900 border-zinc-700 hover:border-zinc-600'}`}
+                            title={v.description}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className={`text-[11px] font-bold ${active ? 'text-violet-200' : 'text-zinc-200'}`}>{v.label}</span>
+                              {active && <CheckCircle2 size={10} className="text-violet-400" />}
+                            </div>
+                            <div className="text-[9px] text-zinc-500 truncate">{v.description}</div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* SÉLECTEUR LANGUE */}
+                  <div>
+                    <span className="text-[11px] font-bold uppercase text-zinc-400 block mb-1.5">
+                      Langue {laLanguages.length > 0 && <span className="text-zinc-600 normal-case">· {laLanguages.length} dispos</span>}
+                    </span>
+                    {laLanguages.length > 0 ? (
+                      <select
+                        value={config.liveAvatarLanguage || 'fr'}
+                        onChange={(e) => setConfig({ ...config, liveAvatarLanguage: e.target.value })}
+                        className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-violet-500"
+                      >
+                        {laLanguages.map((l) => (
+                          <option key={l.code} value={l.code}>{l.language} ({l.code})</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input type="text"
+                        value={config.liveAvatarLanguage || 'fr'}
+                        onChange={(e) => setConfig({ ...config, liveAvatarLanguage: e.target.value })}
+                        placeholder="fr"
+                        className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-violet-500" />
+                    )}
+                  </div>
+
+                  {/* Durée max */}
+                  <label className="block">
+                    <span className="text-[10px] font-bold uppercase text-zinc-500">Durée max session (sec)</span>
                     <input type="number" min={30} max={600} step={10}
                       value={config.liveAvatarMaxDur}
                       onChange={(e) => setConfig({ ...config, liveAvatarMaxDur: parseInt(e.target.value) || 120 })}
@@ -668,6 +778,7 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
         <AskGldAvatarLiveAvatar
           onClose={() => setTestLiveAvatar(false)}
           avatarIdOverride={config.liveAvatarId}
+          voice={config.liveAvatarGeminiVoice || 'Puck'}
           fromAdmin
         />
       )}

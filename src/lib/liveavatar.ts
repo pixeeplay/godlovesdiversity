@@ -194,6 +194,27 @@ export async function listVoices(limit: number = 100): Promise<{ count: number; 
   return callLA(`/v1/voices?limit=${limit}`, { method: 'GET', auth: 'apiKey' });
 }
 
+export type Language = { language: string; code: string };
+
+export async function listLanguages(): Promise<Language[]> {
+  // /v1/languages renvoie un array direct (pas paginé) dans data
+  const res = await callLA<Language[] | { results: Language[] }>('/v1/languages', { method: 'GET', auth: 'apiKey' });
+  if (Array.isArray(res)) return res;
+  return res.results || [];
+}
+
+/** Voix Gemini Realtime supportées par LiveAvatar (8 voix) */
+export const GEMINI_VOICES: { id: string; label: string; description: string }[] = [
+  { id: 'Puck', label: 'Puck', description: 'Chaleureuse, jeune, mixte' },
+  { id: 'Aoede', label: 'Aoede', description: 'Douce, féminine, posée' },
+  { id: 'Charon', label: 'Charon', description: 'Profonde, masculine, calme' },
+  { id: 'Fenrir', label: 'Fenrir', description: 'Énergique, masculine' },
+  { id: 'Kore', label: 'Kore', description: 'Claire, féminine, neutre' },
+  { id: 'Leda', label: 'Leda', description: 'Sereine, féminine' },
+  { id: 'Orus', label: 'Orus', description: 'Posée, masculine' },
+  { id: 'Zephyr', label: 'Zephyr', description: 'Aérienne, mixte' }
+];
+
 export async function getCredits(): Promise<{ credits_left: string }> {
   return callLA('/v1/users/credits', { method: 'GET', auth: 'apiKey' });
 }
