@@ -96,11 +96,21 @@ export function AskGldAvatarLiveAvatar({ onClose }: Props) {
       await room.connect(j.livekit_url, j.livekit_client_token);
 
       // 3. Publier notre micro
-      const localAudio = await createLocalAudioTrack({
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true
-      });
+      // Pas d'options custom — les contraintes media boguent sur certains
+      // navigateurs (Safari iOS notamment) et lèvent "Invalid constraint".
+      // LiveKit applique ses propres défauts qui marchent partout.
+      let localAudio;
+      try {
+        localAudio = await createLocalAudioTrack();
+      } catch (audioErr: any) {
+        // Fallback ultra-permissif si même les défauts plantent
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const track = stream.getAudioTracks()[0];
+        await room.localParticipant.publishTrack(track);
+        localAudioRef.current = { stop: () => track.stop(), mute: () => track.enabled = false, unmute: () => track.enabled = true };
+        setPhase('live');
+        return;
+      }
       localAudioRef.current = localAudio;
       await room.localParticipant.publishTrack(localAudio);
 
@@ -176,12 +186,34 @@ export function AskGldAvatarLiveAvatar({ onClose }: Props) {
             <AlertCircle size={36} className="text-red-300" />
             <div className="text-red-100 font-bold">Connexion échouée</div>
             <div className="text-red-200/80 text-xs max-w-md whitespace-pre-wrap">{error}</div>
-            <button
-              onClick={handleClose}
-              className="mt-2 bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 rounded-full text-xs"
-            >
-              Fermer
-            </button>
+
+            {/* Aide contextuelle pour les erreurs courantes */}
+            {error && /concurrency limit/i.test(error) && (
+              <div className="text-amber-200/80 text-[11px] max-w-md bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mt-1">
+                <strong>Free tier LiveAvatar = 1 session simultanée max.</strong><br />
+                Une session précédente est encore active. Attends qu'elle expire (max 2 min) ou retente — on essaie de la fermer automatiquement.
+              </div>
+            )}
+            {error && /Invalid constraint|getUserMedia/i.test(error) && (
+              <div className="text-amber-200/80 text-[11px] max-w-md bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mt-1">
+                Le navigateur a refusé l'accès au micro. Vérifie que tu as autorisé le micro (icône cadenas dans la barre d'adresse).
+              </div>
+            )}
+
+            <div className="flex gap-2 mt-2">
+              <button
+                onClick={() => { setError(null); void start(); }}
+                className="bg-violet-500 hover:bg-violet-600 text-white font-bold px-4 py-2 rounded-full text-xs"
+              >
+                Réessayer
+              </button>
+              <button
+                onClick={handleClose}
+                className="bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 rounded-full text-xs"
+              >
+                Fermer
+              </button>
+            </div>
           </div>
         )}
 

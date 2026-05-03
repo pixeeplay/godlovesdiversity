@@ -98,13 +98,50 @@ export async function startSession(sessionToken: string): Promise<StartSessionRe
   });
 }
 
-export async function stopSession(sessionToken: string, sessionId: string, reason: string = 'USER_END'): Promise<void> {
+export async function stopSession(sessionToken: string, sessionId: string, reason: string = 'USER_DISCONNECTED'): Promise<void> {
   await callLA('/v1/sessions/stop', {
     method: 'POST',
     auth: 'bearer',
     bearer: sessionToken,
     body: JSON.stringify({ session_id: sessionId, reason })
   });
+}
+
+/** Variante : ferme une session via la clé API (pas besoin du session_token). */
+export async function stopSessionByApiKey(sessionId: string, reason: string = 'ZOMBIE_SESSION_REAP'): Promise<void> {
+  await callLA('/v1/sessions/stop', {
+    method: 'POST',
+    auth: 'apiKey',
+    body: JSON.stringify({ session_id: sessionId, reason })
+  });
+}
+
+export type ActiveSession = { id: string; created_at: string; duration: number };
+
+export async function listActiveSessions(): Promise<{ count: number; results: ActiveSession[] }> {
+  return callLA('/v1/sessions?type=active&page_size=20', { method: 'GET', auth: 'apiKey' });
+}
+
+/**
+ * Sur le free tier (max 1 concurrency), on doit fermer toute session précédente
+ * avant d'en démarrer une nouvelle. Sinon /v1/sessions/start renvoie
+ * « Session concurrency limit reached ».
+ */
+export async function reapActiveSessions(): Promise<number> {
+  try {
+    const { results } = await listActiveSessions();
+    if (!results || results.length === 0) return 0;
+    let killed = 0;
+    for (const s of results) {
+      try {
+        await stopSessionByApiKey(s.id, 'ZOMBIE_SESSION_REAP');
+        killed++;
+      } catch { /* ignore et continue */ }
+    }
+    return killed;
+  } catch {
+    return 0;
+  }
 }
 
 export async function keepSessionAlive(sessionToken: string, sessionId: string): Promise<void> {
@@ -151,6 +188,9 @@ export async function getCredits(): Promise<{ credits_left: string }> {
 /**
  * Démarre une session complète (token + start) en un appel.
  * Renvoie tout ce dont le browser a besoin pour rejoindre la room LiveKit.
+ *
+ * Si on tombe sur « concurrency limit reached » (free tier = 1 session max),
+ * on ferme automatiquement les sessions actives existantes et on retente.
  */
 export async function bootstrapSession(opts: SessionTokenLite): Promise<{
   session_id: string;
@@ -158,14 +198,36 @@ export async function bootstrapSession(opts: SessionTokenLite): Promise<{
   livekit_url: string;
   livekit_client_token: string;
   max_session_duration: number;
+  reaped?: number;
 }> {
-  const tok = await createSessionToken(opts);
-  const start = await startSession(tok.session_token);
+  let reaped = 0;
+  const attempt = async () => {
+    const tok = await createSessionToken(opts);
+    const start = await startSession(tok.session_token);
+    return { tok, start };
+  };
+
+  let result;
+  try {
+    result = await attempt();
+  } catch (e: any) {
+    const msg = String(e?.message || '');
+    if (/concurrency limit/i.test(msg)) {
+      reaped = await reapActiveSessions();
+      // petite pause pour laisser le serveur enregistrer la fermeture
+      await new Promise((r) => setTimeout(r, 800));
+      result = await attempt();
+    } else {
+      throw e;
+    }
+  }
+
   return {
-    session_id: tok.session_id,
-    session_token: tok.session_token,
-    livekit_url: start.livekit_url,
-    livekit_client_token: start.livekit_client_token,
-    max_session_duration: start.max_session_duration || opts.max_session_duration || 120
+    session_id: result.tok.session_id,
+    session_token: result.tok.session_token,
+    livekit_url: result.start.livekit_url,
+    livekit_client_token: result.start.livekit_client_token,
+    max_session_duration: result.start.max_session_duration || opts.max_session_duration || 120,
+    reaped: reaped || undefined
   };
 }

@@ -452,7 +452,7 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-amber-400 shrink-0">−</span>
-                  <span className="text-zinc-400">Crédits LiveAvatar consommés (~1 crédit / minute)</span>
+                  <span className="text-zinc-400">Free tier : 10 crédits/mois · 2 min/session · 1 session simultanée · watermark</span>
                 </div>
               </div>
 
@@ -538,6 +538,22 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
                 <Radio size={12} />
                 Tester maintenant (parle à l'avatar)
               </button>
+
+              {hasLiveAvatar && (
+                <button
+                  onClick={async () => {
+                    const r = await fetch('/api/admin/liveavatar/reap', { method: 'POST' });
+                    const j = await r.json();
+                    alert(j.ok
+                      ? `${j.killed}/${j.foundActive} session(s) zombie(s) fermée(s).`
+                      : `Erreur : ${j.error}`);
+                  }}
+                  className="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-3 py-1.5 rounded-lg text-[10px] flex items-center justify-center gap-1 mt-1"
+                  title="Si tu vois 'concurrency limit reached', clique ici pour fermer les sessions actives"
+                >
+                  🧹 Purger sessions actives (debug free tier)
+                </button>
+              )}
             </div>
           </div>
         </div>
