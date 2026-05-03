@@ -37,10 +37,10 @@ async function getGeminiKey(): Promise<string> {
   return k;
 }
 
-async function tryEmbed(model: string, key: string, text: string): Promise<number[] | null> {
+async function tryEmbed(model: string, key: string, text: string, version: 'v1' | 'v1beta' = 'v1beta'): Promise<{ values: number[] } | { error: string } | null> {
   try {
     const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:embedContent?key=${key}`,
+      `https://generativelanguage.googleapis.com/${version}/models/${model}:embedContent?key=${key}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -50,13 +50,29 @@ async function tryEmbed(model: string, key: string, text: string): Promise<numbe
         })
       }
     );
-    if (!r.ok) return null;
+    if (!r.ok) {
+      const errText = await r.text();
+      return { error: `${version}/${model} HTTP ${r.status}: ${errText.slice(0, 100)}` };
+    }
     const j = await r.json();
     const v = j?.embedding?.values;
-    if (Array.isArray(v) && v.length > 100) return v;
-    return null;
+    if (Array.isArray(v) && v.length > 100) return { values: v };
+    return { error: `${version}/${model}: réponse vide` };
+  } catch (e: any) {
+    return { error: `${version}/${model}: ${e?.message || 'fetch failed'}` };
+  }
+}
+
+/** Liste les modèles disponibles pour cette clé API (diagnostic). */
+export async function listGeminiModels(): Promise<string[]> {
+  const key = await getGeminiKey();
+  try {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
+    if (!r.ok) return [];
+    const j = await r.json();
+    return (j?.models || []).map((m: any) => m.name);
   } catch {
-    return null;
+    return [];
   }
 }
 
@@ -65,22 +81,31 @@ export async function embedText(text: string): Promise<number[]> {
 
   // Essai du modèle en cache si on en a un qui marche
   if (workingEmbedModel) {
-    const v = await tryEmbed(workingEmbedModel, key, text);
-    if (v) return v;
-    workingEmbedModel = null; // était cassé, on retry tous
+    const r = await tryEmbed(workingEmbedModel.split('|')[1], key, text, workingEmbedModel.split('|')[0] as any);
+    if (r && 'values' in r) return r.values;
+    workingEmbedModel = null;
   }
 
-  // Essai en cascade
+  // Cascade : v1 puis v1beta, chaque modèle de la liste
   const errors: string[] = [];
-  for (const model of EMBED_MODELS) {
-    const v = await tryEmbed(model, key, text);
-    if (v) {
-      workingEmbedModel = model;
-      return v;
+  for (const version of ['v1', 'v1beta'] as const) {
+    for (const model of EMBED_MODELS) {
+      const r = await tryEmbed(model, key, text, version);
+      if (r && 'values' in r) {
+        workingEmbedModel = `${version}|${model}`;
+        return r.values;
+      }
+      if (r && 'error' in r) errors.push(r.error);
     }
-    errors.push(model);
   }
-  throw new Error(`Aucun modèle d'embedding Gemini disponible. Essayés : ${errors.join(', ')}. Vérifie ta clé API et que ton projet Google Cloud autorise l'API generativelanguage.`);
+
+  // Tous échoué : on liste les modèles dispos pour aider au diagnostic
+  const available = await listGeminiModels();
+  const embedModels = available.filter((m) => m.includes('embed'));
+  const hint = embedModels.length > 0
+    ? ` Modèles d'embedding disponibles pour ta clé : ${embedModels.join(', ')}`
+    : ` Aucun modèle d'embedding accessible. Active l'API "Generative Language" dans Google Cloud Console pour ton projet.`;
+  throw new Error(`Embedding Gemini impossible.${hint} Détails essayés : ${errors.slice(0, 3).join(' | ')}`);
 }
 
 /* ─── CHUNKING ────────────────────────────────────────────────── */
