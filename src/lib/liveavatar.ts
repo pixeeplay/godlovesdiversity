@@ -1,4 +1,5 @@
-import { getSettings } from './settings';
+import { getSettings, setSetting } from './settings';
+import { prisma } from './prisma';
 
 /**
  * Wrapper LiveAvatar API (https://api.liveavatar.com)
@@ -61,6 +62,17 @@ export type SessionTokenLite = {
   avatar_id: string;
   max_session_duration?: number; // seconds
   is_sandbox?: boolean;
+  gemini_realtime_config?: {
+    secret_id: string;
+    context_id?: string;
+    voice?: string;
+    temperature?: number;
+    model?: string;
+  };
+  elevenlabs_agent_config?: {
+    secret_id: string;
+    agent_id: string;
+  };
 };
 
 export type CreateSessionTokenResult = {
@@ -69,15 +81,18 @@ export type CreateSessionTokenResult = {
 };
 
 export async function createSessionToken(opts: SessionTokenLite): Promise<CreateSessionTokenResult> {
+  const body: Record<string, unknown> = {
+    mode: 'LITE',
+    avatar_id: opts.avatar_id,
+    max_session_duration: opts.max_session_duration ?? 120, // 2 min par défaut
+    is_sandbox: !!opts.is_sandbox
+  };
+  if (opts.gemini_realtime_config) body.gemini_realtime_config = opts.gemini_realtime_config;
+  if (opts.elevenlabs_agent_config) body.elevenlabs_agent_config = opts.elevenlabs_agent_config;
   return callLA<CreateSessionTokenResult>('/v1/sessions/token', {
     method: 'POST',
     auth: 'apiKey',
-    body: JSON.stringify({
-      mode: 'LITE',
-      avatar_id: opts.avatar_id,
-      max_session_duration: opts.max_session_duration ?? 120, // 2 min par défaut
-      is_sandbox: !!opts.is_sandbox
-    })
+    body: JSON.stringify(body)
   });
 }
 
@@ -181,6 +196,156 @@ export async function listVoices(limit: number = 100): Promise<{ count: number; 
 
 export async function getCredits(): Promise<{ credits_left: string }> {
   return callLA('/v1/users/credits', { method: 'GET', auth: 'apiKey' });
+}
+
+// =================== Secrets ===================
+
+export type SecretType = 'OPENAI_API_KEY' | 'ELEVENLABS_API_KEY' | 'GEMINI_API_KEY';
+
+export async function createSecret(name: string, value: string, type: SecretType): Promise<{ id: string; name: string }> {
+  return callLA('/v1/secrets', {
+    method: 'POST',
+    auth: 'apiKey',
+    body: JSON.stringify({ secret_name: name, secret_value: value, secret_type: type })
+  });
+}
+
+export async function listSecrets(): Promise<{ count: number; results: Array<{ id: string; name: string; type: string }> }> {
+  return callLA('/v1/secrets', { method: 'GET', auth: 'apiKey' });
+}
+
+// =================== Contexts ===================
+
+export async function createContext(name: string, prompt: string, openingText: string): Promise<{ id: string; name: string }> {
+  return callLA('/v1/contexts', {
+    method: 'POST',
+    auth: 'apiKey',
+    body: JSON.stringify({ name, prompt, opening_text: openingText })
+  });
+}
+
+export async function updateContext(contextId: string, name: string, prompt: string, openingText: string): Promise<{ id: string; name: string }> {
+  return callLA(`/v1/contexts/${contextId}`, {
+    method: 'PUT',
+    auth: 'apiKey',
+    body: JSON.stringify({ name, prompt, opening_text: openingText })
+  });
+}
+
+export async function listContexts(): Promise<{ count: number; results: Array<{ id: string; name: string; created_at?: string }> }> {
+  return callLA('/v1/contexts', { method: 'GET', auth: 'apiKey' });
+}
+
+/**
+ * Construit le prompt complet GLD à partir du systemPrompt + corpus RAG.
+ * Inclut autant de docs/chunks que possible sous une limite raisonnable de tokens.
+ */
+export async function buildGldContextPrompt(maxChars: number = 24000): Promise<{ prompt: string; opening: string; docCount: number; chunksUsed: number }> {
+  const cfg = await getSettings(['rag.systemPrompt']).catch(() => ({} as Record<string, string>));
+  const sysPrompt = cfg['rag.systemPrompt'] || `Tu es l'assistant officiel du mouvement « God Loves Diversity » (GLD).
+Réponds avec chaleur et accueil, en tutoyant. Tu parles de foi, d'inclusion, et d'amour radical.
+Réponses courtes (3-5 phrases max) et termine par une question d'ouverture.`;
+
+  // Récupère les docs activés en français — dans l'ordre alphabétique du titre
+  let docs: Array<{ id: string; title: string; source: string | null; tags: string[]; content: string }> = [];
+  try {
+    docs = await prisma.knowledgeDoc.findMany({
+      where: { enabled: true, locale: 'fr' },
+      select: { id: true, title: true, source: true, tags: true, content: true },
+      orderBy: { title: 'asc' }
+    });
+  } catch (e) {
+    console.warn('[LiveAvatar] DB query for KnowledgeDoc failed:', e);
+  }
+
+  let knowledgeBlock = '';
+  let usedDocs = 0;
+  for (const d of docs) {
+    const block = `\n\n## ${d.title}\n${d.tags?.length ? `Tags : ${d.tags.join(', ')}\n` : ''}${d.source ? `Source : ${d.source}\n` : ''}\n${d.content.trim()}`;
+    if ((sysPrompt.length + knowledgeBlock.length + block.length) > maxChars) break;
+    knowledgeBlock += block;
+    usedDocs++;
+  }
+
+  const fullPrompt = `${sysPrompt}\n\n# BASE DE CONNAISSANCES GLD\nVoici les textes officiels du mouvement. Utilise-les en priorité pour répondre. Cite la source quand pertinent.\n${knowledgeBlock || '\n(aucun document encore disponible)'}`;
+  const opening = 'Bonjour ! Je suis GLD, l\'assistant du mouvement. Pose-moi une question sur la foi, l\'inclusion et l\'amour radical.';
+
+  return { prompt: fullPrompt.slice(0, maxChars), opening, docCount: docs.length, chunksUsed: usedDocs };
+}
+
+// =================== Auto-provisioning ===================
+
+/**
+ * Garantit qu'un secret Gemini existe côté LiveAvatar et un context system prompt aussi.
+ * Stocke les IDs dans nos settings pour éviter de recréer à chaque session.
+ *
+ * Renvoie { secretId, contextId } prêts à passer à gemini_realtime_config.
+ */
+export async function ensureGeminiVoiceAgent(): Promise<{ secretId: string | null; contextId: string | null; reason?: string }> {
+  const cfg = await getSettings([
+    'avatar.liveavatar.geminiSecretId',
+    'avatar.liveavatar.contextId',
+    'integrations.gemini.apiKey',
+    'rag.systemPrompt'
+  ]);
+
+  let secretId = cfg['avatar.liveavatar.geminiSecretId'] || null;
+  let contextId = cfg['avatar.liveavatar.contextId'] || null;
+
+  // 1. Provisionner le secret Gemini si nécessaire
+  if (!secretId) {
+    const geminiKey = cfg['integrations.gemini.apiKey'] || process.env.GEMINI_API_KEY;
+    if (!geminiKey) {
+      return { secretId: null, contextId: null, reason: 'Pas de clé Gemini configurée. Va dans Paramètres → IA & Outils → Gemini.' };
+    }
+    try {
+      const secret = await createSecret(`GLD-Gemini-${Date.now()}`, geminiKey, 'GEMINI_API_KEY');
+      secretId = secret.id;
+      await setSetting('avatar.liveavatar.geminiSecretId', secretId);
+    } catch (e: any) {
+      return { secretId: null, contextId: null, reason: `Création secret Gemini : ${e?.message || 'erreur'}` };
+    }
+  }
+
+  // 2. Provisionner le context (system prompt + corpus RAG) si nécessaire
+  if (!contextId) {
+    try {
+      const built = await buildGldContextPrompt();
+      const ctx = await createContext('GLD - Brain (RAG synced)', built.prompt, built.opening);
+      contextId = ctx.id;
+      await setSetting('avatar.liveavatar.contextId', contextId);
+    } catch (e: any) {
+      // Le context peut être optionnel — on continue avec juste le secret
+      console.warn('[LiveAvatar] Context creation failed:', e?.message);
+    }
+  }
+
+  return { secretId, contextId };
+}
+
+/**
+ * Synchronise le context LiveAvatar avec le corpus RAG actuel.
+ * À appeler après ajout/modif/suppression de KnowledgeDoc, ou via un bouton admin.
+ * Si pas de context_id, en crée un nouveau et le sauvegarde dans settings.
+ */
+export async function syncContextWithRag(): Promise<{ ok: boolean; contextId: string; docsIncluded: number; chars: number; reason?: string }> {
+  const cfg = await getSettings(['avatar.liveavatar.contextId']);
+  let contextId = cfg['avatar.liveavatar.contextId'] || null;
+
+  const built = await buildGldContextPrompt();
+
+  try {
+    if (contextId) {
+      await updateContext(contextId, 'GLD - Brain (RAG synced)', built.prompt, built.opening);
+    } else {
+      const ctx = await createContext('GLD - Brain (RAG synced)', built.prompt, built.opening);
+      contextId = ctx.id;
+      await setSetting('avatar.liveavatar.contextId', contextId);
+    }
+    return { ok: true, contextId, docsIncluded: built.chunksUsed, chars: built.prompt.length };
+  } catch (e: any) {
+    return { ok: false, contextId: contextId || '', docsIncluded: 0, chars: 0, reason: e?.message || 'erreur' };
+  }
 }
 
 // =================== Helper combiné pour le widget ===================

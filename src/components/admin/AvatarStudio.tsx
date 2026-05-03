@@ -540,19 +540,37 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
               </button>
 
               {hasLiveAvatar && (
-                <button
-                  onClick={async () => {
-                    const r = await fetch('/api/admin/liveavatar/reap', { method: 'POST' });
-                    const j = await r.json();
-                    alert(j.ok
-                      ? `${j.killed}/${j.foundActive} session(s) zombie(s) fermée(s).`
-                      : `Erreur : ${j.error}`);
-                  }}
-                  className="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-3 py-1.5 rounded-lg text-[10px] flex items-center justify-center gap-1 mt-1"
-                  title="Si tu vois 'concurrency limit reached', clique ici pour fermer les sessions actives"
-                >
-                  🧹 Purger sessions actives (debug free tier)
-                </button>
+                <>
+                  {/* Sync du brain — envoie tout le RAG dans le contexte LiveAvatar */}
+                  <button
+                    onClick={async () => {
+                      const r = await fetch('/api/admin/liveavatar/sync-context', { method: 'POST' });
+                      const j = await r.json();
+                      if (j.ok || r.ok) {
+                        alert(`✓ Cerveau LiveAvatar synchronisé\n${j.docsIncluded} documents · ${j.chars} caractères`);
+                      } else {
+                        alert(`Erreur sync : ${j.error || j.reason}`);
+                      }
+                    }}
+                    className="w-full bg-violet-600/30 hover:bg-violet-600/50 border border-violet-500/40 text-violet-100 font-bold px-3 py-2 rounded-lg text-[11px] flex items-center justify-center gap-1.5"
+                    title="Envoie tout le contenu de Cerveau de GLD (RAG) à LiveAvatar.com pour que l'avatar connaisse tes textes"
+                  >
+                    🧠 Synchroniser le Cerveau de GLD vers LiveAvatar
+                  </button>
+                  <button
+                    onClick={async () => {
+                      const r = await fetch('/api/admin/liveavatar/reap', { method: 'POST' });
+                      const j = await r.json();
+                      alert(j.ok
+                        ? `${j.killed}/${j.foundActive} session(s) zombie(s) fermée(s).`
+                        : `Erreur : ${j.error}`);
+                    }}
+                    className="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-3 py-1.5 rounded-lg text-[10px] flex items-center justify-center gap-1 mt-1"
+                    title="Si tu vois 'concurrency limit reached', clique ici pour fermer les sessions actives"
+                  >
+                    🧹 Purger sessions actives (debug free tier)
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -643,9 +661,15 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
         <AskGldAvatarLocal onClose={() => setTestLocalLive(false)} />
       )}
 
-      {/* Modal Streaming LiveAvatar pour test depuis l'admin */}
+      {/* Modal Streaming LiveAvatar pour test depuis l'admin
+          On passe l'avatar choisi DANS LE STATE (pas la DB) pour pouvoir
+          tester sans avoir à sauvegarder d'abord. */}
       {testLiveAvatar && (
-        <AskGldAvatarLiveAvatar onClose={() => setTestLiveAvatar(false)} />
+        <AskGldAvatarLiveAvatar
+          onClose={() => setTestLiveAvatar(false)}
+          avatarIdOverride={config.liveAvatarId}
+          fromAdmin
+        />
       )}
 
       {/* WARN si pas de clé HeyGen (déjà visible dans la carte mais on le garde pour visibilité) */}

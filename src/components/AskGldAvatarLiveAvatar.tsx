@@ -7,11 +7,18 @@ type Phase = 'idle' | 'starting' | 'connecting' | 'live' | 'ending' | 'error';
 
 type Props = {
   onClose: () => void;
+  /** Avatar ID forcé (utilisé pour le test admin) — sinon on prend celui des settings */
+  avatarIdOverride?: string;
+  /** Voix Gemini (Puck par défaut) */
+  voice?: string;
+  /** Mode admin — bypasse le flag enabled */
+  fromAdmin?: boolean;
 };
 
 /**
  * Mode Live LiveAvatar — avatar streaming temps-réel via LiveKit.
  * Successeur de HeyGen Interactive (sunset 3 mai 2026).
+ * LITE Mode + Gemini Realtime voice agent (l'avatar entend, comprend, parle).
  *
  * Flow :
  *  1. POST /api/avatar/liveavatar/start → token + livekit_url + livekit_client_token
@@ -21,7 +28,7 @@ type Props = {
  *  5. Keep-alive serveur toutes les 60 s
  *  6. Plafond auto basé sur max_session_duration
  */
-export function AskGldAvatarLiveAvatar({ onClose }: Props) {
+export function AskGldAvatarLiveAvatar({ onClose, avatarIdOverride, voice, fromAdmin }: Props) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [error, setError] = useState<string | null>(null);
   const [muted, setMuted] = useState(false);
@@ -46,7 +53,15 @@ export function AskGldAvatarLiveAvatar({ onClose }: Props) {
     setError(null);
     try {
       // 1. Démarre la session côté serveur
-      const r = await fetch('/api/avatar/liveavatar/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+      const r = await fetch('/api/avatar/liveavatar/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          avatar_id: avatarIdOverride || undefined,
+          voice: voice || undefined,
+          fromAdmin: !!fromAdmin
+        })
+      });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || 'Échec démarrage session');
       sessionRef.current = { session_id: j.session_id, session_token: j.session_token };
