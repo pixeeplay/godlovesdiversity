@@ -19,21 +19,29 @@ export async function GET() {
       'avatar.enabled',
       'avatar.local.enabled',
       'avatar.streaming.enabled',
-      'integrations.elevenlabs.apiKey'
+      'avatar.liveavatar.enabled',
+      'avatar.liveavatar.avatarId',
+      'integrations.elevenlabs.apiKey',
+      'integrations.liveavatar.apiKey'
     ]);
     const hasElevenLabs = !!(cfg['integrations.elevenlabs.apiKey'] || process.env.ELEVENLABS_API_KEY);
+    const hasLiveAvatar = !!(cfg['integrations.liveavatar.apiKey'] || process.env.LIVEAVATAR_API_KEY);
     return NextResponse.json({
       videoEnabled: cfg['avatar.enabled'] === '1',
       localLiveEnabled: cfg['avatar.local.enabled'] === '1' && hasElevenLabs,
       streamingEnabled: cfg['avatar.streaming.enabled'] === '1',
-      hasElevenLabs
+      liveAvatarEnabled: cfg['avatar.liveavatar.enabled'] === '1' && hasLiveAvatar && !!cfg['avatar.liveavatar.avatarId'],
+      hasElevenLabs,
+      hasLiveAvatar
     });
   } catch {
     return NextResponse.json({
       videoEnabled: false,
       localLiveEnabled: false,
       streamingEnabled: false,
-      hasElevenLabs: false
+      liveAvatarEnabled: false,
+      hasElevenLabs: false,
+      hasLiveAvatar: false
     });
   }
 }

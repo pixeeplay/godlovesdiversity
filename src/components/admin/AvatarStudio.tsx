@@ -2,9 +2,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import {
   Video, Sparkles, Save, Loader2, CheckCircle2, AlertCircle, Play, Pause,
-  Volume2, ExternalLink, Power, PowerOff, Eye, KeyRound, Zap, RefreshCw, Mic, Home, type LucideIcon
+  Volume2, ExternalLink, Power, PowerOff, Eye, KeyRound, Zap, RefreshCw, Mic, Home, Radio, type LucideIcon
 } from 'lucide-react';
 import { AskGldAvatarLocal } from '@/components/AskGldAvatarLocal';
+import { AskGldAvatarLiveAvatar } from '@/components/AskGldAvatarLiveAvatar';
 
 type Avatar = {
   avatar_id: string;
@@ -27,6 +28,9 @@ type Config = {
   streamingEnabled: boolean;
   streamingAvatarName: string;
   localLiveEnabled: boolean;
+  liveAvatarEnabled: boolean;
+  liveAvatarId: string;
+  liveAvatarMaxDur: number;
   avatarId: string;
   voiceId: string;
   bgColor: string;
@@ -36,8 +40,11 @@ type Config = {
 type Props = {
   apiKeyConfigured: boolean;
   hasElevenLabs?: boolean;
+  hasLiveAvatar?: boolean;
   initialConfig: Config;
 };
+
+type LAAvatar = { id: string; name: string; preview_url?: string };
 
 const BG_PRESETS = [
   { color: '#FBEAF0', label: 'Rose GLD' },
@@ -48,7 +55,7 @@ const BG_PRESETS = [
   { color: '#0F0F12', label: 'Nuit profonde' }
 ];
 
-export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, initialConfig }: Props) {
+export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveAvatar = false, initialConfig }: Props) {
   const [config, setConfig] = useState<Config>(initialConfig);
   const [avatars, setAvatars] = useState<Avatar[]>([]);
   const [voices, setVoices] = useState<Voice[]>([]);
@@ -65,6 +72,39 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, initialC
 
   // Test Mode Live local — ouvre le même modal que sur le front
   const [testLocalLive, setTestLocalLive] = useState(false);
+
+  // Test Mode Streaming LiveAvatar
+  const [testLiveAvatar, setTestLiveAvatar] = useState(false);
+
+  // Liste avatars LiveAvatar
+  const [laAvatars, setLaAvatars] = useState<LAAvatar[]>([]);
+  const [laCredits, setLaCredits] = useState<string | null>(null);
+  const [laLoading, setLaLoading] = useState(false);
+  const [laError, setLaError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (hasLiveAvatar) loadLaAvatars();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasLiveAvatar]);
+
+  async function loadLaAvatars() {
+    setLaLoading(true);
+    setLaError(null);
+    try {
+      const r = await fetch('/api/admin/liveavatar/list');
+      const j = await r.json();
+      if (r.ok) {
+        setLaAvatars(j.avatars || []);
+        setLaCredits(j.credits ?? null);
+        if (j.errors?.avatars) setLaError(j.errors.avatars);
+      } else {
+        setLaError(j.error || 'Erreur');
+      }
+    } catch (e: any) {
+      setLaError(e?.message || 'Erreur réseau');
+    }
+    setLaLoading(false);
+  }
 
   // Test Mode Texte (RAG) — pas besoin d'activer
   const [testTextQ, setTestTextQ] = useState('');
@@ -125,6 +165,9 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, initialC
         'avatar.streaming.enabled': config.streamingEnabled ? '1' : '0',
         'avatar.streaming.avatarName': config.streamingAvatarName,
         'avatar.local.enabled': config.localLiveEnabled ? '1' : '0',
+        'avatar.liveavatar.enabled': config.liveAvatarEnabled ? '1' : '0',
+        'avatar.liveavatar.avatarId': config.liveAvatarId,
+        'avatar.liveavatar.maxDurationSec': String(config.liveAvatarMaxDur || 120),
         'avatar.heygen.avatarId': config.avatarId,
         'avatar.heygen.voiceId': config.voiceId,
         'avatar.heygen.bgColor': config.bgColor,
@@ -215,7 +258,7 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, initialC
         </h2>
         <p className="text-sm text-zinc-400 mb-4">Les 2 modes peuvent coexister — le visiteur choisit lequel utiliser dans le widget chat.</p>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* CARTE MODE VIDÉO HEYGEN */}
           <div className={`rounded-2xl border-2 overflow-hidden transition
             ${config.enabled
@@ -377,6 +420,126 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, initialC
               )}
             </div>
           </div>
+
+          {/* CARTE MODE STREAMING LIVEAVATAR */}
+          <div className={`rounded-2xl border-2 overflow-hidden transition
+            ${config.liveAvatarEnabled
+              ? 'border-violet-500 bg-violet-500/5 shadow-lg shadow-violet-500/10'
+              : 'border-zinc-800 bg-zinc-900/50'}`}>
+            <div className="bg-gradient-to-br from-violet-500 to-purple-600 p-4 text-white">
+              <div className="flex items-start justify-between mb-2">
+                <Radio size={28} />
+                <span className="bg-white/20 backdrop-blur text-[10px] font-bold uppercase px-2 py-1 rounded-full">
+                  LiveAvatar Streaming
+                </span>
+              </div>
+              <h3 className="text-xl font-bold">Mode Streaming</h3>
+              <p className="text-sm opacity-90 mt-1">Avatar humain temps-réel via WebRTC, conversation continue</p>
+            </div>
+            <div className="p-4 space-y-3">
+              <div className="space-y-1.5 text-xs">
+                <div className="flex items-start gap-2">
+                  <span className="text-emerald-400 shrink-0">✓</span>
+                  <span className="text-zinc-300">Avatar humain photo-réaliste qui parle EN DIRECT</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-emerald-400 shrink-0">✓</span>
+                  <span className="text-zinc-300">Le visiteur parle, l'avatar répond instantanément</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-emerald-400 shrink-0">✓</span>
+                  <span className="text-zinc-300">Successeur officiel de HeyGen Interactive (sunset)</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-amber-400 shrink-0">−</span>
+                  <span className="text-zinc-400">Crédits LiveAvatar consommés (~1 crédit / minute)</span>
+                </div>
+              </div>
+
+              <div className="bg-zinc-950 rounded-lg p-3 text-xs">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-zinc-500">Statut clé LiveAvatar</span>
+                  {hasLiveAvatar
+                    ? <span className="text-emerald-300 flex items-center gap-1"><CheckCircle2 size={11} /> Configurée</span>
+                    : <span className="text-red-300 flex items-center gap-1"><AlertCircle size={11} /> Manquante</span>}
+                </div>
+                {hasLiveAvatar && laCredits !== null && (
+                  <div className="text-violet-300 text-[10px] mt-1">💰 {laCredits} crédits restants</div>
+                )}
+                {!hasLiveAvatar && (
+                  <div className="space-y-1 mt-2">
+                    <a href="https://app.liveavatar.com/developers" target="_blank" rel="noopener noreferrer" className="text-violet-300 hover:underline text-[11px] flex items-center gap-1">
+                      1️⃣ Créer un compte sur app.liveavatar.com
+                    </a>
+                    <a href="/admin/settings" className="text-violet-300 hover:underline text-[11px] flex items-center gap-1">
+                      2️⃣ Coller la clé dans Paramètres → IA & Outils → LiveAvatar
+                    </a>
+                  </div>
+                )}
+              </div>
+
+              {/* Sélecteur d'avatar LiveAvatar */}
+              {hasLiveAvatar && (
+                <div>
+                  <label className="text-[11px] font-bold uppercase text-zinc-400 flex items-center justify-between">
+                    <span>Avatar LiveAvatar</span>
+                    <button onClick={loadLaAvatars} disabled={laLoading} className="text-violet-400 hover:text-violet-300 disabled:opacity-50">
+                      {laLoading ? <Loader2 size={10} className="animate-spin" /> : <RefreshCw size={10} />}
+                    </button>
+                  </label>
+                  {laError && (
+                    <div className="bg-red-500/10 border border-red-500/30 text-red-300 rounded p-2 text-[10px] mt-1">{laError}</div>
+                  )}
+                  {laAvatars.length > 0 ? (
+                    <select
+                      value={config.liveAvatarId}
+                      onChange={(e) => setConfig({ ...config, liveAvatarId: e.target.value })}
+                      className="mt-1 w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-violet-500"
+                    >
+                      <option value="">— Choisir un avatar —</option>
+                      {laAvatars.map((a) => (
+                        <option key={a.id} value={a.id}>{a.name}</option>
+                      ))}
+                    </select>
+                  ) : laLoading ? (
+                    <div className="text-zinc-500 text-[10px] mt-1 flex items-center gap-1"><Loader2 size={10} className="animate-spin" /> Chargement…</div>
+                  ) : (
+                    <div className="text-zinc-500 text-[10px] mt-1">Clique pour charger les avatars publics LiveAvatar</div>
+                  )}
+
+                  <label className="block mt-2">
+                    <span className="text-[10px] font-bold uppercase text-zinc-500">Durée max (secondes)</span>
+                    <input type="number" min={30} max={600} step={10}
+                      value={config.liveAvatarMaxDur}
+                      onChange={(e) => setConfig({ ...config, liveAvatarMaxDur: parseInt(e.target.value) || 120 })}
+                      className="mt-1 w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1 text-xs outline-none focus:border-violet-500" />
+                  </label>
+                </div>
+              )}
+
+              <label className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer border ${config.liveAvatarEnabled ? 'bg-violet-500/10 border-violet-500/40' : 'bg-zinc-800/50 border-zinc-700'} ${(!hasLiveAvatar || !config.liveAvatarId) ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                <input type="checkbox"
+                  disabled={!hasLiveAvatar || !config.liveAvatarId}
+                  checked={config.liveAvatarEnabled}
+                  onChange={(e) => setConfig({ ...config, liveAvatarEnabled: e.target.checked })}
+                  className="w-5 h-5 accent-violet-500" />
+                <div>
+                  <div className="font-bold text-sm">Activer le Mode Streaming</div>
+                  <div className="text-[11px] text-zinc-500">Le bouton « 📡 Streaming » apparaîtra dans le chat</div>
+                </div>
+              </label>
+
+              <button
+                onClick={() => setTestLiveAvatar(true)}
+                disabled={!hasLiveAvatar || !config.liveAvatarId}
+                className="w-full bg-violet-500 hover:bg-violet-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-3 py-2 rounded-lg text-xs flex items-center justify-center gap-2"
+                title="Lance une session streaming temps-réel"
+              >
+                <Radio size={12} />
+                Tester maintenant (parle à l'avatar)
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* MODE TEXTE — toujours dispo, pas besoin de clé */}
@@ -462,6 +625,11 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, initialC
       {/* Modal Live local pour test depuis l'admin */}
       {testLocalLive && (
         <AskGldAvatarLocal onClose={() => setTestLocalLive(false)} />
+      )}
+
+      {/* Modal Streaming LiveAvatar pour test depuis l'admin */}
+      {testLiveAvatar && (
+        <AskGldAvatarLiveAvatar onClose={() => setTestLiveAvatar(false)} />
       )}
 
       {/* WARN si pas de clé HeyGen (déjà visible dans la carte mais on le garde pour visibilité) */}

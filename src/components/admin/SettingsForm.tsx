@@ -82,6 +82,14 @@ const GROUPS: Group[] = [
     ]
   },
   {
+    title: 'LiveAvatar (streaming temps-réel)',
+    icon: Sparkles, category: 'ai',
+    description: 'Avatar streaming temps-réel — successeur de HeyGen Interactive. Compte sur https://app.liveavatar.com/developers puis API Keys → Create Key. Configure ensuite l\'avatar dans IA & Outils → GLD Live.',
+    fields: [
+      { key: 'integrations.liveavatar.apiKey', label: 'Clé API LiveAvatar', type: 'password', placeholder: 'la-…' }
+    ]
+  },
+  {
     title: 'Audio d\'ambiance',
     icon: Sparkles, category: 'ai',
     description: 'Liste JSON des morceaux disponibles dans le lecteur ambiant en bas-gauche du site. Format : [{"url":"...","title":"..."}]',

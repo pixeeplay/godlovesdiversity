@@ -1,7 +1,8 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { Send, X, Loader2, Sparkles, BookOpen, MessageSquare, Video, Play, Mic } from 'lucide-react';
+import { Send, X, Loader2, Sparkles, BookOpen, MessageSquare, Video, Play, Mic, Radio } from 'lucide-react';
 import { AskGldAvatarLocal } from './AskGldAvatarLocal';
+import { AskGldAvatarLiveAvatar } from './AskGldAvatarLiveAvatar';
 
 type Source = { title: string; source: string | null; score: number };
 type Msg = {
@@ -13,7 +14,7 @@ type Msg = {
   videoStatus?: 'pending' | 'rendering' | 'ready' | 'failed';
 };
 
-type Mode = 'text' | 'video' | 'live';
+type Mode = 'text' | 'video' | 'live' | 'streaming';
 
 const SUGGESTIONS = [
   'Que dit la Bible sur l\'homosexualité ?',
@@ -27,7 +28,9 @@ export function AskGldWidget() {
   const [mode, setMode] = useState<Mode>('text');
   const [avatarAvailable, setAvatarAvailable] = useState(false);
   const [localLiveAvailable, setLocalLiveAvailable] = useState(false);
+  const [liveAvatarAvailable, setLiveAvatarAvailable] = useState(false);
   const [liveOpen, setLiveOpen] = useState(false);
+  const [streamingOpen, setStreamingOpen] = useState(false);
   const [history, setHistory] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
@@ -42,8 +45,11 @@ export function AskGldWidget() {
       .catch(() => setAvatarAvailable(false));
     fetch('/api/avatar/streaming/info')
       .then((r) => r.json())
-      .then((j) => setLocalLiveAvailable(!!j.localLiveEnabled))
-      .catch(() => setLocalLiveAvailable(false));
+      .then((j) => {
+        setLocalLiveAvailable(!!j.localLiveEnabled);
+        setLiveAvatarAvailable(!!j.liveAvatarEnabled);
+      })
+      .catch(() => { setLocalLiveAvailable(false); setLiveAvatarAvailable(false); });
   }, []);
 
   useEffect(() => {
@@ -190,9 +196,9 @@ export function AskGldWidget() {
             <button onClick={() => setOpen(false)} style={{ color: 'var(--fg-muted)' }}><X size={18} /></button>
           </div>
 
-          {/* Toggle Texte / Vidéo / Live */}
-          {(avatarAvailable || localLiveAvailable) && (
-            <div className="px-3 py-2 flex gap-1" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+          {/* Toggle Texte / Vidéo / Live local / Streaming */}
+          {(avatarAvailable || localLiveAvailable || liveAvatarAvailable) && (
+            <div className="px-3 py-2 flex gap-1 flex-wrap" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
               <button
                 onClick={() => setMode('text')}
                 className={`flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-bold transition ${mode === 'text' ? 'shadow' : 'opacity-50'}`}
@@ -224,6 +230,19 @@ export function AskGldWidget() {
                 >
                   <Mic size={11} /> Live
                   <span className="text-[8px] opacity-80">gratuit</span>
+                </button>
+              )}
+              {liveAvatarAvailable && (
+                <button
+                  onClick={() => { setMode('streaming'); setStreamingOpen(true); }}
+                  className={`flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-bold transition ${mode === 'streaming' ? 'shadow' : 'opacity-50'}`}
+                  style={mode === 'streaming'
+                    ? { background: 'linear-gradient(90deg, #a855f7, #d946ef)', color: '#fff' }
+                    : { color: 'var(--fg-muted)' }}
+                  title="Avatar streaming temps-réel via LiveAvatar.com"
+                >
+                  <Radio size={11} /> Streaming
+                  <span className="text-[8px] opacity-80">2 min</span>
                 </button>
               )}
             </div>
@@ -348,6 +367,11 @@ export function AskGldWidget() {
       {/* Modal Live local (overlay plein écran) */}
       {liveOpen && (
         <AskGldAvatarLocal onClose={() => { setLiveOpen(false); setMode('text'); }} />
+      )}
+
+      {/* Modal Streaming LiveAvatar (overlay plein écran) */}
+      {streamingOpen && (
+        <AskGldAvatarLiveAvatar onClose={() => { setStreamingOpen(false); setMode('text'); }} />
       )}
     </>
   );
