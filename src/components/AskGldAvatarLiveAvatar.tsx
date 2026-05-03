@@ -9,8 +9,10 @@ type Props = {
   onClose: () => void;
   /** Avatar ID forcé (utilisé pour le test admin) — sinon on prend celui des settings */
   avatarIdOverride?: string;
-  /** Voix Gemini (Puck par défaut) */
-  voice?: string;
+  /** Voice ID LiveAvatar (sinon voix par défaut de l'avatar) */
+  voiceIdOverride?: string;
+  /** Code langue (fr, en, …) */
+  language?: string;
   /** Mode admin — bypasse le flag enabled */
   fromAdmin?: boolean;
 };
@@ -28,7 +30,7 @@ type Props = {
  *  5. Keep-alive serveur toutes les 60 s
  *  6. Plafond auto basé sur max_session_duration
  */
-export function AskGldAvatarLiveAvatar({ onClose, avatarIdOverride, voice, fromAdmin }: Props) {
+export function AskGldAvatarLiveAvatar({ onClose, avatarIdOverride, voiceIdOverride, language, fromAdmin }: Props) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [error, setError] = useState<string | null>(null);
   const [muted, setMuted] = useState(false);
@@ -58,7 +60,8 @@ export function AskGldAvatarLiveAvatar({ onClose, avatarIdOverride, voice, fromA
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           avatar_id: avatarIdOverride || undefined,
-          voice: voice || undefined,
+          voice_id: voiceIdOverride || undefined,
+          language: language || undefined,
           fromAdmin: !!fromAdmin
         })
       });

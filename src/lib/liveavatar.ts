@@ -75,6 +75,19 @@ export type SessionTokenLite = {
   };
 };
 
+/**
+ * FULL Mode — LiveAvatar gère NATIVEMENT VAD + STT + LLM + TTS.
+ * C'est le mode recommandé pour une conversation simple sans intégrer son propre agent.
+ */
+export type SessionTokenFull = {
+  avatar_id: string;
+  voice_id?: string;        // optionnel — sinon voix par défaut de l'avatar
+  context_id: string;       // OBLIGATOIRE — contient le system prompt + connaissances
+  language?: string;        // ex 'fr', 'en' — défaut 'en'
+  max_session_duration?: number;
+  is_sandbox?: boolean;
+};
+
 export type CreateSessionTokenResult = {
   session_id: string;
   session_token: string;
@@ -93,6 +106,30 @@ export async function createSessionToken(opts: SessionTokenLite): Promise<Create
     method: 'POST',
     auth: 'apiKey',
     body: JSON.stringify(body)
+  });
+}
+
+/**
+ * Crée un token FULL Mode — LiveAvatar gère TOUT (VAD + STT + LLM + TTS).
+ * C'est l'approche recommandée par leur quickstart.
+ */
+export async function createSessionTokenFull(opts: SessionTokenFull): Promise<CreateSessionTokenResult> {
+  const persona: Record<string, unknown> = {
+    context_id: opts.context_id,
+    language: opts.language || 'fr'
+  };
+  if (opts.voice_id) persona.voice_id = opts.voice_id;
+
+  return callLA<CreateSessionTokenResult>('/v1/sessions/token', {
+    method: 'POST',
+    auth: 'apiKey',
+    body: JSON.stringify({
+      mode: 'FULL',
+      avatar_id: opts.avatar_id,
+      avatar_persona: persona,
+      max_session_duration: opts.max_session_duration ?? 120,
+      is_sandbox: !!opts.is_sandbox
+    })
   });
 }
 
@@ -297,38 +334,14 @@ Réponses courtes (3-5 phrases max) et termine par une question d'ouverture.`;
 // =================== Auto-provisioning ===================
 
 /**
- * Garantit qu'un secret Gemini existe côté LiveAvatar et un context system prompt aussi.
- * Stocke les IDs dans nos settings pour éviter de recréer à chaque session.
- *
- * Renvoie { secretId, contextId } prêts à passer à gemini_realtime_config.
+ * Garantit qu'un context (system prompt + RAG) existe côté LiveAvatar.
+ * Stocke l'ID dans nos settings pour éviter de recréer à chaque session.
+ * En FULL Mode c'est tout ce dont LiveAvatar a besoin — il fournit son propre LLM/STT/TTS.
  */
-export async function ensureGeminiVoiceAgent(): Promise<{ secretId: string | null; contextId: string | null; reason?: string }> {
-  const cfg = await getSettings([
-    'avatar.liveavatar.geminiSecretId',
-    'avatar.liveavatar.contextId',
-    'integrations.gemini.apiKey',
-    'rag.systemPrompt'
-  ]);
-
-  let secretId = cfg['avatar.liveavatar.geminiSecretId'] || null;
+export async function ensureContext(): Promise<{ contextId: string | null; reason?: string }> {
+  const cfg = await getSettings(['avatar.liveavatar.contextId']);
   let contextId = cfg['avatar.liveavatar.contextId'] || null;
 
-  // 1. Provisionner le secret Gemini si nécessaire
-  if (!secretId) {
-    const geminiKey = cfg['integrations.gemini.apiKey'] || process.env.GEMINI_API_KEY;
-    if (!geminiKey) {
-      return { secretId: null, contextId: null, reason: 'Pas de clé Gemini configurée. Va dans Paramètres → IA & Outils → Gemini.' };
-    }
-    try {
-      const secret = await createSecret(`GLD-Gemini-${Date.now()}`, geminiKey, 'GEMINI_API_KEY');
-      secretId = secret.id;
-      await setSetting('avatar.liveavatar.geminiSecretId', secretId);
-    } catch (e: any) {
-      return { secretId: null, contextId: null, reason: `Création secret Gemini : ${e?.message || 'erreur'}` };
-    }
-  }
-
-  // 2. Provisionner le context (system prompt + corpus RAG) si nécessaire
   if (!contextId) {
     try {
       const built = await buildGldContextPrompt();
@@ -336,12 +349,11 @@ export async function ensureGeminiVoiceAgent(): Promise<{ secretId: string | nul
       contextId = ctx.id;
       await setSetting('avatar.liveavatar.contextId', contextId);
     } catch (e: any) {
-      // Le context peut être optionnel — on continue avec juste le secret
-      console.warn('[LiveAvatar] Context creation failed:', e?.message);
+      return { contextId: null, reason: `Création du context : ${e?.message || 'erreur'}` };
     }
   }
 
-  return { secretId, contextId };
+  return { contextId };
 }
 
 /**
@@ -372,13 +384,14 @@ export async function syncContextWithRag(): Promise<{ ok: boolean; contextId: st
 // =================== Helper combiné pour le widget ===================
 
 /**
- * Démarre une session complète (token + start) en un appel.
+ * Démarre une session FULL Mode complète (token + start) en un appel.
+ * LiveAvatar gère NATIVEMENT toute la pipeline conversationnelle.
  * Renvoie tout ce dont le browser a besoin pour rejoindre la room LiveKit.
  *
  * Si on tombe sur « concurrency limit reached » (free tier = 1 session max),
  * on ferme automatiquement les sessions actives existantes et on retente.
  */
-export async function bootstrapSession(opts: SessionTokenLite): Promise<{
+export async function bootstrapSession(opts: SessionTokenFull): Promise<{
   session_id: string;
   session_token: string;
   livekit_url: string;
@@ -388,7 +401,7 @@ export async function bootstrapSession(opts: SessionTokenLite): Promise<{
 }> {
   let reaped = 0;
   const attempt = async () => {
-    const tok = await createSessionToken(opts);
+    const tok = await createSessionTokenFull(opts);
     const start = await startSession(tok.session_token);
     return { tok, start };
   };
@@ -400,7 +413,6 @@ export async function bootstrapSession(opts: SessionTokenLite): Promise<{
     const msg = String(e?.message || '');
     if (/concurrency limit/i.test(msg)) {
       reaped = await reapActiveSessions();
-      // petite pause pour laisser le serveur enregistrer la fermeture
       await new Promise((r) => setTimeout(r, 800));
       result = await attempt();
     } else {

@@ -30,9 +30,9 @@ type Config = {
   localLiveEnabled: boolean;
   liveAvatarEnabled: boolean;
   liveAvatarId: string;
-  liveAvatarMaxDur: number;
-  liveAvatarGeminiVoice: string;
+  liveAvatarVoiceId: string;
   liveAvatarLanguage: string;
+  liveAvatarMaxDur: number;
   avatarId: string;
   voiceId: string;
   bgColor: string;
@@ -185,7 +185,7 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
         'avatar.liveavatar.enabled': config.liveAvatarEnabled ? '1' : '0',
         'avatar.liveavatar.avatarId': config.liveAvatarId,
         'avatar.liveavatar.maxDurationSec': String(config.liveAvatarMaxDur || 120),
-        'avatar.liveavatar.voice': config.liveAvatarGeminiVoice || 'Puck',
+        'avatar.liveavatar.voiceId': config.liveAvatarVoiceId || '',
         'avatar.liveavatar.language': config.liveAvatarLanguage || 'fr',
         'avatar.heygen.avatarId': config.avatarId,
         'avatar.heygen.voiceId': config.voiceId,
@@ -565,31 +565,55 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
                     )}
                   </div>
 
-                  {/* SÉLECTEUR VOIX GEMINI */}
+                  {/* SÉLECTEUR VOIX LIVEAVATAR (filtrées par langue) */}
                   <div>
-                    <span className="text-[11px] font-bold uppercase text-zinc-400 block mb-1.5">
-                      Voix Gemini Live <span className="text-zinc-600 normal-case">· {laGeminiVoices.length} dispos</span>
-                    </span>
-                    <div className="grid grid-cols-2 gap-1.5">
-                      {laGeminiVoices.map((v) => {
-                        const active = (config.liveAvatarGeminiVoice || 'Puck') === v.id;
-                        return (
-                          <button
-                            key={v.id}
-                            onClick={() => setConfig({ ...config, liveAvatarGeminiVoice: v.id })}
-                            className={`text-left p-2 rounded-lg border transition
-                              ${active ? 'bg-violet-500/15 border-violet-500/50' : 'bg-zinc-900 border-zinc-700 hover:border-zinc-600'}`}
-                            title={v.description}
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className={`text-[11px] font-bold ${active ? 'text-violet-200' : 'text-zinc-200'}`}>{v.label}</span>
-                              {active && <CheckCircle2 size={10} className="text-violet-400" />}
+                    {(() => {
+                      const lang = (config.liveAvatarLanguage || 'fr').toLowerCase();
+                      const matched = laVoices.filter((v) => (v.language || '').toLowerCase().startsWith(lang));
+                      const display = matched.length > 0 ? matched : laVoices;
+                      return (
+                        <>
+                          <span className="text-[11px] font-bold uppercase text-zinc-400 block mb-1.5">
+                            Voix LiveAvatar
+                            <span className="text-zinc-600 normal-case">
+                              {' · '}{display.length}/{laVoices.length} {matched.length === 0 && laVoices.length > 0 ? '(toutes langues)' : `en ${lang}`}
+                            </span>
+                          </span>
+                          {display.length === 0 ? (
+                            <div className="text-zinc-500 text-[10px] py-2">Aucune voix chargée — clique « Recharger ».</div>
+                          ) : (
+                            <div className="grid grid-cols-2 gap-1.5 max-h-48 overflow-y-auto pr-1">
+                              {display.slice(0, 24).map((v) => {
+                                const active = config.liveAvatarVoiceId === v.id;
+                                return (
+                                  <button
+                                    key={v.id}
+                                    onClick={() => setConfig({ ...config, liveAvatarVoiceId: v.id })}
+                                    className={`text-left p-2 rounded-lg border transition
+                                      ${active ? 'bg-violet-500/15 border-violet-500/50' : 'bg-zinc-900 border-zinc-700 hover:border-zinc-600'}`}
+                                    title={`${v.name} · ${v.gender || '—'} · ${v.language}`}
+                                  >
+                                    <div className="flex items-center justify-between gap-1">
+                                      <span className={`text-[11px] font-bold truncate ${active ? 'text-violet-200' : 'text-zinc-200'}`}>{v.name}</span>
+                                      {active && <CheckCircle2 size={10} className="text-violet-400 shrink-0" />}
+                                    </div>
+                                    <div className="text-[9px] text-zinc-500 uppercase">
+                                      {v.gender || '—'} · {v.language}
+                                    </div>
+                                  </button>
+                                );
+                              })}
                             </div>
-                            <div className="text-[9px] text-zinc-500 truncate">{v.description}</div>
+                          )}
+                          <button
+                            onClick={() => setConfig({ ...config, liveAvatarVoiceId: '' })}
+                            className="text-[9px] text-zinc-500 hover:text-zinc-400 mt-1"
+                          >
+                            Utiliser la voix par défaut de l'avatar
                           </button>
-                        );
-                      })}
-                    </div>
+                        </>
+                      );
+                    })()}
                   </div>
 
                   {/* SÉLECTEUR LANGUE */}
@@ -778,7 +802,8 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
         <AskGldAvatarLiveAvatar
           onClose={() => setTestLiveAvatar(false)}
           avatarIdOverride={config.liveAvatarId}
-          voice={config.liveAvatarGeminiVoice || 'Puck'}
+          voiceIdOverride={config.liveAvatarVoiceId || undefined}
+          language={config.liveAvatarLanguage || 'fr'}
           fromAdmin
         />
       )}

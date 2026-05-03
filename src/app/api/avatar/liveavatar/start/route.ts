@@ -1,20 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { bootstrapSession, ensureGeminiVoiceAgent } from '@/lib/liveavatar';
+import { bootstrapSession, ensureContext } from '@/lib/liveavatar';
 import { getSettings } from '@/lib/settings';
 
 export const dynamic = 'force-dynamic';
 
 /**
- * Démarre une session LiveAvatar LITE Mode + Gemini Realtime voice agent.
- * Sans voice agent, l'avatar n'écoute pas (LITE = "broadcast only").
+ * Démarre une session LiveAvatar **FULL Mode** — LiveAvatar gère NATIVEMENT
+ * VAD + STT + LLM + TTS. Pas besoin de wirage Gemini ou autre.
  *
- * Body: { avatar_id?: string, voice?: string, fromAdmin?: boolean }
- *  - avatar_id : prioritaire sur avatar.liveavatar.avatarId du settings.
- *                Permet à l'admin de tester un avatar choisi sans avoir à sauvegarder d'abord.
- *  - voice     : voix Gemini (Puck par défaut)
- *  - fromAdmin : si true, bypasse le check avatar.liveavatar.enabled (pour les tests admin)
+ * Body: { avatar_id?, voice_id?, language?, fromAdmin? }
  */
 export async function POST(req: NextRequest) {
   try {
@@ -22,11 +18,11 @@ export async function POST(req: NextRequest) {
     const cfg = await getSettings([
       'avatar.liveavatar.enabled',
       'avatar.liveavatar.avatarId',
-      'avatar.liveavatar.maxDurationSec',
-      'avatar.liveavatar.voice'
+      'avatar.liveavatar.voiceId',
+      'avatar.liveavatar.language',
+      'avatar.liveavatar.maxDurationSec'
     ]);
 
-    // Test depuis l'admin : on ignore le flag enabled et on accepte avatar_id direct
     let isAdmin = false;
     if (body.fromAdmin) {
       const session = await getServerSession(authOptions);
@@ -39,31 +35,28 @@ export async function POST(req: NextRequest) {
 
     const avatarId = body.avatar_id || cfg['avatar.liveavatar.avatarId'];
     if (!avatarId) {
-      return NextResponse.json({ error: 'Aucun avatar LiveAvatar choisi. Va dans /admin/ai/avatar et choisis-en un.' }, { status: 400 });
+      return NextResponse.json({ error: 'Aucun avatar choisi. Va dans /admin/ai/avatar et choisis-en un.' }, { status: 400 });
     }
 
     const maxDur = parseInt(cfg['avatar.liveavatar.maxDurationSec'] || '120', 10);
-    const voice = body.voice || cfg['avatar.liveavatar.voice'] || 'Puck';
+    const voiceId = body.voice_id || cfg['avatar.liveavatar.voiceId'] || undefined;
+    const language = body.language || cfg['avatar.liveavatar.language'] || 'fr';
 
-    // Auto-provision le voice agent Gemini (secret + context côté LiveAvatar)
-    const agent = await ensureGeminiVoiceAgent();
-    let geminiConfig: { secret_id: string; context_id?: string; voice?: string } | undefined;
-    if (agent.secretId) {
-      geminiConfig = { secret_id: agent.secretId, voice };
-      if (agent.contextId) geminiConfig.context_id = agent.contextId;
-    }
-
-    if (!geminiConfig) {
+    // Garantit qu'un context (system prompt + RAG) existe côté LiveAvatar
+    const ctx = await ensureContext();
+    if (!ctx.contextId) {
       return NextResponse.json({
-        error: `Voice agent Gemini non configuré : ${agent.reason || 'erreur inconnue'}. Sans agent, l'avatar bouge mais n'écoute pas.`,
-        hint: 'Ajoute la clé Gemini dans Paramètres → IA & Outils → Gemini'
+        error: `Context LiveAvatar non créé : ${ctx.reason || 'erreur'}`,
+        hint: 'Clique « Synchroniser le Cerveau de GLD vers LiveAvatar » dans l\'admin.'
       }, { status: 500 });
     }
 
     const session = await bootstrapSession({
       avatar_id: avatarId,
-      max_session_duration: maxDur,
-      gemini_realtime_config: geminiConfig
+      voice_id: voiceId,
+      context_id: ctx.contextId,
+      language,
+      max_session_duration: maxDur
     });
 
     return NextResponse.json({
@@ -73,9 +66,10 @@ export async function POST(req: NextRequest) {
       livekit_client_token: session.livekit_client_token,
       max_session_duration: session.max_session_duration,
       avatar_id: avatarId,
-      voice,
+      voice_id: voiceId,
+      language,
       reaped: session.reaped,
-      voiceAgent: 'gemini-realtime'
+      mode: 'FULL'
     });
   } catch (e: any) {
     return NextResponse.json({ error: e?.message || 'Erreur démarrage session LiveAvatar' }, { status: 500 });
