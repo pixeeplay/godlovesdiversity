@@ -516,6 +516,26 @@ model AuditLog {
   @@index([createdAt])
 }
 
+/// Log de TOUS les emails envoyés via sendEmail (Resend ou SMTP)
+/// Permet de diagnostiquer pourquoi un email n'arrive pas chez le destinataire.
+model EmailLog {
+  id           String   @id @default(cuid())
+  to           String                              // destinataire
+  fromAddr     String                              // adresse expéditeur utilisée
+  subject      String
+  type         String   @default("transactional")  // transactional | newsletter | confirmation | test | admin-notify
+  provider     String   @default("resend")         // resend | smtp
+  status       String   @default("pending")        // pending | sent | failed
+  providerId   String?                             // message-id renvoyé par Resend
+  errorMessage String?  @db.Text                   // message d'erreur si échec
+  campaignId   String?                             // si lié à une campagne newsletter
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([to, createdAt])
+  @@index([type, status, createdAt])
+}
+
 /// RAG « Demandez à GLD » — bibliothèque de connaissances thématiques
 model KnowledgeDoc {
   id          String           @id @default(cuid())
