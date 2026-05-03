@@ -5,7 +5,6 @@ import { routing } from '@/i18n/routing';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { AskGldWidget } from '@/components/AskGldWidget';
-import { AskGldAvatar } from '@/components/AskGldAvatar';
 import { TickerDonate } from '@/components/TickerDonate';
 import { AmbientPlayer } from '@/components/AmbientPlayer';
 import { PageTracker } from '@/components/PageTracker';
@@ -43,7 +42,6 @@ export default async function LocaleLayout({
             <main className="flex-1">{children}</main>
             <Footer />
             <AskGldWidget />
-            <AskGldAvatar />
             <AmbientPlayer />
             <PageTracker />
           </NextIntlClientProvider>

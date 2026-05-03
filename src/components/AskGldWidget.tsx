@@ -1,9 +1,18 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, Send, X, Loader2, Sparkles, BookOpen } from 'lucide-react';
+import { Send, X, Loader2, Sparkles, BookOpen, MessageSquare, Video, Play } from 'lucide-react';
 
 type Source = { title: string; source: string | null; score: number };
-type Msg = { role: 'user' | 'model'; text: string; sources?: Source[]; offTopic?: boolean };
+type Msg = {
+  role: 'user' | 'model';
+  text: string;
+  sources?: Source[];
+  offTopic?: boolean;
+  videoUrl?: string;       // Vidéo HeyGen si Mode Vidéo
+  videoStatus?: 'pending' | 'rendering' | 'ready' | 'failed';
+};
+
+type Mode = 'text' | 'video';
 
 const SUGGESTIONS = [
   'Que dit la Bible sur l\'homosexualité ?',
@@ -14,14 +23,63 @@ const SUGGESTIONS = [
 
 export function AskGldWidget() {
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<Mode>('text');
+  const [avatarAvailable, setAvatarAvailable] = useState(false);
   const [history, setHistory] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const pollersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+
+  // Vérifie si l'avatar HeyGen est activé
+  useEffect(() => {
+    fetch('/api/avatar/enabled')
+      .then((r) => r.json())
+      .then((j) => setAvatarAvailable(!!j.enabled))
+      .catch(() => setAvatarAvailable(false));
+  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [history, busy]);
+
+  // Cleanup pollers à l'unmount
+  useEffect(() => () => {
+    pollersRef.current.forEach((t) => clearTimeout(t));
+    pollersRef.current.clear();
+  }, []);
+
+  function pollVideo(messageIndex: number, videoId: string) {
+    let attempts = 0;
+    const tick = async () => {
+      if (attempts++ > 50) {
+        updateMsg(messageIndex, { videoStatus: 'failed' });
+        return;
+      }
+      try {
+        const r = await fetch(`/api/avatar/status?id=${videoId}`);
+        const j = await r.json();
+        if (j.status === 'completed' && j.video_url) {
+          updateMsg(messageIndex, { videoStatus: 'ready', videoUrl: j.video_url });
+          return;
+        }
+        if (j.status === 'failed') {
+          updateMsg(messageIndex, { videoStatus: 'failed' });
+          return;
+        }
+        const t = setTimeout(tick, 3500);
+        pollersRef.current.set(videoId, t);
+      } catch {
+        const t = setTimeout(tick, 4500);
+        pollersRef.current.set(videoId, t);
+      }
+    };
+    tick();
+  }
+
+  function updateMsg(index: number, patch: Partial<Msg>) {
+    setHistory((prev) => prev.map((m, i) => i === index ? { ...m, ...patch } : m));
+  }
 
   async function send(q?: string) {
     const question = (q ?? input).trim();
@@ -30,21 +88,51 @@ export function AskGldWidget() {
     setHistory(next);
     setInput('');
     setBusy(true);
-    try {
-      const r = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, locale: 'fr' })
-      });
-      const j = await r.json();
-      setHistory([...next, {
-        role: 'model',
-        text: j.answer || j.text || 'Désolé, une erreur est survenue.',
-        sources: j.sources || [],
-        offTopic: !!j.offTopic
-      }]);
-    } catch {
-      setHistory([...next, { role: 'model', text: 'Désolé, je ne peux pas répondre pour le moment.' }]);
+
+    if (mode === 'text' || !avatarAvailable) {
+      // Mode texte : appel RAG simple
+      try {
+        const r = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question, locale: 'fr' })
+        });
+        const j = await r.json();
+        setHistory([...next, {
+          role: 'model',
+          text: j.answer || j.text || 'Désolé, une erreur est survenue.',
+          sources: j.sources || [],
+          offTopic: !!j.offTopic
+        }]);
+      } catch {
+        setHistory([...next, { role: 'model', text: 'Désolé, je ne peux pas répondre pour le moment.' }]);
+      }
+    } else {
+      // Mode vidéo : appel avatar + polling
+      try {
+        const r = await fetch('/api/avatar/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question, locale: 'fr' })
+        });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error || 'Erreur');
+        const newMessages = [...next, {
+          role: 'model' as const,
+          text: j.answer || '',
+          sources: j.sources || [],
+          offTopic: !!j.offTopic,
+          videoStatus: 'rendering' as const
+        }];
+        setHistory(newMessages);
+        const idx = newMessages.length - 1;
+        if (j.video_id) pollVideo(idx, j.video_id);
+      } catch (e: any) {
+        setHistory([...next, {
+          role: 'model',
+          text: `Je ne peux pas générer la vidéo (${e?.message || 'erreur'}). Essaie le mode Texte.`
+        }]);
+      }
     }
     setBusy(false);
   }
@@ -68,13 +156,14 @@ export function AskGldWidget() {
       {/* Panneau */}
       {open && (
         <div
-          className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-32px)] h-[560px] max-h-[calc(100vh-48px)] rounded-2xl shadow-[0_0_40px_rgba(255,43,177,.4)] flex flex-col overflow-hidden"
+          className="fixed bottom-6 right-6 z-50 w-[400px] max-w-[calc(100vw-32px)] h-[600px] max-h-[calc(100vh-48px)] rounded-2xl shadow-[0_0_40px_rgba(255,43,177,.4)] flex flex-col overflow-hidden"
           style={{
             background: 'var(--bg-2)',
             border: '1px solid var(--accent)',
             color: 'var(--fg)'
           }}
         >
+          {/* Header */}
           <div
             className="p-4 flex items-center justify-between"
             style={{
@@ -86,17 +175,48 @@ export function AskGldWidget() {
               <Sparkles size={18} style={{ color: 'var(--accent)' }} />
               <div>
                 <div className="font-bold text-sm" style={{ color: 'var(--fg)' }}>Demandez à GLD</div>
-                <div className="text-[10px]" style={{ color: 'var(--fg-muted)' }}>Assistant inclusif IA · Gemini</div>
+                <div className="text-[10px]" style={{ color: 'var(--fg-muted)' }}>
+                  Assistant inclusif IA · {mode === 'video' ? 'Mode vidéo' : 'Mode texte'}
+                </div>
               </div>
             </div>
             <button onClick={() => setOpen(false)} style={{ color: 'var(--fg-muted)' }}><X size={18} /></button>
           </div>
 
+          {/* Toggle Texte / Vidéo (seulement si avatar dispo) */}
+          {avatarAvailable && (
+            <div className="px-3 py-2 flex gap-1" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+              <button
+                onClick={() => setMode('text')}
+                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${mode === 'text' ? 'shadow' : 'opacity-50'}`}
+                style={mode === 'text'
+                  ? { background: 'var(--accent)', color: '#fff' }
+                  : { color: 'var(--fg-muted)' }}
+              >
+                <MessageSquare size={12} /> Texte
+              </button>
+              <button
+                onClick={() => setMode('video')}
+                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${mode === 'video' ? 'shadow' : 'opacity-50'}`}
+                style={mode === 'video'
+                  ? { background: 'linear-gradient(90deg, #d946ef, #ec4899)', color: '#fff' }
+                  : { color: 'var(--fg-muted)' }}
+              >
+                <Video size={12} /> Vidéo
+                <span className="text-[9px] opacity-80">~30s</span>
+              </button>
+            </div>
+          )}
+
+          {/* Messages */}
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 text-sm">
             {history.length === 0 && (
               <div className="space-y-3">
                 <p className="text-xs" style={{ color: 'var(--fg-muted)' }}>
                   Bonjour 🌈 Je suis GLD, l'assistant du mouvement. Je réponds avec apaisement aux questions sur la foi et la diversité.
+                  {avatarAvailable && mode === 'video' && (
+                    <span className="block mt-1 opacity-80">📹 Mode vidéo activé — chaque réponse arrive sous forme de courte vidéo (~30 secondes de génération).</span>
+                  )}
                 </p>
                 <div className="space-y-2">
                   {SUGGESTIONS.map((s) => (
@@ -118,16 +238,40 @@ export function AskGldWidget() {
             )}
             {history.map((m, i) => (
               <div key={i} className={`flex flex-col gap-1 ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
-                <div
-                  className="max-w-[85%] rounded-2xl px-3 py-2 whitespace-pre-wrap"
-                  style={
-                    m.role === 'user'
-                      ? { background: 'var(--accent)', color: '#fff' }
-                      : { background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--fg)' }
-                  }
-                >
-                  {m.text}
-                </div>
+                {/* Vidéo (mode vidéo, message du bot) */}
+                {m.role === 'model' && m.videoStatus && (
+                  <div className="w-full max-w-[85%] rounded-2xl overflow-hidden bg-zinc-900" style={{ aspectRatio: '3/4' }}>
+                    {m.videoStatus === 'ready' && m.videoUrl ? (
+                      <video src={m.videoUrl} controls autoPlay playsInline className="w-full h-full object-cover" />
+                    ) : m.videoStatus === 'failed' ? (
+                      <div className="h-full flex flex-col items-center justify-center text-center p-4 text-zinc-400 text-xs">
+                        <span className="text-2xl mb-2">😔</span>
+                        Génération vidéo échouée
+                      </div>
+                    ) : (
+                      <div className="h-full flex flex-col items-center justify-center text-center p-4 text-zinc-300 text-xs"
+                        style={{ background: 'linear-gradient(135deg, #FBEAF0, #EEEDFE)' }}>
+                        <Loader2 size={20} className="animate-spin text-fuchsia-500 mb-2" />
+                        <span className="font-bold text-zinc-700">L'avatar prépare sa réponse…</span>
+                        <span className="text-zinc-500 mt-1">~30 secondes</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {/* Texte de la réponse (toujours affiché) */}
+                {m.text && (
+                  <div
+                    className="max-w-[85%] rounded-2xl px-3 py-2 whitespace-pre-wrap"
+                    style={
+                      m.role === 'user'
+                        ? { background: 'var(--accent)', color: '#fff' }
+                        : { background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--fg)' }
+                    }
+                  >
+                    {m.text}
+                  </div>
+                )}
+                {/* Sources */}
                 {m.role === 'model' && m.sources && m.sources.length > 0 && !m.offTopic && (
                   <div className="max-w-[85%] flex flex-wrap gap-1 px-1">
                     {m.sources.slice(0, 3).map((src, k) => (
@@ -157,6 +301,7 @@ export function AskGldWidget() {
             )}
           </div>
 
+          {/* Input */}
           <form
             onSubmit={(e) => { e.preventDefault(); send(); }}
             className="p-3 flex gap-2"
@@ -164,14 +309,14 @@ export function AskGldWidget() {
           >
             <input
               value={input} onChange={(e) => setInput(e.target.value)}
-              placeholder="Pose ta question…"
+              placeholder={mode === 'video' ? 'Pose ta question (réponse en vidéo)…' : 'Pose ta question…'}
               disabled={busy}
               className="flex-1 rounded-full px-4 py-2 text-sm outline-none"
               style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--fg)' }}
             />
             <button type="submit" disabled={busy || !input}
               className="disabled:opacity-50 text-white rounded-full p-2"
-              style={{ background: 'var(--accent)' }}
+              style={{ background: mode === 'video' ? 'linear-gradient(90deg, #d946ef, #ec4899)' : 'var(--accent)' }}
               aria-label="envoyer">
               <Send size={16} />
             </button>
