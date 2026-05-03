@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { Send, X, Loader2, Sparkles, BookOpen, MessageSquare, Video, Play, Mic } from 'lucide-react';
-import { AskGldAvatarLive } from './AskGldAvatarLive';
+import { AskGldAvatarLocal } from './AskGldAvatarLocal';
 
 type Source = { title: string; source: string | null; score: number };
 type Msg = {
@@ -26,7 +26,7 @@ export function AskGldWidget() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>('text');
   const [avatarAvailable, setAvatarAvailable] = useState(false);
-  const [streamingAvailable, setStreamingAvailable] = useState(false);
+  const [localLiveAvailable, setLocalLiveAvailable] = useState(false);
   const [liveOpen, setLiveOpen] = useState(false);
   const [history, setHistory] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
@@ -34,7 +34,7 @@ export function AskGldWidget() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const pollersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
-  // Vérifie si l'avatar HeyGen est activé (vidéo et streaming)
+  // Vérifie quels modes sont disponibles
   useEffect(() => {
     fetch('/api/avatar/enabled')
       .then((r) => r.json())
@@ -42,8 +42,8 @@ export function AskGldWidget() {
       .catch(() => setAvatarAvailable(false));
     fetch('/api/avatar/streaming/info')
       .then((r) => r.json())
-      .then((j) => setStreamingAvailable(!!j.streamingEnabled))
-      .catch(() => setStreamingAvailable(false));
+      .then((j) => setLocalLiveAvailable(!!j.localLiveEnabled))
+      .catch(() => setLocalLiveAvailable(false));
   }, []);
 
   useEffect(() => {
@@ -191,7 +191,7 @@ export function AskGldWidget() {
           </div>
 
           {/* Toggle Texte / Vidéo / Live */}
-          {(avatarAvailable || streamingAvailable) && (
+          {(avatarAvailable || localLiveAvailable) && (
             <div className="px-3 py-2 flex gap-1" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
               <button
                 onClick={() => setMode('text')}
@@ -213,16 +213,17 @@ export function AskGldWidget() {
                   <Video size={11} /> Vidéo
                 </button>
               )}
-              {streamingAvailable && (
+              {localLiveAvailable && (
                 <button
                   onClick={() => { setMode('live'); setLiveOpen(true); }}
                   className={`flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-bold transition ${mode === 'live' ? 'shadow' : 'opacity-50'}`}
                   style={mode === 'live'
                     ? { background: 'linear-gradient(90deg, #ec4899, #f43f5e)', color: '#fff' }
                     : { color: 'var(--fg-muted)' }}
+                  title="Conversation vocale gratuite avec ElevenLabs"
                 >
                   <Mic size={11} /> Live
-                  <span className="text-[8px] opacity-80">2 min</span>
+                  <span className="text-[8px] opacity-80">gratuit</span>
                 </button>
               )}
             </div>
@@ -344,9 +345,9 @@ export function AskGldWidget() {
         </div>
       )}
 
-      {/* Modal Live (overlay plein écran) */}
+      {/* Modal Live local (overlay plein écran) */}
       {liveOpen && (
-        <AskGldAvatarLive onClose={() => { setLiveOpen(false); setMode('text'); }} />
+        <AskGldAvatarLocal onClose={() => { setLiveOpen(false); setMode('text'); }} />
       )}
     </>
   );

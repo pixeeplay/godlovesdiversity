@@ -25,6 +25,7 @@ type Config = {
   enabled: boolean;
   streamingEnabled: boolean;
   streamingAvatarName: string;
+  localLiveEnabled: boolean;
   avatarId: string;
   voiceId: string;
   bgColor: string;
@@ -94,6 +95,7 @@ export function AvatarStudio({ apiKeyConfigured, initialConfig }: Props) {
         'avatar.enabled': config.enabled ? '1' : '0',
         'avatar.streaming.enabled': config.streamingEnabled ? '1' : '0',
         'avatar.streaming.avatarName': config.streamingAvatarName,
+        'avatar.local.enabled': config.localLiveEnabled ? '1' : '0',
         'avatar.heygen.avatarId': config.avatarId,
         'avatar.heygen.voiceId': config.voiceId,
         'avatar.heygen.bgColor': config.bgColor,
@@ -330,16 +332,39 @@ export function AvatarStudio({ apiKeyConfigured, initialConfig }: Props) {
               <span className="text-[11px] text-zinc-500 mt-1 block">Évite les abus et l'explosion du budget HeyGen.</span>
             </label>
 
-            {/* MODE LIVE STREAMING (HeyGen Interactive Avatar) */}
-            <div className="bg-fuchsia-500/5 border-2 border-fuchsia-500/30 rounded-xl p-4 space-y-3">
+            {/* MODE LIVE LOCAL (gratuit, ElevenLabs + Web Speech + avatar SVG) */}
+            <div className="bg-emerald-500/5 border-2 border-emerald-500/30 rounded-xl p-4 space-y-3">
               <div className="flex items-center gap-2">
-                <span className="bg-gradient-to-r from-fuchsia-500 to-pink-600 text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded">Premium</span>
-                <h4 className="font-bold text-sm">🎙 Mode Live (conversation temps-réel)</h4>
+                <span className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded">Gratuit</span>
+                <h4 className="font-bold text-sm">🎙 Mode Live local (conversation vocale)</h4>
               </div>
               <p className="text-[11px] text-zinc-400 leading-relaxed">
-                L'avatar écoute la voix du visiteur et répond en streaming WebRTC.
-                <strong className="text-amber-300"> Nécessite plan HeyGen Creator+ (24 €/mois)</strong> ou crédits Pay-as-you-go (~0.20 €/min).
-                Free tier non supporté.
+                L'avatar SVG t'écoute (Web Speech navigateur), réfléchit (RAG Gemini) et répond avec une voix ElevenLabs.
+                Bouche animée sur l'amplitude audio. <strong className="text-emerald-300">Aucune dépendance HeyGen.</strong>
+                <br />Coût : ElevenLabs free tier = 10 000 caractères/mois (≈ 200 réponses moyennes).
+              </p>
+
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox"
+                  checked={config.localLiveEnabled}
+                  onChange={(e) => setConfig({ ...config, localLiveEnabled: e.target.checked })}
+                  className="w-5 h-5 accent-emerald-500" />
+                <div>
+                  <div className="font-bold text-sm">Activer le mode Live local côté visiteur</div>
+                  <div className="text-[11px] text-zinc-500">Le bouton « 🎙 Live » apparaîtra dans le chat. Sessions plafonnées à 2 min. Nécessite clé ElevenLabs configurée.</div>
+                </div>
+              </label>
+            </div>
+
+            {/* MODE LIVE STREAMING HEYGEN (DÉPRÉCIÉ — endpoint sunset) */}
+            <div className="bg-amber-500/5 border-2 border-amber-500/30 rounded-xl p-4 space-y-3 opacity-60">
+              <div className="flex items-center gap-2">
+                <span className="bg-amber-500 text-black text-[9px] font-bold uppercase px-2 py-0.5 rounded">Sunset</span>
+                <h4 className="font-bold text-sm">🛑 Mode Live HeyGen Streaming (déprécié)</h4>
+              </div>
+              <p className="text-[11px] text-zinc-400 leading-relaxed">
+                HeyGen a sunset l'endpoint <code className="bg-zinc-800 px-1">/v1/streaming.new</code> le 3 mai 2026 et l'a séparé en un produit distinct sur <a href="https://liveavatar.com" target="_blank" rel="noopener noreferrer" className="text-amber-300 hover:underline">liveavatar.com</a>.
+                Pour réactiver le streaming, créer un compte LiveAvatar séparé et nous donner la clé.
               </p>
 
               <label className="block">

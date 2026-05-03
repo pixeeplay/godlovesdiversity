@@ -1,14 +1,18 @@
 /**
- * HeyGen Interactive Avatar (Streaming) — temps réel via LiveKit/WebRTC
+ * ⚠️ DÉPRÉCIÉ — HeyGen Interactive Avatar (Streaming) endpoint sunset
  *
- * Différent de heygen.ts (Video Generation API) :
- *  - heygen.ts : génère un MP4, asynchrone, ~1 crédit/vidéo
- *  - ce module : connexion LiveKit live, l'avatar PARLE en streaming
+ * Le 3 mai 2026, HeyGen a sunset ses endpoints /v1/streaming.* et a séparé
+ * le streaming en un produit distinct appelé « LiveAvatar » sur liveavatar.com,
+ * avec sa propre API key et son propre billing.
  *
- * ⚠️ Nécessite un plan HeyGen Creator+ (24 €/mois) ou crédits Pay-as-you-go.
- *    Pas dispo sur Free tier.
+ * Ce module reste pour compatibilité mais renvoie systématiquement une erreur
+ * explicative. Pour réactiver le streaming :
+ *   1. Créer un compte sur liveavatar.com
+ *   2. Récupérer la nouvelle API key
+ *   3. Refaire l'intégration avec leur SDK
  *
- * Doc : https://docs.heygen.com/reference/new-session
+ * Alternative gratuite codée dans /api/avatar/local-live/* + AskGldAvatarLocal
+ * (avatar SVG + ElevenLabs + Web Speech).
  */
 import { getSettings } from './settings';
 
@@ -71,6 +75,11 @@ export type SessionInfo = {
 };
 
 export async function newStreamingSession(input: NewSessionInput): Promise<SessionInfo> {
+  // L'endpoint a été sunset par HeyGen le 3 mai 2026.
+  throw new Error(
+    'HeyGen streaming sunset. Migration LiveAvatar requise (nouveau compte sur liveavatar.com). ' +
+    'En attendant, utilise le mode Live local (gratuit) basé sur ElevenLabs + avatar SVG.'
+  );
   const body = {
     quality: input.quality || 'medium',
     avatar_name: input.avatarName,
