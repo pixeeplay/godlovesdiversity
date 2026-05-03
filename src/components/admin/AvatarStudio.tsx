@@ -34,6 +34,7 @@ type Config = {
 
 type Props = {
   apiKeyConfigured: boolean;
+  hasElevenLabs?: boolean;
   initialConfig: Config;
 };
 
@@ -46,7 +47,7 @@ const BG_PRESETS = [
   { color: '#0F0F12', label: 'Nuit profonde' }
 ];
 
-export function AvatarStudio({ apiKeyConfigured, initialConfig }: Props) {
+export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, initialConfig }: Props) {
   const [config, setConfig] = useState<Config>(initialConfig);
   const [avatars, setAvatars] = useState<Avatar[]>([]);
   const [voices, setVoices] = useState<Voice[]>([]);
@@ -178,7 +179,166 @@ export function AvatarStudio({ apiKeyConfigured, initialConfig }: Props) {
         </p>
       </header>
 
-      {/* WARN si pas de clé */}
+      {/* CHOIX DU MODE D'AVATAR — 2 grosses cartes côte à côte */}
+      <section>
+        <h2 className="text-xl font-bold mb-3 flex items-center gap-2">
+          <Sparkles size={20} className="text-fuchsia-400" />
+          Choisis comment ton avatar parle aux visiteurs
+        </h2>
+        <p className="text-sm text-zinc-400 mb-4">Les 2 modes peuvent coexister — le visiteur choisit lequel utiliser dans le widget chat.</p>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          {/* CARTE MODE VIDÉO HEYGEN */}
+          <div className={`rounded-2xl border-2 overflow-hidden transition
+            ${config.enabled
+              ? 'border-fuchsia-500 bg-fuchsia-500/5 shadow-lg shadow-fuchsia-500/10'
+              : 'border-zinc-800 bg-zinc-900/50'}`}>
+            <div className="bg-gradient-to-br from-fuchsia-500 to-pink-600 p-4 text-white">
+              <div className="flex items-start justify-between mb-2">
+                <Video size={28} />
+                <span className="bg-white/20 backdrop-blur text-[10px] font-bold uppercase px-2 py-1 rounded-full">
+                  HeyGen Vidéo
+                </span>
+              </div>
+              <h3 className="text-xl font-bold">Mode Vidéo</h3>
+              <p className="text-sm opacity-90 mt-1">L'avatar enregistre une vidéo MP4 ~30s pour chaque réponse</p>
+            </div>
+            <div className="p-4 space-y-3">
+              <div className="space-y-1.5 text-xs">
+                <div className="flex items-start gap-2">
+                  <span className="text-emerald-400 shrink-0">✓</span>
+                  <span className="text-zinc-300">Avatar humain photo-réaliste</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-emerald-400 shrink-0">✓</span>
+                  <span className="text-zinc-300">Voix douce, lip-sync parfait</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-amber-400 shrink-0">−</span>
+                  <span className="text-zinc-400">~30 secondes d'attente par question</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-amber-400 shrink-0">−</span>
+                  <span className="text-zinc-400">Crédits HeyGen consommés (~0.10 €/vidéo)</span>
+                </div>
+              </div>
+
+              <div className="bg-zinc-950 rounded-lg p-3 text-xs">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-zinc-500">Statut clé HeyGen</span>
+                  {apiKeyConfigured
+                    ? <span className="text-emerald-300 flex items-center gap-1"><CheckCircle2 size={11} /> Configurée</span>
+                    : <span className="text-red-300 flex items-center gap-1"><AlertCircle size={11} /> Manquante</span>}
+                </div>
+                {!apiKeyConfigured && (
+                  <a href="/admin/settings" className="text-fuchsia-300 hover:underline text-[11px] flex items-center gap-1 mt-1">
+                    <KeyRound size={10} /> Configurer dans Paramètres → IA & Outils → HeyGen
+                  </a>
+                )}
+              </div>
+
+              <label className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer border ${config.enabled ? 'bg-fuchsia-500/10 border-fuchsia-500/40' : 'bg-zinc-800/50 border-zinc-700'} ${!apiKeyConfigured ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                <input type="checkbox"
+                  disabled={!apiKeyConfigured}
+                  checked={config.enabled}
+                  onChange={(e) => setConfig({ ...config, enabled: e.target.checked })}
+                  className="w-5 h-5 accent-fuchsia-500" />
+                <div>
+                  <div className="font-bold text-sm">Activer le Mode Vidéo</div>
+                  <div className="text-[11px] text-zinc-500">Le bouton « 🎬 Vidéo » apparaîtra dans le chat</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          {/* CARTE MODE LIVE LOCAL */}
+          <div className={`rounded-2xl border-2 overflow-hidden transition
+            ${config.localLiveEnabled
+              ? 'border-emerald-500 bg-emerald-500/5 shadow-lg shadow-emerald-500/10'
+              : 'border-zinc-800 bg-zinc-900/50'}`}>
+            <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 text-white">
+              <div className="flex items-start justify-between mb-2">
+                <span className="text-3xl">🎙</span>
+                <span className="bg-white/20 backdrop-blur text-[10px] font-bold uppercase px-2 py-1 rounded-full">
+                  Gratuit · Live
+                </span>
+              </div>
+              <h3 className="text-xl font-bold">Mode Live local</h3>
+              <p className="text-sm opacity-90 mt-1">Conversation vocale temps réel avec un avatar SVG animé</p>
+            </div>
+            <div className="p-4 space-y-3">
+              <div className="space-y-1.5 text-xs">
+                <div className="flex items-start gap-2">
+                  <span className="text-emerald-400 shrink-0">✓</span>
+                  <span className="text-zinc-300">Conversation fluide, le visiteur PARLE</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-emerald-400 shrink-0">✓</span>
+                  <span className="text-zinc-300">Réponse immédiate, pas d'attente vidéo</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-emerald-400 shrink-0">✓</span>
+                  <span className="text-zinc-300">Quasi-gratuit (10 000 chars/mois ElevenLabs)</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-amber-400 shrink-0">−</span>
+                  <span className="text-zinc-400">Avatar SVG stylisé (pas photo-réaliste)</span>
+                </div>
+              </div>
+
+              <div className="bg-zinc-950 rounded-lg p-3 text-xs">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-zinc-500">Statut clé ElevenLabs</span>
+                  {hasElevenLabs
+                    ? <span className="text-emerald-300 flex items-center gap-1"><CheckCircle2 size={11} /> Configurée</span>
+                    : <span className="text-red-300 flex items-center gap-1"><AlertCircle size={11} /> Manquante</span>}
+                </div>
+                {!hasElevenLabs && (
+                  <div className="space-y-1 mt-2">
+                    <a href="https://elevenlabs.io/app/sign-up" target="_blank" rel="noopener noreferrer" className="text-emerald-300 hover:underline text-[11px] flex items-center gap-1">
+                      1️⃣ Créer un compte gratuit sur elevenlabs.io
+                    </a>
+                    <a href="/admin/settings" className="text-emerald-300 hover:underline text-[11px] flex items-center gap-1">
+                      2️⃣ Coller la clé dans Paramètres → IA & Outils → ElevenLabs
+                    </a>
+                  </div>
+                )}
+              </div>
+
+              <label className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer border ${config.localLiveEnabled ? 'bg-emerald-500/10 border-emerald-500/40' : 'bg-zinc-800/50 border-zinc-700'} ${!hasElevenLabs ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                <input type="checkbox"
+                  disabled={!hasElevenLabs}
+                  checked={config.localLiveEnabled}
+                  onChange={(e) => setConfig({ ...config, localLiveEnabled: e.target.checked })}
+                  className="w-5 h-5 accent-emerald-500" />
+                <div>
+                  <div className="font-bold text-sm">Activer le Mode Live local</div>
+                  <div className="text-[11px] text-zinc-500">Le bouton « 🎙 Live » apparaîtra dans le chat (plafond 2 min)</div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        {/* BOUTON SAUVEGARDE FLOTTANT haut */}
+        <div className="mt-4 flex items-center justify-end gap-3 bg-zinc-950/80 backdrop-blur border border-zinc-800 rounded-xl p-3">
+          {savedCfg && (
+            <span className="text-emerald-300 text-sm flex items-center gap-1">
+              <CheckCircle2 size={14} /> Sauvegardé !
+            </span>
+          )}
+          <button
+            onClick={saveConfig}
+            disabled={savingCfg}
+            className="bg-brand-pink hover:bg-pink-600 text-white font-bold px-5 py-2 rounded-full text-sm flex items-center gap-2"
+          >
+            {savingCfg ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+            Sauvegarder mes choix
+          </button>
+        </div>
+      </section>
+
+      {/* WARN si pas de clé HeyGen (déjà visible dans la carte mais on le garde pour visibilité) */}
       {!apiKeyConfigured && (
         <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-5 flex items-start gap-3">
           <AlertCircle size={20} className="text-amber-300 shrink-0 mt-0.5" />

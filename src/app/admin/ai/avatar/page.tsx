@@ -12,6 +12,7 @@ export default async function AvatarPage() {
 
   const cfg = await getSettings([
     'integrations.heygen.apiKey',
+    'integrations.elevenlabs.apiKey',
     'avatar.enabled',
     'avatar.streaming.enabled',
     'avatar.streaming.avatarName',
@@ -23,10 +24,12 @@ export default async function AvatarPage() {
   ]);
 
   const apiKeyConfigured = !!(cfg['integrations.heygen.apiKey'] || process.env.HEYGEN_API_KEY);
+  const hasElevenLabs = !!(cfg['integrations.elevenlabs.apiKey'] || process.env.ELEVENLABS_API_KEY);
 
   return (
     <AvatarStudio
       apiKeyConfigured={apiKeyConfigured}
+      hasElevenLabs={hasElevenLabs}
       initialConfig={{
         enabled: cfg['avatar.enabled'] === '1',
         streamingEnabled: cfg['avatar.streaming.enabled'] === '1',
