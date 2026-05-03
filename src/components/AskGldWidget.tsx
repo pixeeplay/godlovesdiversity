@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { Send, X, Loader2, Sparkles, BookOpen, MessageSquare, Video, Play } from 'lucide-react';
+import { Send, X, Loader2, Sparkles, BookOpen, MessageSquare, Video, Play, Mic } from 'lucide-react';
+import { AskGldAvatarLive } from './AskGldAvatarLive';
 
 type Source = { title: string; source: string | null; score: number };
 type Msg = {
@@ -12,7 +13,7 @@ type Msg = {
   videoStatus?: 'pending' | 'rendering' | 'ready' | 'failed';
 };
 
-type Mode = 'text' | 'video';
+type Mode = 'text' | 'video' | 'live';
 
 const SUGGESTIONS = [
   'Que dit la Bible sur l\'homosexualité ?',
@@ -25,18 +26,24 @@ export function AskGldWidget() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>('text');
   const [avatarAvailable, setAvatarAvailable] = useState(false);
+  const [streamingAvailable, setStreamingAvailable] = useState(false);
+  const [liveOpen, setLiveOpen] = useState(false);
   const [history, setHistory] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const pollersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
-  // Vérifie si l'avatar HeyGen est activé
+  // Vérifie si l'avatar HeyGen est activé (vidéo et streaming)
   useEffect(() => {
     fetch('/api/avatar/enabled')
       .then((r) => r.json())
       .then((j) => setAvatarAvailable(!!j.enabled))
       .catch(() => setAvatarAvailable(false));
+    fetch('/api/avatar/streaming/info')
+      .then((r) => r.json())
+      .then((j) => setStreamingAvailable(!!j.streamingEnabled))
+      .catch(() => setStreamingAvailable(false));
   }, []);
 
   useEffect(() => {
@@ -183,28 +190,41 @@ export function AskGldWidget() {
             <button onClick={() => setOpen(false)} style={{ color: 'var(--fg-muted)' }}><X size={18} /></button>
           </div>
 
-          {/* Toggle Texte / Vidéo (seulement si avatar dispo) */}
-          {avatarAvailable && (
+          {/* Toggle Texte / Vidéo / Live */}
+          {(avatarAvailable || streamingAvailable) && (
             <div className="px-3 py-2 flex gap-1" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
               <button
                 onClick={() => setMode('text')}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${mode === 'text' ? 'shadow' : 'opacity-50'}`}
+                className={`flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-bold transition ${mode === 'text' ? 'shadow' : 'opacity-50'}`}
                 style={mode === 'text'
                   ? { background: 'var(--accent)', color: '#fff' }
                   : { color: 'var(--fg-muted)' }}
               >
-                <MessageSquare size={12} /> Texte
+                <MessageSquare size={11} /> Texte
               </button>
-              <button
-                onClick={() => setMode('video')}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${mode === 'video' ? 'shadow' : 'opacity-50'}`}
-                style={mode === 'video'
-                  ? { background: 'linear-gradient(90deg, #d946ef, #ec4899)', color: '#fff' }
-                  : { color: 'var(--fg-muted)' }}
-              >
-                <Video size={12} /> Vidéo
-                <span className="text-[9px] opacity-80">~30s</span>
-              </button>
+              {avatarAvailable && (
+                <button
+                  onClick={() => setMode('video')}
+                  className={`flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-bold transition ${mode === 'video' ? 'shadow' : 'opacity-50'}`}
+                  style={mode === 'video'
+                    ? { background: 'linear-gradient(90deg, #d946ef, #ec4899)', color: '#fff' }
+                    : { color: 'var(--fg-muted)' }}
+                >
+                  <Video size={11} /> Vidéo
+                </button>
+              )}
+              {streamingAvailable && (
+                <button
+                  onClick={() => { setMode('live'); setLiveOpen(true); }}
+                  className={`flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-bold transition ${mode === 'live' ? 'shadow' : 'opacity-50'}`}
+                  style={mode === 'live'
+                    ? { background: 'linear-gradient(90deg, #ec4899, #f43f5e)', color: '#fff' }
+                    : { color: 'var(--fg-muted)' }}
+                >
+                  <Mic size={11} /> Live
+                  <span className="text-[8px] opacity-80">2 min</span>
+                </button>
+              )}
             </div>
           )}
 
@@ -322,6 +342,11 @@ export function AskGldWidget() {
             </button>
           </form>
         </div>
+      )}
+
+      {/* Modal Live (overlay plein écran) */}
+      {liveOpen && (
+        <AskGldAvatarLive onClose={() => { setLiveOpen(false); setMode('text'); }} />
       )}
     </>
   );

@@ -13,6 +13,8 @@ export default async function AvatarPage() {
   const cfg = await getSettings([
     'integrations.heygen.apiKey',
     'avatar.enabled',
+    'avatar.streaming.enabled',
+    'avatar.streaming.avatarName',
     'avatar.heygen.avatarId',
     'avatar.heygen.voiceId',
     'avatar.heygen.bgColor',
@@ -26,6 +28,8 @@ export default async function AvatarPage() {
       apiKeyConfigured={apiKeyConfigured}
       initialConfig={{
         enabled: cfg['avatar.enabled'] === '1',
+        streamingEnabled: cfg['avatar.streaming.enabled'] === '1',
+        streamingAvatarName: cfg['avatar.streaming.avatarName'] || 'Susan_public_2_20240328',
         avatarId: cfg['avatar.heygen.avatarId'] || '',
         voiceId: cfg['avatar.heygen.voiceId'] || '',
         bgColor: cfg['avatar.heygen.bgColor'] || '#FBEAF0',

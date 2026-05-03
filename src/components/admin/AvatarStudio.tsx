@@ -23,6 +23,8 @@ type Voice = {
 
 type Config = {
   enabled: boolean;
+  streamingEnabled: boolean;
+  streamingAvatarName: string;
   avatarId: string;
   voiceId: string;
   bgColor: string;
@@ -90,6 +92,8 @@ export function AvatarStudio({ apiKeyConfigured, initialConfig }: Props) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         'avatar.enabled': config.enabled ? '1' : '0',
+        'avatar.streaming.enabled': config.streamingEnabled ? '1' : '0',
+        'avatar.streaming.avatarName': config.streamingAvatarName,
         'avatar.heygen.avatarId': config.avatarId,
         'avatar.heygen.voiceId': config.voiceId,
         'avatar.heygen.bgColor': config.bgColor,
@@ -325,6 +329,45 @@ export function AvatarStudio({ apiKeyConfigured, initialConfig }: Props) {
                 className="mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-pink" />
               <span className="text-[11px] text-zinc-500 mt-1 block">Évite les abus et l'explosion du budget HeyGen.</span>
             </label>
+
+            {/* MODE LIVE STREAMING (HeyGen Interactive Avatar) */}
+            <div className="bg-fuchsia-500/5 border-2 border-fuchsia-500/30 rounded-xl p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="bg-gradient-to-r from-fuchsia-500 to-pink-600 text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded">Premium</span>
+                <h4 className="font-bold text-sm">🎙 Mode Live (conversation temps-réel)</h4>
+              </div>
+              <p className="text-[11px] text-zinc-400 leading-relaxed">
+                L'avatar écoute la voix du visiteur et répond en streaming WebRTC.
+                <strong className="text-amber-300"> Nécessite plan HeyGen Creator+ (24 €/mois)</strong> ou crédits Pay-as-you-go (~0.20 €/min).
+                Free tier non supporté.
+              </p>
+
+              <label className="block">
+                <span className="text-[11px] font-bold uppercase text-zinc-400">ID Avatar Streaming-compatible</span>
+                <input
+                  value={config.streamingAvatarName}
+                  onChange={(e) => setConfig({ ...config, streamingAvatarName: e.target.value })}
+                  placeholder="Susan_public_2_20240328"
+                  className="mt-1 w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-xs font-mono outline-none focus:border-fuchsia-500"
+                />
+                <span className="text-[10px] text-zinc-500 mt-1 block">
+                  Recommandés : <code className="bg-zinc-800 px-1">Susan_public_2_20240328</code> (mature, calme),
+                  <code className="bg-zinc-800 px-1 ml-1">Anna_public_3_20240108</code> (jeune, dynamique).
+                  Pour utiliser TON visage : crée un Custom Avatar Streaming sur <a href="https://app.heygen.com/avatars" target="_blank" rel="noopener noreferrer" className="text-fuchsia-400 hover:underline">app.heygen.com/avatars</a> puis colle son ID ici.
+                </span>
+              </label>
+
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox"
+                  checked={config.streamingEnabled}
+                  onChange={(e) => setConfig({ ...config, streamingEnabled: e.target.checked })}
+                  className="w-5 h-5 accent-fuchsia-500" />
+                <div>
+                  <div className="font-bold text-sm">Activer le mode Live côté visiteur</div>
+                  <div className="text-[11px] text-zinc-500">Le bouton « 🎙 Live » apparaîtra dans le chat. Sessions plafonnées à 2 min.</div>
+                </div>
+              </label>
+            </div>
 
             <label className="flex items-center gap-3 cursor-pointer">
               <input type="checkbox"
