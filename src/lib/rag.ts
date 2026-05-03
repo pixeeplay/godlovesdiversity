@@ -12,12 +12,21 @@
 import { prisma } from './prisma';
 import { getSettings } from './settings';
 
-const EMBED_MODEL = 'text-embedding-004';
-const EMBED_DIM = 768;
+// Modèles embedding Gemini par ordre de préférence (plus récent → plus ancien)
+// Le code essaie chacun jusqu'à ce qu'un fonctionne. Pas tous les comptes/régions
+// ont accès au même modèle, donc fallback en chaîne.
+const EMBED_MODELS = [
+  'gemini-embedding-001',  // ✓ recommandé 2025+
+  'text-embedding-004',    // ✓ générale dispo
+  'embedding-001'          // legacy fallback
+];
 const CHUNK_SIZE_WORDS = 220;
 const CHUNK_OVERLAP_WORDS = 40;
 const TOP_K = 5;
 const MIN_SCORE = 0.55; // Sous ce seuil → sujet probablement hors-thème
+
+// Cache du modèle qui a fonctionné (évite de re-tester à chaque appel)
+let workingEmbedModel: string | null = null;
 
 /* ─── EMBEDDING ───────────────────────────────────────────────── */
 
@@ -28,29 +37,50 @@ async function getGeminiKey(): Promise<string> {
   return k;
 }
 
+async function tryEmbed(model: string, key: string, text: string): Promise<number[] | null> {
+  try {
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:embedContent?key=${key}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: `models/${model}`,
+          content: { parts: [{ text }] }
+        })
+      }
+    );
+    if (!r.ok) return null;
+    const j = await r.json();
+    const v = j?.embedding?.values;
+    if (Array.isArray(v) && v.length > 100) return v;
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export async function embedText(text: string): Promise<number[]> {
   const key = await getGeminiKey();
-  const r = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${EMBED_MODEL}:embedContent?key=${key}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: `models/${EMBED_MODEL}`,
-        content: { parts: [{ text }] }
-      })
+
+  // Essai du modèle en cache si on en a un qui marche
+  if (workingEmbedModel) {
+    const v = await tryEmbed(workingEmbedModel, key, text);
+    if (v) return v;
+    workingEmbedModel = null; // était cassé, on retry tous
+  }
+
+  // Essai en cascade
+  const errors: string[] = [];
+  for (const model of EMBED_MODELS) {
+    const v = await tryEmbed(model, key, text);
+    if (v) {
+      workingEmbedModel = model;
+      return v;
     }
-  );
-  if (!r.ok) {
-    const err = await r.text();
-    throw new Error(`Embedding HTTP ${r.status}: ${err.slice(0, 200)}`);
+    errors.push(model);
   }
-  const j = await r.json();
-  const v = j?.embedding?.values;
-  if (!Array.isArray(v) || v.length !== EMBED_DIM) {
-    throw new Error('Réponse embedding invalide');
-  }
-  return v;
+  throw new Error(`Aucun modèle d'embedding Gemini disponible. Essayés : ${errors.join(', ')}. Vérifie ta clé API et que ton projet Google Cloud autorise l'API generativelanguage.`);
 }
 
 /* ─── CHUNKING ────────────────────────────────────────────────── */
@@ -165,11 +195,15 @@ export async function retrieve(
   query: string,
   opts: { locale?: string; topK?: number } = {}
 ): Promise<RetrievedChunk[]> {
-  const queryVec = await embedText(query);
+  // 1. Vérifie d'abord s'il y a des chunks en DB. Si vide, inutile d'embedder.
   const chunks = await prisma.knowledgeChunk.findMany({
     where: { doc: { enabled: true, locale: opts.locale || 'fr' } },
     include: { doc: true }
   });
+  if (chunks.length === 0) return []; // Base vide → fallback Gemini direct côté ask()
+
+  // 2. Embed la question (peut throw si Gemini API casse)
+  const queryVec = await embedText(query);
 
   const scored = chunks.map((c) => {
     const emb = c.embedding as unknown as number[];
@@ -242,18 +276,33 @@ export type AskResult = {
 };
 
 export async function ask(question: string, opts: { locale?: string } = {}): Promise<AskResult> {
-  const chunks = await retrieve(question, opts);
-  const topScore = chunks[0]?.score || 0;
-  const offTopic = topScore < MIN_SCORE;
+  // Tente le RAG. Si embedding plante OU si la base est vide → on passe en mode
+  // "Gemini direct" avec juste le system prompt, sans sources.
+  let chunks: RetrievedChunk[] = [];
+  let ragWorked = false;
+  try {
+    chunks = await retrieve(question, opts);
+    ragWorked = true;
+  } catch (e: any) {
+    console.warn('[RAG] retrieve failed, fallback to direct Gemini:', e?.message);
+  }
 
-  // Si hors-sujet : log dans la file et renvoie une réponse de redirection
+  const topScore = chunks[0]?.score || 0;
+  // Hors-sujet uniquement si on a des sources ET qu'aucune ne matche assez
+  const offTopic = ragWorked && chunks.length > 0 && topScore < MIN_SCORE;
+
   if (offTopic) {
     await prisma.unansweredQuery.create({
       data: { question, locale: opts.locale || 'fr', topScore }
     }).catch(() => {});
   }
 
-  const prompt = await buildRagPrompt(question, chunks);
+  // Construit le prompt : avec sources si dispo, sans sinon
+  const sysPrompt = await getSystemPrompt();
+  const prompt = chunks.length > 0
+    ? await buildRagPrompt(question, chunks)
+    : `${sysPrompt}\n\nQUESTION DU VISITEUR :\n${question}\n\nRéponds dans le style GLD défini plus haut. (Note : la bibliothèque de connaissances RAG n'est pas encore alimentée, réponds depuis ton savoir général en restant fidèle au ton et aux principes GLD.)`;
+
   const key = await getGeminiKey();
   const r = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
