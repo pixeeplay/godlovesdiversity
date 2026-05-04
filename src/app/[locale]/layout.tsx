@@ -10,6 +10,7 @@ import { AmbientPlayer } from '@/components/AmbientPlayer';
 import { PageTracker } from '@/components/PageTracker';
 import { ThemeProvider, themeInitScript } from '@/components/ThemeProvider';
 import { ThemeApplier } from '@/components/ThemeApplier';
+import { SOSFloatingButton } from '@/components/SOSFloatingButton';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -46,6 +47,7 @@ export default async function LocaleLayout({
             <AmbientPlayer />
             <PageTracker />
             <ThemeApplier />
+            <SOSFloatingButton />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

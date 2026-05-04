@@ -733,6 +733,40 @@ model Event {
   @@index([venueId, startsAt])
 }
 
+/// Demande d'aide / message d'entraide LGBT entre utilisateurs (anonyme possible).
+/// Pas un chat 1-1 : une demande publique modérée que d'autres peuvent réconforter.
+model PeerHelp {
+  id          String   @id @default(cuid())
+  authorName  String?  // pseudo ou null si anonyme
+  authorEmail String?  // pour notification de réponse
+  country     String?  // code ISO-2 pour montrer aides locales adaptées
+  topic       String   // "coming-out" | "famille" | "abus" | "isolement" | "rejet" | "santé-mentale" | "autre"
+  message     String   @db.Text
+  urgent      Boolean  @default(false)
+  status      String   @default("active") // "active" | "resolved" | "hidden"
+  /// Nombre de "je suis là pour toi" reçus
+  supportCount Int     @default(0)
+  /// Réponses bienveillantes (chiffrées avec auteur si email)
+  responses   PeerHelpResponse[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([topic, status])
+}
+
+model PeerHelpResponse {
+  id          String   @id @default(cuid())
+  peerHelpId  String
+  peerHelp    PeerHelp @relation(fields: [peerHelpId], references: [id], onDelete: Cascade)
+  authorName  String?  // pseudo ou null
+  message     String   @db.Text
+  approved    Boolean  @default(false) // modération admin
+  createdAt   DateTime @default(now())
+
+  @@index([peerHelpId, approved])
+}
+
 /// Thème visuel saisonnier ou esthétique permanent.
 /// L'admin peut activer manuellement ou laisser l'auto-activation par date de fête.
 model Theme {
