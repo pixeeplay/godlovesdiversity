@@ -16,9 +16,22 @@ export async function POST(req: NextRequest) {
   const s = await getServerSession(authOptions);
   if (!s) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 
-  const { action } = await req.json().catch(() => ({}));
-  const origin = req.nextUrl.origin;
-  const url = `${origin}/api/webhooks/telegram`;
+  const body = await req.json().catch(() => ({}));
+  const action = body.action;
+
+  // URL publique HTTPS — Telegram exige port 443 (ou 80/88/8443)
+  // 1. body.publicUrl si fourni manuellement
+  // 2. NEXT_PUBLIC_SITE_URL env
+  // 3. Setting integrations.telegram.webhookUrl
+  // 4. Fallback : construit depuis host header en forçant https
+  const cfg = await getSettings(['integrations.telegram.webhookUrl', 'site.publicUrl']);
+  const publicUrl =
+    body.publicUrl ||
+    cfg['integrations.telegram.webhookUrl'] ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    cfg['site.publicUrl'] ||
+    `https://${req.headers.get('host') || 'gld.pixeeplay.com'}`;
+  const url = `${publicUrl.replace(/\/$/, '')}/api/webhooks/telegram`;
 
   try {
     if (action === 'uninstall') {
