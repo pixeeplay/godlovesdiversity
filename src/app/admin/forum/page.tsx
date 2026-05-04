@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { MessageSquare, AlertTriangle } from 'lucide-react';
+import { ForumCategoriesAdmin } from '@/components/admin/ForumCategoriesAdmin';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,7 +15,10 @@ export default async function AdminForumPage() {
   let threads: any[] = [];
   let flaggedPosts: any[] = [];
   try {
-    categories = await prisma.forumCategory.findMany({ orderBy: { order: 'asc' } });
+    categories = await prisma.forumCategory.findMany({
+      orderBy: { order: 'asc' },
+      include: { _count: { select: { threads: true } } }
+    });
     threads = await prisma.forumThread.findMany({ include: { category: true, author: { select: { name: true } } }, orderBy: { createdAt: 'desc' }, take: 30 });
     flaggedPosts = await prisma.forumPost.findMany({ where: { status: 'flagged' }, include: { author: { select: { name: true } } }, take: 20 });
   } catch { /* migration */ }
@@ -28,24 +32,7 @@ export default async function AdminForumPage() {
         <h1 className="text-3xl font-display font-bold">Forum (admin)</h1>
       </header>
 
-      <section>
-        <h2 className="text-xs uppercase font-bold tracking-widest text-violet-400 mb-3">Catégories ({categories.length})</h2>
-        {categories.length === 0 ? (
-          <div className="bg-amber-500/5 border border-amber-500/30 rounded-xl p-4 text-amber-200 text-sm">
-            ⚠ Aucune catégorie créée. Crée-les via Prisma Studio ou ajoute-les directement en DB :
-            <pre className="text-[10px] mt-2 bg-zinc-950 p-2 rounded">INSERT INTO "ForumCategory" (id, slug, name, "order") VALUES ('cat1', 'general', 'Général', 0);</pre>
-          </div>
-        ) : (
-          <div className="grid sm:grid-cols-3 gap-2">
-            {categories.map((c) => (
-              <div key={c.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-3">
-                <div className="font-bold text-white">{c.name}</div>
-                <div className="text-[10px] text-zinc-500">{c.slug}</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+      <ForumCategoriesAdmin initial={categories} />
 
       <section>
         <h2 className="text-xs uppercase font-bold tracking-widest text-violet-400 mb-3">Sujets récents ({threads.length})</h2>
