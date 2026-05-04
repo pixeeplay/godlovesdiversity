@@ -1,9 +1,9 @@
 'use client';
 import { useState, useRef } from 'react';
 import { useTranslations } from 'next-intl';
-import { useDropzone } from 'react-dropzone';
-import { UploadCloud, MapPin, Loader2, CheckCircle2 } from 'lucide-react';
+import { MapPin, Loader2, CheckCircle2 } from 'lucide-react';
 import { UploadConsentModal } from './UploadConsentModal';
+import { MediaCaptureZone } from './MediaCaptureZone';
 
 const PLACE_TYPES = [
   { v: 'CHURCH', l: 'Église' },
@@ -25,17 +25,6 @@ export function ParticipateForm() {
   const [consentOpen, setConsentOpen] = useState(false);
   const [pendingCountry, setPendingCountry] = useState<string>('');
   const formRef = useRef<HTMLFormElement>(null);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: { 'image/*': [] },
-    maxFiles: 1,
-    onDrop: (files) => {
-      const f = files[0];
-      if (!f) return;
-      setFile(f);
-      setPreview(URL.createObjectURL(f));
-    }
-  });
 
   function geo() {
     if (!navigator.geolocation) return;
@@ -100,22 +89,13 @@ export function ParticipateForm() {
 
   return (
     <form ref={formRef} onSubmit={onSubmit} className="grid gap-6 max-w-2xl">
-      <div
-        {...getRootProps()}
-        className={`rounded-2xl border-2 border-dashed p-10 text-center cursor-pointer transition
-          ${isDragActive ? 'border-brand-pink bg-brand-pink/5' : 'border-white/20 hover:border-brand-pink'}
-        `}
-      >
-        <input {...getInputProps()} />
-        {preview ? (
-          <img src={preview} alt="" className="max-h-64 mx-auto rounded-xl" />
-        ) : (
-          <div className="flex flex-col items-center gap-3 text-white/70">
-            <UploadCloud size={40} className="text-brand-pink" />
-            <p>{t('drop_label')}</p>
-          </div>
-        )}
-      </div>
+      <MediaCaptureZone
+        file={file}
+        setFile={setFile}
+        preview={preview}
+        setPreview={setPreview}
+        dropLabel={t('drop_label')}
+      />
 
       <div className="grid sm:grid-cols-2 gap-4">
         <Input name="authorName" label={t('name_label')} />

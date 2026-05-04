@@ -38,14 +38,27 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [locale]);
 
-  // Menu compact simplifié — À propos / Blog / Newsletter sont déplacés vers le footer
-  // Pour Photos et Boutique on utilise des mega-menus interactifs (voir <MegaMenuTrigger />)
+  // Menu complet par défaut — inclut toutes les fonctionnalités V2 (forum, lieux, agenda, témoignages)
+  // Les onglets Photos et Boutique sont des mega-menus interactifs séparés (voir <MegaMenuTrigger />)
   const fallback: MenuItem[] = [
     { id: 'm', label: t('message'), href: '/message', external: false, children: [] },
     { id: 'a', label: t('argumentaire'), href: '/argumentaire', external: false, children: [] },
+    {
+      id: 'community', label: 'Communauté', href: '/forum', external: false, children: [
+        { id: 'forum',  label: '💬 Forum',         href: '/forum',       external: false, children: [] },
+        { id: 'temo',   label: '🎥 Témoignages',   href: '/temoignages', external: false, children: [] },
+        { id: 'lieux',  label: '🏳️‍🌈 Lieux LGBT',   href: '/lieux',       external: false, children: [] },
+        { id: 'carte',  label: '🗺 Carte mondiale', href: '/carte',       external: false, children: [] }
+      ]
+    },
+    { id: 'agenda', label: 'Agenda', href: '/agenda', external: false, children: [] },
     { id: 'p', label: t('posters'), href: '/affiches', external: false, children: [] }
   ];
-  const items = menu.length > 0 ? menu : fallback;
+  // On préserve TOUJOURS Communauté + Agenda même si menu DB existe
+  const dbHasCommunity = menu.some((m: any) => m.href === '/forum' || m.href === '/lieux' || m.href === '/agenda');
+  const items = menu.length > 0
+    ? (dbHasCommunity ? menu : [...menu, fallback[2], fallback[3]])
+    : fallback;
 
   return (
     <header className={`transition-all duration-300 backdrop-blur-xl bg-[color:var(--bg)]/95 border-b border-[color:var(--border)] ${scrolled ? 'py-2' : 'py-3'}`}>
