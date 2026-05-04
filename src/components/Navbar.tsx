@@ -35,7 +35,18 @@ export function Navbar() {
     });
     const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    // Ferme le sous-menu si on clique en dehors
+    const onDocClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('[data-submenu-trigger]') && !target.closest('[data-submenu-panel]')) {
+        setOpenSub(null);
+      }
+    };
+    document.addEventListener('click', onDocClick);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('click', onDocClick);
+    };
   }, [locale]);
 
   // Menu complet par défaut — inclut toutes les fonctionnalités V2 (forum, lieux, agenda, témoignages)
@@ -45,10 +56,12 @@ export function Navbar() {
     { id: 'a', label: t('argumentaire'), href: '/argumentaire', external: false, children: [] },
     {
       id: 'community', label: 'Communauté', href: '/forum', external: false, children: [
-        { id: 'forum',  label: '💬 Forum',         href: '/forum',       external: false, children: [] },
-        { id: 'temo',   label: '🎥 Témoignages',   href: '/temoignages', external: false, children: [] },
-        { id: 'lieux',  label: '🏳️‍🌈 Lieux LGBT',   href: '/lieux',       external: false, children: [] },
-        { id: 'carte',  label: '🗺 Carte mondiale', href: '/carte',       external: false, children: [] }
+        { id: 'forum',     label: '💬 Forum',           href: '/forum',                   external: false, children: [] },
+        { id: 'temo',      label: '🎥 Témoignages',     href: '/temoignages',             external: false, children: [] },
+        { id: 'lieux',     label: '🏳️‍🌈 Lieux LGBT',     href: '/lieux',                   external: false, children: [] },
+        { id: 'carte',     label: '🗺 Carte mondiale',   href: '/carte',                   external: false, children: [] },
+        { id: 'pro',       label: '🏪 Espace pro',      href: '/espace-pro',              external: false, children: [] },
+        { id: 'fbsync',    label: '🔄 Sync mes events FB', href: '/espace-pro/facebook-sync', external: false, children: [] }
       ]
     },
     { id: 'agenda', label: 'Agenda', href: '/agenda', external: false, children: [] },
@@ -90,26 +103,51 @@ export function Navbar() {
                          /argument/i.test(m.href) ? FileText :
                          /affiche|poster/i.test(m.href) ? ImageIcon : null;
             return (
-              <div key={m.id} className="relative"
-                   onMouseEnter={() => hasChildren && setOpenSub(m.id)}
-                   onMouseLeave={() => setOpenSub(null)}>
-                <a
-                  href={fullHref}
-                  target={m.external ? '_blank' : undefined}
-                  rel={m.external ? 'noreferrer' : undefined}
-                  className={`pill-nav-link inline-flex items-center gap-1.5 ${pathname === m.href ? 'active' : ''}`}
-                >
-                  {Icon && <Icon size={14} />}
-                  {m.label}
-                  {hasChildren && <ChevronDown size={12} />}
-                </a>
+              <div key={m.id} className="relative">
+                {hasChildren ? (
+                  <button
+                    type="button"
+                    data-submenu-trigger
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setOpenSub(openSub === m.id ? null : m.id); }}
+                    className={`pill-nav-link inline-flex items-center gap-1.5 ${pathname === m.href ? 'active' : ''}`}
+                  >
+                    {Icon && <Icon size={14} />}
+                    {m.label}
+                    <ChevronDown size={12} className={`transition ${openSub === m.id ? 'rotate-180' : ''}`} />
+                  </button>
+                ) : (
+                  <a
+                    href={fullHref}
+                    target={m.external ? '_blank' : undefined}
+                    rel={m.external ? 'noreferrer' : undefined}
+                    className={`pill-nav-link inline-flex items-center gap-1.5 ${pathname === m.href ? 'active' : ''}`}
+                  >
+                    {Icon && <Icon size={14} />}
+                    {m.label}
+                  </a>
+                )}
                 {hasChildren && openSub === m.id && (
-                  <div className="absolute top-full left-0 mt-2 min-w-[200px] py-2 bg-[color:var(--bg)] border border-[color:var(--border)] rounded-lg shadow-2xl z-[60]">
+                  <div
+                    data-submenu-panel
+                    className="absolute top-full left-0 mt-2 min-w-[260px] py-2 bg-[color:var(--bg)] border border-[color:var(--border)] rounded-xl shadow-2xl z-[60]"
+                  >
+                    {/* Lien vers la racine du menu (ex: /forum lui-même) */}
+                    <a
+                      href={fullHref}
+                      onClick={() => setOpenSub(null)}
+                      className="block px-4 py-2 text-xs uppercase font-bold tracking-wider text-zinc-400 hover:text-brand-pink hover:bg-white/5 border-b border-zinc-800/50 mb-1"
+                    >
+                      Aperçu : {m.label}
+                    </a>
                     {m.children.map((c) => (
-                      <a key={c.id} href={c.external ? c.href : `${localePrefix}${c.href}`}
-                         target={c.external ? '_blank' : undefined}
-                         className="block px-4 py-2 text-sm hover:bg-white/5 hover:text-brand-pink transition"
-                         style={{ color: 'var(--fg)' }}>
+                      <a
+                        key={c.id}
+                        href={c.external ? c.href : `${localePrefix}${c.href}`}
+                        target={c.external ? '_blank' : undefined}
+                        onClick={() => setOpenSub(null)}
+                        className="block px-4 py-2 text-sm hover:bg-white/5 hover:text-brand-pink transition"
+                        style={{ color: 'var(--fg)' }}
+                      >
                         {c.label}
                       </a>
                     ))}

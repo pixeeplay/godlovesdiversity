@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, Save, X, Loader2, ArrowUp, ArrowDown, Eye, EyeOff, Languages, ExternalLink } from 'lucide-react';
+import { Plus, Pencil, Trash2, Save, X, Loader2, ArrowUp, ArrowDown, Eye, EyeOff, Languages, ExternalLink, Sparkles, RotateCcw } from 'lucide-react';
 
 type Item = {
   id: string;
@@ -19,6 +19,26 @@ export function MenuManager({ initial }: { initial: Item[] }) {
   const [editing, setEditing] = useState<Item | null>(null);
   const [creating, setCreating] = useState<{ parentId: string | null } | null>(null);
   const [translating, setTranslating] = useState(false);
+  const [seeding, setSeeding] = useState<'add' | 'reset' | null>(null);
+
+  async function seedDefaults(wipe: boolean) {
+    if (wipe && !confirm('Effacer TOUS les éléments du menu actuel et réinitialiser au menu par défaut GLD ? Cette action est irréversible.')) return;
+    if (!wipe && !confirm('Ajouter les éléments manquants du menu par défaut GLD (Le Message, Argumentaire, Communauté, Agenda, etc.) sans toucher aux items custom existants ? Les doublons par URL seront automatiquement nettoyés.')) return;
+    setSeeding(wipe ? 'reset' : 'add');
+    try {
+      const r = await fetch('/api/admin/menu/seed-defaults', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ wipe })
+      });
+      const j = await r.json();
+      if (r.ok) {
+        alert(`✅ Menu mis à jour\n\n${j.stats.created} créés · ${j.stats.deduped} doublons supprimés · ${j.stats.kept} conservés${wipe ? ` · ${j.stats.deleted} effacés` : ''}\n\nRecharge la page pour voir les changements.`);
+        window.location.reload();
+      } else {
+        alert(`Erreur : ${j.error}`);
+      }
+    } finally { setSeeding(null); }
+  }
 
   const tops = items.filter((i) => !i.parentId).sort((a, b) => a.order - b.order);
   const childrenOf = (id: string) => items.filter((i) => i.parentId === id).sort((a, b) => a.order - b.order);
@@ -63,14 +83,39 @@ export function MenuManager({ initial }: { initial: Item[] }) {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
-        <button onClick={translateAll} disabled={translating} className="btn-ghost text-xs">
-          {translating ? <Loader2 size={12} className="animate-spin" /> : <Languages size={12} />}
-          Traduire tout en EN/ES/PT (IA)
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={() => seedDefaults(false)}
+            disabled={!!seeding}
+            className="bg-fuchsia-500 hover:bg-fuchsia-600 disabled:opacity-50 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5"
+            title="Ajoute les éléments manquants (Communauté, Agenda…) sans toucher au reste, et nettoie les doublons"
+          >
+            {seeding === 'add' ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
+            Seed menu défaut GLD
+          </button>
+          <button
+            onClick={() => seedDefaults(true)}
+            disabled={!!seeding}
+            className="bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-zinc-300 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5"
+            title="Efface TOUT et réinitialise au menu par défaut canonique"
+          >
+            {seeding === 'reset' ? <Loader2 size={12} className="animate-spin" /> : <RotateCcw size={12} />}
+            Reset complet
+          </button>
+          <button onClick={translateAll} disabled={translating} className="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5">
+            {translating ? <Loader2 size={12} className="animate-spin" /> : <Languages size={12} />}
+            Traduire tout en EN/ES/PT (IA)
+          </button>
+        </div>
+        <button onClick={() => setCreating({ parentId: null })} className="bg-violet-500 hover:bg-violet-600 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5">
+          <Plus size={12} /> Nouvel élément
         </button>
-        <button onClick={() => setCreating({ parentId: null })} className="btn-primary text-sm">
-          <Plus size={14} /> Nouvel élément
-        </button>
+      </div>
+
+      <div className="bg-blue-500/5 border border-blue-500/20 rounded-lg p-2.5 mb-4 text-[11px] text-blue-200">
+        💡 <strong>Photos</strong> et <strong>Boutique</strong> ne sont volontairement PAS dans cette liste : ils sont gérés par les mega-menus interactifs de la navbar (avec preview live des produits/photos).
+        Si tu vois des doublons "Photos" ou "Boutique", clique <strong>« Seed menu défaut GLD »</strong> ci-dessus pour les supprimer.
       </div>
 
       <div className="space-y-2">
