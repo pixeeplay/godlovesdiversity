@@ -18,6 +18,7 @@ export function ForumThreadClient({ threadId, initialPosts, locked }: { threadId
   const editor = useEditor({
     extensions: [StarterKit],
     content: '',
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class: 'prose prose-invert max-w-none min-h-[120px] focus:outline-none px-3 py-2'
