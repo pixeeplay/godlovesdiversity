@@ -43,6 +43,7 @@ const NAV: Entry[] = [
       { href: '/admin/map', label: 'Carte mondiale', icon: MapPin },
       { href: '/admin/posters', label: 'Affiches', icon: ImageIcon },
       { href: '/admin/news', label: 'Actualités', icon: Video },
+      { href: '/admin/events', label: 'Événements (agenda)', icon: Calendar },
       { href: '/admin/videos', label: 'Vidéos YouTube', icon: Youtube },
       { href: '/admin/banners', label: 'Bannières (hero)', icon: GalleryHorizontalEnd }
     ]
