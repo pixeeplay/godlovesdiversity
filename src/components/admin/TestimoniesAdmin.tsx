@@ -80,7 +80,7 @@ export function TestimoniesAdmin({ initial }: { initial: any[] }) {
             <article key={t.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
               <div className="aspect-video bg-black">
                 {t.videoUrl ? (
-                  <video src={t.videoUrl} poster={t.thumbnailUrl} controls className="w-full h-full" />
+                  <video src={t.videoUrl} poster={t.thumbnailUrl ?? undefined} controls className="w-full h-full" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-zinc-600"><Video size={32} /></div>
                 )}

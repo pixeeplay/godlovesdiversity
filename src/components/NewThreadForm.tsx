@@ -15,7 +15,6 @@ export function NewThreadForm({ categories, preselected }: { categories: any[]; 
   const editor = useEditor({
     extensions: [StarterKit],
     content: '',
-    immediatelyRender: false,
     editorProps: {
       attributes: { class: 'prose prose-invert max-w-none min-h-[180px] focus:outline-none px-3 py-2' }
     }

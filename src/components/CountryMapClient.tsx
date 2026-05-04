@@ -83,8 +83,8 @@ export function CountryMapClient({ venues, photos }: { venues: any[]; photos: an
             attribution='&copy; OpenStreetMap'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {showVenues && filteredVenues.map((v) => (
-            <Marker key={v.id} position={[v.lat, v.lng]}>
+          {showVenues && filteredVenues.filter(v => v.lat != null && v.lng != null).map((v) => (
+            <Marker key={v.id} position={[v.lat as number, v.lng as number]}>
               <Popup>
                 <div style={{ minWidth: 180 }}>
                   <strong>{v.name}</strong><br />
@@ -95,8 +95,8 @@ export function CountryMapClient({ venues, photos }: { venues: any[]; photos: an
               </Popup>
             </Marker>
           ))}
-          {showPhotos && photos.map((p) => (
-            <Marker key={p.id} position={[p.latitude, p.longitude]}>
+          {showPhotos && photos.filter(p => p.latitude != null && p.longitude != null).map((p) => (
+            <Marker key={p.id} position={[p.latitude as number, p.longitude as number]}>
               <Popup>
                 <div style={{ minWidth: 140 }}>
                   <strong>{p.placeName || 'Lieu de culte'}</strong><br />
