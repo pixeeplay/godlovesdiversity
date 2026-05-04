@@ -242,6 +242,38 @@ const SCENARIOS = [
     'Petits gestes : une marche dehors, un café avec un·e barista, un appel à un·e ancien·ne ami·e.',
     'Évite la doomscroll réseaux : ça amplifie le sentiment de solitude.',
     'Notre AI Avatar GLD est là 24/7 pour parler — ouvre le widget chat.'
+  ]},
+  { id: 'discrimination', title: '🚫 Discrimination (travail/école/services)', steps: [
+    'Garde ton calme — pas pour leur donner raison, mais pour collecter les preuves.',
+    'Documente IMMÉDIATEMENT : capture les emails, SMS, témoins (noms + coordonnées), date/heure/lieu, mots exacts utilisés.',
+    'Fais constater par un tiers : médecin (certificat de stress/préjudice moral), médiateur, syndicat, délégué élève.',
+    'Signale en interne : RH, direction école, médiateur de l\'organisme. Garde une copie.',
+    'France : Défenseur des Droits 09 69 39 00 00 (gratuit) ou en ligne defenseurdesdroits.fr — saisine confidentielle, accompagne dépôt de plainte.',
+    'Porte plainte : commissariat ou en ligne (pré-plainte gov). Délit puni 3 ans/45 000€ (art. 225-1 Code Pénal).',
+    'SOS Homophobie 01 48 06 42 41 t\'aide à formuler ta plainte sans jugement.'
+  ]},
+  { id: 'violences-conjugales', title: '💔 Violences conjugales (homme, femme, non-binaire)', steps: [
+    'Ta sécurité passe avant tout — ce n\'est JAMAIS de ta faute. L\'amour ne fait pas mal.',
+    '🚨 Danger immédiat : 🚓 17 (police) ou 📞 112 (UE).',
+    '📞 3919 (France, gratuit, 24/7, confidentiel) — femmes ET hommes ET non-binaires victimes.',
+    '📞 0 800 19 90 00 France Victimes (gratuit, 9h-21h).',
+    'Hommes battu·es : SOS Hommes Battus 0 800 122 800 — service spécifique, le tabou ne doit pas t\'empêcher d\'appeler.',
+    'Couples LGBT+ : Refuge Genre 06 31 59 69 50 (formé·es violence conjugale entre personnes LGBT+).',
+    'Sécurise-toi : prépare un sac caché (papiers, médicaments, argent, clés, chargeur), code WhatsApp avec un·e proche, lieu de secours identifié.',
+    'Documente : photos blessures (avec date), certificats médicaux SANS RDV (UMJ urgence), captures messages.',
+    'Hébergement urgence : 115 (Samu social) ou Le Refuge si <25 ans LGBT.',
+    'Ordonnance de protection au juge : pas besoin de plainte préalable, valable 6 mois renouvelable.'
+  ]},
+  { id: 'attentat', title: '⚠️ Attentat / attaque en cours', steps: [
+    '1️⃣ ÉCHAPPER : éloigne-toi du danger, par tous les moyens. Cours en zigzag.',
+    '2️⃣ SE CACHER si fuite impossible : verrouille porte, éteins lumière, mets téléphone en silencieux, écarte-toi des fenêtres, allonge-toi.',
+    '3️⃣ ALERTER : 🚨 17 (police), 📞 112 (urgence UE), seulement quand tu es en sécurité.',
+    'Si tu fuis, lève les mains visibles pour que la police ne te confonde pas avec un assaillant.',
+    'Suis les consignes de la police/secours à la lettre. N\'utilise PAS ton téléphone jusqu\'à autorisation.',
+    'Apporte ton aide UNIQUEMENT si tu es en sécurité : compresser une plaie avec un tissu, parler aux blessés.',
+    '📱 SAIP (l\'app gouvernement français) envoie alertes attentat — installe-la avant.',
+    'Mode "Safety Check" Facebook + signaler "Je suis en sécurité" pour rassurer tes proches.',
+    'Après : ne diffuse PAS images/vidéos sans autorisation police. CUMP (cellule médico-psychologique) : numéro vert sera communiqué.'
   ]}
 ];
 
