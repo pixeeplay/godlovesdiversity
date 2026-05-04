@@ -132,7 +132,7 @@ export function AskGldAvatar() {
 
           {/* Zone vidéo */}
           <div className="aspect-[3/4] relative flex items-center justify-center"
-            style={{ background: '#FBEAF0' }}>
+            style={{ background: 'var(--avatar-bg, #FBEAF0)' }}>
             {state === 'idle' && (
               <div className="text-center px-6">
                 <div className="text-5xl mb-3">🎥</div>

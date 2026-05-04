@@ -289,11 +289,11 @@ export function AskGldWidget() {
                         Génération vidéo échouée
                       </div>
                     ) : (
-                      <div className="h-full flex flex-col items-center justify-center text-center p-4 text-zinc-300 text-xs"
-                        style={{ background: 'linear-gradient(135deg, #FBEAF0, #EEEDFE)' }}>
-                        <Loader2 size={20} className="animate-spin text-fuchsia-500 mb-2" />
-                        <span className="font-bold text-zinc-700">L'avatar prépare sa réponse…</span>
-                        <span className="text-zinc-500 mt-1">~30 secondes</span>
+                      <div className="h-full flex flex-col items-center justify-center text-center p-4 text-xs"
+                        style={{ background: 'var(--avatar-bg, linear-gradient(135deg, #FBEAF0, #EEEDFE))', color: 'var(--fg)' }}>
+                        <Loader2 size={20} className="animate-spin mb-2" style={{ color: 'var(--accent)' }} />
+                        <span className="font-bold" style={{ color: 'var(--fg)' }}>L'avatar prépare sa réponse…</span>
+                        <span className="mt-1" style={{ color: 'var(--fg-muted)' }}>~30 secondes</span>
                       </div>
                     )}
                   </div>

@@ -60,7 +60,13 @@ export async function POST(req: Request) {
       htmlContent: body.htmlContent,
       textContent: body.textContent,
       status: body.send ? 'SENDING' : 'DRAFT',
-      recipients: body.send ? recipientEmails.length : 0
+      // recipients = compteur historique gardé pour rétro-compat
+      // recipientsCount = nombre TOTAL ciblé (snapshot, ne bouge plus)
+      // sentCount = compteur incrémenté pendant l'envoi
+      recipients: body.send ? recipientEmails.length : 0,
+      recipientsCount: body.send ? recipientEmails.length : 0,
+      sentCount: 0,
+      failedCount: 0
     }
   });
 
@@ -117,10 +123,11 @@ async function processNewsletterSend(
       }
     }
 
-    // Update intermédiaire pour montrer la progression
+    // Update intermédiaire pour montrer la progression — sentCount + failedCount
+    // (on ne touche PLUS à recipients, c'est le total snapshot)
     await prisma.newsletterCampaign.update({
       where: { id: campaignId },
-      data: { recipients: sent }
+      data: { sentCount: sent, failedCount: failed }
     }).catch(() => {});
 
     if (i + CHUNK_SIZE < emails.length) {
@@ -135,7 +142,8 @@ async function processNewsletterSend(
     data: {
       status: finalStatus as any,
       sentAt: new Date(),
-      recipients: sent
+      sentCount: sent,
+      failedCount: failed
     }
   }).catch(() => {});
 

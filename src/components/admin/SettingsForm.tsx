@@ -189,7 +189,8 @@ const GROUPS: Group[] = [
     description: 'Paiement par carte sur la boutique. Récupère tes clés sur https://dashboard.stripe.com/apikeys',
     fields: [
       { key: 'integrations.stripe.secretKey', label: 'Clé secrète Stripe', type: 'password', placeholder: 'sk_live_…' },
-      { key: 'integrations.stripe.publicKey', label: 'Clé publique Stripe', placeholder: 'pk_live_…' }
+      { key: 'integrations.stripe.publicKey', label: 'Clé publique Stripe', placeholder: 'pk_live_…' },
+      { key: 'integrations.stripe.webhookSecret', label: 'Webhook signing secret', type: 'password', placeholder: 'whsec_…', help: 'Stripe Dashboard → Developers → Webhooks → Add endpoint /api/webhooks/stripe → Copy signing secret' }
     ]
   },
   {

@@ -13,8 +13,9 @@ import { PosterThumbnail } from '@/components/PosterThumbnail';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// ISR : régénère statique toutes les 60 s. Le revalidation ciblée
+// (sur édition admin) peut être faite via revalidatePath() côté API admin.
+export const revalidate = 60;
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

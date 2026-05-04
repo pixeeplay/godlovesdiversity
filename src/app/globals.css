@@ -28,6 +28,7 @@
   --skyline-fade: #050208;
   --hero-bg: #0a0314;
   --footer-bg: linear-gradient(180deg, #050208 0%, #000 100%);
+  --avatar-bg: linear-gradient(135deg, #2a0d2e, #1a0d3e);
 }
 
 /* Thème clair (Cathédrale lumineuse) */
@@ -54,6 +55,7 @@
   --grain-opacity: .15;
   --hero-bg: linear-gradient(135deg, #fef0e6 0%, #fff8f3 50%, #fef0e6 100%);
   --footer-bg: linear-gradient(180deg, #ffe9d4 0%, #fff8f3 100%);
+  --avatar-bg: linear-gradient(135deg, #FBEAF0, #EEEDFE);
   --grain-blend: multiply;
   --skyline-fade: #fff8f3;
 }
@@ -390,6 +392,10 @@ body::after {
 .light .text-white\/50      { color: rgba(26,13,32,.5) !important; }
 .light .text-white\/40      { color: rgba(26,13,32,.4) !important; }
 .light .text-white\/30      { color: rgba(26,13,32,.3) !important; }
+.light .text-white\/25      { color: rgba(26,13,32,.45) !important; }
+.light .text-white\/20      { color: rgba(26,13,32,.45) !important; }
+.light .text-white\/15      { color: rgba(26,13,32,.40) !important; }
+.light .text-white\/10      { color: rgba(26,13,32,.35) !important; }
 
 /* Surfaces blanches translucides → grises chaudes en clair */
 .light .bg-white\/5         { background-color: rgba(26,13,32,.04) !important; }

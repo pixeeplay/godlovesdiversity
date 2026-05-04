@@ -293,18 +293,21 @@ enum SubscriberStatus {
 }
 
 model NewsletterCampaign {
-  id          String   @id @default(cuid())
-  subject     String
-  htmlContent String   @db.Text
-  textContent String?  @db.Text
-  status      CampaignStatus @default(DRAFT)
-  scheduledAt DateTime?
-  sentAt      DateTime?
-  recipients  Int      @default(0)
-  opens       Int      @default(0)
-  clicks      Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  subject         String
+  htmlContent     String   @db.Text
+  textContent     String?  @db.Text
+  status          CampaignStatus @default(DRAFT)
+  scheduledAt     DateTime?
+  sentAt          DateTime?
+  recipients      Int      @default(0)  // total destinataires ciblés (snapshot au moment de l'envoi)
+  recipientsCount Int      @default(0)  // alias explicite — même valeur que recipients (kept for clarity)
+  sentCount       Int      @default(0)  // emails effectivement envoyés (peut < recipientsCount si erreurs)
+  failedCount     Int      @default(0)  // emails en échec
+  opens           Int      @default(0)
+  clicks          Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 enum CampaignStatus {
@@ -340,6 +343,33 @@ enum PostStatus {
   PUBLISHED
   FAILED
   CANCELLED
+}
+
+/// Événement public visible sur /agenda — créé/édité dans /admin/events.
+model Event {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  locale      String   @default("fr")
+  title       String
+  description String?  @db.Text
+  startsAt    DateTime
+  endsAt      DateTime?
+  location    String?       // ex "Église St-Eustache, Paris"
+  city        String?
+  country     String?
+  address     String?
+  lat         Float?
+  lng         Float?
+  coverImage  String?
+  url         String?       // lien externe (billeterie, infos)
+  tags        String[]      @default([])
+  published   Boolean  @default(true)
+  cancelled   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, startsAt])
+  @@index([locale, startsAt])
 }
 
 // ───────────────────────────────────────────────
