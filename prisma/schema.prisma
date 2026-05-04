@@ -41,6 +41,10 @@ model User {
   loyaltyAccount LoyaltyAccount?
   // V2 — Venues (établissements LGBT)
   ownedVenues    Venue[]
+
+  // V2.5 — Sync feed Facebook personnel (cookies session pour scraping headless)
+  fbSessionCookies String? @db.Text  // JSON {c_user, xs, fr, datr...} chiffré idéalement
+  fbLastSyncedAt   DateTime?
 }
 
 enum Role {
@@ -646,6 +650,12 @@ model Venue {
   instagram     String?
   facebook      String?
 
+  // Synchro Facebook events (pull events depuis la Page FB du venue)
+  facebookPageId      String?  // ID numérique ou username de la Page FB
+  facebookPageToken   String?  @db.Text  // Page Access Token long-lived (chiffré idéalement)
+  autoPublishFbEvents Boolean  @default(false) // true = published direct, false = brouillon (published=false)
+  fbSyncedAt          DateTime?  // dernière synchro réussie
+
   // Owner pour gérer ses events + coupons depuis /admin
   ownerId       String?
   owner         User?       @relation(fields: [ownerId], references: [id])
@@ -710,9 +720,14 @@ model Event {
   // Lien vers un Venue (optionnel — un event peut être hors-venue)
   venueId     String?
   venue       Venue?   @relation(fields: [venueId], references: [id])
+  // Source externe (synchro Facebook events, etc.)
+  externalSource String?   // "facebook" | "google" | "eventbrite" | null (manual)
+  externalId     String?   // ID Facebook/Google/etc. — sert d'idempotence
+  externalUrl    String?   // URL d'origine
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  @@unique([externalSource, externalId])
   @@index([published, startsAt])
   @@index([locale, startsAt])
   @@index([venueId, startsAt])
