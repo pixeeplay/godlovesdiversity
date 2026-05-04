@@ -60,8 +60,8 @@ export function Navbar() {
         { id: 'temo',      label: '🎥 Témoignages',     href: '/temoignages',             external: false, children: [] },
         { id: 'lieux',     label: '🏳️‍🌈 Lieux LGBT',     href: '/lieux',                   external: false, children: [] },
         { id: 'carte',     label: '🗺 Carte mondiale',   href: '/carte',                   external: false, children: [] },
-        { id: 'pro',       label: '🏪 Espace pro',      href: '/espace-pro',              external: false, children: [] },
-        { id: 'fbsync',    label: '🔄 Sync mes events FB', href: '/espace-pro/facebook-sync', external: false, children: [] }
+        { id: 'pro',       label: '🏪 Espace pro',      href: '/admin/pro',               external: false, children: [] },
+        { id: 'fbsync',    label: '🔄 Sync mes events FB', href: '/admin/pro/import-events', external: false, children: [] }
       ]
     },
     { id: 'agenda', label: 'Agenda', href: '/agenda', external: false, children: [] },

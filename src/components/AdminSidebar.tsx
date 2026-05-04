@@ -8,7 +8,7 @@ import {
   Sparkles, Users, Settings, LogOut, Heart, UploadCloud, MapPin, Home,
   Image as ImageIcon, Video, Layers, GalleryHorizontalEnd, Menu as MenuIcon,
   Youtube, HandHeart, Handshake, ShoppingBag, ChevronDown, ChevronRight,
-  Package, Truck, ShieldAlert, type LucideIcon
+  Package, Truck, ShieldAlert, Building2, Megaphone, BarChart3, Tag, Facebook, type LucideIcon
 } from 'lucide-react';
 import type { MenuPermissions } from '@/lib/menu-permissions';
 import { isItemVisible } from '@/lib/menu-permissions';
@@ -23,6 +23,18 @@ function isGroup(e: Entry): e is Group {
 
 const NAV: Entry[] = [
   { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
+  {
+    id: 'pro',
+    label: 'Espace Pro 🏪',
+    icon: Building2,
+    children: [
+      { href: '/admin/pro',                label: 'Dashboard Pro',         icon: LayoutDashboard },
+      { href: '/admin/pro/events',         label: 'Mes événements',         icon: Calendar },
+      { href: '/admin/pro/import-events',  label: 'Importer events FB',     icon: Facebook },
+      { href: '/admin/pro/ai-studio',      label: 'Studio IA Pro ✨',       icon: Sparkles },
+      { href: '/admin/venues',             label: 'Mes lieux',              icon: HandHeart }
+    ]
+  },
   {
     id: 'shop',
     label: 'Boutique',
