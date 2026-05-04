@@ -12,7 +12,8 @@ export async function GET() {
   try {
     const events = await prisma.event.findMany({
       orderBy: [{ startsAt: 'asc' }],
-      take: 200
+      include: { venue: { select: { id: true, slug: true, name: true } } },
+      take: 500
     });
     return NextResponse.json({ events });
   } catch (e: any) {
