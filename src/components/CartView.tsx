@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Trash2, Plus, Minus, ShoppingBag, Loader2, CreditCard } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, Loader2, CreditCard, Tag, CheckCircle2, X } from 'lucide-react';
 import { getCart, updateQuantity, removeFromCart, cartTotal, formatPrice, clearCart, type CartItem } from '@/lib/cart';
 
 export function CartView() {
@@ -12,6 +12,10 @@ export function CartView() {
   const [provider, setProvider] = useState<'stripe' | 'square'>('stripe');
   const [busy, setBusy] = useState(false);
   const [info, setInfo] = useState<string | null>(null);
+  const [couponCode, setCouponCode] = useState('');
+  const [couponBusy, setCouponBusy] = useState(false);
+  const [coupon, setCoupon] = useState<{ code: string; discount: number; newTotal: number } | null>(null);
+  const [couponError, setCouponError] = useState<string | null>(null);
 
   useEffect(() => {
     const load = () => setItems(getCart());
@@ -132,9 +136,64 @@ export function CartView() {
           </div>
         </div>
 
+        {/* COUPON */}
+        <div className="border-t border-white/10 pt-4">
+          <label className="text-xs uppercase font-bold text-white/60 mb-2 block flex items-center gap-1">
+            <Tag size={11} /> Code promo
+          </label>
+          {coupon ? (
+            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-2 flex items-center gap-2">
+              <CheckCircle2 size={14} className="text-emerald-400" />
+              <div className="flex-1 text-xs">
+                <div className="font-bold text-emerald-300">{coupon.code}</div>
+                <div className="text-white/60">−{formatPrice(coupon.discount)}</div>
+              </div>
+              <button onClick={() => { setCoupon(null); setCouponCode(''); }} className="text-zinc-500 hover:text-red-400">
+                <X size={12} />
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <input
+                value={couponCode}
+                onChange={(e) => { setCouponCode(e.target.value.toUpperCase()); setCouponError(null); }}
+                placeholder="GLD2026"
+                maxLength={20}
+                className="flex-1 bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-sm uppercase outline-none focus:border-brand-pink"
+              />
+              <button
+                onClick={async () => {
+                  if (!couponCode.trim()) return;
+                  setCouponBusy(true); setCouponError(null);
+                  try {
+                    const r = await fetch('/api/coupons/validate', {
+                      method: 'POST', headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ code: couponCode, totalCents: total })
+                    });
+                    const j = await r.json();
+                    if (j.valid) setCoupon({ code: j.coupon.code, discount: j.discount, newTotal: j.newTotal });
+                    else setCouponError(j.error || 'Code invalide');
+                  } finally { setCouponBusy(false); }
+                }}
+                disabled={couponBusy || !couponCode.trim()}
+                className="bg-brand-pink hover:bg-pink-600 disabled:opacity-50 text-white font-bold px-3 py-2 rounded-lg text-xs"
+              >
+                {couponBusy ? <Loader2 size={12} className="animate-spin" /> : 'OK'}
+              </button>
+            </div>
+          )}
+          {couponError && <p className="text-[11px] text-red-400 mt-1">{couponError}</p>}
+        </div>
+
+        {coupon && (
+          <div className="flex justify-between text-sm text-white/60">
+            <span>Sous-total</span>
+            <span className="line-through">{formatPrice(total)}</span>
+          </div>
+        )}
         <div className="border-t border-white/10 pt-4 flex justify-between text-lg font-bold">
           <span>Total</span>
-          <span className="text-brand-pink">{formatPrice(total)}</span>
+          <span className="text-brand-pink">{formatPrice(coupon ? coupon.newTotal : total)}</span>
         </div>
 
         <button onClick={checkout} disabled={busy} className="w-full bg-gradient-to-r from-brand-pink to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white font-bold py-3 rounded-full disabled:opacity-50 flex items-center justify-center gap-2">

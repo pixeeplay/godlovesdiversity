@@ -23,8 +23,9 @@ export function I18nAuditClient() {
   const [report, setReport] = useState<AuditReport | null>(null);
   const [loading, setLoading] = useState(false);
   const [translating, setTranslating] = useState<string | null>(null);
-  const [translatingAll, setTranslatingAll] = useState(false);
   const [filter, setFilter] = useState<string>('all');
+  const [job, setJob] = useState<any>(null);
+  const [jobId, setJobId] = useState<string | null>(null);
 
   useEffect(() => { void run(); }, []);
 
@@ -43,20 +44,38 @@ export function I18nAuditClient() {
   async function translateAll() {
     if (!report || report.totalIssues === 0) return;
     if (!confirm(`Lancer la traduction Gemini sur les ${report.totalIssues} traductions manquantes ? Ça peut prendre quelques minutes.`)) return;
-    setTranslatingAll(true);
     try {
       const r = await fetch('/api/admin/i18n/translate-all', { method: 'POST' });
       const j = await r.json();
-      if (r.ok) {
-        alert(`✓ ${j.totalOk}/${j.totalOk + j.totalFailed} traductions générées par Gemini\nEntités traitées : ${j.processed}`);
-        await run();
+      if (r.ok && j.jobId) {
+        setJobId(j.jobId);
+        setJob({ status: 'running', total: 0, processed: 0, ok: 0, failed: 0, current: null, results: [] });
       } else {
         alert(`Erreur : ${j.error}`);
       }
-    } finally {
-      setTranslatingAll(false);
+    } catch (e: any) {
+      alert(`Erreur réseau : ${e?.message}`);
     }
   }
+
+  // Poll de l'avancement du job
+  useEffect(() => {
+    if (!jobId) return;
+    const t = setInterval(async () => {
+      try {
+        const r = await fetch(`/api/admin/i18n/translate-all?jobId=${jobId}`);
+        if (!r.ok) { clearInterval(t); return; }
+        const j = await r.json();
+        setJob(j);
+        if (j.status !== 'running') {
+          clearInterval(t);
+          // Recharge l'audit après 1.5s
+          setTimeout(() => { setJobId(null); setJob(null); void run(); }, 2500);
+        }
+      } catch { /* keep polling */ }
+    }, 1200);
+    return () => clearInterval(t);
+  }, [jobId]);
 
   async function translate(entity: AuditEntity) {
     setTranslating(entity.id);
@@ -104,19 +123,18 @@ export function I18nAuditClient() {
           </p>
         </div>
         <div className="flex gap-2">
-          {report && report.totalIssues > 0 && (
+          {report && report.totalIssues > 0 && !jobId && (
             <button
               onClick={translateAll}
-              disabled={translatingAll}
-              className="bg-gradient-to-r from-violet-500 to-fuchsia-600 hover:from-violet-600 hover:to-fuchsia-700 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-full text-sm flex items-center gap-2"
+              className="bg-gradient-to-r from-violet-500 to-fuchsia-600 hover:from-violet-600 hover:to-fuchsia-700 text-white font-bold px-4 py-2 rounded-full text-sm flex items-center gap-2"
             >
-              {translatingAll ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-              {translatingAll ? `Traduction des ${report.totalIssues}…` : `Tout traduire (${report.totalIssues})`}
+              <Sparkles size={14} />
+              Tout traduire ({report.totalIssues})
             </button>
           )}
           <button
             onClick={run}
-            disabled={loading}
+            disabled={loading || !!jobId}
             className="bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-full text-sm flex items-center gap-2"
           >
             {loading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
@@ -124,6 +142,64 @@ export function I18nAuditClient() {
           </button>
         </div>
       </header>
+
+      {/* BARRE DE PROGRESSION LIVE */}
+      {job && (
+        <div className="bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 border-2 border-violet-500/40 rounded-2xl p-5">
+          <div className="flex items-center gap-3 mb-3">
+            {job.status === 'running' ? <Loader2 size={20} className="text-violet-400 animate-spin" /> :
+             job.status === 'done' ? <CheckCircle2 size={20} className="text-emerald-400" /> :
+             <AlertTriangle size={20} className="text-red-400" />}
+            <div className="flex-1">
+              <div className="font-bold text-white">
+                {job.status === 'running' ? 'Traduction en cours…' :
+                 job.status === 'done' ? `Terminé : ${job.ok} ✓ · ${job.failed} ✗` :
+                 `Échec : ${job.error || 'erreur inconnue'}`}
+              </div>
+              <div className="text-xs text-zinc-400">
+                {job.processed} / {job.total} entités traitées
+              </div>
+            </div>
+          </div>
+
+          {/* Barre de progression */}
+          <div className="w-full h-2 bg-zinc-900 rounded-full overflow-hidden mb-3">
+            <div
+              className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 transition-all duration-300"
+              style={{ width: `${job.total > 0 ? (job.processed / job.total) * 100 : 0}%` }}
+            />
+          </div>
+
+          {/* Élément en cours */}
+          {job.current && (
+            <div className="bg-zinc-950 border border-violet-500/20 rounded-lg p-2 text-xs text-zinc-300 flex items-center gap-2">
+              <Loader2 size={11} className="animate-spin text-violet-400" />
+              <span className="font-bold text-violet-300">{job.current.model}</span>
+              <span className="text-zinc-400 truncate flex-1">« {job.current.key} »</span>
+              <span className="text-zinc-500">→ {job.current.targets.join(', ')}</span>
+            </div>
+          )}
+
+          {/* Liste des derniers résultats */}
+          {job.results && job.results.length > 0 && (
+            <details className="mt-3" open>
+              <summary className="cursor-pointer text-xs text-violet-300 hover:text-violet-200">▸ Détail ({job.results.length} traitées)</summary>
+              <div className="mt-2 max-h-64 overflow-y-auto bg-zinc-950 rounded-lg p-2 space-y-1">
+                {job.results.slice().reverse().map((r: any, i: number) => (
+                  <div key={i} className="flex items-center gap-2 text-[11px]">
+                    {r.ok
+                      ? <CheckCircle2 size={11} className="text-emerald-400 shrink-0" />
+                      : <AlertTriangle size={11} className="text-red-400 shrink-0" />}
+                    <span className="text-zinc-500 w-20 truncate">{r.model}</span>
+                    <span className="text-zinc-300 flex-1 truncate">{r.key}</span>
+                    {r.reason && <span className="text-red-300 text-[10px] truncate max-w-xs" title={r.reason}>{r.reason}</span>}
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
+        </div>
+      )}
 
       {report && (
         <>

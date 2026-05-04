@@ -39,6 +39,8 @@ model User {
   reviews        ProductReview[]
   wishlist       Wishlist[]
   loyaltyAccount LoyaltyAccount?
+  // V2 — Venues (établissements LGBT)
+  ownedVenues    Venue[]
 }
 
 enum Role {
@@ -580,6 +582,111 @@ model TelegramMessage {
   @@index([direction, createdAt])
 }
 
+// ───────────────────────────────────────────────
+// V2 — VENUES LGBT-FRIENDLY (annuaire mondial)
+// ───────────────────────────────────────────────
+
+enum VenueType {
+  RESTAURANT
+  BAR
+  CAFE
+  CLUB
+  HOTEL
+  SHOP
+  CULTURAL          // musée, galerie, théâtre
+  CHURCH            // église
+  TEMPLE            // temple, synagogue, mosquée, autre lieu de culte
+  COMMUNITY_CENTER  // centre LGBT
+  HEALTH            // santé, planning familial
+  ASSOCIATION
+  OTHER
+}
+
+enum VenueRating {
+  RAINBOW           // 100 % LGBT — événements, drapeau, équipe
+  FRIENDLY          // ouvertement accueillant
+  NEUTRAL           // pas hostile, mais pas spécifiquement engagé
+  CAUTION           // remontées négatives — à approfondir
+}
+
+model Venue {
+  id            String      @id @default(cuid())
+  slug          String      @unique
+  type          VenueType
+  rating        VenueRating @default(FRIENDLY)
+  name          String
+  description   String?     @db.Text
+  shortDescription String?  // pour les cards
+
+  // Adresse
+  address       String?
+  city          String?
+  postalCode    String?
+  country       String?     // code ISO-2
+  region        String?     // état/région
+  lat           Float?
+  lng           Float?
+
+  // Contact
+  phone         String?
+  email         String?
+  website       String?
+  bookingUrl    String?
+
+  // Médias
+  coverImage    String?
+  photos        String[]    @default([])
+  logo          String?
+
+  // Horaires + tags
+  openingHours  Json?       // { mon: "10:00-22:00", tue: "...", ... }
+  tags          String[]    @default([]) // ex ["happy-hour", "drag-show", "brunch"]
+
+  // Réseaux sociaux
+  instagram     String?
+  facebook      String?
+
+  // Owner pour gérer ses events + coupons depuis /admin
+  ownerId       String?
+  owner         User?       @relation(fields: [ownerId], references: [id])
+  ownerEmail    String?     // si owner pas inscrit
+
+  // Statut + meta
+  verified      Boolean     @default(false)  // vérifié par admin GLD
+  published     Boolean     @default(true)
+  featured      Boolean     @default(false)
+  views         Int         @default(0)
+
+  events        Event[]                 // events qui se passent dans ce lieu
+  coupons       VenueCoupon[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([type, country, city])
+  @@index([rating, published])
+  @@index([featured, published])
+  @@index([lat, lng])
+}
+
+/// Coupon spécifique à un Venue (ex: -10% au resto Le Refuge sur présentation).
+model VenueCoupon {
+  id            String   @id @default(cuid())
+  venueId       String
+  venue         Venue    @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  code          String   @unique
+  description   String?
+  discountKind  String   @default("percent") // percent | fixed | freebie
+  discountValue Int      @default(0)
+  maxUses       Int?
+  uses          Int      @default(0)
+  validFrom     DateTime?
+  validUntil    DateTime?
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  @@index([venueId, active])
+}
+
 /// Événement public visible sur /agenda — créé/édité dans /admin/events.
 model Event {
   id          String   @id @default(cuid())
@@ -600,11 +707,15 @@ model Event {
   tags        String[]      @default([])
   published   Boolean  @default(true)
   cancelled   Boolean  @default(false)
+  // Lien vers un Venue (optionnel — un event peut être hors-venue)
+  venueId     String?
+  venue       Venue?   @relation(fields: [venueId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([published, startsAt])
   @@index([locale, startsAt])
+  @@index([venueId, startsAt])
 }
 
 // ───────────────────────────────────────────────

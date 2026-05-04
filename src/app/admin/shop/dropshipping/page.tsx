@@ -6,6 +6,7 @@ import { getSettings } from '@/lib/settings';
 import Link from 'next/link';
 import { Truck, ExternalLink, Settings as SettingsIcon } from 'lucide-react';
 import { DropshippingProviderCards } from '@/components/admin/DropshippingProviderCards';
+import { DropshippingWholesaleInfo } from '@/components/admin/DropshippingWholesaleInfo';
 
 export const dynamic = 'force-dynamic';
 
@@ -153,6 +154,9 @@ export default async function DropshippingPage() {
           </div>
         )}
       </section>
+
+      {/* FOURNISSEURS WHOLESALE / CATALOGUE */}
+      <DropshippingWholesaleInfo />
 
       {/* WORKFLOW EXPLICATION */}
       <section className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-5">

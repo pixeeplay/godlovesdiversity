@@ -1,8 +1,9 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { Send, X, Loader2, Sparkles, BookOpen, MessageSquare, Video, Play, Mic, Radio } from 'lucide-react';
+import { Send, X, Loader2, Sparkles, BookOpen, MessageSquare, Video, Play, Mic, Radio, ShieldAlert } from 'lucide-react';
 import { AskGldAvatarLocal } from './AskGldAvatarLocal';
 import { AskGldAvatarLiveAvatar } from './AskGldAvatarLiveAvatar';
+import { EmergencyModal } from './EmergencyModal';
 
 type Source = { title: string; source: string | null; score: number };
 type Msg = {
@@ -31,6 +32,7 @@ export function AskGldWidget() {
   const [liveAvatarAvailable, setLiveAvatarAvailable] = useState(false);
   const [liveOpen, setLiveOpen] = useState(false);
   const [streamingOpen, setStreamingOpen] = useState(false);
+  const [emergencyOpen, setEmergencyOpen] = useState(false);
   const [history, setHistory] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
@@ -193,7 +195,16 @@ export function AskGldWidget() {
                 </div>
               </div>
             </div>
-            <button onClick={() => setOpen(false)} style={{ color: 'var(--fg-muted)' }}><X size={18} /></button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setEmergencyOpen(true)}
+                className="bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-lg shadow-red-500/30"
+                title="Urgence — contacts d'aide LGBTQ+ par pays"
+              >
+                <ShieldAlert size={10} /> SOS
+              </button>
+              <button onClick={() => setOpen(false)} style={{ color: 'var(--fg-muted)' }}><X size={18} /></button>
+            </div>
           </div>
 
           {/* Toggle Texte / Vidéo / Live local / Streaming */}
@@ -372,6 +383,11 @@ export function AskGldWidget() {
       {/* Modal Streaming LiveAvatar (overlay plein écran) */}
       {streamingOpen && (
         <AskGldAvatarLiveAvatar onClose={() => { setStreamingOpen(false); setMode('text'); }} />
+      )}
+
+      {/* Modal Urgence LGBT — bouton SOS */}
+      {emergencyOpen && (
+        <EmergencyModal onClose={() => setEmergencyOpen(false)} />
       )}
     </>
   );
