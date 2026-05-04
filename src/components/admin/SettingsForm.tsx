@@ -108,6 +108,17 @@ const GROUPS: Group[] = [
     ]
   },
   {
+    title: 'Telegram (notifications + bot)',
+    icon: Mail, category: 'logistics',
+    description: 'Bot Telegram pour recevoir notifications + commandes /stats /photos /agenda. Crée ton bot via @BotFather sur Telegram (/newbot), puis configure ici. Détails complets dans IA & Outils → Bot Telegram.',
+    fields: [
+      { key: 'integrations.telegram.botToken', label: 'Token bot (BotFather)', type: 'password', placeholder: '12345:ABCdef…', help: '/newbot avec @BotFather puis copie le token donné' },
+      { key: 'integrations.telegram.chatId', label: 'Chat ID privé (toi avec le bot)', placeholder: '123456789', help: 'Tape /whoami au bot pour le voir' },
+      { key: 'integrations.telegram.groupChatId', label: 'Chat ID groupe (notifications partagées)', placeholder: '-100123456789', help: 'Si rempli, prioritaire sur le chat privé pour les broadcasts' },
+      { key: 'integrations.telegram.allowedUserIds', label: 'Whitelist user_ids', placeholder: '123456789, 987654321', help: 'Séparés par virgule. Vide = tout le monde autorisé.' }
+    ]
+  },
+  {
     title: 'Mapbox (carte mondiale)',
     icon: MapPin, category: 'logistics',
     description: 'Pour afficher la carte géolocalisée des contributions. Token gratuit sur https://account.mapbox.com/access-tokens/',
