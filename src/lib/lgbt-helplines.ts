@@ -51,10 +51,32 @@ const data: Record<string, CountryHelp> = {
   FR: {
     countryCode: 'FR', countryName: 'France', riskLevel: 'safe',
     helplines: [
-      { name: 'SOS Homophobie', phone: '01 48 06 42 41', url: 'https://www.sos-homophobie.org', description: 'Écoute, soutien, signalement', hours: 'Tous les jours, horaires variables', language: 'FR' },
-      { name: 'Le Refuge', phone: '06 31 59 69 50', url: 'https://le-refuge.org', description: 'Hébergement jeunes LGBT en rupture familiale', hours: '24/7', language: 'FR' },
-      { name: 'Ligne Azur', phone: '0 810 20 30 40', url: 'https://www.ligneazur.org', description: 'Écoute anonyme jeunes LGBT', hours: 'Lun-Ven 18h-22h, Sam 16h-20h', language: 'FR' },
-      { name: 'Espace Santé Trans', url: 'https://espacesantetrans.fr', description: 'Santé et droits trans/intersexe', language: 'FR' }
+      // === LGBT spécifique ===
+      { name: '🏳️‍🌈 Le Refuge — hébergement urgence jeunes LGBT', phone: '06 31 59 69 50', url: 'https://le-refuge.org', description: 'Hébergement immédiat jeunes 14-25 ans LGBT en rupture familiale, accompagnement psy et social', hours: '24/7', language: 'FR' },
+      { name: 'SOS Homophobie', phone: '01 48 06 42 41', url: 'https://www.sos-homophobie.org', description: 'Écoute, soutien, signalement, accompagnement plainte', hours: 'Lun-Ven 18h-22h · Sam 14h-16h · Dim 18h-22h', language: 'FR' },
+      { name: 'Ligne Azur', phone: '0 810 20 30 40', url: 'https://www.ligneazur.org', description: 'Écoute anonyme jeunes LGBT (questionnement, coming-out)', hours: 'Lun-Ven 18h-22h · Sam 16h-20h', language: 'FR' },
+      { name: 'Espace Santé Trans', url: 'https://espacesantetrans.fr', description: 'Santé et droits trans/intersexe — annuaire pro friendly', language: 'FR' },
+
+      // === URGENCES SILENCIEUSES & GÉNÉRALES ===
+      { name: '🤫 114 — Appel d\'urgence SILENCIEUX (par SMS / vidéo)', phone: '114', url: 'https://www.urgence114.fr', description: 'Si tu es en danger et NE PEUX PAS PARLER : envoie un SMS au 114 ou utilise la visio LSF. Pour sourd·es, malentendant·es ET situations de danger nécessitant le silence (agression chez soi, violences conjugales en cours…)', hours: '24/7', language: 'FR + LSF' },
+      { name: '🚨 17 — Police-Secours', phone: '17', description: 'Urgences police, danger immédiat', hours: '24/7', language: 'FR' },
+      { name: '📞 112 — Numéro européen d\'urgence', phone: '112', description: 'Tous types d\'urgence dans toute l\'UE (police, pompiers, SAMU)', hours: '24/7', language: 'FR/EN' },
+
+      // === HARCÈLEMENT SCOLAIRE & CYBER ===
+      { name: '🏫 3018 — Harcèlement scolaire & cyberharcèlement', phone: '3018', url: 'https://www.3018.fr', description: 'Net Écoute — anonyme, confidentiel, gratuit. Accompagne les jeunes victimes de harcèlement à l\'école ou en ligne (insultes, photos diffusées, exclusion). Tchat possible aussi.', hours: '7j/7 · 9h-23h', language: 'FR' },
+      { name: '📚 3020 — Non au harcèlement', phone: '3020', url: 'https://www.education.gouv.fr/non-au-harcelement', description: 'Plateforme officielle Éducation Nationale — signalement et accompagnement', hours: 'Lun-Ven 9h-20h · Sam 9h-18h', language: 'FR' },
+
+      // === SANTÉ MENTALE & ÉCOUTE ===
+      { name: '🆘 3114 — Prévention suicide', phone: '3114', url: 'https://3114.fr', description: 'Anonyme, gratuit, confidentiel, prêté par des soignant·es', hours: '24/7', language: 'FR' },
+      { name: '🌱 Fil Santé Jeunes (jeunes 12-25)', phone: '0 800 235 236', url: 'https://www.filsantejeunes.com', description: 'Anonyme, gratuit, écoute santé/sexualité/mal-être/addictions', hours: '7j/7 · 9h-23h', language: 'FR' },
+      { name: '🤝 SOS Amitié — écoute (anonyme, 24/7)', phone: '09 72 39 40 50', url: 'https://www.sos-amitie.com', description: 'Pour parler quand ça va mal, sans jugement, par téléphone ou tchat', hours: '24/7', language: 'FR' },
+
+      // === VIOLENCES ===
+      { name: '💔 3919 — Violences conjugales (tous publics)', phone: '3919', url: 'https://arretonslesviolences.gouv.fr', description: 'Anonyme, gratuit, confidentiel — femmes, hommes ET non-binaires victimes', hours: '24/7', language: 'FR + 9 langues' },
+      { name: '👨 SOS Hommes Battus', phone: '0 800 122 800', description: 'Spécifiquement pour hommes victimes de violences conjugales', hours: 'Lun-Ven 9h-19h', language: 'FR' },
+      { name: '👶 119 — Allô Enfance en Danger', phone: '119', url: 'https://www.allo119.gouv.fr', description: 'Mineur·e en danger ou témoin', hours: '24/7', language: 'FR' },
+      { name: '🏠 115 — Samu Social (sans-abri)', phone: '115', description: 'Hébergement urgence', hours: '24/7', language: 'FR' },
+      { name: '🌐 France Victimes', phone: '116 006', url: 'https://www.france-victimes.fr', description: 'Aide aux victimes (toutes infractions)', hours: '7j/7 · 9h-19h', language: 'FR' }
     ]
   },
   BE: {

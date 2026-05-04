@@ -125,6 +125,18 @@ function HelpTab({ data, loading, manualCountry, setManualCountry, onDetect, onL
     </div>
   );
 
+  // Quick-Dial : pour la France, grille des numéros essentiels
+  const QUICK_DIAL_FR = [
+    { phone: '17',           label: 'Police',           color: 'bg-blue-600',    emoji: '🚨' },
+    { phone: '112',          label: 'Urgence UE',       color: 'bg-red-600',     emoji: '🚓' },
+    { phone: '114',          label: 'Silencieux SMS',   color: 'bg-violet-600',  emoji: '🤫' },
+    { phone: '3919',         label: 'Violences',        color: 'bg-pink-600',    emoji: '💔' },
+    { phone: '3018',         label: 'Harcèlement',      color: 'bg-orange-600',  emoji: '🏫' },
+    { phone: '3114',         label: 'Suicide',          color: 'bg-rose-700',    emoji: '🆘' },
+    { phone: '0631596950',   label: 'Le Refuge',        color: 'bg-fuchsia-600', emoji: '🏳️‍🌈' },
+    { phone: '0800235236',   label: 'Fil Santé Jeunes', color: 'bg-emerald-600', emoji: '🌱' }
+  ];
+
   return (
     <>
       {country ? (
@@ -151,9 +163,36 @@ function HelpTab({ data, loading, manualCountry, setManualCountry, onDetect, onL
         </div>
       )}
 
+      {/* Quick-Dial pour France : 8 numéros 1-tap */}
+      {country?.countryCode === 'FR' && (
+        <div>
+          <h3 className="text-xs uppercase font-bold text-red-300 mb-2 flex items-center gap-1.5">
+            <PhoneCall size={11} /> Appel rapide France · 1 tap
+          </h3>
+          <div className="grid grid-cols-4 gap-1.5">
+            {QUICK_DIAL_FR.map(q => (
+              <a
+                key={q.phone}
+                href={`tel:${q.phone}`}
+                className={`${q.color} hover:opacity-90 text-white rounded-xl p-2 text-center transition shadow-lg flex flex-col items-center justify-center gap-0.5`}
+                title={q.label}
+              >
+                <span className="text-xl">{q.emoji}</span>
+                <span className="text-[9px] font-bold leading-tight">{q.label}</span>
+                <span className="text-[8px] opacity-80 font-mono">{q.phone}</span>
+              </a>
+            ))}
+          </div>
+          <p className="text-[10px] text-zinc-500 mt-2">
+            🤫 <strong>114</strong> = appel d'urgence par SMS si tu ne peux pas parler (agression chez toi, violences en cours).
+            Envoie un SMS au 114 pour alerter sans bruit.
+          </p>
+        </div>
+      )}
+
       {country?.helplines && country.helplines.length > 0 && (
         <div>
-          <h3 className="text-xs uppercase font-bold text-red-300 mb-2">Aides locales — {country.countryName}</h3>
+          <h3 className="text-xs uppercase font-bold text-red-300 mb-2">Toutes les aides — {country.countryName}</h3>
           <div className="space-y-2">
             {country.helplines.map((h: Helpline, i: number) => <HelplineCard key={i} h={h} accent="red" />)}
           </div>
@@ -263,6 +302,17 @@ const SCENARIOS = [
     'Documente : photos blessures (avec date), certificats médicaux SANS RDV (UMJ urgence), captures messages.',
     'Hébergement urgence : 115 (Samu social) ou Le Refuge si <25 ans LGBT.',
     'Ordonnance de protection au juge : pas besoin de plainte préalable, valable 6 mois renouvelable.'
+  ]},
+  { id: 'harcelement-scolaire', title: '🏫 Harcèlement scolaire ou cyberharcèlement', steps: [
+    'Tu n\'es pas seul·e. Ce n\'est PAS de ta faute. Ça arrive à 1 jeune sur 10 — beaucoup s\'en sortent.',
+    '📞 3018 (Net Écoute, 9h-23h, 7j/7, gratuit, anonyme) — spécialisé harcèlement scolaire et en ligne, conseils + tchat.',
+    '📞 3020 (Non au harcèlement, gouv) — accompagnement par académie, peut intervenir en classe.',
+    'Documente : capture écrans, sauvegarde messages, dates, témoins. C\'est ESSENTIEL pour toute action.',
+    'Parle à 1 adulte de confiance : parent, prof référent·e, infirmière scolaire, CPE. Si l\'établissement minimise, contacte le rectorat.',
+    'Sur les réseaux : signale les contenus (Insta, TikTok, Snap ont des boutons), bloque, ne réponds pas aux insultes.',
+    'En droit français : harcèlement = délit puni 3 ans/45 000€ (10 ans si suicide). Tu peux porter plainte.',
+    'Ressources LGBT+ : SOS Homophobie 01 48 06 42 41 si LGBTphobie scolaire.',
+    'Tu peux changer d\'établissement (carte scolaire dérogation pour motif harcèlement) — ne reste pas dans la souffrance.'
   ]},
   { id: 'attentat', title: '⚠️ Attentat / attaque en cours', steps: [
     '1️⃣ ÉCHAPPER : éloigne-toi du danger, par tous les moyens. Cours en zigzag.',
