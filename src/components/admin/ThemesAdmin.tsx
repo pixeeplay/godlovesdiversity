@@ -2,7 +2,7 @@
 import { useMemo, useState } from 'react';
 import {
   Palette, Sparkles, Loader2, Check, X, Calendar, Filter, Eye, Edit3, Trash2,
-  RotateCcw, Save, AlertTriangle, Plus
+  RotateCcw, Save, AlertTriangle, Plus, Wand2, Music, VolumeX, Volume2, Copy
 } from 'lucide-react';
 
 type Theme = {
@@ -40,6 +40,7 @@ export function ThemesAdmin({ initial }: { initial: Theme[] }) {
   const [filter, setFilter] = useState<string>('');
   const [editing, setEditing] = useState<Theme | null>(null);
   const [previewing, setPreviewing] = useState<string | null>(null);
+  const [tab, setTab] = useState<'gallery' | 'generate'>('gallery');
 
   async function seedDefaults(wipe: boolean) {
     if (wipe && !confirm('Effacer TOUS les thèmes existants et réinitialiser aux 50 thèmes par défaut ?')) return;
@@ -161,6 +162,19 @@ export function ThemesAdmin({ initial }: { initial: Theme[] }) {
         </div>
       </header>
 
+      {/* Onglets */}
+      <div className="flex gap-1 bg-zinc-900 border border-zinc-800 rounded-full p-1 inline-flex">
+        <button onClick={() => setTab('gallery')} className={`px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5 ${tab === 'gallery' ? 'bg-fuchsia-500 text-white' : 'text-zinc-400 hover:text-white'}`}>
+          <Palette size={12} /> Galerie ({themes.length})
+        </button>
+        <button onClick={() => setTab('generate')} className={`px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5 ${tab === 'generate' ? 'bg-fuchsia-500 text-white' : 'text-zinc-400 hover:text-white'}`}>
+          <Wand2 size={12} /> Générer avec IA ✨
+        </button>
+      </div>
+
+      {tab === 'generate' && <ThemeAIGenerator onCreated={(newTheme) => { setThemes([newTheme, ...themes]); setTab('gallery'); }} />}
+      {tab === 'gallery' && <>
+
       {/* Thème actif courant */}
       {activeTheme && (
         <section className="bg-gradient-to-r from-fuchsia-500/10 via-violet-500/10 to-cyan-500/10 border border-fuchsia-500/30 rounded-2xl p-4 flex items-center justify-between flex-wrap gap-3">
@@ -208,8 +222,216 @@ export function ThemesAdmin({ initial }: { initial: Theme[] }) {
         ))}
       </div>
 
+      </>}
+
       {/* Modale édition */}
       {editing && <EditModal theme={editing} onSave={(d) => patch(editing, d)} onClose={() => setEditing(null)} busy={busy === editing.id} />}
+    </div>
+  );
+}
+
+/* ============= GÉNÉRATEUR IA ============= */
+
+function ThemeAIGenerator({ onCreated }: { onCreated: (theme: Theme) => void }) {
+  const [prompt, setPrompt] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [preview, setPreview] = useState<any | null>(null);
+  const [savedId, setSavedId] = useState<string | null>(null);
+
+  const PRESETS = [
+    'Aurore boréale glacée, ambiance mystique, particules d\'étoiles',
+    'Tropical néon synthwave avec coucher de soleil sur palmiers',
+    'Cathédrale gothique vitraux multicolores, sombre et solennel',
+    'Plage tropicale rose et turquoise, fête joyeuse, bulles',
+    'Cyberpunk dystopique néons jaunes et magenta sur noir',
+    'Jardin japonais cerisiers en fleurs, calme zen, pétales',
+    'Galaxie cosmique violette avec étoiles scintillantes',
+    'Forêt enchantée brume verte mystique avec feuilles',
+    'Disco 70s funk pailleté multicolore avec confettis',
+    'Hiver scandinave bleu glace et blanc, flocons de neige'
+  ];
+
+  async function generate() {
+    if (!prompt.trim()) return;
+    setBusy(true);
+    setPreview(null);
+    setSavedId(null);
+    try {
+      const r = await fetch('/api/admin/themes/generate', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+      const j = await r.json();
+      if (j.ok && j.theme) setPreview(j.theme);
+      else alert(`Erreur : ${j.error || 'IA n\'a pas pu générer'}`);
+    } finally { setBusy(false); }
+  }
+
+  async function save() {
+    if (!preview) return;
+    setBusy(true);
+    try {
+      const r = await fetch('/api/admin/themes/generate', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt, save: true })
+      });
+      const j = await r.json();
+      if (j.ok && j.theme) {
+        setSavedId(j.theme.id);
+        onCreated(j.theme);
+      } else alert(`Erreur sauvegarde : ${j.error}`);
+    } finally { setBusy(false); }
+  }
+
+  return (
+    <div className="grid lg:grid-cols-[400px_1fr] gap-5 mt-4">
+      {/* Form */}
+      <div className="space-y-4">
+        <div className="bg-gradient-to-br from-fuchsia-500/10 via-violet-500/10 to-purple-500/10 border border-fuchsia-500/30 rounded-2xl p-4">
+          <h2 className="font-bold text-base flex items-center gap-2 mb-2">
+            <Wand2 size={16} className="text-fuchsia-400" /> Décris l'ambiance souhaitée
+          </h2>
+          <p className="text-xs text-zinc-400 mb-3">L'IA va générer un thème complet : couleurs harmoniques + animations + CSS + suggestion musicale.</p>
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            rows={4}
+            placeholder="Ex : Cyberpunk néon avec rose et cyan, ambiance club futuriste avec étoiles..."
+            className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm"
+          />
+          <div className={`mt-3 ${busy ? 'ai-glow ai-glow-subtle rounded-full' : ''}`}>
+            <button
+              onClick={generate}
+              disabled={busy || !prompt.trim()}
+              className="w-full bg-fuchsia-500 hover:bg-fuchsia-600 disabled:opacity-50 text-white text-sm font-bold px-4 py-2.5 rounded-full flex items-center justify-center gap-2 relative"
+            >
+              {busy ? <><Loader2 size={14} className="animate-spin" /><span className="ai-shimmer font-bold">Gemini conçoit ton thème…</span></>
+                    : <><Sparkles size={14} /> Générer le thème</>}
+            </button>
+          </div>
+        </div>
+
+        {/* Presets */}
+        <div className="space-y-1.5">
+          <span className="text-[10px] uppercase font-bold text-zinc-500">Suggestions rapides</span>
+          {PRESETS.map(p => (
+            <button
+              key={p}
+              onClick={() => setPrompt(p)}
+              className="w-full text-left text-[11px] text-zinc-300 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-lg px-2.5 py-1.5"
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Preview */}
+      <div>
+        {!preview && !busy && (
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-12 text-center text-zinc-500">
+            <Wand2 size={48} className="mx-auto mb-3 opacity-30" />
+            <p className="text-sm">Décris une ambiance et clique « Générer le thème ».<br />La preview s'affichera ici avec tous les détails.</p>
+          </div>
+        )}
+        {busy && !preview && (
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-12 text-center ai-glow rounded-2xl">
+            <span className="ai-shimmer text-lg font-bold">L'IA imagine ton thème…</span>
+          </div>
+        )}
+        {preview && <PreviewPanel preview={preview} onSave={save} saving={busy} saved={!!savedId} />}
+      </div>
+    </div>
+  );
+}
+
+function PreviewPanel({ preview, onSave, saving, saved }: { preview: any; onSave: () => void; saving: boolean; saved: boolean }) {
+  const [showCss, setShowCss] = useState(false);
+  const c = preview.colors || {};
+  const decoCount = Object.values(preview.decorations || {}).filter(Boolean).length;
+  const activeDecos = Object.entries(preview.decorations || {}).filter(([_, v]) => v).map(([k]) => k);
+
+  return (
+    <div className="space-y-3">
+      {/* Header card */}
+      <div className="bg-zinc-900 border border-fuchsia-500/30 rounded-2xl overflow-hidden">
+        <div
+          className="h-32 relative flex items-center justify-center text-4xl font-bold"
+          style={{
+            background: `linear-gradient(135deg, ${c.primary} 0%, ${c.secondary} 50%, ${c.accent} 100%)`,
+            color: c.fg || '#fff'
+          }}
+        >
+          {preview.name}
+        </div>
+        <div className="p-4 space-y-3">
+          <div className="text-sm text-zinc-300">{preview.description}</div>
+          <div className="flex gap-3 text-[11px] text-zinc-500 flex-wrap">
+            <span>📂 {preview.category}</span>
+            <span>💫 {preview.mood}</span>
+            <span>✨ {decoCount} décorations</span>
+            <span>🎵 {preview.musicSuggestion?.slice(0, 50) || '(aucune)'}</span>
+          </div>
+
+          {/* Couleurs */}
+          <div>
+            <div className="text-[10px] uppercase font-bold text-zinc-500 mb-1">Palette</div>
+            <div className="grid grid-cols-5 gap-1.5">
+              {(['primary', 'secondary', 'accent', 'bg', 'fg'] as const).map(k => (
+                <div key={k} className="bg-zinc-950 rounded p-1.5 text-center">
+                  <div className="w-full h-8 rounded mb-1" style={{ background: c[k] }} />
+                  <div className="text-[8px] text-zinc-500">{k}</div>
+                  <div className="text-[8px] text-zinc-400 font-mono">{c[k]}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Décorations */}
+          {activeDecos.length > 0 && (
+            <div>
+              <div className="text-[10px] uppercase font-bold text-zinc-500 mb-1">Animations actives</div>
+              <div className="flex flex-wrap gap-1.5">
+                {activeDecos.map(d => (
+                  <span key={d} className="text-[11px] bg-fuchsia-500/20 text-fuchsia-200 px-2 py-0.5 rounded-full">✨ {d}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Custom CSS */}
+          {preview.customCss && (
+            <details className="text-xs">
+              <summary className="cursor-pointer text-zinc-400 hover:text-white">▸ Custom CSS ({preview.customCss.length} chars)</summary>
+              <pre className="bg-zinc-950 p-3 rounded mt-2 text-[10px] overflow-x-auto">{preview.customCss}</pre>
+            </details>
+          )}
+
+          {/* Actions */}
+          <div className="flex gap-2 pt-2 border-t border-zinc-800">
+            <button
+              onClick={onSave}
+              disabled={saving || saved}
+              className={`bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white text-sm font-bold px-4 py-2 rounded-full flex items-center gap-1.5 ${saving ? 'ai-glow ai-glow-subtle' : ''}`}
+            >
+              {saving ? <Loader2 size={14} className="animate-spin" />
+                : saved ? <><Check size={14} /> Enregistré</>
+                : <><Save size={14} /> Sauvegarder ce thème</>}
+            </button>
+            <button
+              onClick={() => navigator.clipboard.writeText(JSON.stringify(preview, null, 2))}
+              className="bg-zinc-800 hover:bg-zinc-700 text-white text-sm px-4 py-2 rounded-full flex items-center gap-1.5"
+            >
+              <Copy size={12} /> Copier JSON
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p className="text-[10px] text-zinc-500">
+        💡 Pas convaincu ? Reformule ton prompt ou clique « Générer » à nouveau pour une autre proposition.
+        Une fois sauvegardé, tu pourras éditer toutes les valeurs (incluant URL musique) depuis la galerie.
+      </p>
     </div>
   );
 }
@@ -305,7 +527,10 @@ function EditModal({ theme, onSave, onClose, busy }: { theme: Theme; onSave: (d:
     priority: theme.priority,
     autoActivate: theme.autoActivate,
     holidaySlug: theme.holidaySlug || '',
-    decorations: theme.decorations || {}
+    decorations: theme.decorations || {},
+    musicUrl: (theme as any).musicUrl || '',
+    musicVolume: (theme as any).musicVolume ?? 0.3,
+    mood: (theme as any).mood || ''
   });
 
   const DECORATIONS_LIST = ['snow', 'hearts', 'confetti', 'petals', 'fireworks', 'bubbles', 'leaves', 'stars', 'pumpkins', 'eggs', 'lanterns', 'diamonds', 'rainbow'];
@@ -357,6 +582,42 @@ function EditModal({ theme, onSave, onClose, busy }: { theme: Theme; onSave: (d:
 
           <Field label="Custom CSS (avancé)"><textarea value={data.customCss} onChange={(e) => setData({ ...data, customCss: e.target.value })} rows={5} placeholder="body { background: ... }" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" /></Field>
 
+          {/* === MUSIQUE D'AMBIANCE === */}
+          <div className="border border-zinc-800 rounded-xl p-3 bg-zinc-950/50">
+            <div className="text-[10px] uppercase font-bold text-zinc-500 mb-2 flex items-center gap-1.5">
+              <Music size={11} className="text-fuchsia-400" /> Musique d'ambiance (optionnelle)
+            </div>
+            <Field label="URL audio (mp3, ogg, wav)">
+              <input
+                value={data.musicUrl}
+                onChange={(e) => setData({ ...data, musicUrl: e.target.value })}
+                placeholder="https://… ou /music/noel.mp3"
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono"
+              />
+            </Field>
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              <Field label={`Volume (${Math.round((data.musicVolume) * 100)}%)`}>
+                <input type="range" min={0} max={1} step={0.05} value={data.musicVolume} onChange={(e) => setData({ ...data, musicVolume: Number(e.target.value) })} className="w-full" />
+              </Field>
+              <Field label="Mood">
+                <select value={data.mood} onChange={(e) => setData({ ...data, mood: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-2 text-xs">
+                  <option value="">— Aucun —</option>
+                  <option value="festif">🎉 Festif</option>
+                  <option value="calme">🌿 Calme</option>
+                  <option value="mystique">🔮 Mystique</option>
+                  <option value="energique">⚡ Énergique</option>
+                  <option value="romantique">💕 Romantique</option>
+                  <option value="solennel">🕯️ Solennel</option>
+                  <option value="joyeux">😄 Joyeux</option>
+                </select>
+              </Field>
+            </div>
+            {data.musicUrl && (
+              <audio controls src={data.musicUrl} className="w-full mt-2 h-8" preload="none" />
+            )}
+            <p className="text-[9px] text-zinc-600 mt-1">L'utilisateur active/désactive avec un bouton 🔊 sur le site.</p>
+          </div>
+
           <label className="flex items-center gap-2 text-sm cursor-pointer">
             <input type="checkbox" checked={data.autoActivate} onChange={(e) => setData({ ...data, autoActivate: e.target.checked })} />
             Activation automatique en fonction de la date de la fête
@@ -373,7 +634,10 @@ function EditModal({ theme, onSave, onClose, busy }: { theme: Theme; onSave: (d:
             durationDays: data.durationDays,
             priority: data.priority,
             autoActivate: data.autoActivate,
-            holidaySlug: data.holidaySlug || null
+            holidaySlug: data.holidaySlug || null,
+            musicUrl: data.musicUrl || null,
+            musicVolume: data.musicVolume,
+            mood: data.mood || null
           })} disabled={busy} className="bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white text-sm font-bold px-4 py-2 rounded-full flex items-center gap-1.5">
             {busy ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />} Enregistrer
           </button>

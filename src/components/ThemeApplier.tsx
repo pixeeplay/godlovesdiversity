@@ -8,6 +8,9 @@ type Theme = {
   fonts: any;
   decorations: any;
   customCss: string | null;
+  musicUrl?: string | null;
+  musicVolume?: number | null;
+  mood?: string | null;
 };
 
 /**
@@ -20,13 +23,27 @@ type Theme = {
  */
 export function ThemeApplier() {
   const [theme, setTheme] = useState<Theme | null>(null);
+  const [musicAllowed, setMusicAllowed] = useState(false);
 
   useEffect(() => {
     fetch('/api/themes/active', { cache: 'no-store' })
       .then(r => r.json())
       .then(j => { if (j.theme) setTheme(j.theme); })
       .catch(() => {});
+
+    // L'utilisateur a-t-il activé la musique de thème ?
+    setMusicAllowed(localStorage.getItem('gld_theme_music') === '1');
   }, []);
+
+  // Audio player thème
+  useEffect(() => {
+    if (!theme?.musicUrl || !musicAllowed) return;
+    const audio = new Audio(theme.musicUrl);
+    audio.loop = true;
+    audio.volume = theme.musicVolume ?? 0.3;
+    audio.play().catch(() => {});
+    return () => { audio.pause(); audio.src = ''; };
+  }, [theme?.musicUrl, theme?.musicVolume, musicAllowed]);
 
   useEffect(() => {
     if (!theme) return;
@@ -67,8 +84,25 @@ export function ThemeApplier() {
   if (!theme) return null;
   const d = theme.decorations || {};
 
+  function toggleMusic() {
+    const next = !musicAllowed;
+    setMusicAllowed(next);
+    localStorage.setItem('gld_theme_music', next ? '1' : '0');
+  }
+
   return (
     <>
+      {/* Bouton flottant musique de thème (apparaît seulement si le thème actif a une musique) */}
+      {theme.musicUrl && (
+        <button
+          onClick={toggleMusic}
+          className={`fixed bottom-24 left-4 z-[60] rounded-full p-2.5 shadow-xl backdrop-blur transition ${musicAllowed ? 'bg-fuchsia-500 hover:bg-fuchsia-600 text-white' : 'bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 border border-zinc-700'}`}
+          title={musicAllowed ? `Couper la musique du thème ${theme.name}` : `Activer la musique d'ambiance ${theme.name}`}
+        >
+          {musicAllowed ? '🔊' : '🔇'}
+        </button>
+      )}
+
       {d.snow       && <ParticleLayer kind="snow"     emoji="❄️" count={30} speed={[10, 25]} />}
       {d.hearts     && <ParticleLayer kind="hearts"   emoji="💗" count={15} speed={[8, 18]}  />}
       {d.confetti   && <ParticleLayer kind="confetti" emoji="🎉" count={25} speed={[6, 14]}  />}

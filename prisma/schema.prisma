@@ -748,6 +748,11 @@ model Theme {
   decorations     Json?     // { snow: true, confetti: false, hearts: true, ... }
   customCss       String?   @db.Text
 
+  // Audio d'ambiance (MP3/OGG, optionnel)
+  musicUrl        String?   // URL d'une musique en boucle (ex /music/christmas.mp3)
+  musicVolume     Float?    @default(0.3) // 0-1
+  mood            String?   // "festif", "calme", "mystique", "energique"... (descriptif)
+
   // Auto-activation
   autoActivate    Boolean   @default(false)
   autoStartMonth  Int?      // 1-12, null si calcul dynamique
