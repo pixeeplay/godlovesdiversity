@@ -345,6 +345,29 @@ enum PostStatus {
   CANCELLED
 }
 
+/// Log de tous les messages échangés via le bot Telegram (in/out).
+/// Permet l'historique du chat live dans /admin/integrations/telegram.
+model TelegramMessage {
+  id            String   @id @default(cuid())
+  direction     String   // 'in' (visiteur → bot) | 'out' (bot → chat)
+  chatId        String   // ID du chat Telegram (privé ou groupe)
+  userId        String?  // user_id du sender (null pour les outbound non liés à un user)
+  username      String?  // @username Telegram
+  firstName     String?
+  text          String?  @db.Text
+  command       String?  // commande extraite (/help, /stats, etc.) ou intent IA détectée
+  aiInterpreted Boolean  @default(false) // true si on a appelé l'AI router pour interpréter
+  imageUrl      String?  // URL de la photo si message photo
+  callbackData  String?  // payload du callback si bouton inline cliqué
+  status        String   @default("delivered") // delivered | failed | ignored
+  errorMessage  String?  @db.Text
+  raw           Json?    // payload brut Telegram pour debug
+  createdAt     DateTime @default(now())
+
+  @@index([chatId, createdAt])
+  @@index([direction, createdAt])
+}
+
 /// Événement public visible sur /agenda — créé/édité dans /admin/events.
 model Event {
   id          String   @id @default(cuid())

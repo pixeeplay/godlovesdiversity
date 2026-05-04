@@ -84,6 +84,7 @@ const NAV: Entry[] = [
       { href: '/admin/home', label: 'Page d\'accueil', icon: Home },
       { href: '/admin/menu-permissions', label: 'Visibilité menu (admin)', icon: ShieldAlert },
       { href: '/admin/users', label: 'Utilisateurs', icon: Users },
+      { href: '/admin/backup', label: 'Sauvegardes (backup)', icon: ShieldCheck },
       { href: '/admin/settings', label: 'Paramètres', icon: Settings }
     ]
   }

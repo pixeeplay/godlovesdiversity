@@ -6,6 +6,7 @@
  * fallback env TELEGRAM_BOT_TOKEN.
  */
 import { getSettings } from './settings';
+import { logOutgoing } from './telegram-log';
 
 const TG_BASE = 'https://api.telegram.org';
 
@@ -53,21 +54,37 @@ export async function sendMessage(chatId: TgChatId, text: string, opts?: {
   disable_notification?: boolean;
   inline_keyboard?: TgInlineButton[][];
   link_preview_options?: { is_disabled?: boolean };
+  skipLog?: boolean;
 }) {
   const body: any = { chat_id: chatId, text, parse_mode: opts?.parse_mode || 'HTML', link_preview_options: opts?.link_preview_options };
   if (opts?.reply_to_message_id) body.reply_to_message_id = opts.reply_to_message_id;
   if (opts?.disable_notification) body.disable_notification = true;
   if (opts?.inline_keyboard) body.reply_markup = { inline_keyboard: opts.inline_keyboard };
-  return call('sendMessage', body);
+  try {
+    const res = await call('sendMessage', body);
+    if (!opts?.skipLog) await logOutgoing({ chatId, text, status: 'delivered' });
+    return res;
+  } catch (e: any) {
+    if (!opts?.skipLog) await logOutgoing({ chatId, text, status: 'failed', errorMessage: e?.message });
+    throw e;
+  }
 }
 
 export async function sendPhoto(chatId: TgChatId, photoUrl: string, caption?: string, opts?: {
   parse_mode?: 'HTML' | 'MarkdownV2';
   inline_keyboard?: TgInlineButton[][];
+  skipLog?: boolean;
 }) {
   const body: any = { chat_id: chatId, photo: photoUrl, caption, parse_mode: opts?.parse_mode || 'HTML' };
   if (opts?.inline_keyboard) body.reply_markup = { inline_keyboard: opts.inline_keyboard };
-  return call('sendPhoto', body);
+  try {
+    const res = await call('sendPhoto', body);
+    if (!opts?.skipLog) await logOutgoing({ chatId, text: caption, imageUrl: photoUrl, status: 'delivered' });
+    return res;
+  } catch (e: any) {
+    if (!opts?.skipLog) await logOutgoing({ chatId, text: caption, imageUrl: photoUrl, status: 'failed', errorMessage: e?.message });
+    throw e;
+  }
 }
 
 export async function answerCallbackQuery(callbackQueryId: string, text?: string, showAlert = false) {

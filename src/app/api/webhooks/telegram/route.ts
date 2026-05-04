@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { handleCommand, handleCallback, type TgUpdate } from '@/lib/telegram-commands';
 import { isAllowedUser, answerCallbackQuery, sendMessage } from '@/lib/telegram-bot';
 import { getSettings } from '@/lib/settings';
+import { interpretNaturalMessage } from '@/lib/telegram-ai-router';
+import { logIncoming } from '@/lib/telegram-log';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -38,18 +40,44 @@ export async function POST(req: NextRequest) {
     if (update.message?.text) {
       const m = update.message;
       const userId = m.from?.id;
+      const baseLog = {
+        chatId: m.chat.id,
+        userId,
+        username: m.from?.username,
+        firstName: m.from?.first_name,
+        text: m.text,
+        raw: m
+      };
+
       if (userId && !(await isAllowedUser(userId))) {
-        // Utilisateur non autorisé — silence radio (ou message poli)
         const username = m.from?.username || m.from?.first_name || 'inconnu';
+        await logIncoming({ ...baseLog, status: 'ignored', errorMessage: 'user not in whitelist' });
         await sendMessage(m.chat.id,
           `🚫 Cet utilisateur (<code>${userId}</code> @${username}) n'est pas autorisé à utiliser ce bot.\n\nDemande à un admin GLD d'ajouter ton user_id à la whitelist.`);
         return NextResponse.json({ ok: true });
       }
 
       const text = m.text.trim();
-      // On ne traite que les commandes (commencent par /) ou texte préfixé "@gld"
+
+      // Commande explicite avec /
       if (text.startsWith('/')) {
+        const cmd = text.split(/\s+/)[0].replace(/^\//, '').split('@')[0];
+        await logIncoming({ ...baseLog, command: cmd });
         await handleCommand(m.chat.id, userId || 0, text);
+        return NextResponse.json({ ok: true });
+      }
+
+      // Message naturel : on appelle l'AI router
+      const intent = await interpretNaturalMessage(text);
+      if (intent.matched) {
+        await logIncoming({ ...baseLog, command: intent.command, aiInterpreted: true });
+        // On notifie discrètement quelle commande l'IA a détectée
+        await sendMessage(m.chat.id, `<i>🧠 J'ai compris : <b>/${intent.command}</b></i>`, { disable_notification: true });
+        await handleCommand(m.chat.id, userId || 0, `/${intent.command}`);
+      } else {
+        await logIncoming({ ...baseLog, aiInterpreted: true, status: 'ignored', errorMessage: intent.reason });
+        const sugg = intent.suggestion || 'Tape <code>/help</code> pour voir toutes les commandes disponibles.';
+        await sendMessage(m.chat.id, `🤔 Je ne suis pas sûr de comprendre.\n\n${sugg}`);
       }
       return NextResponse.json({ ok: true });
     }
@@ -64,6 +92,7 @@ export async function POST(req: NextRequest) {
       }
       const chatId = cq.message?.chat.id;
       if (chatId && cq.data) {
+        await logIncoming({ chatId, userId, callbackData: cq.data, raw: cq });
         const result = await handleCallback(chatId, userId, cq.data, cq.id);
         await answerCallbackQuery(cq.id, result.alert);
       } else {
