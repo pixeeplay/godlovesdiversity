@@ -23,6 +23,7 @@ export function I18nAuditClient() {
   const [report, setReport] = useState<AuditReport | null>(null);
   const [loading, setLoading] = useState(false);
   const [translating, setTranslating] = useState<string | null>(null);
+  const [translatingAll, setTranslatingAll] = useState(false);
   const [filter, setFilter] = useState<string>('all');
 
   useEffect(() => { void run(); }, []);
@@ -36,6 +37,24 @@ export function I18nAuditClient() {
       else alert(j.error || 'Erreur audit');
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function translateAll() {
+    if (!report || report.totalIssues === 0) return;
+    if (!confirm(`Lancer la traduction Gemini sur les ${report.totalIssues} traductions manquantes ? Ça peut prendre quelques minutes.`)) return;
+    setTranslatingAll(true);
+    try {
+      const r = await fetch('/api/admin/i18n/translate-all', { method: 'POST' });
+      const j = await r.json();
+      if (r.ok) {
+        alert(`✓ ${j.totalOk}/${j.totalOk + j.totalFailed} traductions générées par Gemini\nEntités traitées : ${j.processed}`);
+        await run();
+      } else {
+        alert(`Erreur : ${j.error}`);
+      }
+    } finally {
+      setTranslatingAll(false);
     }
   }
 
@@ -84,14 +103,26 @@ export function I18nAuditClient() {
             Détecte automatiquement les contenus qui ne sont pas traduits dans toutes les langues du site (FR / EN / ES / PT) et propose une traduction Gemini en un clic.
           </p>
         </div>
-        <button
-          onClick={run}
-          disabled={loading}
-          className="bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-full text-sm flex items-center gap-2"
-        >
-          {loading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
-          Relancer l'audit
-        </button>
+        <div className="flex gap-2">
+          {report && report.totalIssues > 0 && (
+            <button
+              onClick={translateAll}
+              disabled={translatingAll}
+              className="bg-gradient-to-r from-violet-500 to-fuchsia-600 hover:from-violet-600 hover:to-fuchsia-700 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-full text-sm flex items-center gap-2"
+            >
+              {translatingAll ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+              {translatingAll ? `Traduction des ${report.totalIssues}…` : `Tout traduire (${report.totalIssues})`}
+            </button>
+          )}
+          <button
+            onClick={run}
+            disabled={loading}
+            className="bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-full text-sm flex items-center gap-2"
+          >
+            {loading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+            Relancer l'audit
+          </button>
+        </div>
       </header>
 
       {report && (

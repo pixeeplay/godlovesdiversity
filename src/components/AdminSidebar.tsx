@@ -44,6 +44,8 @@ const NAV: Entry[] = [
       { href: '/admin/posters', label: 'Affiches', icon: ImageIcon },
       { href: '/admin/news', label: 'Actualités', icon: Video },
       { href: '/admin/events', label: 'Événements (agenda)', icon: Calendar },
+      { href: '/admin/forum', label: 'Forum (modération)', icon: MenuIcon },
+      { href: '/admin/coupons', label: 'Coupons & promos', icon: Layers },
       { href: '/admin/videos', label: 'Vidéos YouTube', icon: Youtube },
       { href: '/admin/banners', label: 'Bannières (hero)', icon: GalleryHorizontalEnd }
     ]

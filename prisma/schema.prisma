@@ -27,6 +27,18 @@ model User {
   photosReviewed Photo[]   @relation("reviewer")
   articles       Article[]
   auditLogs      AuditLog[]
+
+  // V2 — Forum
+  forumThreads   ForumThread[] @relation("threadAuthor")
+  forumPosts     ForumPost[]   @relation("postAuthor")
+  // V2 — Témoignages vidéo
+  testimoniesUploaded VideoTestimony[]
+  // V2 — Parrainage
+  referralCodes  ReferralCode[]
+  // V2.1 — Boutique avancée
+  reviews        ProductReview[]
+  wishlist       Wishlist[]
+  loyaltyAccount LoyaltyAccount?
 }
 
 enum Role {
@@ -345,6 +357,206 @@ enum PostStatus {
   CANCELLED
 }
 
+// ───────────────────────────────────────────────
+// V2 — FORUM MEMBRES
+// ───────────────────────────────────────────────
+
+model ForumCategory {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  name        String
+  description String?
+  color       String?       // hex pour badge
+  order       Int           @default(0)
+  threads     ForumThread[]
+  createdAt   DateTime      @default(now())
+}
+
+model ForumThread {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  categoryId  String
+  category    ForumCategory @relation(fields: [categoryId], references: [id])
+  authorId    String?
+  author      User?         @relation("threadAuthor", fields: [authorId], references: [id])
+  pinned      Boolean       @default(false)
+  locked      Boolean       @default(false)
+  status      String        @default("active") // active | hidden | deleted
+  postsCount  Int           @default(0)
+  viewsCount  Int           @default(0)
+  lastReplyAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  posts       ForumPost[]
+
+  @@index([categoryId, lastReplyAt])
+  @@index([status, createdAt])
+}
+
+model ForumPost {
+  id        String      @id @default(cuid())
+  threadId  String
+  thread    ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?       @relation("postAuthor", fields: [authorId], references: [id])
+  content   String      @db.Text
+  status    String      @default("active") // active | hidden | flagged | deleted
+  likes     Int         @default(0)
+  parentId  String?     // pour les réponses imbriquées
+  parent    ForumPost?  @relation("PostReplies", fields: [parentId], references: [id])
+  replies   ForumPost[] @relation("PostReplies")
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([threadId, createdAt])
+  @@index([authorId, createdAt])
+}
+
+// ───────────────────────────────────────────────
+// V2 — TÉMOIGNAGES VIDÉO
+// ───────────────────────────────────────────────
+
+model VideoTestimony {
+  id            String   @id @default(cuid())
+  authorName    String?
+  authorEmail   String?
+  videoUrl      String   // URL MinIO ou YouTube
+  thumbnailUrl  String?
+  duration      Int?     // secondes
+  locale        String   @default("fr")
+  title         String?
+  transcription String?  @db.Text
+  subtitlesFr   String?  @db.Text  // VTT format
+  subtitlesEn   String?  @db.Text
+  subtitlesEs   String?  @db.Text
+  subtitlesPt   String?  @db.Text
+  status        String   @default("pending") // pending | approved | rejected
+  uploadedById  String?
+  uploadedBy    User?    @relation(fields: [uploadedById], references: [id])
+  rejectionReason String?
+  views         Int      @default(0)
+  likes         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status, createdAt])
+}
+
+// ───────────────────────────────────────────────
+// V2 — PARRAINAGE
+// ───────────────────────────────────────────────
+
+model ReferralCode {
+  id          String     @id @default(cuid())
+  code        String     @unique
+  ownerId     String?
+  owner       User?      @relation(fields: [ownerId], references: [id])
+  uses        Int        @default(0)
+  rewardKind  String     @default("discount") // discount | product | credit
+  rewardValue Int        @default(0) // centimes ou points
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  redemptions Referral[]
+}
+
+model Referral {
+  id            String       @id @default(cuid())
+  codeId        String
+  code          ReferralCode @relation(fields: [codeId], references: [id])
+  referredEmail String
+  status        String       @default("pending") // pending | converted | expired
+  convertedAt   DateTime?
+  rewardGivenAt DateTime?
+  createdAt     DateTime     @default(now())
+
+  @@index([codeId, status])
+}
+
+// ───────────────────────────────────────────────
+// V2.1 — BOUTIQUE AVANCÉE
+// ───────────────────────────────────────────────
+
+model Coupon {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  discountKind    String    @default("percent") // percent | fixed
+  discountValue   Int       // % ou centimes
+  minOrderCents   Int?
+  maxUses         Int?
+  uses            Int       @default(0)
+  validFrom       DateTime?
+  validUntil      DateTime?
+  productCategory String?   // restriction par catégorie produit
+  active          Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  createdBy       String?
+
+  @@index([active, validUntil])
+}
+
+model ProductReview {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id])
+  rating    Int      // 1-5
+  title     String?
+  content   String?  @db.Text
+  photos    String[] // URLs photos clients
+  verified  Boolean  @default(false) // true = a réellement acheté
+  status    String   @default("pending") // pending | approved | rejected
+  createdAt DateTime @default(now())
+
+  @@index([productId, status])
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+
+model StockAlert {
+  id          String   @id @default(cuid())
+  email       String
+  productId   String
+  variantOpts Json?    // pour alerter sur un variant spécifique
+  notifiedAt  DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([productId, notifiedAt])
+}
+
+model LoyaltyAccount {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  points    Int      @default(0)
+  tier      String   @default("bronze") // bronze | silver | gold
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ledger    LoyaltyLedger[]
+}
+
+model LoyaltyLedger {
+  id          String         @id @default(cuid())
+  accountId   String
+  account     LoyaltyAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  delta       Int            // +X (gain) ou -X (dépense)
+  reason      String         // "order:XYZ" | "referral" | "redeem"
+  metadata    Json?
+  createdAt   DateTime       @default(now())
+
+  @@index([accountId, createdAt])
+}
+
 /// Log de tous les messages échangés via le bot Telegram (in/out).
 /// Permet l'historique du chat live dans /admin/integrations/telegram.
 model TelegramMessage {
@@ -444,6 +656,9 @@ model Product {
 
   orderItems       OrderItem[]
   productVariants  ProductVariant[]
+  // V2.1
+  reviews          ProductReview[]
+  wishlist         Wishlist[]
 
   @@index([published, order])
 }
