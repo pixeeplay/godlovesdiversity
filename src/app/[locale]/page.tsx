@@ -13,9 +13,10 @@ import { PosterThumbnail } from '@/components/PosterThumbnail';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
 
-// ISR : régénère statique toutes les 60 s. Le revalidation ciblée
-// (sur édition admin) peut être faite via revalidatePath() côté API admin.
-export const revalidate = 60;
+// SSR : la home appelle Prisma à chaque requête.
+// (Coolify n'a pas DATABASE_URL au build → on ne peut pas faire d'ISR pour le moment.)
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

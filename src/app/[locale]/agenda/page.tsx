@@ -3,7 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { Calendar, MapPin, ExternalLink } from 'lucide-react';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Agenda — God Loves Diversity' };
 
 export default async function AgendaPage({ params }: { params: Promise<{ locale: string }> }) {

@@ -3,7 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
 import { GalleryClient } from '@/components/GalleryClient';
 
-export const revalidate = 60; // ISR — cache 1 min
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

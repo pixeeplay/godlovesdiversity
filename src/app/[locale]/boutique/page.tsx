@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { ShoppingBag } from 'lucide-react';
 
-export const revalidate = 60; // ISR
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Boutique — God Loves Diversity' };
 
 function formatPrice(cents: number, currency = 'EUR') {
