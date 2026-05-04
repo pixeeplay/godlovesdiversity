@@ -196,7 +196,7 @@ async function PostersShowcase({ title, text }: { title: string; text: string })
   } catch { posters = []; }
 
   return (
-    <section className="py-20" style={{ background: '#0a0314' }}>
+    <section className="py-20" style={{ background: 'var(--hero-bg, #0a0314)' }}>
       <div className="container-wide grid lg:grid-cols-2 gap-12 items-center">
         <div>
           <h2 className="font-display text-3xl md:text-5xl font-black tracking-wide">{title}</h2>

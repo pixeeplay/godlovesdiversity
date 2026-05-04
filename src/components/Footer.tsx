@@ -29,7 +29,10 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t border-white/10 mt-20" style={{ background: 'linear-gradient(180deg, #050208 0%, #000 100%)' }}>
+    <footer
+      className="border-t border-white/10 mt-20 footer-themed"
+      style={{ background: 'var(--footer-bg, linear-gradient(180deg, #050208 0%, #000 100%))' }}
+    >
       {/* Grid de colonnes */}
       <div className="container-wide py-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
         {/* Col 1 — Brand */}

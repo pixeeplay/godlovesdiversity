@@ -522,31 +522,37 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
                             ✓ Sélectionné : <strong>{selectedLaAvatar.name}</strong>
                           </div>
                         )}
-                        <div className="grid grid-cols-3 gap-1.5 max-h-72 overflow-y-auto pr-1">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[420px] overflow-y-auto pr-1">
                           {laAvatars.map((a) => {
                             const active = config.liveAvatarId === a.id;
                             return (
                               <button
                                 key={a.id}
                                 onClick={() => setConfig({ ...config, liveAvatarId: a.id })}
-                                className={`relative aspect-[3/4] rounded-lg overflow-hidden bg-zinc-800 border-2 transition group
-                                  ${active ? 'border-violet-500 scale-[1.03] shadow-lg shadow-violet-500/40' : 'border-zinc-800 hover:border-zinc-600'}`}
+                                className={`relative aspect-square rounded-lg overflow-hidden bg-zinc-800 border-2 transition group
+                                  ${active ? 'border-violet-500 scale-[1.03] shadow-lg shadow-violet-500/40' : 'border-zinc-700 hover:border-zinc-500'}`}
                                 title={a.name}
                               >
                                 {a.preview_url ? (
                                   // eslint-disable-next-line @next/next/no-img-element
-                                  <img src={a.preview_url} alt={a.name} className="w-full h-full object-cover" loading="lazy" />
+                                  <img
+                                    src={a.preview_url}
+                                    alt={a.name}
+                                    className="w-full h-full object-cover"
+                                    style={{ objectPosition: 'center 25%' }}
+                                    loading="lazy"
+                                  />
                                 ) : (
                                   <div className="w-full h-full flex items-center justify-center text-zinc-600">
                                     <Radio size={20} />
                                   </div>
                                 )}
-                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-1">
-                                  <div className="text-white text-[8px] font-bold truncate leading-tight">{a.name}</div>
+                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent px-1.5 pt-3 pb-1">
+                                  <div className="text-white text-[10px] font-bold truncate leading-tight">{a.name}</div>
                                 </div>
                                 {active && (
-                                  <div className="absolute top-1 right-1 bg-violet-500 rounded-full p-0.5">
-                                    <CheckCircle2 size={10} className="text-white" />
+                                  <div className="absolute top-1.5 right-1.5 bg-violet-500 rounded-full p-1 shadow-lg">
+                                    <CheckCircle2 size={12} className="text-white" />
                                   </div>
                                 )}
                               </button>

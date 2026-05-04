@@ -38,7 +38,7 @@ export function HeroBannerCarousel({ banners, logoUrl }: { banners: Banner[]; lo
   return (
     <section
       className="relative overflow-hidden"
-      style={{ background: '#0a0314' }}
+      style={{ background: 'var(--hero-bg, #0a0314)' }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
