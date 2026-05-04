@@ -125,6 +125,18 @@ function HelpTab({ data, loading, manualCountry, setManualCountry, onDetect, onL
     </div>
   );
 
+  // Quick-Dial : numéros d'urgence universels (toujours visibles)
+  const QUICK_DIAL_INTL = [
+    { phone: '112',           label: 'EU 27',         color: 'bg-blue-700',     emoji: '🇪🇺', sub: 'Europe' },
+    { phone: '911',           label: 'US/CA',         color: 'bg-red-700',      emoji: '🇺🇸', sub: 'Amérique du N.' },
+    { phone: '999',           label: 'UK/IE/HK',      color: 'bg-indigo-700',   emoji: '🇬🇧', sub: 'Royaume-Uni' },
+    { phone: '000',           label: 'Australia',     color: 'bg-amber-700',    emoji: '🇦🇺', sub: 'Australie' },
+    { phone: '190',           label: 'Brasil',        color: 'bg-emerald-700',  emoji: '🇧🇷', sub: 'Brésil' },
+    { phone: '110',           label: 'Japan/CN',      color: 'bg-rose-700',     emoji: '🇯🇵', sub: 'Asie' },
+    { phone: '+18664887386',  label: 'Trevor LGBT+',  color: 'bg-fuchsia-700',  emoji: '🏳️‍🌈', sub: 'Crise jeunes' },
+    { phone: '+18775658860',  label: 'Trans Lifeline',color: 'bg-pink-700',     emoji: '🏳️‍⚧️', sub: 'Pair-trans' }
+  ];
+
   // Quick-Dial : pour la France, grille des numéros essentiels
   const QUICK_DIAL_FR = [
     { phone: '17',           label: 'Police',           color: 'bg-blue-600',    emoji: '🚨' },
@@ -162,6 +174,30 @@ function HelpTab({ data, loading, manualCountry, setManualCountry, onDetect, onL
           </div>
         </div>
       )}
+
+      {/* Quick-Dial INTERNATIONAL : toujours visible, 8 numéros universels */}
+      <div>
+        <h3 className="text-xs uppercase font-bold text-violet-300 mb-2 flex items-center gap-1.5">
+          <Globe size={11} /> Urgences internationales · 1 tap
+        </h3>
+        <div className="grid grid-cols-4 gap-1.5">
+          {QUICK_DIAL_INTL.map(q => (
+            <a
+              key={q.phone + q.label}
+              href={`tel:${q.phone}`}
+              className={`${q.color} hover:opacity-90 text-white rounded-xl p-2 text-center transition shadow-lg flex flex-col items-center justify-center gap-0.5`}
+              title={`${q.label} — ${q.phone}`}
+            >
+              <span className="text-xl">{q.emoji}</span>
+              <span className="text-[9px] font-bold leading-tight">{q.label}</span>
+              <span className="text-[8px] opacity-80 font-mono">{q.phone}</span>
+            </a>
+          ))}
+        </div>
+        <p className="text-[10px] text-zinc-500 mt-1.5">
+          🌍 <strong>112</strong> = numéro européen unique. <strong>911</strong> = US/Canada. <strong>999</strong> = UK. Trevor Project + Trans Lifeline = lignes LGBT mondiales accessibles depuis n'importe où.
+        </p>
+      </div>
 
       {/* Quick-Dial pour France : 8 numéros 1-tap */}
       {country?.countryCode === 'FR' && (
