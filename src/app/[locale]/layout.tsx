@@ -9,6 +9,7 @@ import { TickerDonate } from '@/components/TickerDonate';
 import { AmbientPlayer } from '@/components/AmbientPlayer';
 import { PageTracker } from '@/components/PageTracker';
 import { ThemeProvider, themeInitScript } from '@/components/ThemeProvider';
+import { ThemeApplier } from '@/components/ThemeApplier';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -44,6 +45,7 @@ export default async function LocaleLayout({
             <AskGldWidget />
             <AmbientPlayer />
             <PageTracker />
+            <ThemeApplier />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

@@ -537,6 +537,106 @@ body::after {
   opacity: 0.3;
 }
 
+/* ───────────────────────────────────────────────
+   THÈMES SAISONNIERS — Particules animées
+   ─────────────────────────────────────────────── */
+
+.gld-particles {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.gld-particle {
+  position: absolute;
+  top: -2rem;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.3));
+}
+
+@keyframes gld-fall {
+  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(110vh) translateX(var(--drift, 0)) rotate(360deg); opacity: 0; }
+}
+
+@keyframes gld-rise {
+  0%   { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-10vh) translateX(var(--drift, 0)) rotate(360deg); opacity: 0; }
+}
+
+@keyframes gld-twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%      { opacity: 1;   transform: scale(1.2); }
+}
+
+.gld-particle-down  { animation: gld-fall    linear infinite; }
+.gld-particle-up    { animation: gld-rise    linear infinite; }
+.gld-particle-twinkle {
+  animation: gld-twinkle ease-in-out infinite;
+  top: auto;
+  position: absolute;
+}
+.gld-particle-twinkle:nth-child(odd)  { top: 10%; }
+.gld-particle-twinkle:nth-child(even) { top: 60%; }
+
+/* Barre arc-en-ciel Pride */
+.gld-rainbow-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg,
+    #e40303 0%, #ff8c00 16%, #ffed00 33%, #008026 50%, #004dff 66%, #750787 83%, #e40303 100%
+  );
+  background-size: 200% 100%;
+  animation: gld-shimmer-bar 3s linear infinite;
+  z-index: 100;
+  pointer-events: none;
+}
+
+@keyframes gld-shimmer-bar {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* Feux d'artifice */
+.gld-fireworks {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.gld-firework {
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 20px 5px rgba(251, 191, 36, 0.6);
+  animation: gld-firework-launch 4s ease-out infinite;
+}
+
+@keyframes gld-firework-launch {
+  0%   { transform: translateY(0) scale(1); background: #fbbf24; }
+  20%  { transform: translateY(-50vh) scale(1); background: #fbbf24; }
+  25%  {
+    transform: translateY(-50vh) scale(20);
+    background: radial-gradient(circle, #ec4899 0%, #fbbf24 30%, #06b6d4 60%, transparent 70%);
+    opacity: 1;
+  }
+  35%  { transform: translateY(-50vh) scale(40); opacity: 0; }
+  100% { transform: translateY(-50vh) scale(40); opacity: 0; }
+}
+
 /* Texte sous animation : effet shimmer pendant la génération */
 .ai-shimmer {
   background: linear-gradient(

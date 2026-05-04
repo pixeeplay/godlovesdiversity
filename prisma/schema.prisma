@@ -733,6 +733,46 @@ model Event {
   @@index([venueId, startsAt])
 }
 
+/// Thème visuel saisonnier ou esthétique permanent.
+/// L'admin peut activer manuellement ou laisser l'auto-activation par date de fête.
+model Theme {
+  id              String    @id @default(cuid())
+  slug            String    @unique // "pride", "noel-2025", "halloween"...
+  name            String
+  description     String?
+  category        String    // "holiday" | "religious" | "national" | "aesthetic" | "seasonal"
+
+  // Couleurs (CSS variables injectées dynamiquement)
+  colors          Json      // { primary, secondary, accent, bg, fg, border, ... }
+  fonts           Json?     // { display: "...", body: "..." }
+  decorations     Json?     // { snow: true, confetti: false, hearts: true, ... }
+  customCss       String?   @db.Text
+
+  // Auto-activation
+  autoActivate    Boolean   @default(false)
+  autoStartMonth  Int?      // 1-12, null si calcul dynamique
+  autoStartDay    Int?      // 1-31
+  autoEndMonth    Int?
+  autoEndDay      Int?
+  daysBefore      Int       @default(7)  // active N jours avant
+  durationDays    Int       @default(7)  // reste actif N jours
+  /// Slug d'une fête dans holiday-calendar pour les dates calculées (Pâques, Pessah, Ramadan, etc.)
+  holidaySlug     String?
+  geographicScope String?   // "global" | code ISO-2 (FR, US...) ou liste séparée par virgule
+
+  // État
+  active          Boolean   @default(false) // activé manuellement maintenant
+  priority        Int       @default(0)     // si plusieurs auto-actives, priorité = la plus haute
+  preview         String?   // URL screenshot
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([active])
+  @@index([category])
+  @@index([autoActivate])
+}
+
 // ───────────────────────────────────────────────
 // PARAMÈTRES & AUDIT
 // ───────────────────────────────────────────────
