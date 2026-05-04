@@ -16,7 +16,7 @@ const LOCALE_NAMES: Record<SupportedLocale, string> = {
 
 /**
  * POST /api/admin/i18n/translate
- * Body : { model: 'Page'|'Article'|'Banner'|'MenuItem'|'PageSection',
+ * Body : { model: 'Page'|'Article'|'Banner'|'MenuItem'|'Section',
  *          sourceId: string,
  *          targetLocales?: SupportedLocale[]   // par défaut toutes les manquantes
  *        }
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     else if (m === 'Article') source = await prisma.article.findUnique({ where: { id: sourceId } });
     else if (m === 'Banner') source = await prisma.banner.findUnique({ where: { id: sourceId } });
     else if (m === 'MenuItem') source = await prisma.menuItem.findUnique({ where: { id: sourceId } });
-    else if (m === 'PageSection') source = (await (prisma as any).pageSection?.findUnique({ where: { id: sourceId } })) || null;
+    else if (m === 'Section') source = (await (prisma as any).section?.findUnique({ where: { id: sourceId } })) || null;
 
     if (!source) return NextResponse.json({ error: 'Source introuvable' }, { status: 404 });
 
@@ -69,7 +69,7 @@ const TRANSLATABLE_FIELDS: Record<string, string[]> = {
   Article: ['title', 'excerpt', 'content'],
   Banner: ['eyebrow', 'title', 'subtitle', 'cta1Text', 'cta2Text'],
   MenuItem: ['label'],
-  PageSection: ['title', 'subtitle', 'body', 'ctaText']
+  Section: ['title', 'subtitle', 'body', 'ctaText']
 };
 
 async function translateRecord(model: string, source: any, fromLocale: SupportedLocale, toLocale: SupportedLocale): Promise<any> {
@@ -126,7 +126,7 @@ async function upsertTranslation(model: string, data: any, locale: SupportedLoca
     await prisma.banner.create({ data: { ...data, locale } });
   } else if (model === 'MenuItem') {
     await prisma.menuItem.create({ data: { ...data, locale } });
-  } else if (model === 'PageSection' && (prisma as any).pageSection) {
-    await (prisma as any).pageSection.create({ data: { ...data, locale } });
+  } else if (model === 'Section' && (prisma as any).section) {
+    await (prisma as any).section.create({ data: { ...data, locale } });
   }
 }

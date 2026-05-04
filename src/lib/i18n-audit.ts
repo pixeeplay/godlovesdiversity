@@ -44,12 +44,12 @@ export async function runI18nAudit(): Promise<AuditReport> {
   const menuItems = await prisma.menuItem.findMany({ select: { id: true, href: true, locale: true } }).catch(() => []);
   groupAndCheck(menuItems.map((m) => ({ id: m.id, slug: m.href, locale: m.locale })), 'slug', 'MenuItem', entities, byModel);
 
-  // ===== PageSections (clé : pageSlug + position) — composé =====
+  // ===== Sections (clé : pageSlug + position) — composé =====
   try {
-    const sections = await prisma.pageSection.findMany({ select: { id: true, pageSlug: true, locale: true, order: true } });
+    const sections = await prisma.section.findMany({ select: { id: true, pageSlug: true, locale: true, order: true } });
     groupAndCheck(
       sections.map((s) => ({ id: s.id, slug: `${s.pageSlug}#${s.order}`, locale: s.locale })),
-      'slug', 'PageSection', entities, byModel
+      'slug', 'Section', entities, byModel
     );
   } catch { /* model peut-être absent */ }
 

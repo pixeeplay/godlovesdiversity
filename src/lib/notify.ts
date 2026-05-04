@@ -15,11 +15,12 @@
 import { getSettings } from './settings';
 
 export type NotifyEvent =
-  | 'order.created' | 'order.shipped' | 'order.delivered'
+  | 'order.created' | 'order.paid' | 'order.failed' | 'order.shipped' | 'order.delivered'
   | 'photo.uploaded' | 'photo.approved' | 'photo.rejected'
   | 'newsletter.subscribed'
   | 'donation.received'
   | 'comment.posted'
+  | 'i18n.audit'
   | 'admin.alert';
 
 type NotifyPayload = {
@@ -33,6 +34,8 @@ type NotifyPayload = {
 
 const EMOJI: Record<NotifyEvent, string> = {
   'order.created':         '🛒',
+  'order.paid':            '💸',
+  'order.failed':          '❌',
   'order.shipped':         '📦',
   'order.delivered':       '✅',
   'photo.uploaded':        '📸',
@@ -41,6 +44,7 @@ const EMOJI: Record<NotifyEvent, string> = {
   'newsletter.subscribed': '💌',
   'donation.received':     '💖',
   'comment.posted':        '💬',
+  'i18n.audit':            '🌍',
   'admin.alert':           '🚨'
 };
 

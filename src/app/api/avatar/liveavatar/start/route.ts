@@ -44,7 +44,8 @@ export async function POST(req: NextRequest) {
 
     // Garantit qu'un context (system prompt + RAG) existe côté LiveAvatar
     const ctx = await ensureContext();
-    if (!ctx.contextId) {
+    const contextId = ctx.contextId;
+    if (!contextId) {
       return NextResponse.json({
         error: `Context LiveAvatar non créé : ${ctx.reason || 'erreur'}`,
         hint: 'Clique « Synchroniser le Cerveau de GLD vers LiveAvatar » dans l\'admin.'
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest) {
     const session = await bootstrapSession({
       avatar_id: avatarId,
       voice_id: voiceId,
-      context_id: ctx.contextId,
+      context_id: contextId,
       language,
       max_session_duration: maxDur
     });
