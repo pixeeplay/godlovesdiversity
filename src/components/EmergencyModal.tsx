@@ -95,7 +95,7 @@ export function EmergencyModal({ onClose }: { onClose: () => void }) {
 
         {/* Footer urgence */}
         <div className="border-t border-zinc-800 p-3 bg-zinc-900/50 sm:rounded-b-2xl">
-          <div className="text-[10px] text-zinc-500 text-center">
+          <div className="text-[10px] text-zinc-400 text-center">
             ⚠ En danger immédiat ? <a href="tel:112" className="text-red-400 font-bold underline">📞 112 (UE)</a> · <a href="tel:911" className="text-red-400 font-bold underline">911 (US)</a> · <a href="tel:190" className="text-red-400 font-bold underline">190 (BR)</a>
           </div>
         </div>
@@ -106,8 +106,16 @@ export function EmergencyModal({ onClose }: { onClose: () => void }) {
 
 function TabBtn({ label, Icon, active, onClick }: { label: string; Icon: any; active: boolean; onClick: () => void }) {
   return (
-    <button onClick={onClick} className={`flex-1 min-w-[80px] py-3 px-2 text-[11px] font-bold flex flex-col items-center gap-1 transition border-b-2 ${active ? 'border-red-500 text-white bg-red-500/10' : 'border-transparent text-zinc-500 hover:text-white hover:bg-white/5'}`}>
-      <Icon size={16} /> {label}
+    <button
+      onClick={onClick}
+      className={`flex-1 min-w-[80px] py-3 px-2 text-[12px] font-bold flex flex-col items-center gap-1 transition border-b-2 ${
+        active
+          ? 'border-red-500 text-white bg-red-500/15 shadow-inner'
+          : 'border-transparent text-zinc-200 hover:text-white hover:bg-white/10'
+      }`}
+    >
+      <Icon size={18} className={active ? 'text-red-400' : 'text-zinc-300'} />
+      <span>{label}</span>
     </button>
   );
 }
@@ -194,7 +202,7 @@ function HelpTab({ data, loading, manualCountry, setManualCountry, onDetect, onL
             </a>
           ))}
         </div>
-        <p className="text-[10px] text-zinc-500 mt-1.5">
+        <p className="text-[10px] text-zinc-400 mt-1.5">
           🌍 <strong>112</strong> = numéro européen unique. <strong>911</strong> = US/Canada. <strong>999</strong> = UK. Trevor Project + Trans Lifeline = lignes LGBT mondiales accessibles depuis n'importe où.
         </p>
       </div>
@@ -219,7 +227,7 @@ function HelpTab({ data, loading, manualCountry, setManualCountry, onDetect, onL
               </a>
             ))}
           </div>
-          <p className="text-[10px] text-zinc-500 mt-2">
+          <p className="text-[10px] text-zinc-400 mt-2">
             🤫 <strong>114</strong> = appel d'urgence par SMS si tu ne peux pas parler (agression chez toi, violences en cours).
             Envoie un SMS au 114 pour alerter sans bruit.
           </p>
@@ -254,7 +262,7 @@ function HelplineCard({ h, accent }: { h: Helpline; accent: 'red' | 'violet' }) 
       <div className="font-bold text-sm text-white">{h.name}</div>
       <p className="text-xs text-zinc-300 mt-1">{h.description}</p>
       {(h.hours || h.language) && (
-        <div className="text-[10px] text-zinc-500 mt-1">
+        <div className="text-[10px] text-zinc-400 mt-1">
           {h.hours && <span>🕒 {h.hours}</span>}{h.hours && h.language && ' · '}{h.language && <span>🗣 {h.language}</span>}
         </div>
       )}
@@ -372,7 +380,7 @@ function WhatIfTab() {
         <div key={s.id} className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
           <button onClick={() => setOpen(open === s.id ? null : s.id)} className="w-full text-left px-3 py-2.5 hover:bg-zinc-800/50 flex items-center justify-between">
             <span className="font-bold text-sm">{s.title}</span>
-            <span className="text-zinc-500 text-xs">{open === s.id ? '▼' : '▸'}</span>
+            <span className="text-zinc-400 text-xs">{open === s.id ? '▼' : '▸'}</span>
           </button>
           {open === s.id && (
             <ol className="px-3 pb-3 space-y-1.5 text-xs text-zinc-300 list-decimal list-inside">
@@ -435,7 +443,7 @@ function BreathingAnimation({ pattern, labels }: { pattern: number[]; labels: st
       <button onClick={() => { setRunning(!running); if (!running) { setPhase(0); setSeconds(pattern[0]); } }} className="mt-4 bg-cyan-500 hover:bg-cyan-600 text-white text-sm font-bold px-5 py-2 rounded-full">
         {running ? 'Pause' : 'Démarrer'}
       </button>
-      <p className="text-[10px] text-zinc-500 mt-3">Suis le rythme du cercle. 5 cycles = 1 minute environ.</p>
+      <p className="text-[10px] text-zinc-400 mt-3">Suis le rythme du cercle. 5 cycles = 1 minute environ.</p>
     </div>
   );
 }
@@ -451,7 +459,7 @@ function GroundingExercise() {
         <li><strong className="text-cyan-400">2</strong> choses que tu peux <strong>SENTIR</strong> 👃</li>
         <li><strong className="text-cyan-400">1</strong> chose que tu peux <strong>GOÛTER</strong> 👅</li>
       </ul>
-      <p className="text-[11px] text-zinc-500 mt-2">Cette technique d'ancrage sensoriel ramène ton cerveau dans le présent et coupe la spirale anxieuse.</p>
+      <p className="text-[11px] text-zinc-400 mt-2">Cette technique d'ancrage sensoriel ramène ton cerveau dans le présent et coupe la spirale anxieuse.</p>
     </div>
   );
 }
@@ -500,7 +508,7 @@ function PeersTab({ country }: { country: string | null }) {
       {loading ? (
         <div className="text-center py-6"><Loader2 size={20} className="animate-spin text-violet-400 mx-auto" /></div>
       ) : items.length === 0 ? (
-        <p className="text-center text-zinc-500 text-xs py-6">Pas encore de message. Sois le·la premier·e à oser.</p>
+        <p className="text-center text-zinc-400 text-xs py-6">Pas encore de message. Sois le·la premier·e à oser.</p>
       ) : (
         <div className="space-y-2">
           {items.map(it => (
@@ -508,18 +516,18 @@ function PeersTab({ country }: { country: string | null }) {
               <div className="flex items-center justify-between mb-1.5 flex-wrap gap-1">
                 <div className="flex items-center gap-1.5 text-[11px]">
                   {it.urgent && <span className="bg-red-500 text-white px-1.5 py-0.5 rounded-full text-[9px] font-bold">URGENT</span>}
-                  <span className="text-zinc-500">{it.authorName || '🕊 Anonyme'}</span>
-                  {it.country && <span className="text-zinc-600">· {it.country}</span>}
+                  <span className="text-zinc-400">{it.authorName || '🕊 Anonyme'}</span>
+                  {it.country && <span className="text-zinc-500">· {it.country}</span>}
                   <span className="text-violet-400">· #{it.topic}</span>
                 </div>
-                <span className="text-[10px] text-zinc-600">{new Date(it.createdAt).toLocaleDateString('fr-FR')}</span>
+                <span className="text-[10px] text-zinc-500">{new Date(it.createdAt).toLocaleDateString('fr-FR')}</span>
               </div>
               <p className="text-xs text-zinc-200 whitespace-pre-wrap">{it.message}</p>
               <div className="flex items-center gap-2 mt-2 pt-2 border-t border-zinc-800">
                 <button onClick={() => support(it.id)} disabled={supported.has(it.id)} className={`text-[11px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 ${supported.has(it.id) ? 'bg-pink-500/30 text-pink-200' : 'bg-pink-500/15 hover:bg-pink-500/25 text-pink-300'}`}>
                   {supported.has(it.id) ? <Check size={10} /> : <Heart size={10} />} Je suis là pour toi
                 </button>
-                <span className="text-[10px] text-zinc-500">{it.supportCount || 0} ❤</span>
+                <span className="text-[10px] text-zinc-400">{it.supportCount || 0} ❤</span>
               </div>
             </article>
           ))}
@@ -552,11 +560,11 @@ function ComposePeerHelp({ country, onPosted, onCancel }: { country: string | nu
   return (
     <div className="space-y-3">
       <div>
-        <label className="text-[10px] uppercase font-bold text-zinc-500 block mb-1">Pseudo (laisse vide pour anonyme)</label>
+        <label className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">Pseudo (laisse vide pour anonyme)</label>
         <input value={authorName} onChange={(e) => setAuthorName(e.target.value)} placeholder="ex: Lou·" maxLength={20} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" />
       </div>
       <div>
-        <label className="text-[10px] uppercase font-bold text-zinc-500 block mb-1">Sujet</label>
+        <label className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">Sujet</label>
         <select value={topic} onChange={(e) => setTopic(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm">
           <option value="coming-out">Coming-out</option>
           <option value="famille">Famille / proches</option>
@@ -570,7 +578,7 @@ function ComposePeerHelp({ country, onPosted, onCancel }: { country: string | nu
         </select>
       </div>
       <div>
-        <label className="text-[10px] uppercase font-bold text-zinc-500 block mb-1">Ton message ({message.length}/2000)</label>
+        <label className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">Ton message ({message.length}/2000)</label>
         <textarea value={message} onChange={(e) => setMessage(e.target.value.slice(0, 2000))} rows={6} placeholder="Raconte ce que tu vis. Aucun jugement. Tout est confidentiel et modéré." className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm" />
       </div>
       <label className="flex items-center gap-2 text-xs cursor-pointer">
@@ -583,7 +591,7 @@ function ComposePeerHelp({ country, onPosted, onCancel }: { country: string | nu
         </button>
         <button onClick={onCancel} className="bg-zinc-800 hover:bg-zinc-700 text-white text-sm px-4 py-2 rounded-full">Annuler</button>
       </div>
-      <p className="text-[10px] text-zinc-500">⚠ Si tu es en danger immédiat, utilise plutôt l'onglet "Contacts" ou le 112.</p>
+      <p className="text-[10px] text-zinc-400">⚠ Si tu es en danger immédiat, utilise plutôt l'onglet "Contacts" ou le 112.</p>
     </div>
   );
 }
