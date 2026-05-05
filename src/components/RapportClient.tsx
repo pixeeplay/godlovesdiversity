@@ -13,20 +13,22 @@ export function RapportClient({ stats }: { stats: Stats }) {
   const radarRef = useRef<HTMLCanvasElement>(null);
   const [shareUrl] = useState(typeof window !== 'undefined' ? window.location.href : '');
 
-  // Charge Chart.js et dessine
+  // Charge Chart.js APRÈS render initial — protégé par try/catch pour ne pas casser le reste
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    let cancelled = false;
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
-    script.onload = () => drawCharts();
+    script.async = true;
+    script.onload = () => { if (!cancelled) try { drawCharts(); } catch (e) { console.warn('Charts skipped:', e); } };
+    script.onerror = () => console.warn('Chart.js CDN bloqué — graphiques non affichés');
     document.body.appendChild(script);
-    return () => { script.remove(); };
+    return () => { cancelled = true; script.remove(); };
 
     function drawCharts() {
       const Chart = (window as any).Chart;
       if (!Chart) return;
 
-      // Bar chart : comparaison features GLD vs concurrents
       if (chartRef.current) {
         new Chart(chartRef.current, {
           type: 'bar',
@@ -42,22 +44,17 @@ export function RapportClient({ stats }: { stats: Stats }) {
           options: {
             responsive: true, maintainAspectRatio: false,
             scales: { y: { beginAtZero: true, max: 10, ticks: { color: '#a1a1aa' } }, x: { ticks: { color: '#a1a1aa' } } },
-            plugins: { legend: { labels: { color: '#fff' } }, title: { display: false } }
+            plugins: { legend: { labels: { color: '#fff' } } }
           }
         });
       }
 
-      // Radar chart : couverture fonctionnelle
       if (radarRef.current) {
         new Chart(radarRef.current, {
           type: 'radar',
           data: {
-            labels: ['Frontend', 'Backend', 'Sécurité', 'Mobile', 'IA', 'Multi-langue', 'Modération', 'PWA', 'Paiements', 'Communauté'],
-            datasets: [{
-              label: 'Couverture GLD',
-              data: [95, 92, 75, 70, 90, 100, 80, 60, 85, 88],
-              backgroundColor: 'rgba(212,83,126,0.2)', borderColor: '#d4537e', borderWidth: 2
-            }]
+            labels: ['Frontend', 'Backend', 'Sécurité', 'Mobile', 'IA', 'i18n', 'Modération', 'PWA', 'Paiements', 'Communauté'],
+            datasets: [{ label: 'Couverture GLD', data: [95, 92, 75, 70, 90, 100, 80, 60, 85, 88], backgroundColor: 'rgba(212,83,126,0.2)', borderColor: '#d4537e', borderWidth: 2 }]
           },
           options: { responsive: true, maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 100, pointLabels: { color: '#fff' }, ticks: { color: '#a1a1aa', backdropColor: 'transparent' } } }, plugins: { legend: { labels: { color: '#fff' } } } }
         });
@@ -72,19 +69,27 @@ export function RapportClient({ stats }: { stats: Stats }) {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100" style={{ printColorAdjust: 'exact' }}>
-      {/* Print styles */}
-      <style>{`@media print { body { background: white !important; color: black !important; } .no-print { display: none !important; } .page-break { page-break-after: always; } }`}</style>
+    <div style={{ minHeight: '100vh', background: '#09090b', color: '#fafafa', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      {/* Inline styles inline minimum pour garantir l'affichage MEME si Tailwind ne charge pas */}
+      <style>{`
+        @media print { body { background: white !important; color: black !important; } .no-print { display: none !important; } .page-break { page-break-after: always; } }
+        a { color: #f0abfc; }
+      `}</style>
+
+      {/* Fallback contenu si Tailwind/JS plante (visible immédiatement) */}
+      <noscript style={{ display: 'block', padding: 24, color: 'white', background: '#7f1d1d' }}>
+        ⚠ JavaScript désactivé — certaines parties (graphiques, partage) ne s'affichent pas.
+      </noscript>
 
       {/* HERO */}
-      <header className="relative overflow-hidden border-b border-zinc-800">
+      <header className="relative overflow-hidden border-b border-zinc-800" style={{ borderBottom: '1px solid #27272a' }}>
         <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/20 via-violet-500/15 to-cyan-500/10" />
         <div className="relative max-w-6xl mx-auto px-6 py-10">
-          <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div className="flex items-start justify-between gap-4 flex-wrap" style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'space-between' }}>
             <div>
-              <div className="text-xs uppercase tracking-widest text-fuchsia-300 font-bold mb-2">Rapport projet · {new Date().toLocaleDateString('fr-FR', { dateStyle: 'long' })}</div>
-              <h1 className="text-4xl font-display font-black mb-2">🌈 God Loves Diversity</h1>
-              <p className="text-lg text-zinc-300 max-w-2xl">Le réseau social inclusif religieux LGBT+ — état du projet, fonctionnalités live, sécurité, et prochaines évolutions.</p>
+              <div className="text-xs uppercase tracking-widest text-fuchsia-300 font-bold mb-2" style={{ fontSize: 11, color: '#f0abfc', fontWeight: 700, marginBottom: 8, textTransform: 'uppercase' }}>Rapport projet · {new Date().toLocaleDateString('fr-FR', { dateStyle: 'long' })}</div>
+              <h1 className="text-4xl font-display font-black mb-2" style={{ fontSize: 36, fontWeight: 900, marginBottom: 8 }}>🌈 God Loves Diversity</h1>
+              <p className="text-lg text-zinc-300 max-w-2xl" style={{ fontSize: 18, color: '#d4d4d8', maxWidth: 640 }}>Le réseau social inclusif religieux LGBT+ — état du projet, fonctionnalités live, sécurité, et prochaines évolutions.</p>
             </div>
             <div className="flex gap-2 no-print">
               <button onClick={share} className="bg-zinc-800 hover:bg-zinc-700 px-4 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
