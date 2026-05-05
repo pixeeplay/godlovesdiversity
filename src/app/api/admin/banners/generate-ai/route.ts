@@ -8,13 +8,16 @@ export const runtime = 'nodejs';
 
 /**
  * POST /api/admin/banners/generate-ai
- * Body : { preset?: string, prompt?: string, kind: 'image' | 'video', count?: number }
+ * Body : {
+ *   preset?: string, prompt?: string, kind: 'image' | 'video', count?: number,
+ *   higgsfield?: { model: 'higgsfield-lite'|'higgsfield-standard'|'higgsfield-turbo', duration: number, motion: 'low'|'medium'|'high', loop: boolean }
+ * }
  *
- * Génère une image (Gemini Imagen) ou une vidéo (Veo si dispo) pour bannière hero.
+ * Génère une image (Gemini Imagen) ou une vidéo (Higgsfield AI) pour bannière hero.
  * Retourne base64 + mimeType pour preview, l'admin clique "Sauver" → upload + create Banner.
  *
- * NB : Veo n'est pas encore largement dispo via l'API publique Gemini en mai 2026.
- * On essaye, et on fallback sur image sinon.
+ * Si Higgsfield n'est pas configuré (clés ID + Secret manquantes), fallback automatique
+ * sur 4 images Imagen → carrousel hero (effet "vidéo" cinématique).
  */
 
 const PRESETS: Record<string, { prompt: string; ratio: '16:9' | '21:9' | '4:3' }> = {
@@ -65,12 +68,12 @@ export async function POST(req: NextRequest) {
   if (!s) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 
   try {
-    const { preset, prompt, kind = 'image', count = 1 } = await req.json();
+    const { preset, prompt, kind = 'image', count = 1, higgsfield: hfOpts } = await req.json();
     const usedPrompt = prompt || (preset && PRESETS[preset]?.prompt) || 'cinematic ultra wide banner, inclusive cathedral with rainbow light, photorealistic';
 
     if (kind === 'video') {
-      // Tente Higgsfield d'abord (si configuré), puis Veo
-      const result = await tryGenerateVeo(usedPrompt);
+      // Tente Higgsfield avec les paramètres demandés
+      const result = await tryHiggsfield(usedPrompt, hfOpts);
       if (result.ok) return NextResponse.json(result);
       // Fallback : génère 4 images Imagen → carrousel = effet vidéo
       const img = await generateImagen(usedPrompt, 4);
@@ -78,7 +81,7 @@ export async function POST(req: NextRequest) {
         ok: true,
         kind: 'image',
         fallbackFromVideo: true,
-        message: `${result.reason}\n\n→ 4 images générées à la place. Le carrousel hero les fera défiler automatiquement (effet "vidéo" cinematic).`,
+        message: `${result.reason}\n\n→ 4 images Imagen générées à la place. Le carrousel hero les fera défiler automatiquement (effet "vidéo" cinématique).`,
         images: img.images,
         prompt: usedPrompt
       });
@@ -123,16 +126,14 @@ async function generateImagen(prompt: string, count: number): Promise<{ images: 
   return { images };
 }
 
-async function tryGenerateVeo(prompt: string): Promise<any> {
-  // Tente d'abord Higgsfield si configuré (clé HIGGSFIELD_API_KEY ou Setting ai.higgsfieldApiKey)
-  const higgs = await tryHiggsfield(prompt);
-  if (higgs.ok) return higgs;
+type HiggsfieldOpts = {
+  model?: 'higgsfield-lite' | 'higgsfield-standard' | 'higgsfield-turbo';
+  duration?: number;
+  motion?: 'low' | 'medium' | 'high';
+  loop?: boolean;
+};
 
-  // Veo n'est pas encore largement dispo via Gemini API publique en 2026.
-  return { ok: false, reason: 'Veo non disponible via cette clé Gemini, et Higgsfield non configuré (ajoute API Key ID + Secret dans /admin/settings).' };
-}
-
-async function tryHiggsfield(prompt: string): Promise<any> {
+async function tryHiggsfield(prompt: string, opts: HiggsfieldOpts = {}): Promise<any> {
   // Higgsfield = 2 clés (API Key ID + API Key Secret) → headers hf-api-key + hf-secret
   const [idSetting, secretSetting, legacySetting] = await Promise.all([
     prisma.setting.findUnique({ where: { key: 'ai.higgsfieldKeyId' } }).catch(() => null),
@@ -156,18 +157,26 @@ async function tryHiggsfield(prompt: string): Promise<any> {
     return h;
   };
 
-  // API Higgsfield text-to-video — endpoint et payload selon la doc 2026
-  // https://higgsfield.ai/docs (à vérifier selon ton plan)
+  // Paramètres : valeurs par défaut + clamp aux limites Higgsfield
+  const model = opts.model || 'higgsfield-lite';
+  const isStandard = model === 'higgsfield-standard';
+  const duration = Math.max(3, Math.min(isStandard ? 10 : 5, opts.duration || 5));
+  const motion = opts.motion || 'medium';
+  const loop = opts.loop !== false;
+
+  // API Higgsfield text-to-video — endpoint et payload selon la doc Higgsfield 2026
+  // https://docs.higgsfield.ai
   try {
     const r = await fetch('https://api.higgsfield.ai/v1/generate', {
       method: 'POST',
       headers: buildHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({
         prompt,
-        duration: 5,        // 5 secondes (model Lite)
+        duration,
         aspect_ratio: '16:9',
-        model: 'higgsfield-lite',
-        loop: true          // boucle pour bannière
+        model,
+        motion_intensity: motion,
+        loop
       })
     });
     const j = await r.json();

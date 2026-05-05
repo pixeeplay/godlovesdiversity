@@ -148,6 +148,10 @@ function BannerEditor({ banner, onClose, onSaved }: {
   const [linkedThemeSlug, setLinkedThemeSlug] = useState((banner as any)?.linkedThemeSlug || '');
   const [aiBusy, setAiBusy] = useState<'image' | 'video' | null>(null);
   const [aiPreview, setAiPreview] = useState<{ data: string; mimeType: string }[]>([]);
+  const [hfModel, setHfModel] = useState<'higgsfield-lite' | 'higgsfield-standard' | 'higgsfield-turbo'>('higgsfield-lite');
+  const [hfDuration, setHfDuration] = useState(5);
+  const [hfMotion, setHfMotion] = useState<'low' | 'medium' | 'high'>('medium');
+  const [hfLoop, setHfLoop] = useState(true);
 
   const PRESETS = [
     { slug: 'pride',        label: '🏳️‍🌈 Pride Month',  start: '06-01', end: '06-30' },
@@ -180,7 +184,14 @@ function BannerEditor({ banner, onClose, onSaved }: {
     try {
       const r = await fetch('/api/admin/banners/generate-ai', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ preset: presetSlug || undefined, prompt: aiPrompt || undefined, kind, count: 2 })
+        body: JSON.stringify({
+          preset: presetSlug || undefined,
+          prompt: aiPrompt || undefined,
+          kind,
+          count: 2,
+          // Paramètres Higgsfield (utilisés uniquement si kind=video)
+          higgsfield: kind === 'video' ? { model: hfModel, duration: hfDuration, motion: hfMotion, loop: hfLoop } : undefined
+        })
       });
       const j = await r.json();
       if (!j.ok) { alert(j.error || 'Génération échouée'); return; }
@@ -295,9 +306,9 @@ function BannerEditor({ banner, onClose, onSaved }: {
             </div>
           </div>
 
-          {/* === GÉNÉRATEUR IA (Imagen / Veo) === */}
+          {/* === GÉNÉRATEUR IA (Imagen / Higgsfield) === */}
           <div className="bg-fuchsia-500/5 border border-fuchsia-500/30 rounded-xl p-3 space-y-2">
-            <div className="text-xs uppercase font-bold text-fuchsia-300 flex items-center gap-1.5">✨ Générer avec IA (Imagen / Veo)</div>
+            <div className="text-xs uppercase font-bold text-fuchsia-300 flex items-center gap-1.5">✨ Générer avec IA (Imagen image / Higgsfield vidéo)</div>
 
             <div className="flex flex-wrap gap-1.5">
               {PRESETS.map(p => (
@@ -335,11 +346,65 @@ function BannerEditor({ banner, onClose, onSaved }: {
                 onClick={() => generateAI('video')}
                 disabled={!!aiBusy}
                 className={`bg-violet-500 hover:bg-violet-600 disabled:opacity-50 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 ${aiBusy === 'video' ? 'ai-glow ai-glow-subtle' : ''}`}
+                title="Génère une vidéo via Higgsfield AI. Si la clé Higgsfield n'est pas configurée, fallback automatique sur 4 images Imagen en carrousel."
               >
                 {aiBusy === 'video' ? <Loader2 size={11} className="animate-spin" /> : '🎥'}
-                {aiBusy === 'video' ? 'Veo génère…' : 'Générer vidéo (Veo, fallback image)'}
+                {aiBusy === 'video' ? 'Higgsfield génère…' : 'Générer vidéo (Higgsfield)'}
               </button>
             </div>
+
+            {/* Paramètres Higgsfield — affichés uniquement quand on prépare une vidéo */}
+            <details className="bg-zinc-950/60 border border-zinc-800 rounded-lg p-2.5">
+              <summary className="cursor-pointer text-[11px] font-bold text-violet-300 hover:text-violet-200">
+                ▸ Paramètres vidéo Higgsfield
+              </summary>
+              <div className="grid grid-cols-2 gap-2 mt-2.5 text-[11px]">
+                <label className="flex flex-col gap-1">
+                  <span className="text-zinc-400">Modèle</span>
+                  <select
+                    value={hfModel}
+                    onChange={(e) => setHfModel(e.target.value as any)}
+                    className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+                  >
+                    <option value="higgsfield-lite">Lite (rapide, économique, 5s max)</option>
+                    <option value="higgsfield-standard">Standard (qualité supérieure, 10s)</option>
+                    <option value="higgsfield-turbo">Turbo (ultra rapide, 5s)</option>
+                  </select>
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="text-zinc-400">Durée (s)</span>
+                  <input
+                    type="number" min={3} max={10} step={1}
+                    value={hfDuration}
+                    onChange={(e) => setHfDuration(parseInt(e.target.value) || 5)}
+                    className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="text-zinc-400">Intensité mouvement</span>
+                  <select
+                    value={hfMotion}
+                    onChange={(e) => setHfMotion(e.target.value as any)}
+                    className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-zinc-100"
+                  >
+                    <option value="low">Faible (doux, atmosphérique)</option>
+                    <option value="medium">Moyen (équilibré)</option>
+                    <option value="high">Fort (cinématique, dynamique)</option>
+                  </select>
+                </label>
+                <label className="flex items-center gap-2 self-end pb-1">
+                  <input
+                    type="checkbox" checked={hfLoop}
+                    onChange={(e) => setHfLoop(e.target.checked)}
+                    className="accent-violet-500"
+                  />
+                  <span className="text-zinc-300">Boucle parfaite (recommandé pour bannière)</span>
+                </label>
+              </div>
+              <p className="text-[10px] text-zinc-500 mt-2">
+                💡 Sans clé Higgsfield, le système génère automatiquement 4 images Imagen en carrousel (effet vidéo). Clés à configurer dans <code>/admin/settings → Higgsfield</code> (API Key ID + Secret).
+              </p>
+            </details>
 
             {aiPreview.length > 0 && (
               <div className="grid grid-cols-2 gap-2 pt-2">
