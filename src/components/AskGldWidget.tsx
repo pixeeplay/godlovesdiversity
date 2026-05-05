@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Send, X, Loader2, Sparkles, BookOpen, MessageSquare, Video, Play, Mic, Radio, ShieldAlert } from 'lucide-react';
 import { AskGldAvatarLocal } from './AskGldAvatarLocal';
 import { AskGldAvatarLiveAvatar } from './AskGldAvatarLiveAvatar';
+import { DivineLightAvatar } from './DivineLightAvatar';
 import { EmergencyModal } from './EmergencyModal';
 
 type Source = { title: string; source: string | null; score: number };
@@ -15,7 +16,7 @@ type Msg = {
   videoStatus?: 'pending' | 'rendering' | 'ready' | 'failed';
 };
 
-type Mode = 'text' | 'video' | 'live' | 'streaming';
+type Mode = 'text' | 'video' | 'live' | 'streaming' | 'divine';
 
 const SUGGESTIONS = [
   'Que dit la Bible sur l\'homosexualité ?',
@@ -207,18 +208,33 @@ export function AskGldWidget() {
             </div>
           </div>
 
-          {/* Toggle Texte / Vidéo / Live local / Streaming */}
+          {/* Toggle Texte / Voix divine / Vidéo / Live local / Streaming */}
+          <div className="px-3 py-2 flex gap-1 flex-wrap" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+            <button
+              onClick={() => setMode('text')}
+              className={`flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-bold transition ${mode === 'text' ? 'shadow' : 'opacity-50'}`}
+              style={mode === 'text'
+                ? { background: 'var(--accent)', color: '#fff' }
+                : { color: 'var(--fg-muted)' }}
+            >
+              <MessageSquare size={11} /> Texte
+            </button>
+            <button
+              onClick={() => setMode('divine')}
+              className={`flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-bold transition ${mode === 'divine' ? 'shadow' : 'opacity-50'}`}
+              style={mode === 'divine'
+                ? { background: 'linear-gradient(90deg, #fbbf24, #f43f5e, #a855f7, #06b6d4)', color: '#fff' }
+                : { color: 'var(--fg-muted)' }}
+              title="Voix divine — IA vocale gratuite avec animation lumière"
+            >
+              ✨ Voix divine
+            </button>
+          </div>
+
+          {/* Toggle Vidéo / Live local / Streaming (anciens modes) */}
           {(avatarAvailable || localLiveAvailable || liveAvatarAvailable) && (
             <div className="px-3 py-2 flex gap-1 flex-wrap" style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
-              <button
-                onClick={() => setMode('text')}
-                className={`flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-bold transition ${mode === 'text' ? 'shadow' : 'opacity-50'}`}
-                style={mode === 'text'
-                  ? { background: 'var(--accent)', color: '#fff' }
-                  : { color: 'var(--fg-muted)' }}
-              >
-                <MessageSquare size={11} /> Texte
-              </button>
+              <span className="text-[10px] text-zinc-400 self-center mr-1">Avatars premium :</span>
               {avatarAvailable && (
                 <button
                   onClick={() => setMode('video')}
@@ -259,7 +275,15 @@ export function AskGldWidget() {
             </div>
           )}
 
-          {/* Messages */}
+          {/* Mode VOIX DIVINE — image cathédrale + voix bidirectionnelle */}
+          {mode === 'divine' && (
+            <div className="flex-1 overflow-y-auto p-2">
+              <DivineLightAvatar />
+            </div>
+          )}
+
+          {/* Messages (texte/vidéo classiques) */}
+          {mode !== 'divine' && (
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 text-sm">
             {history.length === 0 && (
               <div className="space-y-3">
@@ -351,8 +375,10 @@ export function AskGldWidget() {
               </div>
             )}
           </div>
+          )}
 
-          {/* Input */}
+          {/* Input — caché en mode divine (le mic du DivineLightAvatar suffit) */}
+          {mode !== 'divine' && (
           <form
             onSubmit={(e) => { e.preventDefault(); send(); }}
             className="p-3 flex gap-2"
