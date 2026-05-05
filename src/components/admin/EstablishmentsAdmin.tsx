@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Building2, Plus, Mail, Upload, Download, Search, ExternalLink, CheckCircle2, Loader2, FileSpreadsheet, Send } from 'lucide-react';
 
 export function EstablishmentsAdmin({ initial }: { initial: any[] }) {
@@ -31,6 +31,7 @@ export function EstablishmentsAdmin({ initial }: { initial: any[] }) {
           }} className="bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-400/30 px-4 py-2 rounded-full text-sm flex items-center gap-2">
             🗑 Wipe importés
           </button>
+          <GeocodeButton />
           <button onClick={() => setShowImport(true)} className="bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-full text-sm flex items-center gap-2">
             <FileSpreadsheet size={14} /> Import CSV
           </button>
@@ -77,6 +78,36 @@ export function EstablishmentsAdmin({ initial }: { initial: any[] }) {
       {showInvite && <InviteModal onClose={() => setShowInvite(false)} />}
       {showImport && <ImportModal onClose={() => setShowImport(false)} />}
     </div>
+  );
+}
+
+function GeocodeButton() {
+  const [stats, setStats] = useState<any>(null);
+  const [busy, setBusy] = useState(false);
+
+  async function loadStats() {
+    const r = await fetch('/api/admin/venues/geocode');
+    const j = await r.json();
+    setStats(j);
+  }
+  useEffect(() => { void loadStats(); }, []);
+
+  async function geocode() {
+    if (!confirm('Géocoder 50 venues maintenant (~55 sec via OpenStreetMap) ?')) return;
+    setBusy(true);
+    const r = await fetch('/api/admin/venues/geocode?limit=50', { method: 'POST' });
+    const j = await r.json();
+    alert(`✓ ${j.geocoded} géocodés · ${j.failed} échecs · ${j.remaining} restants`);
+    void loadStats();
+    setBusy(false);
+  }
+
+  if (!stats) return null;
+  return (
+    <button onClick={geocode} disabled={busy || stats.withoutCoords === 0} className="bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-400/30 px-4 py-2 rounded-full text-sm flex items-center gap-2 disabled:opacity-50">
+      {busy ? <Loader2 size={14} className="animate-spin" /> : '🌍'}
+      Géocoder ({stats.withCoords}/{stats.total} = {stats.percentDone}%)
+    </button>
   );
 }
 
