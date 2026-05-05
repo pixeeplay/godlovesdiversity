@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { Calculator, Lock, Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -42,7 +43,7 @@ export default function P() {
           <p className="text-zinc-400 text-sm max-w-xl mx-auto">Pour les pays hostiles : ton navigateur ressemble à une <strong>calculatrice ordinaire</strong>. Tape le code secret <strong>{SECRET_PIN}</strong> puis = pour revenir à GLD.</p>
         </header>
         <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 text-sm text-amber-200 mb-4">
-          ⚠ <strong>Limite</strong> : ce n'est pas un déguisement complet — l'historique navigateur garde la trace de gld.pixeeplay.com. Pour vraie discrétion : VPN + navigation privée + <Link href="/voyage-safe"><a className="underline">checklist voyage</a></Link>.
+          ⚠ <strong>Limite</strong> : ce n'est pas un déguisement complet — l'historique navigateur garde la trace de gld.pixeeplay.com. Pour vraie discrétion : VPN + navigation privée + <Link href="/voyage-safe" className="underline">checklist voyage</Link>.
         </div>
         <button onClick={activate} className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2">
           <Eye size={16} /> Activer le mode calculatrice
@@ -71,4 +72,3 @@ export default function P() {
     </main>
   );
 }
-import Link from 'next/link';
