@@ -2,33 +2,30 @@ import { prisma } from '@/lib/prisma';
 import { RapportClient } from '@/components/RapportClient';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 300;
 export const metadata = {
   title: 'Rapport GLD — État du projet & roadmap',
-  description: 'Tableau de bord public : fonctionnalités, sécurité, prochaines évolutions',
-  openGraph: {
-    title: 'GLD — Rapport projet',
-    description: 'Le réseau social inclusif religieux — state of the art',
-    images: ['/og-rapport.png']
-  }
+  description: 'Tableau de bord public : fonctionnalités, sécurité, prochaines évolutions'
 };
 
+async function safe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+  try { return await fn(); } catch { return fallback; }
+}
+
 async function loadStats() {
-  const [users, venues, posts, photos, testimonies, products, orders, donations, events, connectProfiles, connectMatches, connectMessages] = await Promise.all([
-    prisma.user.count().catch(() => 0),
-    prisma.venue.count().catch(() => 0),
-    prisma.forumPost.count().catch(() => 0),
-    prisma.photo.count().catch(() => 0),
-    prisma.videoTestimony.count().catch(() => 0),
-    prisma.product.count().catch(() => 0),
-    prisma.order.count().catch(() => 0),
-    prisma.donation?.count?.().catch(() => 0) ?? 0,
-    prisma.event.count().catch(() => 0),
-    prisma.connectProfile.count().catch(() => 0),
-    prisma.connectMatch.count().catch(() => 0),
-    prisma.connectMessage.count().catch(() => 0)
-  ]);
-  return { users, venues, posts, photos, testimonies, products, orders, donations, events, connectProfiles, connectMatches, connectMessages };
+  return {
+    users:            await safe(() => prisma.user.count(), 0),
+    venues:           await safe(() => prisma.venue.count(), 0),
+    posts:            await safe(() => prisma.forumPost.count(), 0),
+    photos:           await safe(() => prisma.photo.count(), 0),
+    testimonies:      await safe(() => prisma.videoTestimony.count(), 0),
+    products:         await safe(() => prisma.product.count(), 0),
+    orders:           await safe(() => prisma.order.count(), 0),
+    donations:        0, // pas de model Donation pour l'instant
+    events:           await safe(() => prisma.event.count(), 0),
+    connectProfiles:  await safe(() => (prisma as any).connectProfile?.count?.() ?? 0, 0),
+    connectMatches:   await safe(() => (prisma as any).connectMatch?.count?.() ?? 0, 0),
+    connectMessages:  await safe(() => (prisma as any).connectMessage?.count?.() ?? 0, 0)
+  };
 }
 
 export default async function P() {
