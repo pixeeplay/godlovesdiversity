@@ -7,8 +7,16 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const u = await requireConnectUser();
   if (!u) return NextResponse.json({ error: 'login' }, { status: 401 });
-  const profile = await getOrCreateConnectProfile(u.id);
-  return NextResponse.json({ profile });
+  try {
+    const profile = await getOrCreateConnectProfile(u.id);
+    return NextResponse.json({ profile });
+  } catch (e: any) {
+    // Schéma pas encore migré (P2021 / P2022) — renvoie un profil vide pour ne pas casser l'UI
+    if (e?.code === 'P2021' || e?.code === 'P2022' || /does not exist/i.test(e?.message || '')) {
+      return NextResponse.json({ profile: null, schemaMissing: true });
+    }
+    return NextResponse.json({ error: e?.message || 'erreur' }, { status: 500 });
+  }
 }
 
 export async function PATCH(req: NextRequest) {

@@ -182,21 +182,37 @@ async function tryHiggsfield(prompt: string, opts: HiggsfieldOpts = {}): Promise
   const motion = opts.motion || 'medium';
   const loop = opts.loop !== false;
 
+  // Endpoints à tester (Higgsfield change parfois ses chemins)
+  const endpoints = [
+    'https://platform.higgsfield.ai/api/v1/text2video',
+    'https://api.higgsfield.ai/v1/text2video',
+    'https://api.higgsfield.ai/v1/generate'
+  ];
+  let lastErr = '';
+  let r: Response | null = null;
+  let raw = '';
+  for (const url of endpoints) {
+    try {
+      r = await fetch(url, {
+        method: 'POST',
+        headers: { ...headersOrErr, 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ prompt, duration, aspect_ratio: '16:9', model, motion_intensity: motion, loop })
+      });
+      raw = await r.text();
+      // Si la réponse commence par '<' c'est du HTML (404, login page, etc.) — on essaie l'endpoint suivant
+      if (raw.trim().startsWith('<')) { lastErr = `${url} : HTML reçu (HTTP ${r.status}) — endpoint inexistant ou auth refusée`; continue; }
+      break;
+    } catch (e: any) { lastErr = `${url} : ${e?.message || e}`; }
+  }
+  if (!r || raw.trim().startsWith('<')) {
+    return { ok: false, reason: `Higgsfield injoignable. ${lastErr}\n\n→ Vérifie tes clés (API Key ID + Secret) dans /admin/settings → 🎬 Higgsfield. Si ça persiste, l'endpoint a peut-être changé — voir docs.higgsfield.ai` };
+  }
+  let j: any;
+  try { j = JSON.parse(raw); } catch {
+    return { ok: false, reason: `Higgsfield : réponse non-JSON (HTTP ${r.status}). Premiers caractères : "${raw.slice(0, 100)}"` };
+  }
   try {
-    const r = await fetch('https://api.higgsfield.ai/v1/generate', {
-      method: 'POST',
-      headers: { ...headersOrErr, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        prompt,
-        duration,
-        aspect_ratio: '16:9',
-        model,
-        motion_intensity: motion,
-        loop
-      })
-    });
-    const j = await r.json();
-    if (!r.ok || j.error) return { ok: false, reason: j.error?.message || `HTTP ${r.status}` };
+    if (!r.ok || j.error) return { ok: false, reason: j.error?.message || j.error || `HTTP ${r.status}` };
 
     if (j.video_url) {
       return { ok: true, kind: 'video', videoUrl: j.video_url, prompt };

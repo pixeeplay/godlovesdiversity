@@ -27,7 +27,8 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const intensityIntervalRef = useRef<any>(null);
   const transcriptRef = useRef<string>(''); // évite la closure stale dans onend
-  const voiceCfgRef = useRef<any>({ preset: 'god', lang: 'fr-FR', voiceName: '', rate: 0.75, pitch: 0.55, volume: 1, reverb: 70, octaveShift: -3 });
+  const voiceCfgRef = useRef<any>({ preset: 'god', lang: 'fr-FR', voiceName: '', rate: 0.82, pitch: 0.75, volume: 1, reverb: 70, octaveShift: -2 });
+  const speechWarmedRef = useRef(false); // Safari iOS exige user-gesture pour activer TTS
 
   // Charge les paramètres voix depuis /api/avatar/voice-settings (admin-tunable)
   useEffect(() => {
@@ -52,8 +53,23 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
     setIntensity(0);
   }
 
+  // Safari iOS warm-up : sur le 1er user-gesture (clic micro), on parle un texte vide
+  // pour autoriser SpeechSynthesis à fonctionner ensuite (sinon bloqué silencieusement).
+  function warmUpSpeech() {
+    if (speechWarmedRef.current) return;
+    if (!('speechSynthesis' in window)) return;
+    try {
+      const warmup = new SpeechSynthesisUtterance(' ');
+      warmup.volume = 0;
+      warmup.rate = 1;
+      window.speechSynthesis.speak(warmup);
+      speechWarmedRef.current = true;
+    } catch { /* noop */ }
+  }
+
   /* ===== Reconnaissance vocale (gratuite, Web Speech API) ===== */
   function startListening() {
+    warmUpSpeech(); // CRUCIAL pour Safari iOS — débloque TTS dès le 1er touch
     setError('');
     setTranscript('');
     setResponse('');

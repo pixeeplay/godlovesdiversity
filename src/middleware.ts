@@ -53,7 +53,12 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2) Routes publiques → i18n
+  // 2) Routes /connect/* → on laisse passer SANS i18n (c'est un sous-app indépendant)
+  if (pathname.startsWith('/connect')) {
+    return NextResponse.next();
+  }
+
+  // 3) Routes publiques → i18n
   return intlMiddleware(req);
 }
 

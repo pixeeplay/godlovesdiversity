@@ -13,12 +13,22 @@ export async function GET(req: NextRequest) {
   const cursor = searchParams.get('cursor');
   const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 50);
 
-  // Récupère IDs bloqués pour exclure
+  try {
+    return await fetchPosts(u.id, cursor, limit);
+  } catch (e: any) {
+    if (e?.code === 'P2021' || e?.code === 'P2022' || /does not exist/i.test(e?.message || '')) {
+      return NextResponse.json({ posts: [], nextCursor: null, schemaMissing: true });
+    }
+    return NextResponse.json({ error: e?.message || 'erreur' }, { status: 500 });
+  }
+}
+
+async function fetchPosts(userId: string, cursor: string | null, limit: number) {
   const blocked = await prisma.connectBlock.findMany({
-    where: { OR: [{ blockerId: u.id }, { blockedId: u.id }] },
+    where: { OR: [{ blockerId: userId }, { blockedId: userId }] },
     select: { blockerId: true, blockedId: true }
   });
-  const blockedIds = new Set([...blocked.map(b => b.blockerId), ...blocked.map(b => b.blockedId)].filter(id => id !== u.id));
+  const blockedIds = new Set([...blocked.map(b => b.blockerId), ...blocked.map(b => b.blockedId)].filter(id => id !== userId));
 
   const posts = await prisma.connectPost.findMany({
     where: {
