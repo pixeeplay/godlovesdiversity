@@ -1164,10 +1164,12 @@ function StatCard({ label, value, sub, gradient, Icon }: { label: string; value:
 // ─────────────────────────────────────────────────────────────
 // MODE VOIX DIVINE — paramétrage de la voix « Dieu » (TTS natif + Web Audio)
 // ─────────────────────────────────────────────────────────────
+// Pitch trop bas (< 0.7) sonne robotique/distordu sur Web Speech API.
+// On reste dans 0.7-1.5 pour une voix grave mais naturelle, et on choisit la voix masculine la plus profonde dispo (Thomas/Daniel).
 const VOICE_PRESETS: Record<string, { label: string; rate: number; pitch: number; reverb: number; octaveShift: number }> = {
-  god:     { label: '⚡ Dieu majestueux',  rate: 0.75, pitch: 0.55, reverb: 70, octaveShift: -3 },
-  angel:   { label: '👼 Ange doux',         rate: 0.95, pitch: 1.4,  reverb: 50, octaveShift:  3 },
-  prophet: { label: '📜 Prophète sage',     rate: 0.7,  pitch: 0.85, reverb: 30, octaveShift: -1 },
+  god:     { label: '⚡ Dieu majestueux',  rate: 0.82, pitch: 0.75, reverb: 70, octaveShift: -2 },
+  angel:   { label: '👼 Ange doux',         rate: 0.95, pitch: 1.25, reverb: 50, octaveShift:  2 },
+  prophet: { label: '📜 Prophète sage',     rate: 0.78, pitch: 0.9,  reverb: 35, octaveShift: -1 },
   normal:  { label: '🗣 Voix normale',      rate: 1,    pitch: 1,    reverb:  0, octaveShift:  0 }
 };
 

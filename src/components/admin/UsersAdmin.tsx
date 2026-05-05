@@ -412,14 +412,22 @@ function CreateUserForm({
 function EditUserForm({
   user, isMe, onSaved, onDeleted, onCancel
 }: {
-  user: User;
+  user: User & { image?: string | null; bio?: string | null; publicName?: string | null; identity?: string | null; cityProfile?: string | null; traditions?: string[]; ghostMode?: boolean };
   isMe: boolean;
   onSaved: (u: Partial<User>) => void;
   onDeleted: () => void;
   onCancel: () => void;
 }) {
+  const [email, setEmail] = useState(user.email || '');
   const [name, setName] = useState(user.name || '');
+  const [publicName, setPublicName] = useState(user.publicName || '');
   const [role, setRole] = useState<Role>(user.role);
+  const [imageUrl, setImageUrl] = useState(user.image || '');
+  const [bio, setBio] = useState(user.bio || '');
+  const [identity, setIdentity] = useState(user.identity || '');
+  const [cityProfile, setCityProfile] = useState(user.cityProfile || '');
+  const [traditionsCsv, setTraditionsCsv] = useState((user.traditions || []).join(', '));
+  const [ghostMode, setGhostMode] = useState(!!user.ghostMode);
   const [newPassword, setNewPassword] = useState('');
   const [showPwd, setShowPwd] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -430,7 +438,17 @@ function EditUserForm({
     setBusy(true);
     setError('');
     try {
-      const body: any = { name };
+      const body: any = {
+        name,
+        publicName,
+        image: imageUrl || null,
+        bio,
+        identity,
+        cityProfile,
+        traditions: traditionsCsv.split(',').map((s) => s.trim()).filter(Boolean),
+        ghostMode
+      };
+      if (email && email !== user.email) body.email = email;
       if (role !== user.role) body.role = role;
       if (newPassword) body.password = newPassword;
       const r = await fetch(`/api/admin/users/${user.id}`, {
@@ -463,12 +481,30 @@ function EditUserForm({
 
   return (
     <div className="bg-zinc-950 border-t border-zinc-800 p-4 space-y-3">
+      {/* Identité */}
       <div className="grid sm:grid-cols-2 gap-3">
         <label className="block">
-          <span className="text-xs font-bold uppercase text-zinc-400">Nom</span>
+          <span className="text-xs font-bold uppercase text-zinc-400">Email</span>
+          <input
+            type="email"
+            value={email} onChange={(e) => setEmail(e.target.value)}
+            placeholder="email@exemple.com"
+            className="mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-pink"
+          />
+        </label>
+        <label className="block">
+          <span className="text-xs font-bold uppercase text-zinc-400">Nom complet</span>
           <input
             value={name} onChange={(e) => setName(e.target.value)}
-            placeholder="Nom complet"
+            placeholder="Prénom Nom"
+            className="mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-pink"
+          />
+        </label>
+        <label className="block">
+          <span className="text-xs font-bold uppercase text-zinc-400">Pseudo public (forum)</span>
+          <input
+            value={publicName} onChange={(e) => setPublicName(e.target.value)}
+            placeholder="ex: bibi (visible sur le forum)"
             className="mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-pink"
           />
         </label>
@@ -483,6 +519,87 @@ function EditUserForm({
             ))}
           </select>
         </label>
+      </div>
+
+      {/* Profil enrichi */}
+      <details className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-3">
+        <summary className="cursor-pointer text-xs font-bold uppercase text-zinc-400 hover:text-white">
+          ▸ Profil enrichi (image, bio, identité, ville, traditions)
+        </summary>
+        <div className="mt-3 space-y-3">
+          <div className="grid sm:grid-cols-[80px_1fr] gap-3 items-start">
+            {imageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={imageUrl} alt="" className="w-20 h-20 rounded-full object-cover border-2 border-zinc-700" />
+            ) : (
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-600 grid place-items-center text-white text-2xl font-bold">
+                {(name || email || '?').charAt(0).toUpperCase()}
+              </div>
+            )}
+            <label className="block">
+              <span className="text-xs font-bold uppercase text-zinc-400">URL avatar (image profil)</span>
+              <input
+                value={imageUrl} onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="https://… (PNG/JPG)"
+                className="mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-pink"
+              />
+            </label>
+          </div>
+
+          <label className="block">
+            <span className="text-xs font-bold uppercase text-zinc-400">Bio (visible sur le forum / profil public)</span>
+            <textarea
+              value={bio} onChange={(e) => setBio(e.target.value)}
+              rows={2}
+              placeholder="Quelques mots sur cet utilisateur…"
+              className="mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-pink"
+            />
+          </label>
+
+          <div className="grid sm:grid-cols-2 gap-3">
+            <label className="block">
+              <span className="text-xs font-bold uppercase text-zinc-400">Identité</span>
+              <input
+                value={identity} onChange={(e) => setIdentity(e.target.value)}
+                placeholder="ex: gay, lesbienne, trans, bi, hétéro allié·e…"
+                className="mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-pink"
+              />
+            </label>
+            <label className="block">
+              <span className="text-xs font-bold uppercase text-zinc-400">Ville / Pays</span>
+              <input
+                value={cityProfile} onChange={(e) => setCityProfile(e.target.value)}
+                placeholder="ex: Paris, France"
+                className="mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-pink"
+              />
+            </label>
+          </div>
+
+          <label className="block">
+            <span className="text-xs font-bold uppercase text-zinc-400">Traditions spirituelles (séparées par virgule)</span>
+            <input
+              value={traditionsCsv} onChange={(e) => setTraditionsCsv(e.target.value)}
+              placeholder="ex: catholique, soufi, bouddhiste, agnostique"
+              className="mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-pink"
+            />
+          </label>
+
+          <label className="flex items-center gap-2 text-sm cursor-pointer">
+            <input
+              type="checkbox" checked={ghostMode}
+              onChange={(e) => setGhostMode(e.target.checked)}
+              className="accent-brand-pink"
+            />
+            <span className="text-zinc-300">Mode fantôme (profil privé, masqué de la communauté)</span>
+          </label>
+        </div>
+      </details>
+
+      {/* Métadonnées (lecture seule) */}
+      <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-3 grid sm:grid-cols-3 gap-2 text-[11px]">
+        <div><span className="text-zinc-500">ID :</span> <code className="text-zinc-300">{user.id.slice(0, 8)}…</code></div>
+        <div><span className="text-zinc-500">Créé le :</span> <span className="text-zinc-300">{new Date(user.createdAt).toLocaleDateString('fr-FR')}</span></div>
+        <div><span className="text-zinc-500">Modifié :</span> <span className="text-zinc-300">{new Date(user.updatedAt).toLocaleDateString('fr-FR')}</span></div>
       </div>
 
       <label className="block">

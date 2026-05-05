@@ -30,7 +30,15 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
 
   const updateData: any = {};
   if (data.name !== undefined) updateData.name = data.name || null;
+  if (data.email !== undefined && /^\S+@\S+\.\S+$/.test(data.email)) updateData.email = data.email.toLowerCase().trim();
   if (data.role) updateData.role = data.role;
+  if (data.image !== undefined) updateData.image = data.image || null;
+  if (data.bio !== undefined) updateData.bio = data.bio || null;
+  if (data.publicName !== undefined) updateData.publicName = data.publicName || null;
+  if (data.identity !== undefined) updateData.identity = data.identity || null;
+  if (data.cityProfile !== undefined) updateData.cityProfile = data.cityProfile || null;
+  if (Array.isArray(data.traditions)) updateData.traditions = data.traditions;
+  if (typeof data.ghostMode === 'boolean') updateData.ghostMode = data.ghostMode;
   if (data.password) {
     if (data.password.length < 8) {
       return NextResponse.json({ error: 'mot de passe 8 caractères mini' }, { status: 400 });
@@ -38,12 +46,21 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
     updateData.passwordHash = await bcrypt.hash(data.password, 10);
   }
 
-  const user = await prisma.user.update({
-    where: { id },
-    data: updateData,
-    select: { id: true, email: true, name: true, role: true, createdAt: true, updatedAt: true }
-  });
-  return NextResponse.json({ ok: true, user });
+  try {
+    const user = await prisma.user.update({
+      where: { id },
+      data: updateData,
+      select: {
+        id: true, email: true, name: true, role: true, image: true,
+        bio: true, publicName: true, identity: true, cityProfile: true, traditions: true, ghostMode: true,
+        createdAt: true, updatedAt: true
+      }
+    });
+    return NextResponse.json({ ok: true, user });
+  } catch (e: any) {
+    if (e?.code === 'P2002') return NextResponse.json({ error: 'cet email est déjà utilisé' }, { status: 400 });
+    return NextResponse.json({ error: e?.message || 'erreur DB' }, { status: 500 });
+  }
 }
 
 export async function DELETE(_req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
