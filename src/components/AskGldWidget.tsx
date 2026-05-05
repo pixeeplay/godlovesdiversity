@@ -398,6 +398,7 @@ export function AskGldWidget() {
               <Send size={16} />
             </button>
           </form>
+          )}
         </div>
       )}
 
