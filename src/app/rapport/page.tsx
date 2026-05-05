@@ -65,7 +65,6 @@ export default async function RapportPage() {
           .footer { text-align: center; color: #71717a; font-size: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid #27272a; }
           @media print { body { background: white; color: black; } .section { border-color: #ccc; background: white; } .stat { background: #f5f5f5; } .stat-value, h1, h2, h3 { color: black !important; } .badge { background: white; color: black; border-color: #999; } }
         `}</style>
-      </head>
       <div className="container">
           {/* HERO */}
           <div className="hero">
@@ -254,7 +253,6 @@ export default async function RapportPage() {
             <p style={{ marginTop: 16, fontSize: 11 }}><a href="javascript:window.print()" style={{ display: 'inline-block', background: '#d4537e', color: 'white', textDecoration: 'none', padding: '8px 16px', borderRadius: 999, fontWeight: 700 }}>📄 Télécharger en PDF</a></p>
           </div>
         </div>
-      </div>
     </>
   );
 }

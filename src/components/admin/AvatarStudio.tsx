@@ -1125,7 +1125,7 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
                   </div>
                 ) : testVideo.status === 'timeout' ? (
                   <div className="bg-amber-500/10 border border-amber-500/30 text-amber-300 rounded-lg p-2 text-xs">
-                    Timeout (>2 min) — HeyGen n'a pas fini. Réessaie ou regarde sur <a href="https://app.heygen.com/projects" target="_blank" rel="noopener noreferrer" className="underline">app.heygen.com/projects</a>.
+                    Timeout (&gt;2 min) — HeyGen n'a pas fini. Réessaie ou regarde sur <a href="https://app.heygen.com/projects" target="_blank" rel="noopener noreferrer" className="underline">app.heygen.com/projects</a>.
                   </div>
                 ) : (
                   <div className="bg-zinc-800 rounded-lg p-3 text-xs flex items-center gap-2 text-zinc-300">
