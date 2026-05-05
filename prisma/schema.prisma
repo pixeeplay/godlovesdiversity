@@ -746,6 +746,17 @@ model Event {
   @@index([venueId, startsAt])
 }
 
+/// Message de chat dans un cercle de prière (group chat planifié).
+model PrayerMessage {
+  id          String   @id @default(cuid())
+  circle      String   // "catholique" | "protestant" | "musulman" | "juif" | "bouddhiste" | "interreligieux"
+  authorName  String?
+  message     String   @db.Text
+  createdAt   DateTime @default(now())
+
+  @@index([circle, createdAt])
+}
+
 /// Soumission générique utilisateur — absorbe mentor / hébergement / signalement / meetups / etc.
 /// Le champ `kind` discrimine, `data` contient le payload JSON spécifique.
 model UserSubmission {

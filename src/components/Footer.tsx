@@ -85,6 +85,7 @@ export function Footer() {
         <div>
           <h4 className="text-xs uppercase tracking-widest text-fuchsia-400 font-bold mb-3">Mon compte</h4>
           <ul className="space-y-2 text-sm">
+            <li><Link href="/mon-espace" className="text-white/70 hover:text-brand-pink font-bold">🏠 Mon espace</Link></li>
             <li><Link href="/inscription" className="text-white/70 hover:text-brand-pink">📝 S'inscrire (gratuit)</Link></li>
             <li><Link href="/admin/login" className="text-white/70 hover:text-brand-pink">🔐 Connexion</Link></li>
             <li><Link href="/parrainage" className="text-white/70 hover:text-brand-pink">🎁 Programme parrainage</Link></li>

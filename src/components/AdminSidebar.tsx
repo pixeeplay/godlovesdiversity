@@ -89,6 +89,7 @@ const NAV: Entry[] = [
       { href: '/admin/integrations/telegram', label: 'Bot Telegram (notifs + commandes)', icon: MenuIcon },
       { href: '/admin/integrations', label: 'Intégrations', icon: Layers },
       { href: '/admin/themes', label: 'Thèmes saisonniers 🎨', icon: Sparkles },
+      { href: '/admin/features', label: 'Feature flags 🚦', icon: Sparkles },
       { href: '/admin/setup', label: 'Assistant configuration', icon: Sparkles }
     ]
   },
