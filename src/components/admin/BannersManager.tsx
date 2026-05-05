@@ -312,9 +312,9 @@ function BannerEditor({ banner, onClose, onSaved }: {
             </div>
           </div>
 
-          {/* === GÉNÉRATEUR IA (Imagen / Higgsfield) === */}
+          {/* === GÉNÉRATEUR IA Higgsfield (image + vidéo) === */}
           <div className="bg-fuchsia-500/5 border border-fuchsia-500/30 rounded-xl p-3 space-y-2">
-            <div className="text-xs uppercase font-bold text-fuchsia-300 flex items-center gap-1.5">✨ Générer avec IA (Imagen image / Higgsfield vidéo)</div>
+            <div className="text-xs uppercase font-bold text-fuchsia-300 flex items-center gap-1.5">✨ Générer avec Higgsfield AI (image + vidéo)</div>
 
             <div className="flex flex-wrap gap-1.5">
               {PRESETS.map(p => (
@@ -345,7 +345,7 @@ function BannerEditor({ banner, onClose, onSaved }: {
                 className={`bg-fuchsia-500 hover:bg-fuchsia-600 disabled:opacity-50 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 ${aiBusy === 'image' ? 'ai-glow ai-glow-subtle' : ''}`}
               >
                 {aiBusy === 'image' ? <Loader2 size={11} className="animate-spin" /> : '🖼'}
-                {aiBusy === 'image' ? 'Imagen génère…' : 'Générer image (Imagen)'}
+                {aiBusy === 'image' ? 'Higgsfield Soul génère…' : 'Générer image (Higgsfield Soul)'}
               </button>
               <button
                 type="button"
@@ -408,7 +408,7 @@ function BannerEditor({ banner, onClose, onSaved }: {
                 </label>
               </div>
               <p className="text-[10px] text-zinc-500 mt-2">
-                💡 Sans clé Higgsfield, le système génère automatiquement 4 images Imagen en carrousel (effet vidéo). Clés à configurer dans <code>/admin/settings → Higgsfield</code> (API Key ID + Secret).
+                💡 Génération vidéo via <b>Higgsfield AI</b>. Clés à configurer dans <code>/admin/settings → 🎬 Higgsfield</code> (API Key ID + Secret).
               </p>
             </details>
 
