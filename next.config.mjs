@@ -63,6 +63,12 @@ const nextConfig = {
   },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
+  },
+  async rewrites() {
+    return [
+      // /rapport → fichier statique HTML (zéro SSR, zéro middleware i18n, garantit le rendu)
+      { source: '/rapport', destination: '/rapport.html' }
+    ];
   }
 };
 
