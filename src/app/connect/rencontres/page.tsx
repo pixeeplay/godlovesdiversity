@@ -10,15 +10,47 @@ export default function RencontresPage() {
   const [showPremium, setShowPremium] = useState(false);
   const startX = useRef<number | null>(null);
 
-  function decide(action: 'pass' | 'like' | 'super') {
+  async function decide(action: 'pass' | 'like' | 'super') {
     if (deck.length === 0) return;
     const top = deck[0];
     setDeck(deck.slice(1));
+    setSwipeOffset(0);
+
+    // Persist en DB (silent fail si pas auth/schema)
+    try {
+      const r = await fetch('/api/connect/swipe', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ toUserId: top.userHandle, action, intentions: top.intentions })
+      });
+      const j = await r.json().catch(() => ({}));
+      if (j.match) {
+        setMatches([top.userHandle, ...matches]);
+        // Notif visuelle
+        setTimeout(() => alert(`✨ MATCH avec ${top.userHandle} ! Va dans Messages pour démarrer.`), 100);
+        return;
+      }
+      if (r.status === 429 && j.premium) {
+        if (confirm('Limite quotidienne atteinte (50 likes). Passer Premium pour swipes illimités ?')) {
+          openPremium();
+        }
+        return;
+      }
+    } catch {}
+    // Fallback : simule match aléatoire si DB pas dispo
     if (action === 'like' || action === 'super') {
-      // Simule un match aléatoire (50%)
       if (Math.random() > 0.5) setMatches([top.userHandle, ...matches]);
     }
-    setSwipeOffset(0);
+  }
+
+  async function openPremium() {
+    // Tente Stripe checkout réel
+    try {
+      const r = await fetch('/api/connect/premium/checkout', { method: 'POST' });
+      const j = await r.json();
+      if (j.url) { window.location.href = j.url; return; }
+      alert('Stripe non configuré : ' + (j.error || 'erreur'));
+    } catch {}
+    setShowPremium(true);
   }
 
   const top = deck[0];
@@ -46,7 +78,7 @@ export default function RencontresPage() {
           </div>
 
           <button
-            onClick={() => setShowPremium(true)}
+            onClick={openPremium}
             className="w-full mt-4 bg-gradient-to-r from-amber-400 via-rose-400 to-fuchsia-500 text-white font-bold text-xs py-2.5 rounded-full shadow-lg flex items-center justify-center gap-1.5"
           >
             <Crown size={12} /> GLD Premium · 5€/mois
@@ -161,7 +193,7 @@ export default function RencontresPage() {
                       <div className="text-xs font-bold truncate">{u.name}</div>
                       <div className="text-[10px] text-emerald-300">✨ Match !</div>
                     </div>
-                    <button className="bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 p-1.5 rounded-full"><MessageCircle size={12} /></button>
+                    <a href="/connect/messages" className="bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 p-1.5 rounded-full"><MessageCircle size={12} /></a>
                   </div>
                 );
               })}
@@ -196,7 +228,12 @@ export default function RencontresPage() {
               <li className="flex items-center gap-2"><span className="text-amber-300">✦</span> Mode incognito (parcours sans laisser de trace)</li>
               <li className="flex items-center gap-2"><span className="text-amber-300">✦</span> Accès aux pros premium (thérapeutes vérifiés)</li>
             </ul>
-            <button className="w-full mt-5 bg-gradient-to-r from-amber-400 via-rose-400 to-fuchsia-500 text-white font-bold py-3 rounded-full shadow-lg">
+            <button onClick={async () => {
+              const r = await fetch('/api/connect/premium/checkout', { method: 'POST' });
+              const j = await r.json();
+              if (j.url) window.location.href = j.url;
+              else alert('Stripe non configuré : ' + (j.error || 'erreur'));
+            }} className="w-full mt-5 bg-gradient-to-r from-amber-400 via-rose-400 to-fuchsia-500 text-white font-bold py-3 rounded-full shadow-lg">
               Devenir Premium
             </button>
             <button onClick={() => setShowPremium(false)} className="w-full mt-2 text-zinc-400 text-xs hover:text-white">Plus tard</button>

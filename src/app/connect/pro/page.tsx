@@ -33,9 +33,9 @@ export default function ProPage() {
               <div><div className="text-sm font-bold">28</div><div className="text-[9px] text-zinc-500">Vues</div></div>
               <div><div className="text-sm font-bold">5</div><div className="text-[9px] text-zinc-500">Recos</div></div>
             </div>
-            <button className="w-full mt-3 bg-gradient-to-r from-sky-500 to-cyan-500 text-white text-xs font-bold py-2 rounded-full">
+            <a href="/connect/onboard" className="block text-center w-full mt-3 bg-gradient-to-r from-sky-500 to-cyan-500 text-white text-xs font-bold py-2 rounded-full">
               + Compléter mon CV
-            </button>
+            </a>
           </div>
         </div>
 
@@ -68,7 +68,12 @@ export default function ProPage() {
               className="flex-1 bg-transparent outline-none text-sm placeholder:text-zinc-500"
             />
           </div>
-          <button className="bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold text-xs px-4 rounded-2xl flex items-center gap-1.5">
+          <button onClick={() => {
+            const title = prompt('Titre de ton opportunité (ex: Recherche photographe mariage Lyon) :');
+            if (!title) return;
+            const budget = prompt('Budget approximatif (optionnel) :') || '';
+            alert('Opportunité prête à publier (feature opportunités à brancher en Phase 2). Pour l\'instant, partage-la dans le mur Communauté → /connect/mur');
+          }} className="bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold text-xs px-4 rounded-2xl flex items-center gap-1.5">
             <Plus size={12} /> Poster une opportunité
           </button>
         </div>
@@ -80,7 +85,11 @@ export default function ProPage() {
             <div className="flex-1">
               <h3 className="font-bold text-sm">Recherche photographe pour mariage interreligieux — Lyon, sept. 2026</h3>
               <p className="text-xs text-zinc-300 mt-1">Posté par Léa · 18 candidatures · Budget 1500-2500€</p>
-              <button className="mt-3 bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 text-xs font-bold px-3 py-1.5 rounded-full border border-amber-400/30">
+              <button onClick={() => {
+                const msg = prompt('Ton message de candidature :');
+                if (!msg) return;
+                alert('✓ Candidature enregistrée localement. Pour le contact réel, le porteur d\'offre te contactera via Messagerie.');
+              }} className="mt-3 bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 text-xs font-bold px-3 py-1.5 rounded-full border border-amber-400/30">
                 Candidater
               </button>
             </div>
@@ -154,19 +163,37 @@ function ProCard({ record }: { record: any }) {
             </span>
           )}
           <p className="text-xs text-zinc-200 leading-relaxed mb-3">{record.pitch}</p>
-          <div className="flex gap-2">
-            <button className="bg-sky-500/30 hover:bg-sky-500/40 text-sky-100 text-[11px] font-bold px-3 py-1.5 rounded-full border border-sky-400/40 flex items-center gap-1.5">
-              <Plus size={10} /> Se connecter
-            </button>
-            <button className="bg-white/[0.05] hover:bg-white/[0.1] text-zinc-200 text-[11px] font-bold px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5">
-              <MessageCircle size={10} /> Message
-            </button>
-            <button className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 text-[11px] font-bold px-3 py-1.5 rounded-full border border-emerald-400/30 flex items-center gap-1.5">
-              <Calendar size={10} /> Prendre RDV
-            </button>
-          </div>
+          <ProActions userId={u.id} userName={u.name} userEmail={(u as any).email} />
         </div>
       </div>
     </article>
+  );
+}
+
+function ProActions({ userId, userName, userEmail }: { userId: string; userName: string; userEmail?: string }) {
+  const [connecting, setConnecting] = useState(false);
+  const [done, setDone] = useState(false);
+  async function connect() {
+    setConnecting(true);
+    const r = await fetch('/api/connect/connect', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ toUserId: userId, message: `Bonjour ${userName}, je souhaite me connecter avec vous via GLD.` })
+    }).catch(() => ({ ok: false } as any));
+    setConnecting(false);
+    if ((r as any).ok) setDone(true);
+    else alert('Impossible — connecte-toi d\'abord ou réessaie plus tard');
+  }
+  return (
+    <div className="flex gap-2">
+      <button onClick={connect} disabled={connecting || done} className={`text-[11px] font-bold px-3 py-1.5 rounded-full border flex items-center gap-1.5 ${done ? 'bg-emerald-500/30 border-emerald-400/40 text-emerald-100' : 'bg-sky-500/30 hover:bg-sky-500/40 text-sky-100 border-sky-400/40'} disabled:opacity-50`}>
+        <Plus size={10} /> {done ? 'Demande envoyée ✓' : connecting ? 'Envoi…' : 'Se connecter'}
+      </button>
+      <a href="/connect/messages" className="bg-white/[0.05] hover:bg-white/[0.1] text-zinc-200 text-[11px] font-bold px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5">
+        <MessageCircle size={10} /> Message
+      </a>
+      <a href={userEmail ? `mailto:${userEmail}?subject=Demande%20de%20RDV%20via%20GLD` : '#'} onClick={(e) => { if (!userEmail) { e.preventDefault(); alert('Le pro n\'a pas renseigné d\'email — passe par Messagerie pour demander un RDV'); } }} className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 text-[11px] font-bold px-3 py-1.5 rounded-full border border-emerald-400/30 flex items-center gap-1.5">
+        <Calendar size={10} /> Prendre RDV
+      </a>
+    </div>
   );
 }

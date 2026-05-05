@@ -118,23 +118,37 @@ export default function MurPage() {
       <aside className="hidden lg:block space-y-4">
         <div className="backdrop-blur-2xl bg-white/[0.04] border border-white/10 rounded-2xl p-3 sticky top-32">
           <h3 className="text-xs font-bold text-zinc-300 mb-2 px-1">Anniversaires</h3>
-          <div className="text-xs text-zinc-400 mb-3 px-1">🎂 Sarah · 28 ans aujourd'hui</div>
+          <a href="/agenda" className="block text-xs text-zinc-400 mb-3 px-1 hover:text-white">🎂 Sarah · 28 ans aujourd'hui</a>
           <h3 className="text-xs font-bold text-zinc-300 mb-2 px-1">Événements proches</h3>
-          <div className="text-xs text-zinc-400 mb-1 px-1">🌈 Pride Lyon — 14 juin</div>
-          <div className="text-xs text-zinc-400 mb-3 px-1">🕯 Veillée œcuménique — 22 juin</div>
+          <a href="/agenda" className="block text-xs text-zinc-400 mb-1 px-1 hover:text-white">🌈 Pride Lyon — 14 juin</a>
+          <a href="/agenda" className="block text-xs text-zinc-400 mb-3 px-1 hover:text-white">🕯 Veillée œcuménique — 22 juin</a>
           <h3 className="text-xs font-bold text-zinc-300 mb-2 px-1">Suggestions</h3>
-          {MOCK_USERS.slice(0, 3).map((u) => (
-            <div key={u.id} className="flex items-center gap-2 px-1 py-1.5">
-              <div className="w-7 h-7 rounded-full" style={{ background: `linear-gradient(135deg, ${u.avatarColor[0]}, ${u.avatarColor[1]})` }} />
-              <div className="text-[11px] flex-1 truncate">
-                <div className="font-bold text-zinc-200 truncate">{u.name}</div>
-                <div className="text-zinc-500 text-[10px] truncate">{u.identity} · {u.city}</div>
-              </div>
-              <button className="text-[10px] bg-fuchsia-500/20 text-fuchsia-200 px-2 py-1 rounded-full">+</button>
-            </div>
-          ))}
+          {MOCK_USERS.slice(0, 3).map((u) => <SuggestionRow key={u.id} u={u} />)}
         </div>
       </aside>
+    </div>
+  );
+}
+
+function SuggestionRow({ u }: { u: any }) {
+  const [done, setDone] = useState(false);
+  async function add() {
+    await fetch('/api/connect/connect', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ toUserId: u.id, message: `Salut ${u.name} 👋` })
+    }).catch(() => null);
+    setDone(true);
+  }
+  return (
+    <div className="flex items-center gap-2 px-1 py-1.5">
+      <div className="w-7 h-7 rounded-full" style={{ background: `linear-gradient(135deg, ${u.avatarColor[0]}, ${u.avatarColor[1]})` }} />
+      <div className="text-[11px] flex-1 truncate">
+        <div className="font-bold text-zinc-200 truncate">{u.name}</div>
+        <div className="text-zinc-500 text-[10px] truncate">{u.identity} · {u.city}</div>
+      </div>
+      <button onClick={add} disabled={done} className={`text-[10px] px-2 py-1 rounded-full ${done ? 'bg-emerald-500/20 text-emerald-200' : 'bg-fuchsia-500/20 text-fuchsia-200 hover:bg-fuchsia-500/30'}`}>
+        {done ? '✓' : '+'}
+      </button>
     </div>
   );
 }
@@ -209,11 +223,26 @@ function PostCard({ post }: { post: any }) {
         <button onClick={() => setPrayed(!prayed)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition ${prayed ? 'bg-violet-500/20 text-violet-300' : 'text-zinc-400 hover:bg-white/5'}`}>
           <Sparkles size={13} /> {post.prayers + (prayed ? 1 : 0)} <span className="hidden sm:inline">je prie</span>
         </button>
-        <button className="flex items-center gap-1.5 text-zinc-400 hover:bg-white/5 px-3 py-1.5 rounded-full text-xs font-bold">
+        <button onClick={() => alert('Commentaires bientôt — pour l\'instant utilise Demande de prière')} className="flex items-center gap-1.5 text-zinc-400 hover:bg-white/5 px-3 py-1.5 rounded-full text-xs font-bold">
           <MessageCircle size={13} /> {post.comments}
         </button>
-        <button className="ml-auto text-zinc-400 hover:bg-white/5 p-1.5 rounded-full">
+        <button onClick={() => {
+          const url = `${location.origin}/connect/mur#post-${post.id}`;
+          if ((navigator as any).share) (navigator as any).share({ title: 'GLD Connect', text: post.text.slice(0, 100), url }).catch(() => {});
+          else { navigator.clipboard.writeText(url); alert('Lien copié !'); }
+        }} className="ml-auto text-zinc-400 hover:bg-white/5 p-1.5 rounded-full" title="Partager">
           <Share2 size={13} />
+        </button>
+        <button onClick={async () => {
+          const reason = prompt('Raison du signalement ? (harassment / hate / spam / explicit / other)');
+          if (!reason) return;
+          await fetch('/api/connect/report', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reportedId: post.authorId, contentType: 'post', contentId: post.id, reason })
+          }).catch(() => null);
+          alert('✓ Signalement envoyé à l\'équipe modération');
+        }} className="text-zinc-500 hover:text-rose-400 p-1.5 rounded-full" title="Signaler">
+          <MoreHorizontal size={13} />
         </button>
       </footer>
     </article>
