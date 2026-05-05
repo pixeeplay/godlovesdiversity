@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Heart, Sparkles, MessageCircle, Share2, Image as ImageIcon, Calendar, Smile, MoreHorizontal, ShieldCheck, Loader2 } from 'lucide-react';
 import { MOCK_POSTS, MOCK_USERS, getUser } from '@/lib/connect-mock';
 
@@ -8,7 +8,30 @@ export default function MurPage() {
   const [composer, setComposer] = useState('');
   const [composerType, setComposerType] = useState<'post' | 'photo' | 'event' | 'sentiment' | 'priere'>('post');
   const [posting, setPosting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [attachedUrl, setAttachedUrl] = useState<string | null>(null);
+  const [attachedKind, setAttachedKind] = useState<'image' | 'video' | null>(null);
   const [showMock, setShowMock] = useState(true);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function uploadFile(f: File) {
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('files', f);
+      const r = await fetch('/api/admin/media', { method: 'POST', body: fd });
+      const j = await r.json();
+      if (j.ok && j.files?.[0]) {
+        setAttachedUrl(j.files[0].url);
+        setAttachedKind(j.files[0].mime.startsWith('video/') ? 'video' : 'image');
+        setComposerType(j.files[0].mime.startsWith('video/') ? 'photo' : 'photo'); // Tag photo pour les 2
+      } else {
+        alert('Upload impossible : ' + (j.error || 'erreur'));
+      }
+    } catch (e: any) {
+      alert('Upload impossible : ' + (e?.message || e));
+    } finally { setUploading(false); }
+  }
 
   // Charge les vrais posts depuis l'API + check si mock activé
   useEffect(() => {
@@ -33,7 +56,12 @@ export default function MurPage() {
     try {
       const r = await fetch('/api/connect/posts', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: composerType, text: composer })
+        body: JSON.stringify({
+          type: composerType,
+          text: composer,
+          imageUrl: attachedKind === 'image' ? attachedUrl : undefined,
+          videoUrl: attachedKind === 'video' ? attachedUrl : undefined
+        })
       });
       let j: any = {};
       try { j = await r.json(); } catch {}
@@ -50,6 +78,9 @@ export default function MurPage() {
       setPosts([j.post, ...posts]);
       setComposer('');
       setComposerType('post');
+      setAttachedUrl(null);
+      setAttachedKind(null);
+      if (fileRef.current) fileRef.current.value = '';
     } catch (e: any) {
       alert('❌ Erreur réseau : ' + (e?.message || e));
     } finally { setPosting(false); }
@@ -90,16 +121,40 @@ export default function MurPage() {
                 rows={2}
                 className="w-full bg-transparent outline-none resize-none text-sm placeholder:text-zinc-500"
               />
+              {/* Preview de l'attachement uploadé */}
+              {attachedUrl && (
+                <div className="mt-2 relative inline-block">
+                  {attachedKind === 'image' ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={attachedUrl} alt="" className="max-h-40 rounded-xl border border-white/10" />
+                  ) : (
+                    <video src={attachedUrl} controls className="max-h-40 rounded-xl border border-white/10" />
+                  )}
+                  <button
+                    onClick={() => { setAttachedUrl(null); setAttachedKind(null); if (fileRef.current) fileRef.current.value = ''; }}
+                    className="absolute -top-2 -right-2 bg-rose-500 hover:bg-rose-600 text-white w-6 h-6 rounded-full text-xs grid place-items-center"
+                    title="Retirer"
+                  >×</button>
+                </div>
+              )}
+
+              {/* Input file caché */}
+              <input
+                ref={fileRef} type="file" accept="image/*,video/*"
+                onChange={(e) => e.target.files?.[0] && uploadFile(e.target.files[0])}
+                className="hidden"
+              />
+
               <div className="flex items-center gap-2 mt-3 flex-wrap">
-                <ChipBtn icon={ImageIcon} label="Photo"               color="from-emerald-400 to-cyan-500"   active={composerType === 'photo'}     onClick={() => setComposerType(composerType === 'photo' ? 'post' : 'photo')} />
+                <ChipBtn icon={ImageIcon} label={uploading ? 'Upload…' : 'Photo / Vidéo'} color="from-emerald-400 to-cyan-500"   active={!!attachedUrl} onClick={() => fileRef.current?.click()} />
                 <ChipBtn icon={Calendar}  label="Événement"           color="from-orange-400 to-red-500"     active={composerType === 'event'}     onClick={() => setComposerType(composerType === 'event' ? 'post' : 'event')} />
                 <ChipBtn icon={Smile}     label="Sentiment"           color="from-yellow-400 to-pink-500"    active={composerType === 'sentiment'} onClick={() => setComposerType(composerType === 'sentiment' ? 'post' : 'sentiment')} />
                 <ChipBtn icon={Sparkles}  label="Demande de prière"   color="from-fuchsia-500 to-violet-600" active={composerType === 'priere'}    onClick={() => setComposerType(composerType === 'priere' ? 'post' : 'priere')} />
-                <button onClick={publish} disabled={!composer.trim() || posting} className="ml-auto text-xs font-bold text-white bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-2 rounded-full shadow-lg shadow-fuchsia-500/30 disabled:opacity-50 flex items-center gap-1.5">
+                <button onClick={publish} disabled={(!composer.trim() && !attachedUrl) || posting} className="ml-auto text-xs font-bold text-white bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-2 rounded-full shadow-lg shadow-fuchsia-500/30 disabled:opacity-50 flex items-center gap-1.5">
                   {posting && <Loader2 size={12} className="animate-spin" />} Publier
                 </button>
               </div>
-              {composerType !== 'post' && (
+              {composerType !== 'post' && composerType !== 'photo' && (
                 <div className="mt-2 text-[10px] text-zinc-400">Type sélectionné : <b className="text-fuchsia-300">{composerType}</b> — re-clique sur le chip pour annuler</div>
               )}
             </div>
@@ -210,7 +265,16 @@ function PostCard({ post }: { post: any }) {
 
       <p className="text-sm text-zinc-100 leading-relaxed mb-3 whitespace-pre-wrap">{post.text}</p>
 
-      {post.imageGradient && (
+      {/* Vraies photos/vidéos uploadées */}
+      {post.imageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={post.imageUrl} alt="" className="rounded-xl mb-3 max-h-96 w-full object-cover" />
+      )}
+      {post.videoUrl && (
+        <video src={post.videoUrl} controls className="rounded-xl mb-3 max-h-96 w-full bg-black" />
+      )}
+      {/* Mock placeholder gradient */}
+      {post.imageGradient && !post.imageUrl && !post.videoUrl && (
         <div className="rounded-xl mb-3 h-48 grid place-items-center text-zinc-300 text-xs" style={{ background: `linear-gradient(135deg, ${post.imageGradient[0]}, ${post.imageGradient[1]})` }}>
           [ Photo / Vidéo ]
         </div>
