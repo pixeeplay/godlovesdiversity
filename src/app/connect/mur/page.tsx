@@ -1,11 +1,46 @@
 'use client';
-import { useState } from 'react';
-import { Heart, Sparkles, MessageCircle, Share2, Image as ImageIcon, Calendar, Smile, MoreHorizontal, ShieldCheck } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Heart, Sparkles, MessageCircle, Share2, Image as ImageIcon, Calendar, Smile, MoreHorizontal, ShieldCheck, Loader2 } from 'lucide-react';
 import { MOCK_POSTS, MOCK_USERS, getUser } from '@/lib/connect-mock';
 
 export default function MurPage() {
-  const [posts] = useState(MOCK_POSTS);
+  const [posts, setPosts] = useState<any[]>(MOCK_POSTS);
   const [composer, setComposer] = useState('');
+  const [posting, setPosting] = useState(false);
+  const [showMock, setShowMock] = useState(true);
+
+  // Charge les vrais posts depuis l'API + check si mock activé
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/connect/posts').then(r => r.ok ? r.json() : { posts: [] }).catch(() => ({ posts: [] })),
+      fetch('/api/admin/settings').then(r => r.ok ? r.json() : { settings: {} }).catch(() => ({ settings: {} }))
+    ]).then(([postsR, settingsR]) => {
+      const realPosts = postsR.posts || [];
+      const mockEnabled = settingsR.settings?.['connect.showMockData'] !== 'false';
+      setShowMock(mockEnabled);
+      // Mix : vrais posts (toujours en haut) + mock (si activé)
+      if (realPosts.length > 0 && mockEnabled) setPosts([...realPosts, ...MOCK_POSTS]);
+      else if (realPosts.length > 0) setPosts(realPosts);
+      else if (!mockEnabled) setPosts([]);
+      else setPosts(MOCK_POSTS);
+    });
+  }, []);
+
+  async function publish(type = 'post') {
+    if (!composer.trim() || posting) return;
+    setPosting(true);
+    try {
+      const r = await fetch('/api/connect/posts', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, text: composer })
+      });
+      const j = await r.json();
+      if (j.ok) {
+        setPosts([j.post, ...posts]);
+        setComposer('');
+      } else alert(j.error || 'Erreur');
+    } finally { setPosting(false); }
+  }
 
   return (
     <div className="grid lg:grid-cols-[220px_1fr_240px] gap-5">
@@ -45,8 +80,8 @@ export default function MurPage() {
                 <ChipBtn icon={Calendar} label="Événement" color="from-orange-400 to-red-500" />
                 <ChipBtn icon={Smile} label="Sentiment" color="from-yellow-400 to-pink-500" />
                 <ChipBtn icon={Sparkles} label="Demande de prière" color="from-fuchsia-500 to-violet-600" />
-                <button className="ml-auto text-xs font-bold text-white bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-2 rounded-full shadow-lg shadow-fuchsia-500/30">
-                  Publier
+                <button onClick={() => publish('post')} disabled={!composer.trim() || posting} className="ml-auto text-xs font-bold text-white bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-2 rounded-full shadow-lg shadow-fuchsia-500/30 disabled:opacity-50 flex items-center gap-1.5">
+                  {posting && <Loader2 size={12} className="animate-spin" />} Publier
                 </button>
               </div>
             </div>
