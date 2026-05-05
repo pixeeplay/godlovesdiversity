@@ -11,7 +11,12 @@ export type TgUpdate = {
     from?: { id: number; username?: string; first_name?: string };
     chat: { id: number; type: 'private' | 'group' | 'supergroup'; title?: string };
     text?: string;
+    caption?: string;
     voice?: { file_id: string; duration: number; mime_type?: string };
+    photo?: Array<{ file_id: string; width: number; height: number; file_size?: number }>;
+    video?: { file_id: string; duration: number; width: number; height: number; file_size?: number };
+    audio?: { file_id: string; duration: number; mime_type?: string; title?: string };
+    document?: { file_id: string; file_name?: string; mime_type?: string };
   };
   callback_query?: {
     id: string;

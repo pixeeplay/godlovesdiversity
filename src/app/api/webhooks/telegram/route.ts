@@ -36,6 +36,52 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    // 2a-bis. Voice/Photo/Video → upload média
+    if ((update.message as any)?.voice || (update.message as any)?.photo || (update.message as any)?.video) {
+      const m = update.message as any;
+      if (m.from?.id && (await isAllowedUser(m.from.id))) {
+        try {
+          const { prisma } = await import('@/lib/prisma');
+          if (m.voice) {
+            await prisma.videoTestimony.create({ data: {
+              title: m.caption || `Voix ${new Date().toISOString().slice(0,10)}`,
+              authorName: m.from?.first_name || 'Telegram',
+              videoUrl: `tg://voice/${m.voice.file_id}`,
+              transcription: m.caption || '',
+              status: 'pending' as any
+            }}).catch(() => null);
+            await sendMessage(m.chat.id, `🎙 <b>Voix reçue !</b> ${m.voice.duration}s — modération admin en attente, sera dans le podcast RSS Spotify une fois approuvé.`);
+          } else if (m.photo) {
+            const photo = m.photo[m.photo.length - 1];
+            await prisma.photo.create({ data: {
+              imageKey: `tg/${photo.file_id}`,
+              originalUrl: `tg://photo/${photo.file_id}`,
+              thumbnailKey: `tg/${photo.file_id}_t`,
+              authorName: m.from?.first_name || 'Telegram',
+              caption: m.caption || null,
+              status: 'PENDING' as any,
+              source: 'TELEGRAM' as any,
+              consentGiven: true,
+              consentTimestamp: new Date()
+            }}).catch(() => null);
+            await sendMessage(m.chat.id, `📸 <b>Photo reçue !</b> En attente de modération — tape /photos pour la voir.`);
+          } else if (m.video) {
+            await prisma.videoTestimony.create({ data: {
+              title: m.caption || `Vidéo ${new Date().toISOString().slice(0,10)}`,
+              authorName: m.from?.first_name || 'Telegram',
+              videoUrl: `tg://video/${m.video.file_id}`,
+              transcription: m.caption || '',
+              status: 'pending' as any
+            }}).catch(() => null);
+            await sendMessage(m.chat.id, `🎬 <b>Vidéo reçue !</b> ${Math.round(m.video.duration)}s — modération admin en attente.`);
+          }
+        } catch (e: any) {
+          await sendMessage(m.chat.id, `⚠ Erreur upload : ${e.message}`);
+        }
+      }
+      return NextResponse.json({ ok: true, type: 'media' });
+    }
+
     // 2a. Message texte
     if (update.message?.text) {
       const m = update.message;
