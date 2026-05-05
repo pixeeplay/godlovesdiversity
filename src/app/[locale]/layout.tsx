@@ -11,6 +11,7 @@ import { PageTracker } from '@/components/PageTracker';
 import { ThemeProvider, themeInitScript } from '@/components/ThemeProvider';
 import { ThemeApplier } from '@/components/ThemeApplier';
 import { SOSFloatingButton } from '@/components/SOSFloatingButton';
+import { AccessibilityToggle } from '@/components/AccessibilityToggle';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -48,6 +49,7 @@ export default async function LocaleLayout({
             <PageTracker />
             <ThemeApplier />
             <SOSFloatingButton />
+            <AccessibilityToggle />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

@@ -74,6 +74,27 @@ export function Footer() {
             <li><Link href="/boutique" className="text-white/70 hover:text-brand-pink">Boutique</Link></li>
             <li><Link href="/newsletters" className="text-white/70 hover:text-brand-pink flex items-center gap-2"><BookOpen size={12} /> Archive newsletters</Link></li>
             <li><Link href="/don" className="text-white/70 hover:text-brand-pink flex items-center gap-2"><Heart size={12} /> Faire un don</Link></li>
+            <li><Link href="/voyage-safe" className="text-white/70 hover:text-brand-pink">✈️ Voyage safe LGBTQ+</Link></li>
+            <li><Link href="/aide-juridique" className="text-white/70 hover:text-brand-pink">⚖️ Aide juridique IA</Link></li>
+            <li><Link href="/verset-inclusif" className="text-white/70 hover:text-brand-pink">📖 Verset inclusif</Link></li>
+            <li><Link href="/partager" className="text-white/70 hover:text-brand-pink">✨ Crée ta carte</Link></li>
+          </ul>
+        </div>
+
+        {/* Col 3.5 — Espace personnel & pro */}
+        <div>
+          <h4 className="text-xs uppercase tracking-widest text-fuchsia-400 font-bold mb-3">Mon compte</h4>
+          <ul className="space-y-2 text-sm">
+            <li><Link href="/inscription" className="text-white/70 hover:text-brand-pink">📝 S'inscrire (gratuit)</Link></li>
+            <li><Link href="/admin/login" className="text-white/70 hover:text-brand-pink">🔐 Connexion</Link></li>
+            <li><Link href="/parrainage" className="text-white/70 hover:text-brand-pink">🎁 Programme parrainage</Link></li>
+            <li><Link href="/sos/contacts" className="text-white/70 hover:text-brand-pink">🚨 Mes contacts SOS</Link></li>
+            <li className="pt-2 border-t border-white/10">
+              <Link href="/admin/pro" className="text-fuchsia-300 hover:text-brand-pink font-bold">🏪 Espace Pro (venues)</Link>
+            </li>
+            <li>
+              <Link href="/admin" className="text-fuchsia-300 hover:text-brand-pink font-bold">⚙️ Back-office Admin</Link>
+            </li>
           </ul>
         </div>
 

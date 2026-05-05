@@ -637,6 +637,34 @@ body::after {
   100% { transform: translateY(-50vh) scale(40); opacity: 0; }
 }
 
+/* ===========================================
+   ACCESSIBILITÉ — modes activables par AccessibilityToggle
+   =========================================== */
+
+/* FALC : phrases courtes, gros texte, espacement large */
+html.a11y-falc body {
+  font-size: 18px;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+}
+html.a11y-falc p, html.a11y-falc li { max-width: 65ch; }
+
+/* Police dyslexie : OpenDyslexic via fallback Comic Sans (lisible) + espacements */
+html.a11y-dyslexia body {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', 'Verdana', sans-serif !important;
+  letter-spacing: 0.05em;
+  word-spacing: 0.15em;
+  line-height: 1.7;
+}
+
+/* Texte agrandi +25% */
+html.a11y-large body { font-size: 1.25em; }
+
+/* Contraste max */
+html.a11y-contrast { background: #000 !important; color: #fff !important; }
+html.a11y-contrast body { background: #000 !important; color: #fff !important; }
+html.a11y-contrast a { color: #ffeb3b !important; text-decoration: underline; }
+
 /* Texte sous animation : effet shimmer pendant la génération */
 .ai-shimmer {
   background: linear-gradient(
