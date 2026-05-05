@@ -194,9 +194,12 @@ export function TelegramDashboard() {
           <StatusCard icon={KeyRound} label="Bot" ok={!!info?.hasToken} detail={info?.bot?.username ? `@${info.bot.username}` : '—'} />
           <StatusCard icon={Webhook} label="Webhook" ok={!!isWebhookOk} detail="Actif" warning={!!lastError} warningText={lastError} />
           <StatusCard icon={MessageCircle} label="Chat" ok={!!(info?.config.hasGroupChatId || info?.config.hasChatId)} detail={info?.config.hasGroupChatId ? 'Groupe' : 'Privé'} />
-          <StatusCard icon={Users} label="Whitelist" ok={!!info?.config.hasWhitelist} detail={info?.config.whitelistCount ? `${info.config.whitelistCount} user(s)` : '—'} />
+          <StatusCard icon={Users} label="Whitelist" ok={!!info?.config.hasWhitelist} detail={info?.config.whitelistCount ? `${info.config.whitelistCount} user(s)` : 'Tous autorisés'} />
         </section>
       )}
+
+      {/* WHITELIST MULTI-USERS — gestion visuelle des accès */}
+      {fullyConfigured && <WhitelistManager />}
 
       {/* GRILLE DE FONCTIONS */}
       <section className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
@@ -220,31 +223,113 @@ export function TelegramDashboard() {
           ))}
         </div>
 
-        {/* Liste commandes Telegram */}
-        <details className="mt-4">
+        {/* Liste complète des commandes V3 — 40+ commandes, organisées par catégorie */}
+        <details className="mt-4" open>
           <summary className="cursor-pointer text-xs font-bold text-zinc-400 hover:text-white">
-            ▸ Commandes texte disponibles (à taper directement dans Telegram)
+            ▸ 40+ commandes texte disponibles (cliquer pour voir tout)
           </summary>
-          <div className="grid sm:grid-cols-2 gap-2 mt-3 text-xs">
+          <div className="mt-3 space-y-3">
             {[
-              ['/help', 'Liste des commandes + tes IDs'],
-              ['/stats', 'Stats du jour / semaine / mois'],
-              ['/commandes', '5 dernières commandes boutique'],
-              ['/photos pending', 'Photos à modérer (boutons ✓/✗)'],
-              ['/agenda', 'Prochains événements'],
-              ['/dons', 'Total dons + récents'],
-              ['/newsletter', 'Dernière campagne'],
-              ['/healthcheck', 'État de toutes les intégrations'],
-              ['/whoami', 'Ton ID Telegram pour la whitelist']
-            ].map(([cmd, desc]) => (
-              <div key={cmd} className="bg-zinc-950 border border-zinc-800 rounded-lg p-2 flex items-center gap-2">
-                <code className="text-cyan-300 font-bold">{cmd}</code>
-                <span className="text-zinc-500">→</span>
-                <span className="text-zinc-300">{desc}</span>
+              {
+                cat: '📊 Lecture & stats',
+                cmds: [
+                  ['/help', 'Liste complète + tes IDs'],
+                  ['/whoami', 'Ton ID Telegram pour la whitelist'],
+                  ['/stats', 'Stats jour/semaine/mois'],
+                  ['/commandes', '5 dernières commandes boutique'],
+                  ['/agenda', 'Prochains événements'],
+                  ['/dons', 'Total dons + récents'],
+                  ['/newsletter', 'Dernière newsletter'],
+                  ['/healthcheck', 'État intégrations'],
+                  ['/forum', 'Derniers sujets'],
+                  ['/temoignages', 'Témoignages vidéo'],
+                  ['/lieux', 'Lieux LGBT-friendly'],
+                  ['/peerhelp', 'Demandes entraide'],
+                  ['/meetups', 'Meetups à venir'],
+                  ['/mentor', 'Matchings mentor'],
+                  ['/users', 'Derniers inscrits'],
+                  ['/subscribers', 'Abonnés newsletter'],
+                  ['/sosalerts', 'Alertes SOS'],
+                  ['/shelters', 'Demandes hébergement'],
+                  ['/reports', 'Signalements'],
+                  ['/products', 'Catalogue boutique'],
+                  ['/stock', 'État stock'],
+                  ['/topproducts', 'Top ventes'],
+                  ['/logs', 'Logs récents'],
+                ]
+              },
+              {
+                cat: '✏️ Création',
+                cmds: [
+                  ['/addvenue …', 'Ajouter un lieu (Nom, Ville)'],
+                  ['/addevent …', 'Créer un événement'],
+                  ['/addpost …', 'Créer un post forum'],
+                  ['/addbanner …', 'Créer une bannière'],
+                  ['/addcoupon CODE -X%', 'Créer un coupon promo'],
+                  ['/addtemoignage', 'Témoignage depuis ton message'],
+                  ['/sendnewsletter', 'Envoyer la dernière campagne'],
+                ]
+              },
+              {
+                cat: '🤖 IA Gemini',
+                cmds: [
+                  ['/aitext …', 'Générer texte (article, post)'],
+                  ['/aiimage …', 'Générer image (Imagen)'],
+                  ['/aivideo …', 'Générer vidéo (Higgsfield/Veo)'],
+                  ['/translate fr→en …', 'Traduire'],
+                  ['/verse Romains 1:26', 'Analyse verset (Bible/Coran/Torah)'],
+                  ['/legal pacs', 'Aide juridique IA'],
+                  ['/voicecoach', 'Simulation conversation (coming out)'],
+                ]
+              },
+              {
+                cat: '📢 Communication',
+                cmds: [
+                  ['/broadcast …', 'Message au groupe'],
+                  ['/notify …', 'Push notif aux abonnés'],
+                ]
+              },
+              {
+                cat: '🎨 Thèmes & flags',
+                cmds: [
+                  ['/theme', 'Thème actif'],
+                  ['/pridemode', 'Activer thème Pride 🌈'],
+                  ['/noelmode', 'Activer thème Noël 🎄'],
+                  ['/features', 'Liste feature flags'],
+                ]
+              },
+              {
+                cat: '⚙️ Système',
+                cmds: [
+                  ['/backup', 'Backup DB JSON'],
+                  ['/photos pending', 'Photos à modérer ✓/✗'],
+                ]
+              },
+              {
+                cat: '📤 Uploads (envoie un fichier)',
+                cmds: [
+                  ['🎤 Vocal', 'Témoignage audio'],
+                  ['📷 Photo', 'Galerie + modération'],
+                  ['🎥 Vidéo', 'Témoignage vidéo'],
+                ]
+              },
+            ].map(({ cat, cmds }) => (
+              <div key={cat} className="bg-zinc-950/80 border border-zinc-800 rounded-xl p-3">
+                <div className="text-[11px] font-bold text-zinc-300 mb-2">{cat}</div>
+                <div className="grid sm:grid-cols-2 gap-1.5 text-xs">
+                  {cmds.map(([cmd, desc]) => (
+                    <div key={cmd} className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 flex items-center gap-2">
+                      <code className="text-cyan-300 font-bold flex-shrink-0">{cmd}</code>
+                      <span className="text-zinc-500">→</span>
+                      <span className="text-zinc-300 truncate">{desc}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
-            <div className="bg-violet-500/5 border border-violet-500/30 rounded-lg p-2 sm:col-span-2 text-violet-200">
-              💬 <b>Astuce</b> : tu peux aussi écrire en français naturel — l'IA Gemini comprend (ex: « combien de commandes cette semaine ? » → /stats)
+            <div className="bg-violet-500/5 border border-violet-500/30 rounded-lg p-2 text-xs text-violet-200">
+              💬 <b>Astuce</b> : tu peux aussi écrire en français naturel — l'IA Gemini comprend
+              (ex: « combien de commandes cette semaine ? » → /stats, « génère une image de chat » → /aiimage chat)
             </div>
           </div>
         </details>
@@ -401,5 +486,155 @@ function ChatBubble({ msg }: { msg: TgMessage }) {
         {msg.errorMessage && <div className="text-[10px] text-red-300 mt-1">⚠ {msg.errorMessage}</div>}
       </div>
     </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// WHITELIST MANAGER : ajout/retrait visuel d'utilisateurs autorisés au bot
+// ─────────────────────────────────────────────
+type WhUser = { id: string; label: string };
+
+function WhitelistManager() {
+  const [users, setUsers] = useState<WhUser[]>([]);
+  const [labelsRaw, setLabelsRaw] = useState(''); // JSON brut depuis Setting
+  const [newId, setNewId] = useState('');
+  const [newLabel, setNewLabel] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => { void load(); }, []);
+
+  async function load() {
+    try {
+      const r = await fetch('/api/admin/settings');
+      const j = await r.json();
+      const ids = (j.settings?.['integrations.telegram.allowedUserIds'] || '').split(',').map((s: string) => s.trim()).filter(Boolean);
+      let labels: Record<string, string> = {};
+      try { labels = JSON.parse(j.settings?.['integrations.telegram.userLabels'] || '{}'); } catch {}
+      setLabelsRaw(JSON.stringify(labels));
+      setUsers(ids.map((id: string) => ({ id, label: labels[id] || '' })));
+    } catch {}
+    setLoaded(true);
+  }
+
+  async function persist(next: WhUser[]) {
+    setSaving(true);
+    const csv = next.map((u) => u.id).join(',');
+    const labels = Object.fromEntries(next.filter((u) => u.label.trim()).map((u) => [u.id, u.label.trim()]));
+    await fetch('/api/admin/settings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        'integrations.telegram.allowedUserIds': csv,
+        'integrations.telegram.userLabels': JSON.stringify(labels)
+      })
+    });
+    setLabelsRaw(JSON.stringify(labels));
+    setSaving(false);
+  }
+
+  function add() {
+    const id = newId.trim();
+    if (!/^-?\d+$/.test(id)) { alert('user_id Telegram doit être numérique (ex: 123456789)'); return; }
+    if (users.find((u) => u.id === id)) { alert('Cet ID est déjà dans la whitelist'); return; }
+    const next = [...users, { id, label: newLabel.trim() }];
+    setUsers(next);
+    setNewId(''); setNewLabel('');
+    void persist(next);
+  }
+
+  function remove(id: string) {
+    if (!confirm(`Retirer ${id} de la whitelist ?`)) return;
+    const next = users.filter((u) => u.id !== id);
+    setUsers(next);
+    void persist(next);
+  }
+
+  function updateLabel(id: string, label: string) {
+    const next = users.map((u) => u.id === id ? { ...u, label } : u);
+    setUsers(next);
+    // debounce léger : on persist sur blur
+  }
+
+  function persistLabel(id: string) {
+    const u = users.find((x) => x.id === id);
+    if (!u) return;
+    void persist(users);
+  }
+
+  if (!loaded) return null;
+
+  return (
+    <section className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="font-bold flex items-center gap-2"><Users size={16} className="text-cyan-400" /> Whitelist multi-utilisateurs</h2>
+        {saving && <Loader2 size={14} className="animate-spin text-cyan-400" />}
+      </div>
+      <p className="text-xs text-zinc-400 mb-4">
+        Définit qui peut utiliser le bot (envoyer des commandes). <b className="text-amber-300">Vide = tout le monde autorisé</b>. Pour récupérer ton user_id Telegram : envoie <code>/whoami</code> au bot, ou demande aux personnes que tu veux ajouter.
+      </p>
+
+      {/* Liste des users actuels */}
+      {users.length > 0 ? (
+        <div className="space-y-2 mb-4">
+          {users.map((u) => (
+            <div key={u.id} className="bg-zinc-950 border border-zinc-800 rounded-lg p-3 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                {(u.label || u.id).charAt(0).toUpperCase()}
+              </div>
+              <div className="flex-1 min-w-0">
+                <input
+                  type="text"
+                  value={u.label}
+                  onChange={(e) => updateLabel(u.id, e.target.value)}
+                  onBlur={() => persistLabel(u.id)}
+                  placeholder="Nom (ex: Alice — modératrice)"
+                  className="w-full bg-transparent text-white text-sm font-medium border-b border-zinc-800 focus:border-cyan-500 outline-none pb-1"
+                />
+                <code className="text-[11px] text-zinc-500">user_id : {u.id}</code>
+              </div>
+              <button
+                onClick={() => remove(u.id)}
+                className="text-zinc-500 hover:text-red-400 p-2 rounded hover:bg-red-500/10"
+                title="Retirer"
+              >
+                <XCircle size={18} />
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="bg-amber-500/5 border border-amber-500/30 rounded-lg p-3 mb-4 text-xs text-amber-200">
+          ⚠ Aucune restriction — <b>tout utilisateur Telegram</b> peut interagir avec le bot. Ajoute au moins ton ID pour restreindre.
+        </div>
+      )}
+
+      {/* Ajout d'un nouveau user */}
+      <div className="bg-zinc-950 border border-dashed border-zinc-700 rounded-lg p-3">
+        <div className="text-[11px] font-bold text-zinc-300 mb-2">+ Ajouter un utilisateur</div>
+        <div className="grid sm:grid-cols-[1fr_2fr_auto] gap-2">
+          <input
+            value={newId}
+            onChange={(e) => setNewId(e.target.value)}
+            placeholder="user_id (123456789)"
+            className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-cyan-500"
+          />
+          <input
+            value={newLabel}
+            onChange={(e) => setNewLabel(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && add()}
+            placeholder="Nom (optionnel)"
+            className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-cyan-500"
+          />
+          <button
+            onClick={add}
+            disabled={!newId.trim()}
+            className="bg-cyan-500 hover:bg-cyan-600 disabled:opacity-40 text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center gap-1"
+          >
+            <CheckCircle2 size={14} /> Ajouter
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }

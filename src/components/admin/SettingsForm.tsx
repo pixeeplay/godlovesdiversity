@@ -92,9 +92,10 @@ const GROUPS: Group[] = [
   {
     title: '🎬 Higgsfield (vidéo IA bannières)',
     icon: Sparkles, category: 'ai',
-    description: 'Génération de vidéos IA cinématiques (5-10s) pour les bannières hero. Récupère ta clé sur https://cloud.higgsfield.ai/api-keys (compte gratuit avec essai). Sans cette clé, le système fait un fallback automatique sur 4 images Imagen en carrousel.',
+    description: 'Génération de vidéos IA cinématiques (5-10s) pour les bannières hero. Récupère tes 2 clés sur https://cloud.higgsfield.ai/api-keys (API Key ID + API Key Secret). Sans ces clés, le système fait un fallback automatique sur 4 images Imagen en carrousel.',
     fields: [
-      { key: 'ai.higgsfieldApiKey', label: 'Clé API Higgsfield', type: 'password', placeholder: 'hf_…', help: 'Optionnel — sans clé, fallback image Imagen automatique' }
+      { key: 'ai.higgsfieldKeyId', label: 'API Key ID', type: 'password', placeholder: 'hf_id_…', help: 'Identifiant de la clé Higgsfield' },
+      { key: 'ai.higgsfieldSecret', label: 'API Key Secret', type: 'password', placeholder: 'hf_sec_…', help: 'Secret associé — les deux sont nécessaires' }
     ]
   },
   {
