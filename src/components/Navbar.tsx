@@ -61,7 +61,10 @@ export function Navbar() {
         { id: 'lieux',     label: '🏳️‍🌈 Lieux LGBT',     href: '/lieux',                   external: false, children: [] },
         { id: 'carte',     label: '🗺 Carte mondiale',   href: '/carte',                   external: false, children: [] },
         { id: 'pro',       label: '🏪 Espace pro',      href: '/admin/pro',               external: false, children: [] },
-        { id: 'fbsync',    label: '🔄 Sync mes events FB', href: '/admin/pro/import-events', external: false, children: [] }
+        { id: 'fbsync',    label: '🔄 Sync mes events FB', href: '/admin/pro/import-events', external: false, children: [] },
+        { id: 'partager',  label: '✨ Crée ta carte',    href: '/partager',                external: false, children: [] },
+        { id: 'voyage',    label: '✈️ Voyage safe',     href: '/voyage-safe',             external: false, children: [] },
+        { id: 'sosc',      label: '🚨 Mes contacts SOS', href: '/sos/contacts',            external: false, children: [] }
       ]
     },
     { id: 'agenda', label: 'Agenda', href: '/agenda', external: false, children: [] },

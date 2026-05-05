@@ -3,6 +3,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Heart, BookOpen, Handshake, Users, Download } from 'lucide-react';
 import { getAllSettings } from '@/lib/settings';
 import { HeroBannerCarousel } from '@/components/HeroBannerCarousel';
+import { HeroAIVisualsBanner } from '@/components/HeroAIVisualsBanner';
 import { NeonHeart } from '@/components/NeonHeart';
 import { PhotoCarousel } from '@/components/PhotoCarousel';
 import { NewsCarousel } from '@/components/NewsCarousel';
@@ -134,6 +135,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     <>
       {/* ═══ HERO BANNER CAROUSEL ═══ */}
       <HeroBannerCarousel banners={banners} logoUrl={logoUrl || null} />
+
+      {/* ═══ VISUELS IA HERO (générés depuis /admin/ai) ═══ */}
+      <div className="container-wide pt-6"><HeroAIVisualsBanner height={360} /></div>
 
       {/* ═══ PILIERS « L'AMOUR EST UNIVERSEL » ═══ */}
       <section className="py-20" style={{ background: 'var(--bg)' }}>

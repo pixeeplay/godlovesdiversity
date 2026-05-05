@@ -620,6 +620,24 @@ function SafePlacesTab({ country }: { country: string | null }) {
           <ExternalLink size={14} className="text-fuchsia-400" />
         </div>
       </a>
+      <a href="/sos/contacts" className="block bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-xl p-3 transition">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-bold text-sm">📱 Mes contacts d'urgence personnels</div>
+            <div className="text-[11px] text-zinc-400 mt-0.5">SMS auto + géoloc envoyés à tes proches quand tu déclenches l'alarme</div>
+          </div>
+          <ExternalLink size={14} className="text-fuchsia-400" />
+        </div>
+      </a>
+      <a href="/voyage-safe" className="block bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-xl p-3 transition">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-bold text-sm">✈️ Voyage safe LGBTQ+</div>
+            <div className="text-[11px] text-zinc-400 mt-0.5">Statut juridique + checklist sécurité + contacts par pays</div>
+          </div>
+          <ExternalLink size={14} className="text-cyan-400" />
+        </div>
+      </a>
       <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-[11px] text-amber-200">
         💡 Si tu es jeune (14-25 ans) et sans toit : <strong>Le Refuge</strong> 06 31 59 69 50 t'accueille en urgence dans toute la France.
       </div>

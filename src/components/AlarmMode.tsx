@@ -14,6 +14,29 @@ export function AlarmMode({ onClose }: { onClose: () => void }) {
   const speakIntervalRef = useRef<any>(null);
   const [muted, setMuted] = useState(false);
 
+  // SMS auto aux contacts d'urgence personnels (stockés en localStorage)
+  useEffect(() => {
+    try {
+      const contacts = JSON.parse(localStorage.getItem('gld_emergency_contacts') || '[]');
+      if (!Array.isArray(contacts) || contacts.length === 0) return;
+      // Géoloc rapide
+      navigator.geolocation?.getCurrentPosition((pos) => {
+        const mapsLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+        const body = encodeURIComponent(`🚨 URGENCE — j'ai déclenché l'alarme GLD. Position : ${mapsLink}`);
+        // Tente d'ouvrir un SMS pré-rempli au premier contact (limite navigateur : 1 seul lien sms:)
+        const firstPhone = contacts[0].phone?.replace(/\s/g, '');
+        if (firstPhone) {
+          window.open(`sms:${firstPhone}?body=${body}`, '_self');
+        }
+      }, () => {
+        // Sans géoloc, envoie quand même
+        const body = encodeURIComponent('🚨 URGENCE — j\'ai déclenché l\'alarme GLD. Géoloc indisponible.');
+        const firstPhone = contacts[0].phone?.replace(/\s/g, '');
+        if (firstPhone) window.open(`sms:${firstPhone}?body=${body}`, '_self');
+      }, { timeout: 4000 });
+    } catch {}
+  }, []);
+
   // Démarre sirène + voix dès le mount
   useEffect(() => {
     startSiren();
