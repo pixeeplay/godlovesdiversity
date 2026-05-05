@@ -16,7 +16,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       if (k in body) allowed[k] = body[k];
     }
     const venue = await prisma.venue.update({ where: { id }, data: allowed });
-    return NextResponse.json({ venue });
+    return NextResponse.json({ ok: true, venue });
   } catch (e: any) { return NextResponse.json({ error: e?.message }, { status: 500 }); }
 }
 

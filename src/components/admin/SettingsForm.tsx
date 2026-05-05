@@ -157,7 +157,7 @@ const GROUPS: Group[] = [
   },
   {
     title: '🌐 Domaines & sous-domaines',
-    icon: Sparkles, category: 'logistics',
+    icon: Globe, category: 'logistics',
     description: 'Liste des domaines connectés à GLD. Configuration DNS chez ton registrar (OVH, Gandi, Namecheap, etc.).',
     fields: [
       { key: 'domains.primary', label: 'Domaine principal', placeholder: 'gld.pixeeplay.com' },
@@ -169,7 +169,7 @@ const GROUPS: Group[] = [
   },
   {
     title: '🔞 Dropshipping — MySexyDrop',
-    icon: Sparkles, category: 'logistics',
+    icon: Truck, category: 'dropshipping',
     description: 'Dropshipping adulte (lingerie, accessoires). API : https://mysexydrop.com — stock + prix + commandes auto.',
     fields: [
       { key: 'integrations.mysexydrop.apiKey', label: 'API Key MySexyDrop', type: 'password', placeholder: 'msd_…' },
@@ -179,7 +179,7 @@ const GROUPS: Group[] = [
   },
   {
     title: '🔗 Affiliation — Busyx',
-    icon: Sparkles, category: 'logistics',
+    icon: Truck, category: 'dropshipping',
     description: 'Programme d\'affiliation Busyx (https://affiliation.busyx.com). Track les ventes via lien d\'affilié.',
     fields: [
       { key: 'integrations.busyx.affiliateId', label: 'Affiliate ID Busyx', placeholder: 'ton ID affilié' },
@@ -189,7 +189,7 @@ const GROUPS: Group[] = [
   },
   {
     title: '💖 Dropshipping — Dreamlove',
-    icon: Sparkles, category: 'logistics',
+    icon: Truck, category: 'dropshipping',
     description: 'Dreamlove EU (https://dreamlove.eu) — dropshipping bien-être & lifestyle inclusif.',
     fields: [
       { key: 'integrations.dreamlove.apiKey', label: 'API Key Dreamlove', type: 'password', placeholder: 'dl_…' },
