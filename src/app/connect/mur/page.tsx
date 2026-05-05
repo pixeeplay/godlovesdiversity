@@ -18,15 +18,17 @@ export default function MurPage() {
     setUploading(true);
     try {
       const fd = new FormData();
-      fd.append('files', f);
-      const r = await fetch('/api/admin/media', { method: 'POST', body: fd });
+      fd.append('file', f);
+      const r = await fetch('/api/connect/upload', { method: 'POST', body: fd });
       const j = await r.json();
       if (j.ok && j.files?.[0]) {
         setAttachedUrl(j.files[0].url);
-        setAttachedKind(j.files[0].mime.startsWith('video/') ? 'video' : 'image');
-        setComposerType(j.files[0].mime.startsWith('video/') ? 'photo' : 'photo'); // Tag photo pour les 2
+        setAttachedKind(j.files[0].mime?.startsWith('video/') ? 'video' : 'image');
+        setComposerType('photo');
+      } else if (r.status === 401) {
+        if (confirm('Tu dois être connecté pour uploader. Aller à la page de connexion ?')) location.href = '/admin/login?next=/connect/mur';
       } else {
-        alert('Upload impossible : ' + (j.error || 'erreur'));
+        alert('Upload impossible : ' + (j.error || `HTTP ${r.status}`));
       }
     } catch (e: any) {
       alert('Upload impossible : ' + (e?.message || e));

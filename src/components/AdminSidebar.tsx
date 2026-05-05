@@ -99,6 +99,7 @@ const NAV: Entry[] = [
       { href: '/admin/i18n', label: 'Traductions IA (FR/EN/ES/PT)', icon: Sparkles },
       { href: '/admin/integrations/telegram', label: 'Bot Telegram (notifs + commandes)', icon: MenuIcon },
       { href: '/admin/integrations', label: 'Intégrations', icon: Layers },
+      { href: '/admin/mail-setup', label: 'Setup mail (Gmail / DNS)', icon: Mail },
       { href: '/admin/themes', label: 'Thèmes saisonniers 🎨', icon: Sparkles },
       { href: '/admin/features', label: 'Feature flags 🚦', icon: Sparkles },
       { href: '/admin/setup', label: 'Assistant configuration', icon: Sparkles }
