@@ -20,7 +20,17 @@ export function EstablishmentsAdmin({ initial }: { initial: any[] }) {
             <p className="text-sm text-zinc-400">{venues.length} lieux dans l'annuaire</p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
+          <button onClick={async () => {
+            if (!confirm('Supprimer TOUS les venues importés en masse (sans owner) ? Cette action est irréversible.')) return;
+            if (!confirm('Vraiment ? Pour ré-importer un CSV propre.')) return;
+            const r = await fetch('/api/admin/establishments/wipe', { method: 'DELETE' });
+            const j = await r.json();
+            if (j.ok) { alert(`✓ ${j.deleted} venues supprimés`); location.reload(); }
+            else alert('Erreur : ' + (j.error || 'inconnue'));
+          }} className="bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-400/30 px-4 py-2 rounded-full text-sm flex items-center gap-2">
+            🗑 Wipe importés
+          </button>
           <button onClick={() => setShowImport(true)} className="bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-full text-sm flex items-center gap-2">
             <FileSpreadsheet size={14} /> Import CSV
           </button>

@@ -28,7 +28,20 @@ export async function POST(req: NextRequest) {
   if (ct.includes('multipart/form-data')) {
     const fd = await req.formData();
     const f = fd.get('file');
-    if (f instanceof File) csv = await f.text();
+    if (f instanceof File) {
+      // Force UTF-8 (Excel ajoute parfois un BOM ou utilise Windows-1252)
+      const buf = await f.arrayBuffer();
+      // Tente UTF-8 d'abord
+      let txt = new TextDecoder('utf-8').decode(buf);
+      // Si on détecte du mojibake (caractères Ã suivis d'un autre), essayer latin-1 → UTF-8
+      if (/Ã[-ÿ]/.test(txt.slice(0, 5000))) {
+        // Le fichier semble être en latin-1 mais lu en UTF-8 — relire en latin1
+        try { txt = new TextDecoder('windows-1252').decode(buf); } catch {}
+      }
+      // Retire BOM si présent
+      if (txt.charCodeAt(0) === 0xFEFF) txt = txt.slice(1);
+      csv = txt;
+    }
   } else {
     const body = await req.json().catch(() => ({}));
     csv = body.csv || '';
