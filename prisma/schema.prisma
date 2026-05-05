@@ -746,6 +746,25 @@ model Event {
   @@index([venueId, startsAt])
 }
 
+/// Soumission générique utilisateur — absorbe mentor / hébergement / signalement / meetups / etc.
+/// Le champ `kind` discrimine, `data` contient le payload JSON spécifique.
+model UserSubmission {
+  id          String   @id @default(cuid())
+  kind        String   // "mentor-mentee" | "mentor-mentor" | "shelter-host" | "shelter-guest" | "report-place" | "meetup-rsvp" | "marketplace-artisan" | "crowdfunding-project" | "city-coordinator"
+  authorEmail String?
+  authorName  String?
+  city        String?
+  country     String?
+  data        Json     // payload spécifique au kind
+  status      String   @default("pending")  // "pending" | "approved" | "rejected" | "matched"
+  notes       String?  @db.Text  // notes admin
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([kind, status])
+  @@index([country, city])
+}
+
 /// Demande d'aide / message d'entraide LGBT entre utilisateurs (anonyme possible).
 /// Pas un chat 1-1 : une demande publique modérée que d'autres peuvent réconforter.
 model PeerHelp {

@@ -69,16 +69,16 @@ export async function POST(req: NextRequest) {
     const usedPrompt = prompt || (preset && PRESETS[preset]?.prompt) || 'cinematic ultra wide banner, inclusive cathedral with rainbow light, photorealistic';
 
     if (kind === 'video') {
-      // Tente Veo via Gemini si disponible
+      // Tente Higgsfield d'abord (si configuré), puis Veo
       const result = await tryGenerateVeo(usedPrompt);
       if (result.ok) return NextResponse.json(result);
-      // Fallback : on génère l'image et on signale que la vidéo n'est pas dispo
-      const img = await generateImagen(usedPrompt, 1);
+      // Fallback : génère 4 images Imagen → carrousel = effet vidéo
+      const img = await generateImagen(usedPrompt, 4);
       return NextResponse.json({
         ok: true,
         kind: 'image',
         fallbackFromVideo: true,
-        message: 'Veo (vidéo IA) pas encore disponible sur ta clé Gemini — image générée à la place. Tu peux animer manuellement avec After Effects ou Runway.',
+        message: `${result.reason}\n\n→ 4 images générées à la place. Le carrousel hero les fera défiler automatiquement (effet "vidéo" cinematic).`,
         images: img.images,
         prompt: usedPrompt
       });
@@ -124,7 +124,57 @@ async function generateImagen(prompt: string, count: number): Promise<{ images: 
 }
 
 async function tryGenerateVeo(prompt: string): Promise<any> {
+  // Tente d'abord Higgsfield si configuré (clé HIGGSFIELD_API_KEY ou Setting ai.higgsfieldApiKey)
+  const higgs = await tryHiggsfield(prompt);
+  if (higgs.ok) return higgs;
+
   // Veo n'est pas encore largement dispo via Gemini API publique en 2026.
-  // Stub : retourne échec immédiat pour que le fallback image s'active.
-  return { ok: false, reason: 'Veo non disponible via cette clé Gemini' };
+  return { ok: false, reason: 'Veo non disponible via cette clé Gemini, et Higgsfield non configuré (ajoute ai.higgsfieldApiKey dans /admin/settings).' };
+}
+
+async function tryHiggsfield(prompt: string): Promise<any> {
+  const setting = await prisma.setting.findUnique({ where: { key: 'ai.higgsfieldApiKey' } }).catch(() => null);
+  const apiKey = setting?.value || process.env.HIGGSFIELD_API_KEY;
+  if (!apiKey) return { ok: false, reason: 'Higgsfield non configuré' };
+
+  // API Higgsfield text-to-video — endpoint et payload selon la doc 2026
+  // https://higgsfield.ai/docs (à vérifier selon ton plan)
+  try {
+    const r = await fetch('https://api.higgsfield.ai/v1/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        prompt,
+        duration: 5,        // 5 secondes (model Lite)
+        aspect_ratio: '16:9',
+        model: 'higgsfield-lite',
+        loop: true          // boucle pour bannière
+      })
+    });
+    const j = await r.json();
+    if (!r.ok || j.error) return { ok: false, reason: j.error?.message || `HTTP ${r.status}` };
+
+    // Higgsfield retourne souvent un job_id puis on poll. Pour MVP : si video_url direct, on l'utilise
+    if (j.video_url) {
+      return { ok: true, kind: 'video', videoUrl: j.video_url, prompt };
+    }
+    if (j.job_id) {
+      // Polling simple : 30 essais x 5s = 150s max
+      for (let i = 0; i < 30; i++) {
+        await new Promise(r => setTimeout(r, 5000));
+        const poll = await fetch(`https://api.higgsfield.ai/v1/jobs/${j.job_id}`, {
+          headers: { 'Authorization': `Bearer ${apiKey}` }
+        });
+        const pj = await poll.json();
+        if (pj.status === 'completed' && pj.video_url) {
+          return { ok: true, kind: 'video', videoUrl: pj.video_url, prompt };
+        }
+        if (pj.status === 'failed') return { ok: false, reason: pj.error || 'Higgsfield job failed' };
+      }
+      return { ok: false, reason: 'Higgsfield timeout après 150s' };
+    }
+    return { ok: false, reason: 'Réponse Higgsfield inattendue' };
+  } catch (e: any) {
+    return { ok: false, reason: `Higgsfield: ${e.message}` };
+  }
 }
