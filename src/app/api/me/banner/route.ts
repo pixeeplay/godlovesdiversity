@@ -42,22 +42,38 @@ export async function POST(req: NextRequest) {
   // Appel Imagen
   const setting = await prisma.setting.findUnique({ where: { key: 'integrations.gemini.apiKey' } }).catch(() => null);
   const apiKey = setting?.value || process.env.GEMINI_API_KEY;
-  if (!apiKey) return NextResponse.json({ error: 'Gemini non configuré' }, { status: 500 });
+  // Cascade Imagen (modèles récents → anciens). Si tous échouent → erreur claire.
+  const candidates = [
+    'imagen-4.0-generate-preview',
+    'imagen-3.0-generate-002',
+    'imagen-3.0-fast-generate-001',
+    'imagen-3.0-generate-001'
+  ];
+  if (!apiKey) return NextResponse.json({ error: 'Gemini non configuré (clé manquante dans /admin/settings → IA)' }, { status: 500 });
 
+  let img: any = null;
+  let lastErr = '';
+  for (const model of candidates) {
+    try {
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:predict?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          instances: [{ prompt }],
+          parameters: { sampleCount: 1, aspectRatio: '16:9', personGeneration: 'allow_adult', safetySetting: 'block_few' }
+        })
+      });
+      const j = await r.json();
+      if (r.ok && !j.error && j.predictions?.[0]?.bytesBase64Encoded) {
+        img = j.predictions[0];
+        break;
+      }
+      lastErr = `${model}: ${j.error?.message || `HTTP ${r.status}`}`;
+      if (!/not found|not supported|404/i.test(lastErr)) break; // erreur quota/auth → on stoppe
+    } catch (e: any) { lastErr = `${model}: ${e.message}`; }
+  }
+  if (!img) return NextResponse.json({ error: `Bannière non générée. ${lastErr}\n\n→ Vérifie que ta clé Gemini a accès à Imagen (Google AI Studio + projet Google Cloud avec billing).` }, { status: 503 });
   try {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:predict?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        instances: [{ prompt }],
-        parameters: { sampleCount: 1, aspectRatio: '16:9', personGeneration: 'allow_adult' }
-      })
-    });
-    const j = await r.json();
-    if (!r.ok || j.error) return NextResponse.json({ error: j.error?.message || 'Imagen error' }, { status: 500 });
-
-    const img = j.predictions?.[0];
-    if (!img?.bytesBase64Encoded) return NextResponse.json({ error: 'pas d\'image générée' }, { status: 500 });
 
     // Sauve l'image via /api/admin/ai/save-image
     const dataUrl = `data:${img.mimeType || 'image/png'};base64,${img.bytesBase64Encoded}`;

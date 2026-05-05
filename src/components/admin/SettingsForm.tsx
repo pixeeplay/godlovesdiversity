@@ -137,6 +137,67 @@ const GROUPS: Group[] = [
     ]
   },
   {
+    title: '✉️ Serveur mail (domaines, alias, webmail)',
+    icon: Mail, category: 'logistics',
+    description: 'Configuration serveur mail pour ton domaine. Recommandé : Migadu (4€/mois domaines + alias illimités) ou ImprovMX (alias gratuits + relai). Webmail : RoundCube ou SnappyMail.',
+    fields: [
+      { key: 'mail.provider', label: 'Fournisseur', type: 'select', options: [
+          { value: 'migadu', label: 'Migadu (recommandé — 4€/mois alias illimités)' },
+          { value: 'improvmx', label: 'ImprovMX (alias gratuits)' },
+          { value: 'mailcow', label: 'Mailcow (self-hosted)' },
+          { value: 'mailbox', label: 'Mailbox.org' },
+          { value: 'fastmail', label: 'Fastmail' }
+        ], help: 'Choisis ton fournisseur de mail. La config est ensuite gérée chez le provider.' },
+      { key: 'mail.domain', label: 'Domaine principal', placeholder: 'pixeeplay.com', help: 'Le domaine que tu as configuré chez ton provider mail' },
+      { key: 'mail.subdomains', label: 'Sous-domaines (CSV)', placeholder: 'gld.pixeeplay.com, mail.pixeeplay.com', help: 'Sous-domaines avec MX records configurés' },
+      { key: 'mail.adminApiKey', label: 'API Key admin', type: 'password', placeholder: 'pour gestion alias auto', help: 'Optionnel — pour créer/supprimer alias depuis GLD admin' },
+      { key: 'mail.webmailUrl', label: 'URL Webmail', placeholder: 'https://mail.pixeeplay.com', help: 'Lien direct webmail affiché dans /admin' },
+      { key: 'mail.aliasesJson', label: 'Alias actifs (JSON)', type: 'textarea', placeholder: '[{"alias":"contact@","destination":"arnaud@gredai.com"}]', help: 'Pour info — gestion réelle chez ton provider' }
+    ]
+  },
+  {
+    title: '🌐 Domaines & sous-domaines',
+    icon: Sparkles, category: 'logistics',
+    description: 'Liste des domaines connectés à GLD. Configuration DNS chez ton registrar (OVH, Gandi, Namecheap, etc.).',
+    fields: [
+      { key: 'domains.primary', label: 'Domaine principal', placeholder: 'gld.pixeeplay.com' },
+      { key: 'domains.aliases', label: 'Domaines secondaires (CSV)', placeholder: 'godlovesdiversity.com, godlovesdiversity.fr' },
+      { key: 'domains.subdomains', label: 'Sous-domaines actifs (CSV)', placeholder: 'connect.gld.pixeeplay.com, pro.gld.pixeeplay.com', help: 'Tous les sous-domaines avec records DNS A/CNAME' },
+      { key: 'domains.registrar', label: 'Registrar', placeholder: 'OVH / Gandi / Namecheap…' },
+      { key: 'domains.notes', label: 'Notes DNS', type: 'textarea', placeholder: 'Records SPF/DKIM/DMARC configurés…' }
+    ]
+  },
+  {
+    title: '🔞 Dropshipping — MySexyDrop',
+    icon: Sparkles, category: 'logistics',
+    description: 'Dropshipping adulte (lingerie, accessoires). API : https://mysexydrop.com — stock + prix + commandes auto.',
+    fields: [
+      { key: 'integrations.mysexydrop.apiKey', label: 'API Key MySexyDrop', type: 'password', placeholder: 'msd_…' },
+      { key: 'integrations.mysexydrop.userId', label: 'User ID', placeholder: '12345' },
+      { key: 'integrations.mysexydrop.markupPercent', label: 'Marge (%)', placeholder: '40', help: 'Marge appliquée au prix grossiste' }
+    ]
+  },
+  {
+    title: '🔗 Affiliation — Busyx',
+    icon: Sparkles, category: 'logistics',
+    description: 'Programme d\'affiliation Busyx (https://affiliation.busyx.com). Track les ventes via lien d\'affilié.',
+    fields: [
+      { key: 'integrations.busyx.affiliateId', label: 'Affiliate ID Busyx', placeholder: 'ton ID affilié' },
+      { key: 'integrations.busyx.apiKey', label: 'API Key (si dispo)', type: 'password', placeholder: 'optionnel pour stats' },
+      { key: 'integrations.busyx.trackingDomain', label: 'Domaine tracking', placeholder: 'go.gld.pixeeplay.com', help: 'Sous-domaine pour les liens raccourcis' }
+    ]
+  },
+  {
+    title: '💖 Dropshipping — Dreamlove',
+    icon: Sparkles, category: 'logistics',
+    description: 'Dreamlove EU (https://dreamlove.eu) — dropshipping bien-être & lifestyle inclusif.',
+    fields: [
+      { key: 'integrations.dreamlove.apiKey', label: 'API Key Dreamlove', type: 'password', placeholder: 'dl_…' },
+      { key: 'integrations.dreamlove.shopId', label: 'Shop ID', placeholder: 'identifiant boutique Dreamlove' },
+      { key: 'integrations.dreamlove.markupPercent', label: 'Marge (%)', placeholder: '35' }
+    ]
+  },
+  {
     title: 'Telegram (notifications + bot)',
     icon: Mail, category: 'logistics',
     description: 'Bot Telegram pour recevoir notifications + commandes /stats /photos /agenda. Crée ton bot via @BotFather sur Telegram (/newbot), puis configure ici. Détails complets dans IA & Outils → Bot Telegram.',

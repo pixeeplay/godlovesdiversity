@@ -90,22 +90,63 @@ export async function handleCallback(chatId: number, _userId: number, data: stri
 // ============================================================
 
 async function cmdHelp(chatId: number, userId: number) {
-  const text = `<b>🌈 Bot GLD — Commandes disponibles</b>
+  const text = `<b>🌈 Bot GLD — 40+ commandes</b>
 
-📊 <b>Suivi</b>
-/stats — Statistiques du jour / semaine / mois
+📊 <b>Lecture &amp; stats</b>
+/stats — Stats jour/semaine/mois
 /commandes — 5 dernières commandes
-/dons — Total dons et derniers
+/dons — Total dons + récents
 /agenda — Événements à venir
-/newsletter — Dernière campagne envoyée
+/newsletter — Dernière campagne
+/forum — Derniers sujets
+/temoignages — Témoignages vidéo
+/lieux — Lieux LGBT-friendly
+/peerhelp — Demandes entraide
+/meetups — Meetups à venir
+/mentor — Matchings mentor
+/users — Derniers inscrits
+/subscribers — Abonnés newsletter
+/sosalerts — Alertes SOS
+/shelters — Demandes hébergement
+/reports — Signalements
+/products — Catalogue boutique
+/stock — État stock
+/topproducts — Top ventes
+/logs — Logs récents
 
-🛡 <b>Modération</b>
-/photos pending — Photos à modérer (avec boutons ✓/✗)
+✏️ <b>Création</b>
+/addvenue Nom, Ville
+/addevent Titre, Date
+/addpost Sujet
+/addbanner Texte
+/addcoupon CODE -X%
+/addtemoignage (depuis ce message)
+/sendnewsletter
 
-🔧 <b>Système</b>
-/healthcheck — État de toutes les intégrations
-/whoami — Ton ID Telegram (utile pour la whitelist)
-/help — Cette aide
+🤖 <b>IA Gemini</b>
+/aitext sujet
+/aiimage description
+/aivideo description
+/translate fr→en texte
+/verse Romains 1:26
+/legal pacs
+/voicecoach (simulation coming-out)
+
+📢 <b>Communication</b>
+/broadcast message
+/notify abonnés
+
+🎨 <b>Thèmes &amp; flags</b>
+/theme · /pridemode · /noelmode · /features
+
+⚙️ <b>Système</b>
+/backup · /photos pending
+/healthcheck · /whoami · /help
+
+📤 <b>Uploads</b>
+🎤 Vocal · 📷 Photo · 🎥 Vidéo (envoie le fichier directement)
+
+💬 <b>Tu peux aussi écrire en français naturel</b> — l'IA Gemini comprend (ex : « combien de commandes cette semaine ? » → /stats).
 
 <i>Ton user_id : <code>${userId}</code> · Chat_id : <code>${chatId}</code></i>`;
   await sendMessage(chatId, text);
