@@ -716,6 +716,9 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
           </div>
         </div>
 
+        {/* MODE VOIX DIVINE — TTS gratuit + reverb cathédrale */}
+        <DivineVoicePanel />
+
         {/* MODE TEXTE — toujours dispo, pas besoin de clé */}
         <div className="mt-4 rounded-2xl border border-violet-500/30 bg-violet-500/5 p-4">
           <div className="flex items-center justify-between gap-3 mb-3">
@@ -1155,5 +1158,245 @@ function StatCard({ label, value, sub, gradient, Icon }: { label: string; value:
       <div className="text-[10px] uppercase tracking-wider opacity-90 font-semibold">{label}</div>
       {sub && <div className="text-[10px] opacity-75 mt-1">{sub}</div>}
     </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// MODE VOIX DIVINE — paramétrage de la voix « Dieu » (TTS natif + Web Audio)
+// ─────────────────────────────────────────────────────────────
+const VOICE_PRESETS: Record<string, { label: string; rate: number; pitch: number; reverb: number; octaveShift: number }> = {
+  god:     { label: '⚡ Dieu majestueux',  rate: 0.75, pitch: 0.55, reverb: 70, octaveShift: -3 },
+  angel:   { label: '👼 Ange doux',         rate: 0.95, pitch: 1.4,  reverb: 50, octaveShift:  3 },
+  prophet: { label: '📜 Prophète sage',     rate: 0.7,  pitch: 0.85, reverb: 30, octaveShift: -1 },
+  normal:  { label: '🗣 Voix normale',      rate: 1,    pitch: 1,    reverb:  0, octaveShift:  0 }
+};
+
+function DivineVoicePanel() {
+  const [cfg, setCfg] = useState<any>({ preset: 'god', lang: 'fr-FR', voiceName: '', rate: 0.75, pitch: 0.55, volume: 1, reverb: 70, octaveShift: -3 });
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [testText, setTestText] = useState('Mes enfants, sachez que la lumière divine vous accompagne. Vous êtes aimés tels que vous êtes.');
+  const [speaking, setSpeaking] = useState(false);
+
+  // Charge la config publique
+  useEffect(() => {
+    fetch('/api/avatar/voice-settings').then((r) => r.json()).then((j) => {
+      if (j && !j.error) setCfg((c: any) => ({ ...c, ...j }));
+    }).catch(() => {});
+  }, []);
+
+  // Charge la liste des voix dispos dans le navigateur
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    const load = () => setVoices(window.speechSynthesis.getVoices());
+    load();
+    window.speechSynthesis.onvoiceschanged = load;
+  }, []);
+
+  function applyPreset(slug: string) {
+    const p = VOICE_PRESETS[slug];
+    if (!p) return;
+    setCfg((c: any) => ({ ...c, preset: slug, rate: p.rate, pitch: p.pitch, reverb: p.reverb, octaveShift: p.octaveShift }));
+  }
+
+  async function save() {
+    setSaving(true);
+    setSaved(false);
+    try {
+      await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          'avatar.voice.preset': String(cfg.preset || 'god'),
+          'avatar.voice.lang': String(cfg.lang || 'fr-FR'),
+          'avatar.voice.voiceName': String(cfg.voiceName || ''),
+          'avatar.voice.rate': String(cfg.rate ?? 0.75),
+          'avatar.voice.pitch': String(cfg.pitch ?? 0.55),
+          'avatar.voice.volume': String(cfg.volume ?? 1),
+          'avatar.voice.reverb': String(cfg.reverb ?? 70),
+          'avatar.voice.octaveShift': String(cfg.octaveShift ?? -3)
+        })
+      });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } finally { setSaving(false); }
+  }
+
+  function testVoice() {
+    if (!('speechSynthesis' in window)) { alert('Web Speech non supportée par ce navigateur'); return; }
+    const clean = testText.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').trim();
+    if (!clean) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(clean);
+    u.lang = cfg.lang || 'fr-FR';
+    u.rate = Math.max(0.1, Math.min(2, cfg.rate || 0.75));
+    u.pitch = Math.max(0.1, Math.min(2, cfg.pitch || 0.55));
+    u.volume = Math.max(0, Math.min(1, cfg.volume ?? 1));
+    let chosen: SpeechSynthesisVoice | undefined;
+    if (cfg.voiceName) chosen = voices.find((v) => v.name.toLowerCase().includes(cfg.voiceName.toLowerCase()));
+    if (!chosen) {
+      const pref = (cfg.lang || 'fr').slice(0, 2);
+      const cands = voices.filter((v) => v.lang.toLowerCase().startsWith(pref));
+      chosen = cands.find((v) => /thomas|daniel|fred|reed|guillaume|paul|nicolas/i.test(v.name))
+            || cands.find((v) => /enhanced|premium|google/i.test(v.name))
+            || cands[0];
+    }
+    if (chosen) u.voice = chosen;
+    u.onstart = () => setSpeaking(true);
+    u.onend = () => setSpeaking(false);
+    u.onerror = () => setSpeaking(false);
+    window.speechSynthesis.speak(u);
+  }
+
+  const langPref = (cfg.lang || 'fr').slice(0, 2);
+  const voicesForLang = voices.filter((v) => v.lang.toLowerCase().startsWith(langPref));
+
+  return (
+    <div className="mt-4 rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-500/10 via-fuchsia-500/5 to-violet-500/10 p-5">
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <div>
+          <h3 className="font-bold text-base flex items-center gap-2">
+            <Sparkles size={16} className="text-amber-300" /> Mode Voix divine — Avatar audio
+            <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full uppercase font-bold tracking-wider">Gratuit</span>
+          </h3>
+          <p className="text-[11px] text-zinc-400 mt-1">
+            Voix « Dieu » avec reverb cathédrale via Web Speech API natif + Web Audio. Aucune API tierce, aucun coût. Le visiteur peut activer ce mode dans le widget chat (bouton ✨ Voix divine).
+          </p>
+        </div>
+      </div>
+
+      {/* Presets cliquables */}
+      <div className="mb-4">
+        <div className="text-[11px] uppercase font-bold text-zinc-400 mb-2">Style de voix</div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+          {Object.entries(VOICE_PRESETS).map(([slug, p]) => (
+            <button
+              key={slug}
+              onClick={() => applyPreset(slug)}
+              className={`p-3 rounded-xl border text-left transition ${
+                cfg.preset === slug
+                  ? 'bg-amber-500/20 border-amber-500/60 shadow-lg shadow-amber-500/20'
+                  : 'bg-zinc-900 border-zinc-800 hover:bg-zinc-800/80'
+              }`}
+            >
+              <div className="font-bold text-sm mb-1">{p.label}</div>
+              <div className="text-[10px] text-zinc-500">
+                rate {p.rate} · pitch {p.pitch} · reverb {p.reverb}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Sliders fins */}
+      <div className="grid sm:grid-cols-2 gap-3 mb-4">
+        <SliderRow label="Vitesse (rate)" min={0.3} max={1.5} step={0.05} value={cfg.rate ?? 0.75} onChange={(v) => setCfg((c: any) => ({ ...c, rate: v }))} suffix="" />
+        <SliderRow label="Hauteur (pitch)" min={0.1} max={2} step={0.05} value={cfg.pitch ?? 0.55} onChange={(v) => setCfg((c: any) => ({ ...c, pitch: v }))} suffix="" />
+        <SliderRow label="Volume" min={0} max={1} step={0.05} value={cfg.volume ?? 1} onChange={(v) => setCfg((c: any) => ({ ...c, volume: v }))} suffix="" />
+        <SliderRow label="Reverb cathédrale" min={0} max={100} step={5} value={cfg.reverb ?? 70} onChange={(v) => setCfg((c: any) => ({ ...c, reverb: v }))} suffix="%" />
+      </div>
+
+      {/* Voix précise + langue */}
+      <div className="grid sm:grid-cols-2 gap-3 mb-4">
+        <label className="flex flex-col gap-1 text-xs">
+          <span className="text-zinc-400">Langue</span>
+          <select
+            value={cfg.lang || 'fr-FR'}
+            onChange={(e) => setCfg((c: any) => ({ ...c, lang: e.target.value }))}
+            className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-zinc-100"
+          >
+            <option value="fr-FR">Français (fr-FR)</option>
+            <option value="en-US">English US (en-US)</option>
+            <option value="en-GB">English UK (en-GB)</option>
+            <option value="es-ES">Español (es-ES)</option>
+            <option value="pt-PT">Português (pt-PT)</option>
+            <option value="it-IT">Italiano (it-IT)</option>
+            <option value="de-DE">Deutsch (de-DE)</option>
+          </select>
+        </label>
+        <label className="flex flex-col gap-1 text-xs">
+          <span className="text-zinc-400">
+            Voix précise (parmi {voicesForLang.length} dispo · {voices.length} total)
+          </span>
+          <select
+            value={cfg.voiceName || ''}
+            onChange={(e) => setCfg((c: any) => ({ ...c, voiceName: e.target.value }))}
+            className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-zinc-100"
+          >
+            <option value="">Auto (priorité voix masculine grave)</option>
+            {voicesForLang.map((v) => (
+              <option key={v.name} value={v.name}>
+                {v.name} {v.localService ? '(local)' : '(cloud)'}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      {/* Test live */}
+      <div className="bg-zinc-950/70 border border-zinc-800 rounded-xl p-3 mb-4">
+        <div className="text-[11px] uppercase font-bold text-zinc-400 mb-2">🎙 Tester la voix maintenant</div>
+        <textarea
+          value={testText}
+          onChange={(e) => setTestText(e.target.value)}
+          rows={2}
+          className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-xs mb-2"
+        />
+        <div className="flex gap-2">
+          <button
+            onClick={testVoice}
+            disabled={speaking}
+            className="flex-1 bg-gradient-to-r from-amber-500 to-fuchsia-600 hover:from-amber-600 hover:to-fuchsia-700 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center justify-center gap-2"
+          >
+            {speaking ? <><Loader2 size={14} className="animate-spin" /> En train de parler…</> : <><Volume2 size={14} /> Écouter avec ces réglages</>}
+          </button>
+          <button
+            onClick={() => { window.speechSynthesis.cancel(); setSpeaking(false); }}
+            disabled={!speaking}
+            className="bg-zinc-800 hover:bg-zinc-700 disabled:opacity-30 text-zinc-300 px-3 py-2 rounded-lg"
+          >
+            <Pause size={14} />
+          </button>
+        </div>
+        <p className="text-[10px] text-zinc-500 mt-2">
+          💡 La qualité dépend des voix installées sur ton OS. macOS/iOS ont les meilleures voix neurales (Thomas, Daniel, etc.). Sur Windows, installe « Microsoft Paul » ou utilise Edge pour avoir les voix Azure cloud.
+        </p>
+      </div>
+
+      {/* Save */}
+      <div className="flex items-center justify-end gap-3">
+        {saved && <span className="text-emerald-400 text-xs flex items-center gap-1"><CheckCircle2 size={12} /> Enregistré (live sur le widget)</span>}
+        <button
+          onClick={save}
+          disabled={saving}
+          className="bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-bold px-5 py-2 rounded-lg text-sm flex items-center gap-2"
+        >
+          {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+          Sauvegarder pour le widget public
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function SliderRow({ label, min, max, step, value, onChange, suffix = '' }: { label: string; min: number; max: number; step: number; value: number; onChange: (v: number) => void; suffix?: string }) {
+  return (
+    <label className="flex flex-col gap-1.5 text-xs bg-zinc-900/50 border border-zinc-800 rounded-lg p-3">
+      <div className="flex items-center justify-between">
+        <span className="text-zinc-300 font-bold">{label}</span>
+        <span className="text-amber-300 font-mono">{value.toFixed(2)}{suffix}</span>
+      </div>
+      <input
+        type="range"
+        min={min} max={max} step={step} value={value}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className="w-full accent-amber-500"
+      />
+      <div className="flex justify-between text-[9px] text-zinc-600">
+        <span>{min}{suffix}</span>
+        <span>{max}{suffix}</span>
+      </div>
+    </label>
   );
 }
