@@ -44,16 +44,18 @@ export default function MurPage() {
 
   return (
     <div className="grid lg:grid-cols-[220px_1fr_240px] gap-5">
-      {/* Sidebar gauche — glass */}
+      {/* Sidebar gauche — glass avec liens fonctionnels */}
       <aside className="hidden lg:block">
         <div className="backdrop-blur-2xl bg-white/[0.04] border border-white/10 rounded-2xl p-3 sticky top-32">
-          <SidebarLink active label="Mon mur" emoji="🏠" />
-          <SidebarLink label="Cercles de prière" emoji="🕊" count={4} />
-          <SidebarLink label="Mes amis" emoji="👥" count={47} />
-          <SidebarLink label="Groupes" emoji="✨" count={12} />
-          <SidebarLink label="Événements" emoji="📅" count={3} />
-          <SidebarLink label="Témoignages" emoji="💖" />
-          <SidebarLink label="Photos partagées" emoji="🖼" />
+          <SidebarLink active href="/connect/mur" label="Mon mur" emoji="🏠" />
+          <SidebarLink href="/cercles-priere" label="Cercles de prière" emoji="🕊" count={4} />
+          <SidebarLink href="/connect/amis" label="Mes amis" emoji="👥" count={47} />
+          <SidebarLink href="/connect/groupes" label="Groupes" emoji="✨" count={12} />
+          <SidebarLink href="/agenda" label="Événements" emoji="📅" count={3} />
+          <SidebarLink href="/temoignages" label="Témoignages" emoji="💖" />
+          <SidebarLink href="/galerie" label="Photos partagées" emoji="🖼" />
+          <SidebarLink href="/connect/messages" label="Messagerie" emoji="💬" />
+          <SidebarLink href="/connect/onboard" label="Mon profil Connect" emoji="⚙️" />
           <div className="border-t border-white/10 mt-3 pt-3 text-[10px] text-zinc-500 px-2">
             Mode <b className="text-fuchsia-300">Communauté</b><br/>
             Ton mur, tes posts, tes amis
@@ -121,9 +123,9 @@ export default function MurPage() {
   );
 }
 
-function SidebarLink({ label, emoji, count, active }: { label: string; emoji: string; count?: number; active?: boolean }) {
+function SidebarLink({ label, emoji, count, active, href }: { label: string; emoji: string; count?: number; active?: boolean; href?: string }) {
   return (
-    <a className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm cursor-pointer transition ${active ? 'bg-white/[0.08] text-white font-bold' : 'text-zinc-400 hover:bg-white/[0.05] hover:text-white'}`}>
+    <a href={href || '#'} className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm cursor-pointer transition ${active ? 'bg-white/[0.08] text-white font-bold' : 'text-zinc-400 hover:bg-white/[0.05] hover:text-white'}`}>
       <span className="text-base">{emoji}</span>
       <span className="flex-1">{label}</span>
       {count !== undefined && <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded-full">{count}</span>}

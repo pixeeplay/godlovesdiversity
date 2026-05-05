@@ -78,6 +78,17 @@ const NAV: Entry[] = [
     ]
   },
   {
+    id: 'connect',
+    label: '🌈 GLD Connect (réseau social)',
+    icon: Heart,
+    children: [
+      { href: '/admin/connect', label: 'Dashboard Connect', icon: LayoutDashboard },
+      { href: '/admin/connect/moderation', label: 'Modération posts/messages', icon: ShieldCheck },
+      { href: '/admin/establishments', label: 'Établissements (annuaire)', icon: Building2 },
+      { href: '/connect', label: 'Voir le réseau (front)', icon: Heart }
+    ]
+  },
+  {
     id: 'ai',
     label: 'IA & Outils',
     icon: Sparkles,
@@ -109,6 +120,17 @@ const NAV: Entry[] = [
 ];
 
 const STORAGE_KEY = 'gld-admin-sidebar-open';
+
+// Couleurs par catégorie (gradient + accent) pour rendre la sidebar plus visuelle
+const GROUP_COLORS: Record<string, { bg: string; ring: string; text: string }> = {
+  pro:     { bg: 'from-emerald-500/15 to-cyan-500/10',   ring: 'border-emerald-400/30', text: 'text-emerald-300' },
+  shop:    { bg: 'from-amber-500/15 to-orange-500/10',   ring: 'border-amber-400/30',   text: 'text-amber-300' },
+  content: { bg: 'from-fuchsia-500/15 to-pink-500/10',   ring: 'border-fuchsia-400/30', text: 'text-fuchsia-300' },
+  comm:    { bg: 'from-blue-500/15 to-sky-500/10',       ring: 'border-blue-400/30',    text: 'text-blue-300' },
+  connect: { bg: 'from-rose-500/15 to-violet-500/10',    ring: 'border-rose-400/30',    text: 'text-rose-300' },
+  ai:      { bg: 'from-violet-500/15 to-purple-500/10',  ring: 'border-violet-400/30',  text: 'text-violet-300' },
+  system:  { bg: 'from-zinc-500/15 to-zinc-700/10',      ring: 'border-zinc-400/30',    text: 'text-zinc-300' }
+};
 
 export function AdminSidebar({
   role = 'EDITOR',
@@ -205,18 +227,20 @@ export function AdminSidebar({
           const hasActiveChild = entry.children.some(
             (c) => path === c.href || path.startsWith(c.href + '/')
           );
+          const colors = GROUP_COLORS[entry.id] || GROUP_COLORS.system;
 
           return (
             <div key={entry.id}>
               <button
                 type="button"
                 onClick={() => toggle(entry.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                  ${hasActiveChild
-                    ? 'bg-zinc-800/60 text-white'
-                    : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition border ${
+                  hasActiveChild
+                    ? `bg-gradient-to-r ${colors.bg} ${colors.ring} ${colors.text} font-bold`
+                    : `border-transparent text-zinc-400 hover:bg-zinc-800 hover:text-white hover:bg-gradient-to-r hover:${colors.bg}`
+                }`}
               >
-                <Icon size={18} className={hasActiveChild ? 'text-brand-pink' : ''} />
+                <Icon size={18} className={hasActiveChild ? colors.text : colors.text + ' opacity-70'} />
                 <span className="flex-1 text-left">{entry.label}</span>
                 {hasActiveChild && !isOpen && (
                   <span className="w-1.5 h-1.5 rounded-full bg-brand-pink" />

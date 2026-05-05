@@ -90,71 +90,36 @@ export async function POST(req: NextRequest) {
   }
 }
 
-/** Récupère et formatte les clés Higgsfield. Retourne null si manquantes. */
-async function getHiggsfieldHeaders(): Promise<Record<string, string> | { error: string }> {
-  const [idSetting, secretSetting, legacySetting] = await Promise.all([
-    prisma.setting.findUnique({ where: { key: 'ai.higgsfieldKeyId' } }).catch(() => null),
-    prisma.setting.findUnique({ where: { key: 'ai.higgsfieldSecret' } }).catch(() => null),
-    prisma.setting.findUnique({ where: { key: 'ai.higgsfieldApiKey' } }).catch(() => null),
-  ]);
-  const keyId = idSetting?.value || process.env.HIGGSFIELD_KEY_ID;
-  const secret = secretSetting?.value || process.env.HIGGSFIELD_SECRET;
-  const legacyKey = legacySetting?.value || process.env.HIGGSFIELD_API_KEY;
-  if (!keyId && !legacyKey) return { error: 'Higgsfield non configuré (manque API Key ID + Secret dans /admin/settings)' };
-  if (keyId && !secret) return { error: 'Higgsfield : API Key Secret manquant — ajoute-le dans /admin/settings' };
-  const h: Record<string, string> = {};
-  if (keyId && secret) {
-    h['hf-api-key'] = keyId;
-    h['hf-secret'] = secret;
-  } else if (legacyKey) {
-    h['Authorization'] = `Bearer ${legacyKey}`;
-  }
-  return h;
+/** Récupère la clé fal.ai (qui héberge les modèles Higgsfield). */
+async function getFalKey(): Promise<string | { error: string }> {
+  const setting = await prisma.setting.findUnique({ where: { key: 'ai.falApiKey' } }).catch(() => null);
+  const key = setting?.value || process.env.FAL_KEY;
+  if (!key) return { error: 'fal.ai non configuré — ajoute ta clé dans /admin/settings → 🎬 Higgsfield via fal.ai (10$ offerts à l\'inscription sur fal.ai)' };
+  return key;
 }
 
-/** Génère 1 à 4 images via Higgsfield Soul (text-to-image). */
+/** Génère 1 à 4 images via fal.ai Higgsfield Soul. */
 async function tryHiggsfieldImage(prompt: string, count: number): Promise<any> {
-  const headersOrErr = await getHiggsfieldHeaders();
-  if ('error' in headersOrErr) return { ok: false, reason: headersOrErr.error };
+  const k = await getFalKey();
+  if (typeof k !== 'string') return { ok: false, reason: k.error };
 
-  // Lance N requêtes parallèles (Higgsfield Soul génère 1 image/appel)
+  // fal.ai endpoint : https://fal.run/fal-ai/higgsfield-soul
+  // Auth: Authorization: Key <key>
   const tasks = Array.from({ length: count }).map(async () => {
-    const r = await fetch('https://api.higgsfield.ai/v1/text2image', {
+    const r = await fetch('https://fal.run/fal-ai/higgsfield-soul', {
       method: 'POST',
-      headers: { ...headersOrErr, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        prompt,
-        aspect_ratio: '16:9',
-        model: 'soul'
-      })
+      headers: { 'Authorization': `Key ${k}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, aspect_ratio: '16:9' })
     });
-    const j = await r.json();
-    if (!r.ok || j.error) throw new Error(j.error?.message || `HTTP ${r.status}`);
-
-    // 2 cas : image_url direct ou job_id à poller
-    if (j.image_url) {
-      const imgR = await fetch(j.image_url);
-      const buf = Buffer.from(await imgR.arrayBuffer());
-      return { data: buf.toString('base64'), mimeType: imgR.headers.get('content-type') || 'image/png' };
-    }
-    if (j.image_b64) {
-      return { data: j.image_b64, mimeType: j.mime_type || 'image/png' };
-    }
-    if (j.job_id) {
-      for (let i = 0; i < 30; i++) {
-        await new Promise((res) => setTimeout(res, 3000));
-        const poll = await fetch(`https://api.higgsfield.ai/v1/jobs/${j.job_id}`, { headers: headersOrErr });
-        const pj = await poll.json();
-        if (pj.status === 'completed' && pj.image_url) {
-          const imgR = await fetch(pj.image_url);
-          const buf = Buffer.from(await imgR.arrayBuffer());
-          return { data: buf.toString('base64'), mimeType: imgR.headers.get('content-type') || 'image/png' };
-        }
-        if (pj.status === 'failed') throw new Error(pj.error || 'Higgsfield image job failed');
-      }
-      throw new Error('Higgsfield timeout image (90s)');
-    }
-    throw new Error('Réponse Higgsfield image inattendue');
+    const raw = await r.text();
+    if (raw.trim().startsWith('<')) throw new Error(`fal.ai HTML reçu (HTTP ${r.status})`);
+    const j = JSON.parse(raw);
+    if (!r.ok || j.error) throw new Error(j.error?.message || j.detail || `HTTP ${r.status}`);
+    const imageUrl = j.images?.[0]?.url || j.image?.url;
+    if (!imageUrl) throw new Error('Pas d\'URL image dans la réponse fal.ai');
+    const imgR = await fetch(imageUrl);
+    const buf = Buffer.from(await imgR.arrayBuffer());
+    return { data: buf.toString('base64'), mimeType: imgR.headers.get('content-type') || 'image/png' };
   });
 
   try {
@@ -173,66 +138,38 @@ type HiggsfieldOpts = {
 };
 
 async function tryHiggsfield(prompt: string, opts: HiggsfieldOpts = {}): Promise<any> {
-  const headersOrErr = await getHiggsfieldHeaders();
-  if ('error' in headersOrErr) return { ok: false, reason: headersOrErr.error };
+  const k = await getFalKey();
+  if (typeof k !== 'string') return { ok: false, reason: k.error };
 
   const model = opts.model || 'higgsfield-lite';
   const isStandard = model === 'higgsfield-standard';
   const duration = Math.max(3, Math.min(isStandard ? 10 : 5, opts.duration || 5));
   const motion = opts.motion || 'medium';
   const loop = opts.loop !== false;
+  // Map vers les vrais slugs fal.ai
+  const falEndpoint = isStandard ? 'higgsfield-dop' : 'higgsfield-lite';
 
-  // Endpoints à tester (Higgsfield change parfois ses chemins)
-  const endpoints = [
-    'https://platform.higgsfield.ai/api/v1/text2video',
-    'https://api.higgsfield.ai/v1/text2video',
-    'https://api.higgsfield.ai/v1/generate'
-  ];
-  let lastErr = '';
-  let r: Response | null = null;
-  let raw = '';
-  for (const url of endpoints) {
-    try {
-      r = await fetch(url, {
-        method: 'POST',
-        headers: { ...headersOrErr, 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ prompt, duration, aspect_ratio: '16:9', model, motion_intensity: motion, loop })
-      });
-      raw = await r.text();
-      // Si la réponse commence par '<' c'est du HTML (404, login page, etc.) — on essaie l'endpoint suivant
-      if (raw.trim().startsWith('<')) { lastErr = `${url} : HTML reçu (HTTP ${r.status}) — endpoint inexistant ou auth refusée`; continue; }
-      break;
-    } catch (e: any) { lastErr = `${url} : ${e?.message || e}`; }
-  }
-  if (!r || raw.trim().startsWith('<')) {
-    return { ok: false, reason: `Higgsfield injoignable. ${lastErr}\n\n→ Vérifie tes clés (API Key ID + Secret) dans /admin/settings → 🎬 Higgsfield. Si ça persiste, l'endpoint a peut-être changé — voir docs.higgsfield.ai` };
-  }
-  let j: any;
-  try { j = JSON.parse(raw); } catch {
-    return { ok: false, reason: `Higgsfield : réponse non-JSON (HTTP ${r.status}). Premiers caractères : "${raw.slice(0, 100)}"` };
-  }
   try {
-    if (!r.ok || j.error) return { ok: false, reason: j.error?.message || j.error || `HTTP ${r.status}` };
-
-    if (j.video_url) {
-      return { ok: true, kind: 'video', videoUrl: j.video_url, prompt };
+    const r = await fetch(`https://fal.run/fal-ai/${falEndpoint}`, {
+      method: 'POST',
+      headers: { 'Authorization': `Key ${k}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, duration, aspect_ratio: '16:9', motion_strength: motion, loop })
+    });
+    const raw = await r.text();
+    if (raw.trim().startsWith('<')) {
+      return { ok: false, reason: `fal.ai a renvoyé du HTML (HTTP ${r.status}). Vérifie ta clé fal.ai dans /admin/settings.` };
     }
-    if (j.job_id) {
-      for (let i = 0; i < 30; i++) {
-        await new Promise(res => setTimeout(res, 5000));
-        const poll = await fetch(`https://api.higgsfield.ai/v1/jobs/${j.job_id}`, {
-          headers: headersOrErr
-        });
-        const pj = await poll.json();
-        if (pj.status === 'completed' && pj.video_url) {
-          return { ok: true, kind: 'video', videoUrl: pj.video_url, prompt };
-        }
-        if (pj.status === 'failed') return { ok: false, reason: pj.error || 'Higgsfield job failed' };
-      }
-      return { ok: false, reason: 'Higgsfield timeout après 150s' };
+    let j: any;
+    try { j = JSON.parse(raw); } catch {
+      return { ok: false, reason: `fal.ai : réponse non-JSON (HTTP ${r.status}) — "${raw.slice(0, 100)}"` };
     }
-    return { ok: false, reason: 'Réponse Higgsfield inattendue' };
+    if (!r.ok || j.error) {
+      return { ok: false, reason: j.error?.message || j.detail || `HTTP ${r.status}` };
+    }
+    const videoUrl = j.video?.url || j.videos?.[0]?.url;
+    if (videoUrl) return { ok: true, kind: 'video', videoUrl, prompt };
+    return { ok: false, reason: 'Pas d\'URL vidéo dans la réponse fal.ai' };
   } catch (e: any) {
-    return { ok: false, reason: `Higgsfield: ${e.message}` };
+    return { ok: false, reason: `fal.ai : ${e?.message || e}` };
   }
 }

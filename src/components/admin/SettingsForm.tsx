@@ -110,12 +110,13 @@ const GROUPS: Group[] = [
     ]
   },
   {
-    title: '🎬 Higgsfield (vidéo IA bannières)',
+    title: '🎬 Higgsfield via fal.ai (vidéo + image IA)',
     icon: Sparkles, category: 'ai',
-    description: 'Génération de vidéos IA cinématiques (5-10s) pour les bannières hero. Récupère tes 2 clés sur https://cloud.higgsfield.ai/api-keys (API Key ID + API Key Secret). Sans ces clés, le système fait un fallback automatique sur 4 images Imagen en carrousel.',
+    description: 'Higgsfield n\'a PAS d\'API publique directe — leurs modèles (Soul image + DoP/Lite vidéo) sont hébergés sur fal.ai. Crée ta clé sur https://fal.ai/dashboard/keys (10$ offerts à l\'inscription, ~0.05$/vidéo).',
     fields: [
-      { key: 'ai.higgsfieldKeyId', label: 'API Key ID', type: 'password', placeholder: 'hf_id_…', help: 'Identifiant de la clé Higgsfield' },
-      { key: 'ai.higgsfieldSecret', label: 'API Key Secret', type: 'password', placeholder: 'hf_sec_…', help: 'Secret associé — les deux sont nécessaires' }
+      { key: 'ai.falApiKey', label: 'Clé fal.ai (Higgsfield models)', type: 'password', placeholder: 'fal-…', help: 'Une seule clé, format : XXXXXXX:YYYYYYYY' },
+      { key: 'ai.higgsfieldKeyId', label: '(legacy) API Key ID Higgsfield direct', type: 'password', placeholder: 'optionnel', help: 'Si l\'API Higgsfield publique sort un jour' },
+      { key: 'ai.higgsfieldSecret', label: '(legacy) API Key Secret', type: 'password', placeholder: 'optionnel', help: 'Idem' }
     ]
   },
   {
