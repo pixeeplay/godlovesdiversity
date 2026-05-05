@@ -251,7 +251,7 @@ export default async function RapportPage() {
           <div className="footer">
             <p>Rapport généré le {new Date().toLocaleDateString('fr-FR', { dateStyle: 'long', timeStyle: 'short' })} — données live depuis la base de production</p>
             <p style={{ marginTop: 8 }}>🌈 <a href="https://gld.pixeeplay.com">gld.pixeeplay.com</a> — God Loves Diversity</p>
-            <p style={{ marginTop: 16, fontSize: 11 }}><button onClick="window.print()" style={{ background: '#d4537e', color: 'white', border: 'none', padding: '8px 16px', borderRadius: 999, fontWeight: 700, cursor: 'pointer' }}>📄 Télécharger en PDF</button></p>
+            <p style={{ marginTop: 16, fontSize: 11 }}><a href="javascript:window.print()" style={{ display: 'inline-block', background: '#d4537e', color: 'white', textDecoration: 'none', padding: '8px 16px', borderRadius: 999, fontWeight: 700 }}>📄 Télécharger en PDF</a></p>
           </div>
         </div>
       </div>
