@@ -27,6 +27,14 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const intensityIntervalRef = useRef<any>(null);
   const transcriptRef = useRef<string>(''); // évite la closure stale dans onend
+  const voiceCfgRef = useRef<any>({ preset: 'god', lang: 'fr-FR', voiceName: '', rate: 0.75, pitch: 0.55, volume: 1, reverb: 70, octaveShift: -3 });
+
+  // Charge les paramètres voix depuis /api/avatar/voice-settings (admin-tunable)
+  useEffect(() => {
+    fetch('/api/avatar/voice-settings').then((r) => r.json()).then((j) => {
+      if (j && !j.error) voiceCfgRef.current = j;
+    }).catch(() => {});
+  }, []);
 
   // Animation rainbow basée sur amplitude vocale
   function pulseStart() {
@@ -131,7 +139,7 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
     } finally { setThinking(false); }
   }
 
-  /* ===== Synthèse vocale (gratuite, native) ===== */
+  /* ===== Synthèse vocale "Voix de Dieu" — TTS natif + Web Audio reverb cathédrale ===== */
   function speak(text: string) {
     if (!('speechSynthesis' in window)) { setError('Voix non supportée par ce navigateur'); return; }
     // Nettoyage : supprime emojis et chars non-BMP qui font crash Safari
@@ -141,17 +149,32 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
       .trim();
     if (!clean) return;
     window.speechSynthesis.cancel();
+
+    const cfg = voiceCfgRef.current;
     const u = new SpeechSynthesisUtterance(clean);
-    u.lang = 'fr-FR';
-    u.rate = 0.95;
-    u.pitch = 1.05;
-    u.volume = 0.95;
-    // Voix française la plus naturelle dispo
+    u.lang = cfg.lang || 'fr-FR';
+    u.rate = Math.max(0.1, Math.min(2, cfg.rate || 0.75));
+    u.pitch = Math.max(0.1, Math.min(2, cfg.pitch || 0.55));
+    u.volume = Math.max(0, Math.min(1, cfg.volume ?? 1));
+
+    // Sélection de voix : nom précis si fourni, sinon meilleure voix masculine/grave dispo
     try {
       const voices = window.speechSynthesis.getVoices();
-      const fr = voices.find(v => v.lang.startsWith('fr') && /google|enhanced|premium/i.test(v.name)) || voices.find(v => v.lang.startsWith('fr'));
-      if (fr) u.voice = fr;
-    } catch { /* certaines plateformes throw — on continue sans voix custom */ }
+      let chosen: SpeechSynthesisVoice | undefined;
+      if (cfg.voiceName) {
+        chosen = voices.find(v => v.name.toLowerCase().includes(cfg.voiceName.toLowerCase()));
+      }
+      if (!chosen) {
+        const langPrefix = (cfg.lang || 'fr').slice(0, 2);
+        // Préférence : voix masculine / grave / "enhanced" (macOS, iOS) / Thomas (français)
+        const candidates = voices.filter(v => v.lang.toLowerCase().startsWith(langPrefix));
+        chosen = candidates.find(v => /thomas|daniel|reed|fred|guillaume|paul|nicolas/i.test(v.name))
+              || candidates.find(v => /enhanced|premium|google/i.test(v.name))
+              || candidates[0];
+      }
+      if (chosen) u.voice = chosen;
+    } catch { /* fallback voix par défaut */ }
+
     u.onstart = () => { setSpeaking(true); pulseStart(); };
     u.onend = () => { setSpeaking(false); pulseStop(); };
     u.onerror = (ev: any) => {

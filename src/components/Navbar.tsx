@@ -2,11 +2,12 @@
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from '@/i18n/routing';
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, ShoppingCart, MessageCircle, FileText, Image as ImageIcon, ShoppingBag, Sparkles } from 'lucide-react';
+import { Menu, X, ChevronDown, ShoppingCart, MessageCircle, FileText, Image as ImageIcon, ShoppingBag, Sparkles, User, LogIn, LogOut, LayoutDashboard } from 'lucide-react';
 import { NeonHeart } from './NeonHeart';
 import { ThemeToggle } from './ThemeToggle';
 import { CartBadge } from './CartBadge';
 import { MegaMenuTrigger } from './MegaMenu';
+import { useSession, signOut } from 'next-auth/react';
 
 const LOCALES = ['fr', 'en', 'es', 'pt'] as const;
 
@@ -27,6 +28,11 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [openSub, setOpenSub] = useState<string | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const role = (session?.user as any)?.role;
+  const isAdmin = role === 'ADMIN' || role === 'EDITOR';
+  const isLogged = status === 'authenticated';
 
   useEffect(() => {
     fetch('/api/branding').then((r) => r.json()).then((j) => setLogoUrl(j.logoUrl || ''));
@@ -180,6 +186,66 @@ export function Navbar() {
               <option key={l} value={l} style={{ background: 'var(--bg)', color: 'var(--fg)' }}>{l.toUpperCase()}</option>
             ))}
           </select>
+          {/* User menu (login / mon-espace / logout) */}
+          {!isLogged ? (
+            <a
+              href="/admin/login"
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-[color:var(--fg)] hover:text-[color:var(--accent)] px-3 py-2 rounded-full border border-[color:var(--border)] hover:border-[color:var(--accent)] transition"
+              title="Se connecter"
+            >
+              <LogIn size={14} /> Connexion
+            </a>
+          ) : (
+            <div className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="inline-flex items-center gap-2 text-sm font-bold px-3 py-1.5 rounded-full border border-[color:var(--accent)] hover:bg-[color:var(--accent)]/10 transition"
+                style={{ color: 'var(--accent)' }}
+              >
+                <span className="w-7 h-7 rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-600 text-white grid place-items-center text-xs">
+                  {(session?.user?.name || session?.user?.email || '?').charAt(0).toUpperCase()}
+                </span>
+                <span className="hidden xl:inline max-w-[100px] truncate">{session?.user?.name || session?.user?.email?.split('@')[0]}</span>
+                <ChevronDown size={12} className={`transition ${userMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {userMenuOpen && (
+                <div className="absolute top-full right-0 mt-2 min-w-[220px] py-2 bg-[color:var(--bg)] border border-[color:var(--border)] rounded-xl shadow-2xl z-[60]">
+                  <div className="px-4 py-2 border-b border-[color:var(--border)] mb-1">
+                    <div className="text-sm font-bold truncate" style={{ color: 'var(--fg)' }}>{session?.user?.name || 'Membre'}</div>
+                    <div className="text-[11px] truncate" style={{ color: 'var(--fg-muted)' }}>{session?.user?.email}</div>
+                    {isAdmin && (
+                      <div className="text-[10px] mt-1 inline-block bg-fuchsia-500/20 text-fuchsia-300 px-2 py-0.5 rounded-full uppercase font-bold tracking-wider">{role}</div>
+                    )}
+                  </div>
+                  <a
+                    href="/mon-espace"
+                    onClick={() => setUserMenuOpen(false)}
+                    className="px-4 py-2 text-sm hover:bg-white/5 hover:text-brand-pink transition flex items-center gap-2"
+                    style={{ color: 'var(--fg)' }}
+                  >
+                    <User size={14} /> Mon espace
+                  </a>
+                  {isAdmin && (
+                    <a
+                      href="/admin"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="px-4 py-2 text-sm hover:bg-white/5 hover:text-brand-pink transition flex items-center gap-2"
+                      style={{ color: 'var(--fg)' }}
+                    >
+                      <LayoutDashboard size={14} /> Back-office admin
+                    </a>
+                  )}
+                  <button
+                    onClick={() => { setUserMenuOpen(false); signOut({ callbackUrl: '/' }); }}
+                    className="w-full text-left px-4 py-2 text-sm hover:bg-red-500/10 hover:text-red-400 transition flex items-center gap-2 border-t border-[color:var(--border)] mt-1 pt-2"
+                    style={{ color: 'var(--fg-muted)' }}
+                  >
+                    <LogOut size={14} /> Déconnexion
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
           <a
             href={`${locale !== 'fr' ? `/${locale}` : ''}/participer`}
             className="border-2 border-[color:var(--accent)] text-[color:var(--accent)] uppercase text-sm font-bold tracking-wider px-5 py-2 rounded-full hover:bg-[color:var(--accent)] hover:text-white transition"
@@ -191,6 +257,16 @@ export function Navbar() {
         <div className="lg:hidden flex items-center gap-2">
           <CartBadge />
           <ThemeToggle />
+          {/* Login mobile : icône simple */}
+          {!isLogged ? (
+            <a href="/admin/login" aria-label="Connexion" className="p-1.5 rounded-full border border-[color:var(--border)]" style={{ color: 'var(--fg)' }}>
+              <LogIn size={16} />
+            </a>
+          ) : (
+            <a href="/mon-espace" aria-label="Mon espace" className="w-8 h-8 rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-600 text-white grid place-items-center text-xs font-bold">
+              {(session?.user?.name || session?.user?.email || '?').charAt(0).toUpperCase()}
+            </a>
+          )}
           <button onClick={() => setOpen(!open)} aria-label="menu" style={{ color: 'var(--fg)' }}>
             {open ? <X /> : <Menu />}
           </button>

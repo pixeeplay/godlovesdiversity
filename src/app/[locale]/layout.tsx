@@ -12,6 +12,7 @@ import { ThemeProvider, themeInitScript } from '@/components/ThemeProvider';
 import { ThemeApplier } from '@/components/ThemeApplier';
 import { SOSFloatingButton } from '@/components/SOSFloatingButton';
 import { AccessibilityToggle } from '@/components/AccessibilityToggle';
+import { Providers } from '@/components/Providers';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -35,23 +36,25 @@ export default async function LocaleLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="min-h-screen flex flex-col">
-        <ThemeProvider>
-          <NextIntlClientProvider messages={messages} locale={locale}>
-            {/* Bandeau sticky : ticker DON + navbar empilés, jamais de chevauchement */}
-            <div className="sticky top-0 z-50 shadow-xl shadow-black/40">
-              <TickerDonate />
-              <Navbar />
-            </div>
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <AskGldWidget />
-            <AmbientPlayer />
-            <PageTracker />
-            <ThemeApplier />
-            <SOSFloatingButton />
-            <AccessibilityToggle />
-          </NextIntlClientProvider>
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider>
+            <NextIntlClientProvider messages={messages} locale={locale}>
+              {/* Bandeau sticky : ticker DON + navbar empilés, jamais de chevauchement */}
+              <div className="sticky top-0 z-50 shadow-xl shadow-black/40">
+                <TickerDonate />
+                <Navbar />
+              </div>
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <AskGldWidget />
+              <AmbientPlayer />
+              <PageTracker />
+              <ThemeApplier />
+              <SOSFloatingButton />
+              <AccessibilityToggle />
+            </NextIntlClientProvider>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

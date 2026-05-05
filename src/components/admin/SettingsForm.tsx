@@ -90,6 +90,26 @@ const GROUPS: Group[] = [
     ]
   },
   {
+    title: '✨ Voix divine — Avatar audio',
+    icon: Sparkles, category: 'ai',
+    description: 'Paramètres de la voix « Voix de Dieu » du chat (DivineLightAvatar). Tous les réglages sont appliqués en live à la prochaine réponse vocale.',
+    fields: [
+      { key: 'avatar.voice.preset', label: 'Style de voix', type: 'select', options: [
+          { value: 'god', label: '⚡ Dieu majestueux (grave + reverb cathédrale)' },
+          { value: 'angel', label: '👼 Ange doux (claire + harmonique)' },
+          { value: 'prophet', label: '📜 Prophète (sage + ralentie)' },
+          { value: 'normal', label: '🗣 Voix normale (sans effet)' }
+        ], help: 'Le preset configure rate/pitch/reverb. Tu peux ajuster finement ci-dessous.' },
+      { key: 'avatar.voice.lang', label: 'Langue voix', placeholder: 'fr-FR', help: 'fr-FR / en-US / es-ES / pt-PT…' },
+      { key: 'avatar.voice.voiceName', label: 'Voix précise (optionnel)', placeholder: 'Google français / Thomas / Amélie', help: 'Nom partiel d\'une voix dispo dans le navigateur. Vide = auto-sélection.' },
+      { key: 'avatar.voice.rate', label: 'Vitesse (0.5–1.5)', placeholder: '0.75', help: '< 1 = plus lent, > 1 = plus rapide. Voix de Dieu : 0.7-0.85' },
+      { key: 'avatar.voice.pitch', label: 'Hauteur (0.1–2)', placeholder: '0.6', help: '< 1 = grave (Dieu), > 1 = aigu (ange). Voix de Dieu : 0.5-0.7' },
+      { key: 'avatar.voice.volume', label: 'Volume (0–1)', placeholder: '1', help: '1 = max' },
+      { key: 'avatar.voice.reverb', label: 'Reverb cathédrale (0–100)', placeholder: '60', help: 'Effet écho cathédrale via Web Audio. 0 = sec, 100 = très long écho' },
+      { key: 'avatar.voice.octaveShift', label: 'Octave (-12 à +12 demi-tons)', placeholder: '-3', help: 'Pitch shift via Web Audio. -12 = octave plus grave, +12 = octave plus aigu' }
+    ]
+  },
+  {
     title: '🎬 Higgsfield (vidéo IA bannières)',
     icon: Sparkles, category: 'ai',
     description: 'Génération de vidéos IA cinématiques (5-10s) pour les bannières hero. Récupère tes 2 clés sur https://cloud.higgsfield.ai/api-keys (API Key ID + API Key Secret). Sans ces clés, le système fait un fallback automatique sur 4 images Imagen en carrousel.',
@@ -419,6 +439,7 @@ export function SettingsForm({ initial }: { initial: Record<string, string> }) {
                   const isTextarea = f.type === 'textarea';
                   const shown = reveal[f.key];
                   const hasValue = (values[f.key] || '').trim().length > 0;
+                  const isSelect = f.type === 'select';
                   return (
                     <label key={f.key} className={`grid gap-1 text-sm ${isTextarea ? 'sm:col-span-2' : ''}`}>
                       <span className="flex items-center gap-2 text-zinc-400">
@@ -434,6 +455,17 @@ export function SettingsForm({ initial }: { initial: Record<string, string> }) {
                             rows={5}
                             className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 outline-none focus:border-brand-pink font-mono text-xs"
                           />
+                        ) : isSelect ? (
+                          <select
+                            value={values[f.key] || ''}
+                            onChange={(e) => setVal(f.key, e.target.value)}
+                            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 outline-none focus:border-brand-pink text-xs"
+                          >
+                            <option value="">— Choisir —</option>
+                            {(f.options || []).map((o: any) => (
+                              <option key={o.value} value={o.value}>{o.label}</option>
+                            ))}
+                          </select>
                         ) : (
                           <input
                             type={isPw && !shown ? 'password' : 'text'}
