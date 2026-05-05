@@ -26,6 +26,7 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
   const recogRef = useRef<any>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const intensityIntervalRef = useRef<any>(null);
+  const transcriptRef = useRef<string>(''); // évite la closure stale dans onend
 
   // Animation rainbow basée sur amplitude vocale
   function pulseStart() {
@@ -48,27 +49,50 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
     setError('');
     setTranscript('');
     setResponse('');
+    transcriptRef.current = '';
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SR) { setError('Reconnaissance vocale non supportée par ton navigateur. Utilise Chrome ou Edge.'); return; }
+    if (!SR) {
+      setError('Reconnaissance vocale non supportée. Utilise Chrome / Edge sur desktop ou Safari iOS 14.5+.');
+      // Fallback : ouvre un prompt texte si pas de Web Speech
+      const q = window.prompt('Pose ta question à GLD (ta voix ne marche pas sur ce navigateur) :');
+      if (q && q.trim()) void ask(q.trim());
+      return;
+    }
     const r = new SR();
     r.lang = 'fr-FR';
     r.interimResults = true;
     r.continuous = false;
-    r.onstart = () => setListening(true);
+    r.onstart = () => { setListening(true); pulseStart(); };
     r.onresult = (e: any) => {
       const t = Array.from(e.results).map((res: any) => res[0].transcript).join(' ');
+      transcriptRef.current = t; // ref toujours à jour
       setTranscript(t);
     };
-    r.onerror = (e: any) => { setError(e.error); setListening(false); };
+    r.onerror = (e: any) => {
+      const code = e.error || 'inconnu';
+      const msg = code === 'not-allowed' ? 'Micro refusé. Active-le dans les paramètres du navigateur.'
+        : code === 'no-speech' ? 'Je n\'ai rien entendu — réessaie.'
+        : code === 'audio-capture' ? 'Pas de micro détecté.'
+        : code === 'network' ? 'Erreur réseau STT (exige une connexion internet).'
+        : `Erreur STT : ${code}`;
+      setError(msg);
+      setListening(false);
+      pulseStop();
+    };
     r.onend = async () => {
       setListening(false);
-      const finalText = (r as any)._finalText || transcript;
-      // Récupère la dernière transcription via state à jour
-      const finalQ = transcript || finalText;
-      if (finalQ.trim()) await ask(finalQ);
+      pulseStop();
+      const finalQ = transcriptRef.current.trim();
+      if (finalQ) await ask(finalQ);
+      else if (!error) setError('Pas de texte capté — clique sur le micro et parle clairement.');
     };
     recogRef.current = r;
-    r.start();
+    try {
+      r.start();
+    } catch (e: any) {
+      setError('Impossible de démarrer le micro : ' + (e?.message || 'erreur'));
+      setListening(false);
+    }
   }
 
   function stopListening() {
@@ -80,17 +104,19 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
   async function ask(question: string) {
     setThinking(true);
     setResponse('');
+    setError('');
     try {
-      const r = await fetch('/api/ask', {
+      const r = await fetch('/api/chat', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, useRag: true })
+        body: JSON.stringify({ question, locale: 'fr' })
       });
       const j = await r.json();
+      if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`);
       const answer = j.answer || j.text || 'Je n\'ai pas de réponse pour le moment.';
       setResponse(answer);
       if (!muted) speak(answer);
     } catch (e: any) {
-      setError('Erreur : ' + e.message);
+      setError('Erreur : ' + (e?.message || e));
     } finally { setThinking(false); }
   }
 
@@ -122,11 +148,43 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
 
   useEffect(() => () => { stopSpeaking(); pulseStop(); }, []);
 
+  // Fallback cathédrale CSS pur si l'image est manquante ou ne charge pas
+  const [imgOk, setImgOk] = useState(true);
+
   return (
     <div className="relative w-full overflow-hidden rounded-2xl bg-zinc-950" style={{ minHeight: 480 }}>
-      {/* Image fond */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={imageUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      {/* Fond toujours visible : gradient cathédrale stylisé (rayons lumière + nef) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(ellipse 80% 50% at 50% 30%, rgba(255, 220, 130, 0.55) 0%, transparent 70%),
+            linear-gradient(180deg, #1a0e3a 0%, #2d1b5a 30%, #1f1442 60%, #0a0820 100%),
+            repeating-linear-gradient(95deg, transparent 0 8%, rgba(255, 230, 180, 0.04) 8% 9%)
+          `
+        }}
+      />
+      {/* Faisceaux de lumière obliques */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            linear-gradient(110deg, transparent 30%, rgba(255, 240, 200, 0.12) 45%, transparent 55%),
+            linear-gradient(70deg, transparent 35%, rgba(255, 230, 180, 0.08) 50%, transparent 65%)
+          `,
+          mixBlendMode: 'screen'
+        }}
+      />
+      {/* Image custom si dispo (par-dessus le fallback) */}
+      {imgOk && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={imageUrl}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          onError={() => setImgOk(false)}
+        />
+      )}
 
       {/* Overlay arc-en-ciel + halo lumineux qui réagissent à l'intensité */}
       <div
