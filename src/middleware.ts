@@ -58,6 +58,11 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // 2.b) /rapport et autres pages globales sans locale → on laisse passer
+  if (pathname === '/rapport' || pathname.startsWith('/rapport/')) {
+    return NextResponse.next();
+  }
+
   // 3) Routes publiques → i18n
   return intlMiddleware(req);
 }
