@@ -69,6 +69,23 @@ model User {
   futureLetters     FutureLetter[]
   aiConversations   AIConversation[]
   activityLogs      UserActivityLog[]
+
+  // V5 — GLD Connect (réseau social 3-en-1)
+  connectProfile    ConnectProfile?
+  swipesGiven       ConnectSwipe[]      @relation("swipeFrom")
+  swipesReceived    ConnectSwipe[]      @relation("swipeTo")
+  connectionsFrom   ConnectConnection[] @relation("connFrom")
+  connectionsTo     ConnectConnection[] @relation("connTo")
+  connectPosts      ConnectPost[]
+  connectReactions  ConnectReaction[]
+  conversations1    ConnectConversation[] @relation("convA")
+  conversations2    ConnectConversation[] @relation("convB")
+  connectMessages   ConnectMessage[]
+  reportsFiled      ConnectReport[]     @relation("reporterRel")
+  reportsAgainst    ConnectReport[]     @relation("reportedRel")
+  blocksGiven       ConnectBlock[]      @relation("blockerRel")
+  blocksReceived    ConnectBlock[]      @relation("blockedRel")
+  premiumSub        ConnectPremium?
 }
 
 /// Bookmark générique (témoignages, lieux, posts, produits, events).
@@ -1190,4 +1207,225 @@ model UnansweredQuery {
   createdAt   DateTime @default(now())
 
   @@index([status, createdAt])
+}
+
+// ───────────────────────────────────────────────
+// V5 — GLD CONNECT (réseau social 3-en-1)
+// ───────────────────────────────────────────────
+
+/// Profil unique avec toggles de visibilité par mode.
+model ConnectProfile {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  handle       String   @unique  // ex: "marc-antoine" pour /connect/profil/marc-antoine
+  displayName  String
+  birthYear    Int?     // pour vérification 18+ (mode Rencontres)
+  city         String?
+  country      String?  @default("FR")
+  bio          String?  @db.Text
+  photos       String[] @default([])  // jusqu'à 6 URLs
+  verified     Boolean  @default(false)
+  verifiedAt   DateTime?
+
+  // Visibilité par mode (l'user choisit)
+  showInMur        Boolean  @default(true)
+  showInRencontres Boolean  @default(false)
+  showInPro        Boolean  @default(false)
+
+  // Mode Rencontres
+  intentions       String[] @default([])  // ["amour","amitie_spi","mentor","coloc"]
+  quote            String?  @db.Text       // citation/verset perso
+  maxDistanceKm    Int      @default(50)
+  ageRangeMin      Int      @default(18)
+  ageRangeMax      Int      @default(99)
+  showOnlyVerified Boolean  @default(true)
+
+  // Mode Pro
+  jobTitle         String?
+  proCategory      String?  // pasteur|therapeute|avocat|coach|photographe|lieu|autre
+  proPitch         String?  @db.Text
+  proAvailable     Boolean  @default(false)
+  proRate          String?  // ex: "à partir de 60€" (free-form pour sliding scale)
+
+  // Identité partagée mais affichage par contexte
+  identity         String?
+  traditions       String[] @default([])
+
+  // Geo
+  lat              Float?
+  lng              Float?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([showInRencontres, country])
+  @@index([showInPro, proCategory])
+}
+
+/// Swipe (like / pass / super) — base pour détecter les matches.
+model ConnectSwipe {
+  id        String   @id @default(cuid())
+  fromId    String
+  toId      String
+  from      User     @relation("swipeFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to        User     @relation("swipeTo",   fields: [toId],   references: [id], onDelete: Cascade)
+  action    String   // "like" | "pass" | "super"
+  intentions String[] @default([])  // intentions ciblées (subset de celles du swiper)
+  createdAt DateTime @default(now())
+
+  @@unique([fromId, toId])
+  @@index([toId, action])
+}
+
+/// Match = 2 swipes "like"/"super" croisés. Détecté côté API au moment du swipe.
+model ConnectMatch {
+  id           String   @id @default(cuid())
+  user1Id      String
+  user2Id      String
+  intentions   String[] @default([])  // intentions communes
+  status       String   @default("active") // active | unmatched | reported
+  createdAt    DateTime @default(now())
+
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
+}
+
+/// Connexion Pro (LinkedIn-like) — request + accept.
+model ConnectConnection {
+  id        String   @id @default(cuid())
+  fromId    String
+  toId      String
+  from      User     @relation("connFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to        User     @relation("connTo",   fields: [toId],   references: [id], onDelete: Cascade)
+  status    String   @default("pending") // pending | accepted | declined
+  message   String?  @db.Text             // mot d'introduction
+  createdAt DateTime @default(now())
+  acceptedAt DateTime?
+
+  @@unique([fromId, toId])
+  @@index([toId, status])
+}
+
+/// Post sur le mur Communauté.
+model ConnectPost {
+  id          String   @id @default(cuid())
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  type        String   @default("post") // post | temoignage | priere | photo | event
+  text        String   @db.Text
+  imageUrl    String?
+  videoUrl    String?
+  circleSlug  String?  // ex: "ramadan-inclusif"
+  visibility  String   @default("public") // public | friends | circle | private
+  // Modération auto IA Gemini
+  moderationStatus String  @default("pending") // pending | approved | flagged | removed
+  moderationNotes  String? @db.Text
+
+  reactions   ConnectReaction[]
+  commentsCount Int @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([authorId, createdAt])
+  @@index([visibility, moderationStatus, createdAt])
+}
+
+/// Réaction (♥ like / 🕊 prière / ⭐ super).
+model ConnectReaction {
+  id        String   @id @default(cuid())
+  postId    String
+  post      ConnectPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // "like" | "pray" | "amen" | "super"
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId, type])
+  @@index([postId])
+}
+
+/// Conversation entre 2 users (toutes modes confondus, taggée).
+model ConnectConversation {
+  id        String   @id @default(cuid())
+  user1Id   String
+  user2Id   String
+  user1     User     @relation("convA", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2     User     @relation("convB", fields: [user2Id], references: [id], onDelete: Cascade)
+  origin    String   @default("connect") // match | connection | post | direct
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages  ConnectMessage[]
+
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
+}
+
+/// Message dans une conversation.
+model ConnectMessage {
+  id             String   @id @default(cuid())
+  conversationId String
+  conversation   ConnectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  text           String   @db.Text
+  imageUrl       String?
+  audioUrl       String?
+  readAt         DateTime?
+  // Modération auto
+  moderationStatus String  @default("approved") // approved | flagged | removed
+  createdAt      DateTime @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+/// Signalement utilisateur ou contenu.
+model ConnectReport {
+  id          String   @id @default(cuid())
+  reporterId  String
+  reporter    User     @relation("reporterRel", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedId  String
+  reported    User     @relation("reportedRel", fields: [reportedId], references: [id], onDelete: Cascade)
+  contentType String?  // "post" | "message" | "profile" — null si signalement profil pur
+  contentId   String?
+  reason      String   // "harassment" | "hate" | "fake" | "spam" | "explicit" | "other"
+  details     String?  @db.Text
+  status      String   @default("pending") // pending | reviewed | actioned | dismissed
+  adminNotes  String?  @db.Text
+  createdAt   DateTime @default(now())
+  reviewedAt  DateTime?
+
+  @@index([status, createdAt])
+}
+
+/// Block entre users (mutuel, supprime tout contact).
+model ConnectBlock {
+  id        String   @id @default(cuid())
+  blockerId String
+  blocker   User     @relation("blockerRel", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockedId String
+  blocked   User     @relation("blockedRel", fields: [blockedId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([blockerId, blockedId])
+}
+
+/// Abonnement Premium (Stripe).
+model ConnectPremium {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeCustomerId   String?
+  stripeSubId        String?
+  status             String   @default("none") // none | trialing | active | past_due | canceled
+  trialEndsAt        DateTime?
+  currentPeriodEnd   DateTime?
+  cancelAtPeriodEnd  Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
