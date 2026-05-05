@@ -37,15 +37,19 @@ export function AccessibilityToggle() {
     <>
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-[55] bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-xl border-2 border-white/20"
+        className="fixed right-6 z-[55] bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 shadow-xl border-2 border-white/20"
+        style={{ bottom: 'calc(6rem + env(safe-area-inset-bottom))' }}
         title="Accessibilité"
         aria-label="Options accessibilité"
       >
-        <Accessibility size={20} />
+        <Accessibility size={18} />
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-6 z-[60] bg-zinc-900 border border-blue-500/40 rounded-2xl p-4 shadow-2xl w-72">
+        <div
+          className="fixed right-6 z-[60] bg-zinc-900 border border-blue-500/40 rounded-2xl p-4 shadow-2xl w-72"
+          style={{ bottom: 'calc(10rem + env(safe-area-inset-bottom))' }}
+        >
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold text-sm flex items-center gap-1.5"><Eye size={14} /> Accessibilité</h3>
             <button onClick={() => setOpen(false)}><X size={16} className="text-zinc-400" /></button>
