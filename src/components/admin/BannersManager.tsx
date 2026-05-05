@@ -193,10 +193,16 @@ function BannerEditor({ banner, onClose, onSaved }: {
           higgsfield: kind === 'video' ? { model: hfModel, duration: hfDuration, motion: hfMotion, loop: hfLoop } : undefined
         })
       });
-      const j = await r.json();
-      if (!j.ok) { alert(j.error || 'Génération échouée'); return; }
+      const j = await r.json().catch(() => ({ error: `Réponse invalide (HTTP ${r.status})` }));
+      if (!r.ok || !j.ok) {
+        // Affiche l'erreur détaillée dans un alert lisible (multi-lignes OK)
+        alert(j.error || `Génération échouée (HTTP ${r.status})`);
+        return;
+      }
       setAiPreview(j.images || []);
       if (j.fallbackFromVideo) alert(j.message);
+    } catch (e: any) {
+      alert('Erreur réseau : ' + (e?.message || e));
     } finally { setAiBusy(null); }
   }
 

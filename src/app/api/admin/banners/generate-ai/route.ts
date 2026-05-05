@@ -75,20 +75,33 @@ export async function POST(req: NextRequest) {
       // Tente Higgsfield avec les paramètres demandés
       const result = await tryHiggsfield(usedPrompt, hfOpts);
       if (result.ok) return NextResponse.json(result);
-      // Fallback : génère 4 images Imagen → carrousel = effet vidéo
-      const img = await generateImagen(usedPrompt, 4);
-      return NextResponse.json({
-        ok: true,
-        kind: 'image',
-        fallbackFromVideo: true,
-        message: `${result.reason}\n\n→ 4 images Imagen générées à la place. Le carrousel hero les fera défiler automatiquement (effet "vidéo" cinématique).`,
-        images: img.images,
-        prompt: usedPrompt
-      });
+      // Fallback : 4 images Imagen → carrousel = effet vidéo
+      try {
+        const img = await generateImagen(usedPrompt, 4);
+        return NextResponse.json({
+          ok: true,
+          kind: 'image',
+          fallbackFromVideo: true,
+          message: `⚠ Higgsfield non disponible : ${result.reason}\n\n✓ Fallback : 4 images Imagen générées — le carrousel hero les fera défiler automatiquement (effet "vidéo" cinématique).`,
+          images: img.images,
+          prompt: usedPrompt
+        });
+      } catch (imgErr: any) {
+        // Ni Higgsfield ni Imagen ne marchent : message d'aide complet
+        return NextResponse.json({
+          error: `Aucune génération vidéo possible :\n\n• Higgsfield : ${result.reason}\n• Fallback Imagen : ${imgErr.message}\n\n→ Configure au moins l'un des deux dans /admin/settings :\n  - Higgsfield (vidéo réelle, recommandé) : API Key ID + Secret\n  - Gemini (fallback images carrousel) : Clé API`
+        }, { status: 503 });
+      }
     }
 
-    const img = await generateImagen(usedPrompt, Math.min(count, 4));
-    return NextResponse.json({ ok: true, kind: 'image', ...img, prompt: usedPrompt });
+    try {
+      const img = await generateImagen(usedPrompt, Math.min(count, 4));
+      return NextResponse.json({ ok: true, kind: 'image', ...img, prompt: usedPrompt });
+    } catch (imgErr: any) {
+      return NextResponse.json({
+        error: `Génération image impossible : ${imgErr.message}\n\n→ Configure ta clé Gemini dans /admin/settings → IA & Outils → Gemini.`
+      }, { status: 503 });
+    }
   } catch (e: any) {
     return NextResponse.json({ error: e?.message }, { status: 500 });
   }
