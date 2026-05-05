@@ -138,22 +138,35 @@ const GROUPS: Group[] = [
     ]
   },
   {
-    title: '✉️ Serveur mail (domaines, alias, webmail)',
+    title: '✉️ Serveur mail (Gmail / Migadu / ImprovMX…)',
     icon: Mail, category: 'logistics',
-    description: 'Configuration serveur mail pour ton domaine. Recommandé : Migadu (4€/mois domaines + alias illimités) ou ImprovMX (alias gratuits + relai). Webmail : RoundCube ou SnappyMail.',
+    description: 'Choisis ton fournisseur mail. Recommandé : Gmail Workspace (6€/mois/user, le plus fiable) ou ImprovMX gratuit (alias) + Gmail SMTP relay pour envoi.',
     fields: [
       { key: 'mail.provider', label: 'Fournisseur', type: 'select', options: [
-          { value: 'migadu', label: 'Migadu (recommandé — 4€/mois alias illimités)' },
-          { value: 'improvmx', label: 'ImprovMX (alias gratuits)' },
-          { value: 'mailcow', label: 'Mailcow (self-hosted)' },
+          { value: 'gmail-workspace', label: '✉️ Gmail Workspace (recommandé — 6€/mois/user)' },
+          { value: 'gmail-smtp', label: '📧 Gmail SMTP relay gratuit (App Password)' },
+          { value: 'improvmx', label: '🔗 ImprovMX (alias gratuits → ton Gmail)' },
+          { value: 'migadu', label: 'Migadu (4€/mois alias illimités)' },
+          { value: 'mailcow', label: 'Mailcow (self-hosted, galère)' },
           { value: 'mailbox', label: 'Mailbox.org' },
           { value: 'fastmail', label: 'Fastmail' }
-        ], help: 'Choisis ton fournisseur de mail. La config est ensuite gérée chez le provider.' },
-      { key: 'mail.domain', label: 'Domaine principal', placeholder: 'pixeeplay.com', help: 'Le domaine que tu as configuré chez ton provider mail' },
-      { key: 'mail.subdomains', label: 'Sous-domaines (CSV)', placeholder: 'gld.pixeeplay.com, mail.pixeeplay.com', help: 'Sous-domaines avec MX records configurés' },
-      { key: 'mail.adminApiKey', label: 'API Key admin', type: 'password', placeholder: 'pour gestion alias auto', help: 'Optionnel — pour créer/supprimer alias depuis GLD admin' },
-      { key: 'mail.webmailUrl', label: 'URL Webmail', placeholder: 'https://mail.pixeeplay.com', help: 'Lien direct webmail affiché dans /admin' },
-      { key: 'mail.aliasesJson', label: 'Alias actifs (JSON)', type: 'textarea', placeholder: '[{"alias":"contact@","destination":"arnaud@gredai.com"}]', help: 'Pour info — gestion réelle chez ton provider' }
+        ], help: 'Gmail Workspace = le top. ImprovMX + Gmail SMTP = combo gratuit recommandé.' },
+      { key: 'mail.domain', label: 'Domaine principal', placeholder: 'pixeeplay.com', help: 'Le domaine que tu as configuré' },
+      { key: 'mail.subdomains', label: 'Sous-domaines (CSV)', placeholder: 'gld.pixeeplay.com, mail.pixeeplay.com' },
+      { key: 'mail.webmailUrl', label: 'URL Webmail', placeholder: 'https://mail.google.com OU https://mail.pixeeplay.com', help: 'Lien direct webmail affiché dans /admin' },
+      { key: 'mail.aliasesJson', label: 'Alias actifs (JSON)', type: 'textarea', placeholder: '[{"alias":"contact@pixeeplay.com","destination":"arnaud@gmail.com"}]' }
+    ]
+  },
+  {
+    title: '📧 Gmail SMTP relay (envoi gratuit jusqu\'à 500 mails/jour)',
+    icon: Mail, category: 'logistics',
+    description: 'Utilise ton compte Gmail comme relais SMTP pour envoyer les newsletters et notifs. Crée un "App Password" sur https://myaccount.google.com/apppasswords (2FA requise).',
+    fields: [
+      { key: 'mail.smtp.host', label: 'Serveur SMTP', placeholder: 'smtp.gmail.com', help: 'smtp.gmail.com pour Gmail' },
+      { key: 'mail.smtp.port', label: 'Port', placeholder: '587', help: '587 (TLS) ou 465 (SSL)' },
+      { key: 'mail.smtp.user', label: 'Email Gmail', placeholder: 'arnaud@gmail.com OU arnaud@pixeeplay.com (Workspace)' },
+      { key: 'mail.smtp.password', label: 'App Password (16 chars)', type: 'password', placeholder: 'abcd efgh ijkl mnop', help: 'Génère sur https://myaccount.google.com/apppasswords (PAS ton mot de passe Gmail !)' },
+      { key: 'mail.smtp.from', label: 'Adresse "From" affichée', placeholder: '"GLD" <contact@pixeeplay.com>', help: 'Doit être autorisée dans Gmail "Send mail as"' }
     ]
   },
   {
