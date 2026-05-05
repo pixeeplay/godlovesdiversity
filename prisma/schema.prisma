@@ -58,6 +58,11 @@ model User {
   notifyPeerHelp       Boolean  @default(true)
   notifyMentor         Boolean  @default(true)
   notifyShop           Boolean  @default(true)
+  // V4 — Dashboard perso visuel
+  bannerUrl       String?   // bannière personnelle uploadée ou générée IA
+  bannerPrompt    String?   @db.Text  // prompt utilisé pour générer
+  dashboardTheme  String?   @default("fuchsia")  // "fuchsia" | "violet" | "cyan" | "rose" | "amber" | "emerald"
+  favoriteColor   String?   @default("#d61b80")
 
   bookmarks         Bookmark[]
   journalEntries    JournalEntry[]
