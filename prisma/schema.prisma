@@ -43,8 +43,95 @@ model User {
   ownedVenues    Venue[]
 
   // V2.5 — Sync feed Facebook personnel (cookies session pour scraping headless)
-  fbSessionCookies String? @db.Text  // JSON {c_user, xs, fr, datr...} chiffré idéalement
+  fbSessionCookies String? @db.Text
   fbLastSyncedAt   DateTime?
+
+  // V3 — Profil enrichi back-office user
+  bio                  String?  @db.Text
+  publicName           String?  // pseudo affiché publiquement (différent de name)
+  identity             String?  // libre : "gay", "lesbienne", "trans", "non-binaire", "queer", "questionnement"…
+  traditions           String[] @default([])  // ["catholique", "musulman", …]
+  cityProfile          String?
+  ghostMode            Boolean  @default(false)
+  notifyDigest         Boolean  @default(true)
+  notifyEvents         Boolean  @default(true)
+  notifyPeerHelp       Boolean  @default(true)
+  notifyMentor         Boolean  @default(true)
+  notifyShop           Boolean  @default(true)
+
+  bookmarks         Bookmark[]
+  journalEntries    JournalEntry[]
+  futureLetters     FutureLetter[]
+  aiConversations   AIConversation[]
+  activityLogs      UserActivityLog[]
+}
+
+/// Bookmark générique (témoignages, lieux, posts, produits, events).
+model Bookmark {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resourceType String   // "testimony" | "venue" | "post" | "product" | "event"
+  resourceId   String
+  note         String?
+  createdAt    DateTime @default(now())
+  @@unique([userId, resourceType, resourceId])
+  @@index([userId, resourceType])
+}
+
+/// Journal intime — strictement privé, jamais publié.
+model JournalEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  content   String   @db.Text
+  encrypted Boolean  @default(false)  // chiffré côté client si user le veut
+  mood      String?  // "joyeux" | "triste" | "anxieux" | "fier" | "espoir" | "colère"
+  tags      String[] @default([])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([userId, createdAt])
+}
+
+/// Lettre programmée à soi-même — délivrée à une date future par email.
+model FutureLetter {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject      String?
+  content      String   @db.Text
+  deliveryDate DateTime
+  delivered    Boolean  @default(false)
+  deliveredAt  DateTime?
+  createdAt    DateTime @default(now())
+  @@index([deliveryDate, delivered])
+}
+
+/// Conversations IA sauvegardées (Voice Coach, Verset, Juridique).
+model AIConversation {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tool      String   // "voice-coach" | "legal" | "verse" | "ask-gld"
+  title     String?
+  messages  Json     // [{role: "user"|"ai", content: "..."}]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([userId, tool, createdAt])
+}
+
+/// Log d'activité user pour timeline + feed perso.
+model UserActivityLog {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action       String   // "post_created" | "comment_added" | "support_given" | "bookmark_added" | "badge_earned" | …
+  resourceType String?
+  resourceId   String?
+  metadata     Json?
+  createdAt    DateTime @default(now())
+  @@index([userId, createdAt])
 }
 
 enum Role {
