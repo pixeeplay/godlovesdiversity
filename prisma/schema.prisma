@@ -223,10 +223,23 @@ model Banner {
   accentColor String?
   order       Int      @default(0)
   published   Boolean  @default(true)
+
+  // Génération IA & événement
+  aiPrompt        String?  @db.Text  // Prompt utilisé pour générer la bannière (Imagen / Veo)
+  aiModel         String?            // "imagen-3" | "veo" | "manual"
+  presetSlug      String?            // "pride" | "noel" | "halloween" | "valentin" | "custom"
+
+  // Calendrier d'activation (optionnel — sinon toujours visible)
+  activeFrom      DateTime?
+  activeUntil     DateTime?
+  /// Slug d'un Theme lié — si le theme est actif, cette banner aussi (override calendrier)
+  linkedThemeSlug String?
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([locale, order])
+  @@index([activeFrom, activeUntil])
 }
 
 /// Item du menu de navigation. Supporte les sous-menus via parentId.

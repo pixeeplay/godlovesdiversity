@@ -30,7 +30,12 @@ export async function POST(req: Request) {
       cta2Url: body.cta2Url || null,
       accentColor: body.accentColor || '#FF2BB1',
       order: body.order ?? ((last?.order || 0) + 1),
-      published: body.published !== false
+      published: body.published !== false,
+      aiPrompt: body.aiPrompt || null,
+      presetSlug: body.presetSlug || null,
+      activeFrom: body.activeFrom ? new Date(body.activeFrom) : null,
+      activeUntil: body.activeUntil ? new Date(body.activeUntil) : null,
+      linkedThemeSlug: body.linkedThemeSlug || null
     }
   });
   return NextResponse.json({ ok: true, banner });

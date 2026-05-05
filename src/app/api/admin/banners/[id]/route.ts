@@ -9,9 +9,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const { id } = await params;
   const body = await req.json();
   const data: any = {};
-  for (const k of ['eyebrow','title','subtitle','mediaUrl','mediaType','cta1Text','cta1Url','cta2Text','cta2Url','accentColor','order','published']) {
+  for (const k of ['eyebrow','title','subtitle','mediaUrl','mediaType','cta1Text','cta1Url','cta2Text','cta2Url','accentColor','order','published','aiPrompt','presetSlug','linkedThemeSlug']) {
     if (body[k] !== undefined) data[k] = body[k];
   }
+  if (body.activeFrom !== undefined)  data.activeFrom  = body.activeFrom  ? new Date(body.activeFrom)  : null;
+  if (body.activeUntil !== undefined) data.activeUntil = body.activeUntil ? new Date(body.activeUntil) : null;
   const banner = await prisma.banner.update({ where: { id }, data });
   return NextResponse.json({ ok: true, banner });
 }

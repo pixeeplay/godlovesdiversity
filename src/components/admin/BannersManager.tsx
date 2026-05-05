@@ -140,6 +140,67 @@ function BannerEditor({ banner, onClose, onSaved }: {
   const [uploadBusy, setUploadBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  // IA + calendrier
+  const [aiPrompt, setAiPrompt] = useState((banner as any)?.aiPrompt || '');
+  const [presetSlug, setPresetSlug] = useState((banner as any)?.presetSlug || '');
+  const [activeFrom, setActiveFrom] = useState((banner as any)?.activeFrom?.slice(0, 10) || '');
+  const [activeUntil, setActiveUntil] = useState((banner as any)?.activeUntil?.slice(0, 10) || '');
+  const [linkedThemeSlug, setLinkedThemeSlug] = useState((banner as any)?.linkedThemeSlug || '');
+  const [aiBusy, setAiBusy] = useState<'image' | 'video' | null>(null);
+  const [aiPreview, setAiPreview] = useState<{ data: string; mimeType: string }[]>([]);
+
+  const PRESETS = [
+    { slug: 'pride',        label: '🏳️‍🌈 Pride Month',  start: '06-01', end: '06-30' },
+    { slug: 'noel',         label: '🎄 Noël',           start: '12-15', end: '12-26' },
+    { slug: 'paques',       label: '🐰 Pâques',         start: '03-25', end: '04-10' },
+    { slug: 'halloween',    label: '🎃 Halloween',      start: '10-25', end: '11-01' },
+    { slug: 'valentin',     label: '💖 Saint Valentin', start: '02-10', end: '02-15' },
+    { slug: 'ramadan',      label: '☪️ Ramadan',        start: '03-01', end: '04-01' },
+    { slug: 'pessah',       label: '✡️ Pessah',         start: '04-01', end: '04-10' },
+    { slug: 'diwali',       label: '🪔 Diwali',         start: '10-25', end: '11-05' },
+    { slug: 'inclusivite',  label: '🌈 Inclusivité',    start: '',      end: '' },
+    { slug: 'agenda',       label: '📅 Agenda/Event',   start: '',      end: '' }
+  ];
+
+  function applyPreset(slug: string) {
+    const p = PRESETS.find(x => x.slug === slug);
+    if (!p) return;
+    setPresetSlug(slug);
+    if (p.start && p.end) {
+      const year = new Date().getFullYear();
+      setActiveFrom(`${year}-${p.start}`);
+      setActiveUntil(`${year}-${p.end}`);
+    }
+    if (!aiPrompt) setAiPrompt(`Bannière ${p.label} pour mouvement LGBT inclusif GLD`);
+  }
+
+  async function generateAI(kind: 'image' | 'video') {
+    setAiBusy(kind);
+    setAiPreview([]);
+    try {
+      const r = await fetch('/api/admin/banners/generate-ai', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ preset: presetSlug || undefined, prompt: aiPrompt || undefined, kind, count: 2 })
+      });
+      const j = await r.json();
+      if (!j.ok) { alert(j.error || 'Génération échouée'); return; }
+      setAiPreview(j.images || []);
+      if (j.fallbackFromVideo) alert(j.message);
+    } finally { setAiBusy(null); }
+  }
+
+  async function useAiImage(img: { data: string; mimeType: string }) {
+    setUploadBusy(true);
+    try {
+      const r = await fetch('/api/admin/ai/save-image', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: img.data, mimeType: img.mimeType, name: presetSlug || 'banner-ai' })
+      });
+      const j = await r.json();
+      if (j.url) { setMediaUrl(j.url); setMediaType('image'); setAiPreview([]); }
+    } finally { setUploadBusy(false); }
+  }
+
   async function uploadMedia(f: File) {
     setUploadBusy(true);
     const fd = new FormData();
@@ -160,7 +221,14 @@ function BannerEditor({ banner, onClose, onSaved }: {
     const method = banner ? 'PATCH' : 'POST';
     const r = await fetch(url, {
       method, headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ eyebrow, title, subtitle, mediaUrl, mediaType, cta1Text, cta1Url, cta2Text, cta2Url, accentColor })
+      body: JSON.stringify({
+        eyebrow, title, subtitle, mediaUrl, mediaType, cta1Text, cta1Url, cta2Text, cta2Url, accentColor,
+        aiPrompt: aiPrompt || null,
+        presetSlug: presetSlug || null,
+        activeFrom: activeFrom || null,
+        activeUntil: activeUntil || null,
+        linkedThemeSlug: linkedThemeSlug || null
+      })
     });
     const j = await r.json();
     setBusy(false);
@@ -225,6 +293,92 @@ function BannerEditor({ banner, onClose, onSaved }: {
                 <button key={c} onClick={() => setAccentColor(c)} className="w-7 h-7 rounded-full border-2 border-white/10" style={{ background: c }} />
               ))}
             </div>
+          </div>
+
+          {/* === GÉNÉRATEUR IA (Imagen / Veo) === */}
+          <div className="bg-fuchsia-500/5 border border-fuchsia-500/30 rounded-xl p-3 space-y-2">
+            <div className="text-xs uppercase font-bold text-fuchsia-300 flex items-center gap-1.5">✨ Générer avec IA (Imagen / Veo)</div>
+
+            <div className="flex flex-wrap gap-1.5">
+              {PRESETS.map(p => (
+                <button
+                  type="button"
+                  key={p.slug}
+                  onClick={() => applyPreset(p.slug)}
+                  className={`text-[11px] px-2 py-1 rounded-full ${presetSlug === p.slug ? 'bg-fuchsia-500 text-white' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'}`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+
+            <textarea
+              value={aiPrompt}
+              onChange={(e) => setAiPrompt(e.target.value)}
+              rows={2}
+              placeholder="Prompt IA (préréglage déjà rempli, modifie librement)"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs"
+            />
+
+            <div className="flex gap-2 flex-wrap">
+              <button
+                type="button"
+                onClick={() => generateAI('image')}
+                disabled={!!aiBusy}
+                className={`bg-fuchsia-500 hover:bg-fuchsia-600 disabled:opacity-50 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 ${aiBusy === 'image' ? 'ai-glow ai-glow-subtle' : ''}`}
+              >
+                {aiBusy === 'image' ? <Loader2 size={11} className="animate-spin" /> : '🖼'}
+                {aiBusy === 'image' ? 'Imagen génère…' : 'Générer image (Imagen)'}
+              </button>
+              <button
+                type="button"
+                onClick={() => generateAI('video')}
+                disabled={!!aiBusy}
+                className={`bg-violet-500 hover:bg-violet-600 disabled:opacity-50 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 ${aiBusy === 'video' ? 'ai-glow ai-glow-subtle' : ''}`}
+              >
+                {aiBusy === 'video' ? <Loader2 size={11} className="animate-spin" /> : '🎥'}
+                {aiBusy === 'video' ? 'Veo génère…' : 'Générer vidéo (Veo, fallback image)'}
+              </button>
+            </div>
+
+            {aiPreview.length > 0 && (
+              <div className="grid grid-cols-2 gap-2 pt-2">
+                {aiPreview.map((img, i) => (
+                  <div key={i} className="relative rounded overflow-hidden border border-zinc-800">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={`data:${img.mimeType};base64,${img.data}`} alt="" className="w-full aspect-video object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => useAiImage(img)}
+                      className="absolute bottom-1 right-1 bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 rounded-full"
+                    >
+                      ✓ Utiliser
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* === CALENDRIER D'ACTIVATION === */}
+          <div className="bg-cyan-500/5 border border-cyan-500/30 rounded-xl p-3 space-y-2">
+            <div className="text-xs uppercase font-bold text-cyan-300">📅 Calendrier d'activation (optionnel)</div>
+            <p className="text-[10px] text-zinc-400">Si vide, la bannière est toujours affichée. Si rempli, visible uniquement entre ces dates.</p>
+            <div className="grid grid-cols-2 gap-2">
+              <label className="block">
+                <span className="text-[9px] uppercase text-zinc-500 block mb-0.5">Active du</span>
+                <input type="date" value={activeFrom} onChange={(e) => setActiveFrom(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs" />
+              </label>
+              <label className="block">
+                <span className="text-[9px] uppercase text-zinc-500 block mb-0.5">Jusqu'au</span>
+                <input type="date" value={activeUntil} onChange={(e) => setActiveUntil(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs" />
+              </label>
+            </div>
+            <label className="block">
+              <span className="text-[9px] uppercase text-zinc-500 block mb-0.5">OU lier à un thème (slug)</span>
+              <input value={linkedThemeSlug} onChange={(e) => setLinkedThemeSlug(e.target.value)} placeholder="ex: pride-rainbow, noel-classique, halloween…" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
+            </label>
+            <p className="text-[9px] text-zinc-500">💡 Si lié à un thème : la bannière apparaît dès que le thème est actif (manuellement ou par auto-activation date).</p>
           </div>
         </div>
         <div className="border-t border-zinc-800 p-4 flex justify-end gap-2">

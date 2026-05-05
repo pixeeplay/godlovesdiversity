@@ -108,15 +108,37 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   }));
 
   // Récupère bannières dynamiques (FR par défaut, fallback hardcodé)
-  let banners = await prisma.banner.findMany({
+  // Filtre par calendrier d'activation : on charge tout puis on filtre côté JS
+  // (pour gérer aussi le linkedThemeSlug qui demande de croiser avec Theme actif)
+  const now = new Date();
+  const allBanners = await prisma.banner.findMany({
     where: { locale, published: true },
     orderBy: { order: 'asc' }
-  });
+  }).catch(() => []);
+
+  // Charge thème actif (manuel ou auto) pour résoudre linkedThemeSlug
+  let activeThemeSlug: string | null = null;
+  try {
+    const t = await prisma.theme.findFirst({ where: { active: true }, select: { slug: true } });
+    if (t) activeThemeSlug = t.slug;
+  } catch {}
+
+  function isBannerActive(b: any): boolean {
+    // Si lié à un thème : visible seulement si ce thème est actif
+    if (b.linkedThemeSlug) return activeThemeSlug === b.linkedThemeSlug;
+    // Sinon : check fenêtre date
+    if (b.activeFrom && now < new Date(b.activeFrom)) return false;
+    if (b.activeUntil && now > new Date(b.activeUntil)) return false;
+    return true;
+  }
+
+  let banners = allBanners.filter(isBannerActive);
   if (banners.length === 0 && locale !== 'fr') {
-    banners = await prisma.banner.findMany({
+    const altAll = await prisma.banner.findMany({
       where: { locale: 'fr', published: true },
       orderBy: { order: 'asc' }
-    });
+    }).catch(() => []);
+    banners = altAll.filter(isBannerActive);
   }
   if (banners.length === 0) {
     banners = [{
