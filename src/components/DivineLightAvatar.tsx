@@ -107,14 +107,25 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
     setError('');
     try {
       const r = await fetch('/api/chat', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ question, locale: 'fr' })
       });
-      const j = await r.json();
+      // Lit en text d'abord pour éviter "string did not match expected pattern" si HTML/vide
+      const raw = await r.text();
+      let j: any = {};
+      try { j = raw ? JSON.parse(raw) : {}; } catch {
+        // Réponse non-JSON (HTML d'erreur Coolify, 502, etc.)
+        throw new Error(`Réponse non-JSON (HTTP ${r.status}). Le serveur a peut-être un souci.`);
+      }
       if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`);
-      const answer = j.answer || j.text || 'Je n\'ai pas de réponse pour le moment.';
+      const answer = (j.answer || j.text || '').trim() || 'Je n\'ai pas de réponse pour le moment.';
       setResponse(answer);
-      if (!muted) speak(answer);
+      if (!muted) {
+        try { speak(answer); } catch (e: any) {
+          setError('Voix indisponible : ' + (e?.message || e) + '. La réponse est affichée à l\'écran.');
+        }
+      }
     } catch (e: any) {
       setError('Erreur : ' + (e?.message || e));
     } finally { setThinking(false); }
@@ -122,22 +133,41 @@ export function DivineLightAvatar({ imageUrl = '/divine-light.jpg' }: { imageUrl
 
   /* ===== Synthèse vocale (gratuite, native) ===== */
   function speak(text: string) {
-    if (!('speechSynthesis' in window)) { setError('Voix non supportée'); return; }
+    if (!('speechSynthesis' in window)) { setError('Voix non supportée par ce navigateur'); return; }
+    // Nettoyage : supprime emojis et chars non-BMP qui font crash Safari
+    const clean = text
+      .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2700}-\u{27BF}\u{1F000}-\u{1F2FF}]/gu, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!clean) return;
     window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
+    const u = new SpeechSynthesisUtterance(clean);
     u.lang = 'fr-FR';
     u.rate = 0.95;
     u.pitch = 1.05;
     u.volume = 0.95;
     // Voix française la plus naturelle dispo
-    const voices = window.speechSynthesis.getVoices();
-    const fr = voices.find(v => v.lang.startsWith('fr') && /google|enhanced|premium/i.test(v.name)) || voices.find(v => v.lang.startsWith('fr'));
-    if (fr) u.voice = fr;
+    try {
+      const voices = window.speechSynthesis.getVoices();
+      const fr = voices.find(v => v.lang.startsWith('fr') && /google|enhanced|premium/i.test(v.name)) || voices.find(v => v.lang.startsWith('fr'));
+      if (fr) u.voice = fr;
+    } catch { /* certaines plateformes throw — on continue sans voix custom */ }
     u.onstart = () => { setSpeaking(true); pulseStart(); };
     u.onend = () => { setSpeaking(false); pulseStop(); };
-    u.onerror = () => { setSpeaking(false); pulseStop(); };
+    u.onerror = (ev: any) => {
+      setSpeaking(false); pulseStop();
+      if (ev?.error && ev.error !== 'interrupted' && ev.error !== 'canceled') {
+        setError('Voix : ' + ev.error);
+      }
+    };
     utteranceRef.current = u;
-    window.speechSynthesis.speak(u);
+    try {
+      window.speechSynthesis.speak(u);
+    } catch (e: any) {
+      setError('Voix : impossible de parler (' + (e?.message || 'erreur') + ')');
+      setSpeaking(false);
+      pulseStop();
+    }
   }
 
   function stopSpeaking() {
