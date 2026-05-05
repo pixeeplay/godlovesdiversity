@@ -112,8 +112,15 @@ async function generateImagen(prompt: string, count: number): Promise<{ images: 
   const apiKey = setting?.value || process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('Clé Gemini non configurée');
 
-  // Imagen 3 via Gemini API
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:predict?key=${apiKey}`;
+  // Cascade des modèles Imagen — du plus récent au plus ancien.
+  // Le nom exact change selon l'API ; on essaie dans l'ordre jusqu'à ce qu'un marche.
+  const candidates = [
+    'imagen-4.0-generate-preview',
+    'imagen-4.0-ultra-generate-preview',
+    'imagen-3.0-generate-002',
+    'imagen-3.0-fast-generate-001',
+    'imagen-3.0-generate-001'
+  ];
   const body = {
     instances: [{ prompt }],
     parameters: {
@@ -124,19 +131,37 @@ async function generateImagen(prompt: string, count: number): Promise<{ images: 
     }
   };
 
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  const j = await r.json();
-  if (!r.ok || j.error) throw new Error(j.error?.message || 'Imagen API error');
-
-  const images = (j.predictions || []).map((p: any) => ({
-    data: p.bytesBase64Encoded,
-    mimeType: p.mimeType || 'image/png'
-  }));
-  return { images };
+  let lastErr = '';
+  for (const model of candidates) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:predict?key=${apiKey}`;
+    try {
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const j = await r.json();
+      if (r.ok && !j.error) {
+        const images = (j.predictions || []).map((p: any) => ({
+          data: p.bytesBase64Encoded,
+          mimeType: p.mimeType || 'image/png'
+        }));
+        if (images.length > 0) return { images };
+        lastErr = `Modèle ${model} : pas d'image retournée`;
+        continue;
+      }
+      lastErr = `${model} : ${j.error?.message || `HTTP ${r.status}`}`;
+      // Si erreur "not found" / "not supported", on passe au suivant
+      if (/not found|not supported|UNAVAILABLE|404/i.test(lastErr)) continue;
+      // Autre erreur (quota, auth) → on stoppe (pas la peine de retry)
+      throw new Error(lastErr);
+    } catch (e: any) {
+      lastErr = `${model} : ${e?.message || e}`;
+      // Réseau / parse → essaie le suivant
+      continue;
+    }
+  }
+  throw new Error(`Aucun modèle Imagen disponible. Dernier essai : ${lastErr}\n\n→ Vérifie dans Google AI Studio (https://aistudio.google.com) que ta clé Gemini a bien Imagen activé (peut nécessiter un projet Google Cloud avec billing).`);
 }
 
 type HiggsfieldOpts = {
