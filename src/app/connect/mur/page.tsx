@@ -6,6 +6,7 @@ import { MOCK_POSTS, MOCK_USERS, getUser } from '@/lib/connect-mock';
 export default function MurPage() {
   const [posts, setPosts] = useState<any[]>(MOCK_POSTS);
   const [composer, setComposer] = useState('');
+  const [composerType, setComposerType] = useState<'post' | 'photo' | 'event' | 'sentiment' | 'priere'>('post');
   const [posting, setPosting] = useState(false);
   const [showMock, setShowMock] = useState(true);
 
@@ -26,19 +27,31 @@ export default function MurPage() {
     });
   }, []);
 
-  async function publish(type = 'post') {
+  async function publish() {
     if (!composer.trim() || posting) return;
     setPosting(true);
     try {
       const r = await fetch('/api/connect/posts', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type, text: composer })
+        body: JSON.stringify({ type: composerType, text: composer })
       });
-      const j = await r.json();
-      if (j.ok) {
-        setPosts([j.post, ...posts]);
-        setComposer('');
-      } else alert(j.error || 'Erreur');
+      let j: any = {};
+      try { j = await r.json(); } catch {}
+      if (r.status === 401) {
+        if (confirm('Tu dois être connecté pour publier. Aller à la page de connexion ?')) {
+          window.location.href = '/admin/login?next=/connect/mur';
+        }
+        return;
+      }
+      if (!r.ok || !j.ok) {
+        alert(`❌ Publication impossible : ${j.error || `HTTP ${r.status}`}\n\nSi le souci persiste, va dans /admin/connect.`);
+        return;
+      }
+      setPosts([j.post, ...posts]);
+      setComposer('');
+      setComposerType('post');
+    } catch (e: any) {
+      alert('❌ Erreur réseau : ' + (e?.message || e));
     } finally { setPosting(false); }
   }
 
@@ -78,14 +91,17 @@ export default function MurPage() {
                 className="w-full bg-transparent outline-none resize-none text-sm placeholder:text-zinc-500"
               />
               <div className="flex items-center gap-2 mt-3 flex-wrap">
-                <ChipBtn icon={ImageIcon} label="Photo" color="from-emerald-400 to-cyan-500" />
-                <ChipBtn icon={Calendar} label="Événement" color="from-orange-400 to-red-500" />
-                <ChipBtn icon={Smile} label="Sentiment" color="from-yellow-400 to-pink-500" />
-                <ChipBtn icon={Sparkles} label="Demande de prière" color="from-fuchsia-500 to-violet-600" />
-                <button onClick={() => publish('post')} disabled={!composer.trim() || posting} className="ml-auto text-xs font-bold text-white bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-2 rounded-full shadow-lg shadow-fuchsia-500/30 disabled:opacity-50 flex items-center gap-1.5">
+                <ChipBtn icon={ImageIcon} label="Photo"               color="from-emerald-400 to-cyan-500"   active={composerType === 'photo'}     onClick={() => setComposerType(composerType === 'photo' ? 'post' : 'photo')} />
+                <ChipBtn icon={Calendar}  label="Événement"           color="from-orange-400 to-red-500"     active={composerType === 'event'}     onClick={() => setComposerType(composerType === 'event' ? 'post' : 'event')} />
+                <ChipBtn icon={Smile}     label="Sentiment"           color="from-yellow-400 to-pink-500"    active={composerType === 'sentiment'} onClick={() => setComposerType(composerType === 'sentiment' ? 'post' : 'sentiment')} />
+                <ChipBtn icon={Sparkles}  label="Demande de prière"   color="from-fuchsia-500 to-violet-600" active={composerType === 'priere'}    onClick={() => setComposerType(composerType === 'priere' ? 'post' : 'priere')} />
+                <button onClick={publish} disabled={!composer.trim() || posting} className="ml-auto text-xs font-bold text-white bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-2 rounded-full shadow-lg shadow-fuchsia-500/30 disabled:opacity-50 flex items-center gap-1.5">
                   {posting && <Loader2 size={12} className="animate-spin" />} Publier
                 </button>
               </div>
+              {composerType !== 'post' && (
+                <div className="mt-2 text-[10px] text-zinc-400">Type sélectionné : <b className="text-fuchsia-300">{composerType}</b> — re-clique sur le chip pour annuler</div>
+              )}
             </div>
           </div>
         </div>
@@ -133,10 +149,12 @@ function SidebarLink({ label, emoji, count, active, href }: { label: string; emo
   );
 }
 
-function ChipBtn({ icon: Icon, label, color }: { icon: any; label: string; color: string }) {
+function ChipBtn({ icon: Icon, label, color, active, onClick }: { icon: any; label: string; color: string; active?: boolean; onClick?: () => void }) {
   return (
-    <button className={`flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-full bg-gradient-to-r ${color} text-white shadow-lg opacity-90 hover:opacity-100 transition`}>
-      <Icon size={11} /> {label}
+    <button onClick={onClick} className={`flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-full text-white shadow-lg transition ${
+      active ? `bg-gradient-to-r ${color} ring-2 ring-white/40 scale-105` : `bg-gradient-to-r ${color} opacity-70 hover:opacity-100`
+    }`}>
+      <Icon size={11} /> {label} {active && '✓'}
     </button>
   );
 }
