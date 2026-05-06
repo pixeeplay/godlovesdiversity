@@ -52,9 +52,17 @@ export function VenueEditor({ venue }: { venue: any }) {
     const j = await r.json();
     setEnriching(false);
     setEnrichResult(j);
-    if (j.ok && !dry) {
-      // Recharge la page pour voir les nouveaux champs
-      setTimeout(() => router.refresh(), 1500);
+
+    if (j.ok && !dry && j.patch && Object.keys(j.patch).length > 0) {
+      // Merge directement le patch dans le state local pour que le formulaire
+      // affiche les nouveaux champs immédiatement (sans avoir besoin de recharger).
+      // On exclut les champs meta (enrichedAt etc.) du merge utilisateur, mais on les garde
+      // pour que le badge "Enrichi le X" s'affiche.
+      setV((prev: any) => ({ ...prev, ...j.patch }));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+      // Refresh côté serveur en arrière-plan pour que les autres pages soient à jour
+      router.refresh();
     }
   }
 
