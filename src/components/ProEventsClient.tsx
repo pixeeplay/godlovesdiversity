@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Plus, Loader2, Save, Trash2, Edit3, X, Calendar, MapPin, ExternalLink } from 'lucide-react';
+import { Plus, Loader2, Save, Trash2, Edit3, X, Calendar, MapPin, ExternalLink, Sparkles, Globe } from 'lucide-react';
 
 type Venue = { id: string; name: string; slug: string };
 type EventItem = {
@@ -109,16 +109,54 @@ export function ProEventsClient({ venues, initialEvents }: { venues: Venue[]; in
   const upcoming = events.filter(e => new Date(e.startsAt) >= new Date());
   const past = events.filter(e => new Date(e.startsAt) < new Date());
 
+  // Seeder enrichissement événements monde
+  const [seedBusy, setSeedBusy] = useState(false);
+  const [seedMsg, setSeedMsg] = useState<string | null>(null);
+
+  async function enrichWorldEvents() {
+    if (!confirm('Enrichir l\'agenda avec ~85 événements connus dans le monde (Prides 2026, journées mondiales LGBT, fêtes religieuses) ?\n\nIdempotent : les événements déjà présents seront skippés.')) return;
+    setSeedBusy(true); setSeedMsg(null);
+    try {
+      const r = await fetch('/api/admin/seed-world-events', { method: 'POST' });
+      const j = await r.json();
+      if (r.ok) {
+        setSeedMsg(`✅ ${j.message}`);
+        setTimeout(() => window.location.reload(), 1800);
+      } else {
+        setSeedMsg(`⚠ ${j.error || 'Échec'}`);
+      }
+    } catch (e: any) {
+      setSeedMsg(`⚠ ${e.message}`);
+    }
+    setSeedBusy(false);
+  }
+
   return (
     <section>
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <h2 className="text-xs uppercase font-bold tracking-widest text-violet-400">
           Mes événements ({events.length})
         </h2>
-        <button onClick={() => { reset(); setShowForm(!showForm); }} className="bg-fuchsia-500 hover:bg-fuchsia-600 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5">
-          <Plus size={12} /> {showForm ? 'Annuler' : 'Nouvel événement'}
-        </button>
+        <div className="flex gap-2 flex-wrap">
+          <button
+            onClick={enrichWorldEvents}
+            disabled={seedBusy}
+            className="bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 hover:from-violet-500/40 hover:to-fuchsia-500/40 border border-violet-500/40 text-violet-200 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 disabled:opacity-50"
+            title="Pré-remplit avec Prides 2026, journées LGBT, fêtes religieuses"
+          >
+            {seedBusy ? <Loader2 size={12} className="animate-spin" /> : <Globe size={12} />}
+            🌍 Enrichir agenda mondial (~85 événements)
+          </button>
+          <button onClick={() => { reset(); setShowForm(!showForm); }} className="bg-fuchsia-500 hover:bg-fuchsia-600 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5">
+            <Plus size={12} /> {showForm ? 'Annuler' : 'Nouvel événement'}
+          </button>
+        </div>
       </div>
+      {seedMsg && (
+        <div className="bg-violet-500/10 border border-violet-500/30 rounded-xl p-3 mb-3 text-sm text-violet-200">
+          {seedMsg}
+        </div>
+      )}
 
       {showForm && (
         <div className="bg-zinc-900 border-2 border-fuchsia-500/30 rounded-2xl p-4 mb-4">
