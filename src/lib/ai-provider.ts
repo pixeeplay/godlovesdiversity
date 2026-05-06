@@ -43,7 +43,7 @@ export type AiTaskKey = keyof typeof AI_TASKS;
 export interface ProviderConfig {
   id: string;
   label: string;
-  type: 'gemini' | 'ollama' | 'openrouter' | 'lmstudio' | 'llamacpp' | 'fal' | 'heygen' | 'whisper-local' | 'comfyui';
+  type: 'gemini' | 'ollama' | 'ollama-cloud' | 'openrouter' | 'lmstudio' | 'llamacpp' | 'fal' | 'heygen' | 'whisper-local' | 'comfyui';
   baseUrl?: string;       // ex: http://100.x.y.z:11434 (Tailscale)
   apiKey?: string;
   models?: string[];      // liste de modèles disponibles
@@ -67,6 +67,14 @@ export const DEFAULT_PROVIDERS: ProviderConfig[] = [
     baseUrl: '',  // ex: http://100.64.0.1:11434
     enabled: false,
     description: 'Modèles locaux sur ton Mac mini M4 Pro 24GB via Tailscale. Gratuit, privé, rapide en France.'
+  },
+  {
+    id: 'ollama-cloud',
+    label: 'Ollama Cloud (online)',
+    type: 'ollama-cloud',
+    baseUrl: 'https://ollama.com',
+    enabled: false,
+    description: 'Service Ollama hébergé : accès aux gros modèles cloud (qwen3-coder:480b-cloud, gpt-oss:120b-cloud, deepseek-v3.1:671b-cloud, kimi-k2:1t-cloud). Pay-per-use. Modèles trop gros pour ton Mac.'
   },
   {
     id: 'lmstudio-mac',
@@ -236,12 +244,13 @@ export async function generateForTask(taskKey: AiTaskKey, opts: GenerateOptions)
 // ─────────────────────────────────────────────
 async function callProvider(provider: ProviderConfig, model: string, opts: GenerateOptions): Promise<string> {
   switch (provider.type) {
-    case 'gemini':       return callGemini(provider, model, opts);
-    case 'ollama':       return callOllama(provider, model, opts);
-    case 'lmstudio':     return callOpenAICompat(provider, model, opts, 'lmstudio');
-    case 'openrouter':   return callOpenAICompat(provider, model, opts, 'openrouter');
-    case 'llamacpp':     return callLlamaCpp(provider, model, opts);
-    default:             throw new Error(`provider-type-text-not-supported: ${provider.type}`);
+    case 'gemini':        return callGemini(provider, model, opts);
+    case 'ollama':        return callOllama(provider, model, opts);
+    case 'ollama-cloud':  return callOllamaCloud(provider, model, opts);
+    case 'lmstudio':      return callOpenAICompat(provider, model, opts, 'lmstudio');
+    case 'openrouter':    return callOpenAICompat(provider, model, opts, 'openrouter');
+    case 'llamacpp':      return callLlamaCpp(provider, model, opts);
+    default:              throw new Error(`provider-type-text-not-supported: ${provider.type}`);
   }
 }
 
@@ -293,6 +302,46 @@ async function callOllama(provider: ProviderConfig, model: string, opts: Generat
   const j: any = await r.json();
   if (!j?.response) throw new Error('ollama-empty-response');
   return j.response;
+}
+
+/**
+ * Ollama Cloud — endpoint OpenAI-compatible à `https://ollama.com/v1/chat/completions`
+ * (et également API native via `https://ollama.com/api/chat` avec header Authorization).
+ * Modèles cloud-only : `qwen3-coder:480b-cloud`, `gpt-oss:20b-cloud`, `gpt-oss:120b-cloud`,
+ * `deepseek-v3.1:671b-cloud`, `kimi-k2:1t-cloud`.
+ */
+async function callOllamaCloud(provider: ProviderConfig, model: string, opts: GenerateOptions): Promise<string> {
+  if (!provider.apiKey) throw new Error('ollama-cloud-key-missing');
+  const base = (provider.baseUrl || 'https://ollama.com').replace(/\/$/, '');
+  // On utilise l'endpoint OpenAI-compatible pour la simplicité
+  const url = `${base}/v1/chat/completions`;
+  const messages: any[] = [];
+  if (opts.system) messages.push({ role: 'system', content: opts.system });
+  messages.push({ role: 'user', content: opts.prompt });
+  const body = {
+    model,  // ex: "qwen3-coder:480b-cloud"
+    messages,
+    max_tokens: opts.maxTokens || 2048,
+    temperature: opts.temperature ?? 0.7,
+    stream: false
+  };
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${provider.apiKey}`
+    },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(90_000)
+  });
+  if (!r.ok) {
+    const t = await r.text().catch(() => '');
+    throw new Error(`ollama-cloud-http-${r.status}: ${t.slice(0, 200)}`);
+  }
+  const j: any = await r.json();
+  const text = j?.choices?.[0]?.message?.content || '';
+  if (!text) throw new Error('ollama-cloud-empty-response');
+  return text;
 }
 
 async function callOpenAICompat(provider: ProviderConfig, model: string, opts: GenerateOptions, kind: string): Promise<string> {
@@ -359,6 +408,22 @@ export async function pingProvider(provider: ProviderConfig): Promise<{ ok: bool
       if (!r.ok) return { ok: false, error: `http-${r.status}` };
       const j: any = await r.json();
       return { ok: true, latencyMs: Date.now() - t0, models: (j?.models || []).map((m: any) => m.name) };
+    }
+    if (provider.type === 'ollama-cloud') {
+      if (!provider.apiKey) return { ok: false, error: 'no-key' };
+      const base = (provider.baseUrl || 'https://ollama.com').replace(/\/$/, '');
+      // Liste les modèles disponibles via l'endpoint OpenAI-compatible
+      const r = await fetch(`${base}/v1/models`, {
+        headers: { Authorization: `Bearer ${provider.apiKey}` },
+        signal: AbortSignal.timeout(5_000)
+      });
+      if (!r.ok) return { ok: false, error: `http-${r.status}`, latencyMs: Date.now() - t0 };
+      const j: any = await r.json();
+      return {
+        ok: true,
+        latencyMs: Date.now() - t0,
+        models: (j?.data || j?.models || []).map((m: any) => m.id || m.name).slice(0, 50)
+      };
     }
     if (provider.type === 'lmstudio' && provider.baseUrl) {
       const r = await fetch(`${provider.baseUrl.replace(/\/$/, '')}/models`, {

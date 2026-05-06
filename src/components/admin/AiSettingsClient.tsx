@@ -58,13 +58,14 @@ const TASK_LABELS: Record<string, { label: string; tokens: number; description: 
 };
 
 const PROVIDER_TYPE_RECO: Record<string, string[]> = {
-  ollama:     ['qwen2.5:3b-instruct-q5_K_M', 'qwen2.5:7b-instruct-q5_K_M', 'llama3.1:8b-instruct-q5_K_M', 'qwen2.5:14b-instruct-q4_K_M', 'nomic-embed-text', 'mxbai-embed-large'],
-  lmstudio:   ['llama-3.2-3b-instruct', 'qwen2.5-7b-instruct', 'mistral-7b-instruct-v0.3', 'llama-3.1-8b-instruct', 'phi-3.5-mini-instruct'],
-  llamacpp:   ['Qwen2.5-7B-Instruct-Q5_K_M.gguf', 'Llama-3.1-8B-Instruct-Q5_K_M.gguf'],
-  gemini:     ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-2.0-flash', 'imagen-3.0-generate-002', 'text-embedding-004'],
-  openrouter: ['anthropic/claude-3.5-sonnet', 'openai/gpt-4o-mini', 'meta-llama/llama-3.3-70b-instruct', 'mistralai/mistral-7b-instruct', 'qwen/qwen-2.5-72b-instruct'],
-  fal:        ['flux/schnell', 'flux/dev', 'sdxl-lightning-1step', 'veo-3'],
-  heygen:     ['avatar-streaming', 'avatar-video']
+  ollama:        ['qwen2.5:3b-instruct-q5_K_M', 'qwen2.5:7b-instruct-q5_K_M', 'llama3.1:8b-instruct-q5_K_M', 'qwen2.5:14b-instruct-q4_K_M', 'nomic-embed-text', 'mxbai-embed-large'],
+  'ollama-cloud':['qwen3-coder:480b-cloud', 'gpt-oss:120b-cloud', 'gpt-oss:20b-cloud', 'deepseek-v3.1:671b-cloud', 'kimi-k2:1t-cloud'],
+  lmstudio:      ['llama-3.2-3b-instruct', 'qwen2.5-7b-instruct', 'mistral-7b-instruct-v0.3', 'llama-3.1-8b-instruct', 'phi-3.5-mini-instruct'],
+  llamacpp:      ['Qwen2.5-7B-Instruct-Q5_K_M.gguf', 'Llama-3.1-8B-Instruct-Q5_K_M.gguf'],
+  gemini:        ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-2.0-flash', 'imagen-3.0-generate-002', 'text-embedding-004'],
+  openrouter:    ['anthropic/claude-3.5-sonnet', 'openai/gpt-4o-mini', 'meta-llama/llama-3.3-70b-instruct', 'mistralai/mistral-7b-instruct', 'qwen/qwen-2.5-72b-instruct', 'google/gemini-2.0-flash-exp:free'],
+  fal:           ['flux/schnell', 'flux/dev', 'sdxl-lightning-1step', 'veo-3'],
+  heygen:        ['avatar-streaming', 'avatar-video']
 };
 
 export function AiSettingsClient() {
@@ -236,18 +237,19 @@ export function AiSettingsClient() {
                       value={p.baseUrl || ''}
                       onChange={(e) => updateProvider(p.id, { baseUrl: e.target.value })}
                       placeholder={
-                        p.type === 'ollama'    ? 'http://100.64.0.1:11434' :
-                        p.type === 'lmstudio'  ? 'http://100.64.0.1:1234/v1' :
-                        p.type === 'llamacpp'  ? 'http://100.64.0.1:8080' :
-                        p.type === 'comfyui'   ? 'http://100.64.0.1:8188' :
-                        p.type === 'whisper-local' ? 'http://100.64.0.1:9000' :
+                        p.type === 'ollama'         ? 'http://100.64.0.1:11434' :
+                        p.type === 'ollama-cloud'   ? 'https://ollama.com' :
+                        p.type === 'lmstudio'       ? 'http://100.64.0.1:1234/v1' :
+                        p.type === 'llamacpp'       ? 'http://100.64.0.1:8080' :
+                        p.type === 'comfyui'        ? 'http://100.64.0.1:8188' :
+                        p.type === 'whisper-local'  ? 'http://100.64.0.1:9000' :
                         ''
                       }
                       className="w-full mt-1 bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-xs font-mono"
                     />
                   </label>
                   <label className="block">
-                    <span className="text-[10px] uppercase font-bold text-zinc-500">API Key {p.type === 'gemini' || p.type === 'openrouter' || p.type === 'fal' || p.type === 'heygen' ? '(requis)' : '(optionnel)'}</span>
+                    <span className="text-[10px] uppercase font-bold text-zinc-500">API Key {['gemini', 'openrouter', 'fal', 'heygen', 'ollama-cloud'].includes(p.type) ? '(requis)' : '(optionnel)'}</span>
                     <input
                       type="password"
                       value={p.apiKey || ''}
@@ -446,8 +448,42 @@ llama-server -m ~/models/qwen2.5-7b-instruct-q5_k_m.gguf -c 8192 --port 8080 --h
             </ul>
           </div>
 
-          <h4 className="text-sm font-bold text-emerald-400 mt-4">7. OpenRouter en backup payant</h4>
-          <p className="text-xs">Crée un compte sur <a href="https://openrouter.ai" target="_blank" className="text-fuchsia-400 hover:underline">openrouter.ai</a>, génère une clé API, colle-la dans le provider <strong>OpenRouter</strong>. Permet d'accéder à 200+ modèles cloud (Claude 3.5, GPT-4o, Llama 70B...) en pay-per-use. Bon fallback secondaire si Mac + Gemini KO.</p>
+          <h4 className="text-sm font-bold text-teal-400 mt-4">7. Ollama Cloud (online) — accès aux gros modèles</h4>
+          <p className="text-xs">
+            Tu as une clé Ollama Cloud ? Elle te donne accès aux modèles trop gros pour ton Mac : <code className="bg-zinc-800 px-1 rounded">qwen3-coder:480b-cloud</code>, <code className="bg-zinc-800 px-1 rounded">gpt-oss:120b-cloud</code>, <code className="bg-zinc-800 px-1 rounded">deepseek-v3.1:671b-cloud</code>, <code className="bg-zinc-800 px-1 rounded">kimi-k2:1t-cloud</code>. Endpoint OpenAI-compatible.
+          </p>
+          <ol className="text-xs space-y-1.5 ml-4 mt-2">
+            <li>Provider <strong>Ollama Cloud (online)</strong> → activer + coller ta clé API (déjà créée sur ollama.com)</li>
+            <li>Base URL pré-remplie : <code className="bg-zinc-800 px-1 rounded">https://ollama.com</code></li>
+            <li>Cliquer <strong>Ping</strong> → liste les modèles cloud auxquels tu as accès</li>
+            <li>Mapper sur les tâches qui demandent un gros modèle (texte long créatif, RAG complexe)</li>
+          </ol>
+          <p className="text-[11px] text-teal-300 mt-2">💡 Avantage : tu paies à l'usage (pay-per-token) sans gérer d'infra GPU, et ça remplace bien Gemini Pro si tu veux quitter Google.</p>
+
+          <h4 className="text-sm font-bold text-amber-400 mt-4">8. OpenRouter — 200+ modèles cloud unifiés</h4>
+          <p className="text-xs">
+            Tu as une clé OpenRouter ? Crée un compte sur <a href="https://openrouter.ai" target="_blank" className="text-fuchsia-400 hover:underline">openrouter.ai</a>, génère une clé, colle-la dans le provider <strong>OpenRouter</strong>. Accès à Claude 3.5 Sonnet, GPT-4o, Llama 3.3 70B, Qwen 72B, Mistral, etc. en pay-per-use unifié.
+          </p>
+          <p className="text-[11px] text-amber-300 mt-2">💡 Bon comme <strong>fallback secondaire</strong> si Ollama Mac + Ollama Cloud + Gemini sont KO. Ça te donne une 4e ligne de défense.</p>
+
+          <h4 className="text-sm font-bold text-fuchsia-400 mt-4">9. Stratégie de chaînage recommandée pour GLD</h4>
+          <pre className="bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-xs overflow-x-auto"><code>Tâches courtes (modération, classify) :
+  Primaire   → Ollama Mac (local Tailscale)         ⚡ ~150 ms
+  Fallback 1 → Ollama Cloud (online, gros modèle)    ⚡ ~500 ms
+  Fallback 2 → Gemini Flash (Google)                 ⚡ ~200 ms
+
+Tâches moyennes (manuel sections, brand voice) :
+  Primaire   → Ollama Mac (Llama 3.1 8B)             ⚡ ~2 s
+  Fallback 1 → Ollama Cloud (gpt-oss:20b-cloud)      ⚡ ~3 s
+  Fallback 2 → OpenRouter (Claude 3.5 Sonnet)        💰 0.003 €/req
+
+Tâches longues créatives :
+  Primaire   → Ollama Cloud (qwen3-coder:480b-cloud) ⚡ ~10 s
+  Fallback 1 → OpenRouter (Claude 3.5 Sonnet)
+  Fallback 2 → Gemini 2.5 Pro
+
+Image/Vidéo/Avatar :
+  → Cloud uniquement (fal.ai, HeyGen) — pas réaliste local</code></pre>
         </section>
       )}
     </div>
@@ -456,13 +492,19 @@ llama-server -m ~/models/qwen2.5-7b-instruct-q5_k_m.gguf -c 8192 --port 8080 --h
 
 function ProviderIcon({ type }: { type: string }) {
   const icons: Record<string, any> = {
-    gemini: Cloud, ollama: Cpu, lmstudio: Cpu, llamacpp: Cpu, openrouter: Cloud, fal: ImageIcon, heygen: Video, comfyui: ImageIcon, 'whisper-local': Mic
+    gemini: Cloud, ollama: Cpu, 'ollama-cloud': Cloud, lmstudio: Cpu, llamacpp: Cpu,
+    openrouter: Cloud, fal: ImageIcon, heygen: Video, comfyui: ImageIcon, 'whisper-local': Mic
   };
   const colors: Record<string, string> = {
-    gemini: 'bg-cyan-500/20 text-cyan-300', ollama: 'bg-emerald-500/20 text-emerald-300',
-    lmstudio: 'bg-blue-500/20 text-blue-300', llamacpp: 'bg-purple-500/20 text-purple-300',
-    openrouter: 'bg-amber-500/20 text-amber-300', fal: 'bg-pink-500/20 text-pink-300',
-    heygen: 'bg-rose-500/20 text-rose-300', comfyui: 'bg-violet-500/20 text-violet-300',
+    gemini: 'bg-cyan-500/20 text-cyan-300',
+    ollama: 'bg-emerald-500/20 text-emerald-300',
+    'ollama-cloud': 'bg-teal-500/20 text-teal-300',
+    lmstudio: 'bg-blue-500/20 text-blue-300',
+    llamacpp: 'bg-purple-500/20 text-purple-300',
+    openrouter: 'bg-amber-500/20 text-amber-300',
+    fal: 'bg-pink-500/20 text-pink-300',
+    heygen: 'bg-rose-500/20 text-rose-300',
+    comfyui: 'bg-violet-500/20 text-violet-300',
     'whisper-local': 'bg-orange-500/20 text-orange-300'
   };
   const Icon = icons[type] || Server;
