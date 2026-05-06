@@ -1788,3 +1788,55 @@ model AdminInvitation {
   @@index([email, usedAt])
   @@index([expiresAt])
 }
+
+// ───────────────────────────────────────────────
+// AVATAR STUDIO — gestion des avatars personnels (Avatar V, Tavus, Synthesia, D-ID)
+// ───────────────────────────────────────────────
+
+/// Un avatar entraîné (custom replica) ou stock disponible pour générer des vidéos.
+/// Workflow Avatar V :
+///   1. Upload 15s de vidéo source (regard caméra, parole claire) via /admin/avatar-studio
+///   2. Provider crée un replica (ID externe stocké dans externalId)
+///   3. Une fois validé, on peut générer N vidéos avec ce replica + script texte
+model Avatar {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String              // "Mère Marie", "Sœur Khadija", "Demo Arnaud"
+  persona        String?             // "marie" | "khadija" | "rabbin" | "zen" | null si avatar libre
+  provider       String              // "avatar-v" | "tavus" | "synthesia" | "d-id" | "heygen"
+  externalId     String              // ID dans le provider (replica_id, avatar_id, etc.)
+  thumbnailUrl   String?
+  previewVideoUrl String?
+  status         String   @default("training")  // training | ready | failed | archived
+  trainingError  String?  @db.Text
+  voiceId        String?              // ID voix associée (provider-specific)
+  metadata       Json?                // payload provider brut (model version, training params)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  generations    AvatarGeneration[]
+
+  @@index([persona, status])
+}
+
+/// Une vidéo générée avec un avatar.
+model AvatarGeneration {
+  id              String   @id @default(cuid())
+  avatarId        String
+  avatar          Avatar   @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+  scriptText      String   @db.Text       // script TTS
+  videoUrl        String?                  // URL de la vidéo finale (S3 MinIO ou CDN provider)
+  durationSec     Int?
+  outfit          String?                  // "casual" | "robe-religieuse" | "officiel" — Avatar V multi-outfits
+  setting         String?                  // "studio-noir" | "eglise" | "bureau" — Avatar V multi-settings
+  language        String   @default("fr")
+  externalJobId   String?                  // ID job côté provider pour polling
+  status          String   @default("pending")  // pending | processing | done | failed
+  errorMessage    String?  @db.Text
+  costCents       Int?                     // coût estimé en centimes
+  createdAt       DateTime @default(now())
+  finishedAt      DateTime?
+
+  @@index([avatarId, status])
+  @@index([status, createdAt])
+}

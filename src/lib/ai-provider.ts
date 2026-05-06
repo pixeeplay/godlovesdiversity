@@ -43,7 +43,7 @@ export type AiTaskKey = keyof typeof AI_TASKS;
 export interface ProviderConfig {
   id: string;
   label: string;
-  type: 'gemini' | 'ollama' | 'ollama-cloud' | 'openrouter' | 'lmstudio' | 'llamacpp' | 'fal' | 'heygen' | 'whisper-local' | 'comfyui';
+  type: 'gemini' | 'ollama' | 'ollama-cloud' | 'openrouter' | 'lmstudio' | 'llamacpp' | 'fal' | 'heygen' | 'avatar-v' | 'tavus' | 'synthesia' | 'd-id' | 'whisper-local' | 'comfyui';
   baseUrl?: string;       // ex: http://100.x.y.z:11434 (Tailscale)
   apiKey?: string;
   models?: string[];      // liste de modèles disponibles
@@ -115,6 +115,38 @@ export const DEFAULT_PROVIDERS: ProviderConfig[] = [
     baseUrl: 'https://api.heygen.com',
     enabled: false,
     description: 'Avatar IA vidéo studio + temps-réel via SDK.'
+  },
+  {
+    id: 'avatar-v',
+    label: 'Avatar V (upper-body, cross-outfits)',
+    type: 'avatar-v',
+    baseUrl: 'https://api.heygen.com/v2',
+    enabled: false,
+    description: 'Nouveau model HeyGen Avatar V (upper-body, consistency cross-tenues, 1 clip 15s en input). Idéal pour les 4 personas spirituels + newsletters vidéo.'
+  },
+  {
+    id: 'tavus',
+    label: 'Tavus (avatar conversationnel)',
+    type: 'tavus',
+    baseUrl: 'https://tavusapi.com',
+    enabled: false,
+    description: 'Avatars conversationnels temps-réel avec replicas personnels.'
+  },
+  {
+    id: 'synthesia',
+    label: 'Synthesia (avatars studio)',
+    type: 'synthesia',
+    baseUrl: 'https://api.synthesia.io/v2',
+    enabled: false,
+    description: '160+ avatars stock pré-entraînés, pas besoin de clip source.'
+  },
+  {
+    id: 'd-id',
+    label: 'D-ID (talking-head)',
+    type: 'd-id',
+    baseUrl: 'https://api.d-id.com',
+    enabled: false,
+    description: 'Talking-head depuis une simple photo + texte. Le moins cher pour des bouts de vidéo courts.'
   },
   {
     id: 'comfyui-mac',

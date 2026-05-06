@@ -104,6 +104,7 @@ const NAV: Entry[] = [
       { href: '/admin/manuals', label: 'Manuels auto IA 📚', icon: FileText },
       { href: '/admin/ai/knowledge', label: 'Cerveau de GLD (RAG)', icon: Sparkles },
       { href: '/admin/ai/avatar', label: 'GLD Live (avatar vidéo)', icon: Video },
+      { href: '/admin/avatar-studio', label: '🎬 Avatar Studio (Avatar V)', icon: Video, badge: 'NEW' },
       { href: '/admin/i18n', label: 'Traductions IA (FR/EN/ES/PT)', icon: Sparkles },
       { href: '/admin/integrations/telegram', label: 'Bot Telegram (notifs + commandes)', icon: MenuIcon },
       { href: '/admin/integrations', label: 'Intégrations', icon: Layers },
