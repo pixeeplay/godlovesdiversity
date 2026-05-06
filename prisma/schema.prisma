@@ -1593,3 +1593,57 @@ model VenueParticipation {
   @@unique([venueId, religiousEventId])
   @@index([startsAt])
 }
+
+// ───────────────────────────────────────────────
+// SPRINT 3 — PRIÈRE LIVE & BOUGIES VIRTUELLES
+// ───────────────────────────────────────────────
+
+/// Bougie virtuelle posée sur la carte mondiale, durée 24h.
+model PrayerCandle {
+  id         String   @id @default(cuid())
+  userHash   String?              // hash anonyme pour rate-limit (pas user.id)
+  intention  String?  @db.Text    // texte court d'intention, modéré IA
+  faith      String?              // confession optionnelle (catholic, muslim, jewish, etc.)
+  lat        Float
+  lng        Float
+  city       String?
+  country    String?              // code ISO-2
+  expiresAt  DateTime             // pose=now()+24h
+  status     String   @default("active")  // active | expired | hidden (modéré)
+  createdAt  DateTime @default(now())
+
+  @@index([expiresAt, status])
+  @@index([lat, lng])
+}
+
+/// Intention de prière partagée dans un cercle ou en public.
+model PrayerIntention {
+  id           String   @id @default(cuid())
+  authorHash   String?              // anonyme par défaut
+  authorName   String?              // pseudo affiché
+  faith        String?              // confession
+  circle       String?              // catholic | protestant | muslim | jewish | buddhist | hindu | sikh | interfaith | null=public
+  text         String   @db.Text
+  prayerCount  Int      @default(0) // nombre de personnes qui ont cliqué "Je prie"
+  status       String   @default("approved") // pending | approved | hidden (modération IA)
+  isAnonymous  Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  @@index([circle, createdAt])
+  @@index([status, createdAt])
+}
+
+/// Présence live dans un cercle — heartbeat toutes les 30s côté client.
+/// Auto-expire après 90s sans heartbeat.
+model PrayerPresence {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique  // cookie/uuid client
+  circle       String              // catholic | protestant | muslim | ...
+  faith        String?
+  city         String?
+  country      String?
+  lastSeenAt   DateTime @default(now())
+  joinedAt     DateTime @default(now())
+
+  @@index([circle, lastSeenAt])
+}
