@@ -194,6 +194,12 @@ function VenueCard({ v }: { v: any }) {
             <Star size={10} /> Coup de cœur
           </div>
         )}
+        {/* Badge fraîcheur si enrichi */}
+        {v.enrichedAt && !v.featured && (
+          <div className="absolute top-2 right-2 bg-fuchsia-500/90 backdrop-blur text-white px-2 py-1 rounded-full text-[10px] font-bold flex items-center gap-1" title={`Enrichi par IA · ${typeof v.freshnessScore === 'number' ? Math.round(v.freshnessScore) + '%' : ''}`}>
+            ✨ {typeof v.freshnessScore === 'number' ? `${Math.round(v.freshnessScore)}%` : 'Enrichi'}
+          </div>
+        )}
       </div>
       <div className="p-4">
         <div className="flex items-start gap-2 mb-1">
