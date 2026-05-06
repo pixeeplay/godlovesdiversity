@@ -789,6 +789,13 @@ model Venue {
   featured      Boolean     @default(false)
   views         Int         @default(0)
 
+  // Enrichissement IA (Gemini grounded search)
+  googlePlaceId         String?     // Place ID Google Maps si trouvé
+  enrichedAt            DateTime?   // dernière fois que l'enrichissement a tourné
+  enrichmentConfidence  Float?      // 0..1 : 0.9 = source officielle Google Maps, 0.7 = sites multiples cohérents, 0.4 = unique source
+  enrichmentSources     Json?       // [{url, title, fields:["phone","hours"]}, ...] — citations Gemini
+  enrichmentNotes       String?     @db.Text // résumé textuel des modifs faites par l'IA + warnings
+
   events        Event[]                 // events qui se passent dans ce lieu
   coupons       VenueCoupon[]
   createdAt     DateTime    @default(now())
@@ -798,6 +805,7 @@ model Venue {
   @@index([rating, published])
   @@index([featured, published])
   @@index([lat, lng])
+  @@index([enrichedAt])
 }
 
 /// Coupon spécifique à un Venue (ex: -10% au resto Le Refuge sur présentation).

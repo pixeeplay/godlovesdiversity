@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Save, Trash2, Loader2, ArrowLeft, ExternalLink, MapPin, Phone, Mail, Globe, Facebook, Instagram, ShieldCheck, Eye, EyeOff, Image as ImageIcon, CheckCircle2 } from 'lucide-react';
+import { Save, Trash2, Loader2, ArrowLeft, ExternalLink, MapPin, Phone, Mail, Globe, Facebook, Instagram, ShieldCheck, Eye, EyeOff, Image as ImageIcon, CheckCircle2, Sparkles, Wand2 } from 'lucide-react';
 
 const TYPES = ['RESTAURANT', 'BAR', 'CAFE', 'CLUB', 'HOTEL', 'SHOP', 'CULTURAL', 'CHURCH', 'TEMPLE', 'COMMUNITY_CENTER', 'HEALTH', 'ASSOCIATION', 'OTHER'];
 const RATINGS = ['FRIENDLY', 'WELCOMING', 'INCLUSIVE', 'SAFE'];
@@ -35,6 +35,27 @@ export function VenueEditor({ venue }: { venue: any }) {
     router.push('/admin/establishments');
   }
 
+  // Enrichissement IA via Gemini grounded search
+  const [enriching, setEnriching] = useState(false);
+  const [enrichResult, setEnrichResult] = useState<any>(null);
+
+  async function enrich(overwrite = false, dry = false) {
+    setEnriching(true);
+    setEnrichResult(null);
+    const r = await fetch(`/api/admin/venues/${v.id}/enrich${dry ? '?dry=1' : ''}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ overwrite })
+    });
+    const j = await r.json();
+    setEnriching(false);
+    setEnrichResult(j);
+    if (j.ok && !dry) {
+      // Recharge la page pour voir les nouveaux champs
+      setTimeout(() => router.refresh(), 1500);
+    }
+  }
+
   return (
     <div className="max-w-5xl mx-auto p-6">
       {/* HEADER */}
@@ -52,12 +73,95 @@ export function VenueEditor({ venue }: { venue: any }) {
           <a href={`/lieux/${v.slug}`} target="_blank" className="bg-zinc-800 hover:bg-zinc-700 px-3 py-2 rounded-lg text-xs flex items-center gap-1.5">
             <ExternalLink size={11} /> Voir front
           </a>
+          <div className="relative group">
+            <button
+              onClick={() => enrich(false, false)}
+              disabled={enriching}
+              className="bg-gradient-to-r from-fuchsia-500 to-violet-500 text-white font-bold px-3 py-2 rounded-lg text-xs flex items-center gap-1.5 disabled:opacity-50"
+              title="Cherche sur le web (Gemini grounded) et complète les champs vides"
+            >
+              {enriching ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
+              Enrichir IA
+            </button>
+            {/* Dropdown menu options */}
+            <div className="absolute right-0 top-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-10 w-56">
+              <button onClick={() => enrich(false, true)} disabled={enriching} className="w-full text-left px-3 py-2 text-xs hover:bg-zinc-800 flex items-center gap-2 border-b border-zinc-800">
+                <Wand2 size={11} /> Aperçu (sans sauver)
+              </button>
+              <button onClick={() => enrich(false, false)} disabled={enriching} className="w-full text-left px-3 py-2 text-xs hover:bg-zinc-800 flex items-center gap-2 border-b border-zinc-800">
+                <Sparkles size={11} /> Compléter vides uniquement
+              </button>
+              <button onClick={() => { if (confirm('Écraser TOUS les champs existants par les données IA ?')) enrich(true, false); }} disabled={enriching} className="w-full text-left px-3 py-2 text-xs hover:bg-zinc-800 flex items-center gap-2 text-amber-300">
+                ⚠️ Tout écraser
+              </button>
+            </div>
+          </div>
           {saved && <span className="text-emerald-300 text-xs flex items-center gap-1"><CheckCircle2 size={12} /> Sauvé</span>}
           <button onClick={save} disabled={busy} className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center gap-2">
             {busy ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />} Sauvegarder
           </button>
         </div>
       </div>
+
+      {/* PANNEAU RÉSULTAT ENRICHISSEMENT IA */}
+      {enrichResult && (
+        <div className={`mb-5 rounded-lg border p-4 ${enrichResult.ok ? 'border-fuchsia-500/40 bg-fuchsia-500/10' : 'border-rose-500/40 bg-rose-500/10'}`}>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles size={14} className="text-fuchsia-300" />
+                <h3 className="font-bold text-sm">
+                  {enrichResult.ok ? 'Enrichissement IA' : 'Échec enrichissement'}
+                  {enrichResult.dry && <span className="ml-2 text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded">PREVIEW</span>}
+                </h3>
+                {typeof enrichResult.confidence === 'number' && (
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded ${enrichResult.confidence >= 0.75 ? 'bg-emerald-500/20 text-emerald-300' : enrichResult.confidence >= 0.5 ? 'bg-amber-500/20 text-amber-300' : 'bg-rose-500/20 text-rose-300'}`}>
+                    Confiance {Math.round(enrichResult.confidence * 100)}%
+                  </span>
+                )}
+              </div>
+              {enrichResult.notes && <p className="text-xs text-zinc-300 mb-2">{enrichResult.notes}</p>}
+              {enrichResult.error && <p className="text-xs text-rose-300 mb-2 font-mono">{enrichResult.error}</p>}
+              {enrichResult.fieldsApplied?.length > 0 && (
+                <div className="text-xs text-zinc-400 mb-2">
+                  <b className="text-emerald-300">Appliqué :</b> {enrichResult.fieldsApplied.join(', ')}
+                </div>
+              )}
+              {enrichResult.fieldsSuggested?.length > 0 && enrichResult.fieldsSuggested.length !== enrichResult.fieldsApplied?.length && (
+                <div className="text-xs text-zinc-400 mb-2">
+                  <b className="text-cyan-300">Suggéré :</b> {enrichResult.fieldsSuggested.join(', ')}
+                </div>
+              )}
+              {Array.isArray(enrichResult.sources) && enrichResult.sources.length > 0 && (
+                <div className="text-xs text-zinc-400">
+                  <b>Sources ({enrichResult.sources.length}) :</b>
+                  <ul className="mt-1 space-y-0.5 max-h-32 overflow-y-auto">
+                    {enrichResult.sources.slice(0, 8).map((src: any, i: number) => (
+                      <li key={i} className="truncate">
+                        <a href={src.url} target="_blank" rel="noopener" className="text-cyan-300 hover:underline">→ {src.title || src.url}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+            <button onClick={() => setEnrichResult(null)} className="text-zinc-500 hover:text-zinc-200 text-xs">✕</button>
+          </div>
+        </div>
+      )}
+
+      {/* Badge confiance permanent si enrichi récemment */}
+      {v.enrichedAt && !enrichResult && (
+        <div className="mb-3 inline-flex items-center gap-2 text-xs bg-zinc-800/50 border border-zinc-700 rounded-full px-3 py-1">
+          <Sparkles size={11} className="text-fuchsia-300" />
+          <span className="text-zinc-400">Enrichi par IA le {new Date(v.enrichedAt).toLocaleDateString('fr-FR')}</span>
+          {typeof v.enrichmentConfidence === 'number' && (
+            <span className={`font-bold ${v.enrichmentConfidence >= 0.75 ? 'text-emerald-300' : v.enrichmentConfidence >= 0.5 ? 'text-amber-300' : 'text-rose-300'}`}>
+              {Math.round(v.enrichmentConfidence * 100)}%
+            </span>
+          )}
+        </div>
+      )}
 
       {/* TOGGLES rapides */}
       <div className="flex gap-2 mb-5">
