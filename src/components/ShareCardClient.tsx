@@ -1,6 +1,6 @@
 'use client';
-import { useState, useRef } from 'react';
-import { Share2, Download, Sparkles, Copy, Check, Upload, ImageIcon, QrCode, Loader2, Wand2, X } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Share2, Download, Sparkles, Check, Upload, ImageIcon, QrCode, Loader2, Wand2, X } from 'lucide-react';
 
 const TOPICS = [
   { id: 'testimony', label: '🎤 Témoignage',  example: 'Je suis croyant·e ET LGBT. Dieu m\'aime tel·le que je suis.' },
@@ -27,24 +27,209 @@ export function ShareCardClient() {
   const [aiUrl, setAiUrl] = useState<string | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
+  const [composedPng, setComposedPng] = useState<string | null>(null); // PNG composé client-side
   const fileRef = useRef<HTMLInputElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // URL de partage avec QR code = lien vers la home
   const targetUrl = typeof window !== 'undefined' ? window.location.origin : 'https://gld.pixeeplay.com';
 
-  // URL d'aperçu : SVG classique OU avec photo OU image IA
-  const params = new URLSearchParams({
-    text,
-    author,
-    country,
-    qr: '1', // QR code activé
-    photo: photoUrl || '',
-    targetUrl
-  });
-  const svgUrl = `/api/share-card/${topic}?${params.toString()}`;
-  const previewUrl = style === 'ai' && aiUrl ? aiUrl : svgUrl;
-  const fullUrl = typeof window !== 'undefined' ? window.location.origin + svgUrl : svgUrl;
+  // URL SVG pour styles classic/ai (sans photo embarquée — évite la limite URL)
+  const svgParams = new URLSearchParams({ text, author, country, qr: '1', targetUrl });
+  const svgUrl = `/api/share-card/${topic}?${svgParams.toString()}`;
 
+  // ─── PREVIEW LOGIC : compose client-side si photo, sinon utilise l'URL serveur ───
+  useEffect(() => {
+    if (style === 'photo' && photoUrl) {
+      composePhotoCard();
+    } else {
+      setComposedPng(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [style, photoUrl, text, author, country]);
+
+  const previewUrl =
+    style === 'ai' && aiUrl ? aiUrl :
+    style === 'photo' && composedPng ? composedPng :
+    svgUrl;
+
+  // ────────────────────────────────────────────────────────────
+  // Composition photo + texte + logo + QR sur Canvas (client-side)
+  // ────────────────────────────────────────────────────────────
+  async function composePhotoCard() {
+    const canvas = canvasRef.current;
+    if (!canvas || !photoUrl) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = 1080;
+    canvas.height = 1080;
+
+    // 1. Fond noir
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    // 2. Photo de fond (cover)
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    await new Promise<void>((resolve, reject) => {
+      img.onload = () => resolve();
+      img.onerror = reject;
+      img.src = photoUrl;
+    });
+
+    // Cover-style scale
+    const ratio = Math.max(1080 / img.width, 1080 / img.height);
+    const drawW = img.width * ratio;
+    const drawH = img.height * ratio;
+    const offX = (1080 - drawW) / 2;
+    const offY = (1080 - drawH) / 2;
+    ctx.drawImage(img, offX, offY, drawW, drawH);
+
+    // 3. Overlay foncé pour lisibilité
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    // 4. Vignette gradient
+    const grad = ctx.createRadialGradient(540, 540, 200, 540, 540, 720);
+    grad.addColorStop(0, 'rgba(0,0,0,0)');
+    grad.addColorStop(1, 'rgba(0,0,0,0.6)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    // 5. Drapeau / arc-en-ciel emoji en haut
+    ctx.font = 'bold 140px -apple-system, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'white';
+    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetY = 2;
+    const flag = countryToFlag(country);
+    ctx.fillText(flag, 540, 220);
+
+    // 6. Texte principal (wrap auto)
+    ctx.font = 'bold 58px Georgia, serif';
+    ctx.fillStyle = 'white';
+    const lines = wrapText(ctx, text, 920);
+    const lineHeight = 80;
+    const startY = 440;
+    lines.slice(0, 6).forEach((line, i) => {
+      ctx.fillText(line, 540, startY + i * lineHeight);
+    });
+
+    // 7. Auteur (italique)
+    if (author) {
+      ctx.font = 'italic 36px Georgia, serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.fillText(`— ${author}`, 540, startY + Math.min(lines.length, 6) * lineHeight + 70);
+    }
+
+    // 8. Logo GLD (cœur arc-en-ciel + texte) en bas-gauche
+    drawHeartLogo(ctx, 80, 940);
+    ctx.shadowBlur = 4;
+    ctx.font = '900 22px -apple-system, sans-serif';
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'left';
+    ctx.fillText('GOD LOVES', 195, 980);
+    ctx.fillText('DIVERSITY', 195, 1005);
+
+    // 9. QR code en bas-droite — fetch SVG depuis serveur et dessiner
+    try {
+      const qrSize = 180;
+      const qrX = 870;
+      const qrY = 870;
+
+      // Fond blanc QR
+      ctx.fillStyle = 'white';
+      ctx.shadowBlur = 0;
+      roundRect(ctx, qrX, qrY, qrSize, qrSize, 12);
+      ctx.fill();
+
+      // Récupère le QR SVG via le endpoint dédié (sans photo dans la query → léger)
+      const qrSvgUrl = `/api/share-card/qr-only?text=${encodeURIComponent(targetUrl)}&size=${qrSize}`;
+      const qrImg = new Image();
+      qrImg.crossOrigin = 'anonymous';
+      await new Promise<void>((resolve, reject) => {
+        qrImg.onload = () => resolve();
+        qrImg.onerror = () => resolve(); // on ne fail pas si QR pas dispo
+        qrImg.src = qrSvgUrl;
+      });
+      if (qrImg.complete && qrImg.naturalWidth > 0) {
+        ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+      }
+
+      // Texte sous le QR
+      ctx.font = '14px -apple-system, sans-serif';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = 'rgba(0,0,0,0.6)';
+      ctx.shadowBlur = 4;
+      ctx.fillText('Scanne-moi', qrX + qrSize / 2, qrY + qrSize + 20);
+    } catch {}
+
+    // Convert to data URI
+    const dataUrl = canvas.toDataURL('image/png');
+    setComposedPng(dataUrl);
+  }
+
+  function drawHeartLogo(ctx: CanvasRenderingContext2D, x: number, y: number) {
+    ctx.save();
+    ctx.translate(x, y);
+    // Gradient rainbow
+    const rainbow = ctx.createLinearGradient(0, 0, 100, 0);
+    rainbow.addColorStop(0, '#e40303');
+    rainbow.addColorStop(0.2, '#ff8c00');
+    rainbow.addColorStop(0.4, '#ffed00');
+    rainbow.addColorStop(0.6, '#008026');
+    rainbow.addColorStop(0.8, '#004dff');
+    rainbow.addColorStop(1, '#750787');
+    ctx.fillStyle = rainbow;
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(50, 30);
+    ctx.bezierCurveTo(40, 5, 0, 5, 0, 30);
+    ctx.bezierCurveTo(0, 50, 50, 90, 50, 90);
+    ctx.bezierCurveTo(50, 90, 100, 50, 100, 30);
+    ctx.bezierCurveTo(100, 5, 60, 5, 50, 30);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
+    const words = text.split(/\s+/);
+    const lines: string[] = [];
+    let cur = '';
+    for (const w of words) {
+      const test = cur ? `${cur} ${w}` : w;
+      if (ctx.measureText(test).width > maxWidth) {
+        if (cur) lines.push(cur);
+        cur = w;
+      } else {
+        cur = test;
+      }
+    }
+    if (cur) lines.push(cur);
+    return lines;
+  }
+
+  function countryToFlag(code: string): string {
+    if (!/^[A-Z]{2}$/.test(code)) return '🌈';
+    return String.fromCodePoint(...code.split('').map((c) => 0x1F1E6 + c.charCodeAt(0) - 65));
+  }
+
+  // ─── HANDLERS ───
   function handlePhotoSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -59,6 +244,7 @@ export function ShareCardClient() {
 
   function clearPhoto() {
     setPhotoUrl(null);
+    setComposedPng(null);
     if (fileRef.current) fileRef.current.value = '';
     if (style === 'photo') setStyle('classic');
   }
@@ -76,7 +262,6 @@ export function ShareCardClient() {
       const j = await r.json();
       if (j.ok && j.imageUrl) {
         setAiUrl(j.imageUrl);
-        setStyle('ai');
       } else {
         setAiError(j.error || 'Génération IA échouée');
       }
@@ -86,41 +271,63 @@ export function ShareCardClient() {
     setAiLoading(false);
   }
 
+  function handleStyleChange(newStyle: 'classic' | 'photo' | 'ai') {
+    setStyle(newStyle);
+    if (newStyle === 'photo' && !photoUrl) {
+      // demande la photo si pas encore présente
+      setTimeout(() => fileRef.current?.click(), 50);
+    }
+    // Plus d'auto-generate IA — l'utilisateur clique le bouton explicite
+  }
+
   async function downloadAsPng() {
     try {
-      const downloadUrl = style === 'ai' && aiUrl ? aiUrl : svgUrl;
-      const r = await fetch(downloadUrl);
-      const blob = await r.blob();
-      // Si SVG → convertir en PNG via canvas. Si déjà PNG/JPG, download direct.
-      if (blob.type.includes('svg')) {
-        const svg = await blob.text();
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = 1080; canvas.height = 1080;
-          const ctx = canvas.getContext('2d')!;
-          ctx.drawImage(img, 0, 0, 1080, 1080);
-          canvas.toBlob((b) => {
-            if (!b) return;
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(b);
-            a.download = `gld-${topic}-${Date.now()}.png`;
-            a.click();
-          }, 'image/png');
-        };
-        img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+      let blob: Blob;
+      if (style === 'photo' && composedPng) {
+        // Convertit data URI → Blob
+        const r = await fetch(composedPng);
+        blob = await r.blob();
+      } else if (style === 'ai' && aiUrl) {
+        const r = await fetch(aiUrl);
+        blob = await r.blob();
       } else {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `gld-${topic}-${Date.now()}.png`;
-        a.click();
+        // Classique : download le SVG via canvas
+        const r = await fetch(svgUrl);
+        const svg = await r.text();
+        await new Promise<void>((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1080; canvas.height = 1080;
+            const ctx = canvas.getContext('2d')!;
+            ctx.drawImage(img, 0, 0, 1080, 1080);
+            canvas.toBlob((b) => {
+              if (!b) return resolve();
+              triggerDownload(b);
+              resolve();
+            }, 'image/png');
+          };
+          img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+        });
+        return;
       }
+      triggerDownload(blob);
     } catch (e: any) {
       alert('Téléchargement impossible : ' + e.message);
     }
   }
 
+  function triggerDownload(blob: Blob) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `gld-${topic}-${Date.now()}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
   async function shareNative() {
+    const fullUrl = typeof window !== 'undefined' ? window.location.origin + '/partager' : '';
     if (!navigator.share) {
       navigator.clipboard.writeText(fullUrl);
       setCopied(true);
@@ -142,6 +349,9 @@ export function ShareCardClient() {
         <p className="text-zinc-400 text-sm">Image 1080×1080 prête pour Instagram, TikTok, X, WhatsApp, Telegram… avec logo GLD et QR code intégré.</p>
       </header>
 
+      {/* Canvas caché pour la composition photo */}
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
+
       <div className="grid lg:grid-cols-[1fr_380px] gap-6">
         {/* APERÇU */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
@@ -152,6 +362,26 @@ export function ShareCardClient() {
                   <Loader2 size={32} className="animate-spin mx-auto text-fuchsia-300 mb-2" />
                   <div className="text-xs text-fuchsia-200">Création de l'affiche IA…</div>
                   <div className="text-[10px] text-zinc-500 mt-1">~15-30 secondes</div>
+                </div>
+              </div>
+            ) : style === 'photo' && photoUrl && !composedPng ? (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Loader2 size={32} className="animate-spin text-zinc-400" />
+              </div>
+            ) : style === 'ai' && !aiUrl ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-fuchsia-900/20 to-violet-900/20 p-6 text-center">
+                <div>
+                  <Wand2 size={36} className="mx-auto text-fuchsia-300 mb-3 opacity-80" />
+                  <div className="text-sm text-fuchsia-100 font-bold mb-1">Affiche IA pas encore générée</div>
+                  <div className="text-[11px] text-zinc-400 mb-4">Clique le bouton ci-contre →</div>
+                </div>
+              </div>
+            ) : style === 'photo' && !photoUrl ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-cyan-900/20 to-teal-900/20 p-6 text-center">
+                <div>
+                  <ImageIcon size={36} className="mx-auto text-cyan-300 mb-3 opacity-80" />
+                  <div className="text-sm text-cyan-100 font-bold mb-1">Aucune photo</div>
+                  <div className="text-[11px] text-zinc-400">Choisis une photo dans le panneau →</div>
                 </div>
               </div>
             ) : (
@@ -166,11 +396,6 @@ export function ShareCardClient() {
             <button onClick={downloadAsPng} className="bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-bold px-4 py-2 rounded-full flex items-center gap-1.5">
               <Download size={14} /> Télécharger PNG
             </button>
-            {style !== 'ai' && (
-              <a href={svgUrl} download={`gld-${topic}.svg`} className="bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-bold px-4 py-2 rounded-full flex items-center gap-1.5">
-                <Download size={14} /> SVG
-              </a>
-            )}
           </div>
         </div>
 
@@ -183,11 +408,7 @@ export function ShareCardClient() {
               {STYLES.map((s) => (
                 <button
                   key={s.id}
-                  onClick={() => {
-                    setStyle(s.id as any);
-                    if (s.id === 'photo' && !photoUrl) fileRef.current?.click();
-                    if (s.id === 'ai' && !aiUrl) generateAiPoster();
-                  }}
+                  onClick={() => handleStyleChange(s.id as any)}
                   className={`text-xs p-2 rounded-lg transition text-center ${style === s.id ? 'bg-fuchsia-500 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-300 hover:bg-zinc-800'}`}
                 >
                   <div>{s.label}</div>
@@ -207,6 +428,10 @@ export function ShareCardClient() {
                 <div className="flex items-center gap-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={photoUrl} alt="" className="w-16 h-16 rounded object-cover" />
+                  <div className="flex-1 text-xs text-zinc-300">
+                    <div className="font-bold">Photo prête</div>
+                    <div className="text-[10px] text-zinc-500">Modifie le texte pour voir le résultat</div>
+                  </div>
                   <button onClick={clearPhoto} className="text-xs text-rose-300 hover:underline flex items-center gap-1">
                     <X size={12} /> Retirer
                   </button>
@@ -217,38 +442,44 @@ export function ShareCardClient() {
                 </button>
               )}
               <input ref={fileRef} type="file" accept="image/*" onChange={handlePhotoSelect} className="hidden" />
-              <p className="text-[10px] text-zinc-500 mt-2">Ta photo apparaîtra en arrière-plan, avec un overlay foncé pour la lisibilité du texte. Conseil : photo claire ou lumineuse.</p>
+              <p className="text-[10px] text-zinc-500 mt-2">Ta photo apparaîtra en arrière-plan, avec un overlay foncé pour la lisibilité du texte.</p>
             </div>
           )}
 
-          {/* Génération IA (si style=ai) */}
+          {/* Génération IA (si style=ai) — BOUTON EXPLICITE */}
           {style === 'ai' && (
             <div className="bg-gradient-to-br from-fuchsia-500/10 to-violet-500/10 border border-fuchsia-500/30 rounded-lg p-3">
               <label className="text-[10px] uppercase font-bold text-fuchsia-300 mb-2 block flex items-center gap-1">
                 <Wand2 size={11} /> Affiche IA
               </label>
               <p className="text-[11px] text-zinc-300 mb-3">
-                L'IA génère une affiche unique respectant les valeurs GLD : inclusion, foi, amour. Pas de visages identifiables, pas de symboles religieux clivants.
+                L'IA Gemini Nano Banana génère une affiche unique en respectant les valeurs GLD : inclusion, foi, amour. <b>Pas de visages identifiables, pas de symboles religieux clivants.</b>
               </p>
               <button
                 onClick={generateAiPoster}
                 disabled={aiLoading}
-                className="w-full bg-gradient-to-r from-fuchsia-500 to-violet-500 hover:from-fuchsia-400 hover:to-violet-400 text-white font-bold text-sm px-3 py-2 rounded flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full bg-gradient-to-r from-fuchsia-500 to-violet-500 hover:from-fuchsia-400 hover:to-violet-400 text-white font-bold text-sm px-3 py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 shadow-lg"
               >
-                {aiLoading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-                {aiUrl ? 'Régénérer une nouvelle affiche' : 'Générer mon affiche'}
+                {aiLoading ? (
+                  <><Loader2 size={16} className="animate-spin" /> Génération en cours…</>
+                ) : aiUrl ? (
+                  <><Sparkles size={16} /> Régénérer une variante</>
+                ) : (
+                  <><Sparkles size={16} /> Générer mon affiche IA</>
+                )}
               </button>
-              {aiError && <p className="text-[11px] text-rose-300 mt-2">⚠ {aiError}</p>}
-              {aiUrl && <p className="text-[10px] text-emerald-300 mt-2">✓ Affiche générée. Tu peux régénérer pour avoir une variante différente.</p>}
+              {aiError && <p className="text-[11px] text-rose-300 mt-2 bg-rose-500/10 border border-rose-500/30 rounded p-2">⚠ {aiError}</p>}
+              {aiUrl && !aiError && <p className="text-[10px] text-emerald-300 mt-2">✓ Affiche générée. Tu peux régénérer pour avoir une variante différente.</p>}
+              <p className="text-[9px] text-zinc-500 mt-2">Coût : ~2 appels Gemini quotidiens (sur quota partagé).</p>
             </div>
           )}
 
           {/* Type de carte */}
           <div>
-            <label className="text-[10px] uppercase font-bold text-zinc-400 mb-1 block">Type</label>
+            <label className="text-[10px] uppercase font-bold text-zinc-400 mb-1 block">Type de message</label>
             <div className="flex flex-wrap gap-1.5">
               {TOPICS.map((t) => (
-                <button key={t.id} onClick={() => { setTopic(t.id); setText(t.example); }} className={`text-xs px-2.5 py-1.5 rounded-full transition ${topic === t.id ? 'bg-fuchsia-500 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-300 hover:bg-zinc-800'}`}>
+                <button key={t.id} onClick={() => { setTopic(t.id); setText(t.example); setAiUrl(null); }} className={`text-xs px-2.5 py-1.5 rounded-full transition ${topic === t.id ? 'bg-fuchsia-500 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-300 hover:bg-zinc-800'}`}>
                   {t.label}
                 </button>
               ))}
@@ -273,12 +504,12 @@ export function ShareCardClient() {
             </div>
           </div>
 
-          {/* QR code info */}
+          {/* Info logo + QR */}
           <div className="text-[11px] text-zinc-400 bg-zinc-900 border border-zinc-800 rounded-lg p-3 space-y-1.5">
             <div className="flex items-center gap-2 text-cyan-300 font-bold">
               <QrCode size={12} /> QR code intégré
             </div>
-            <p>Un QR code menant à <code className="bg-black/30 px-1 rounded">gld.pixeeplay.com</code> est ajouté en bas à droite de chaque carte. Toute personne qui scanne arrive sur le site.</p>
+            <p>Un QR code menant à <code className="bg-black/30 px-1 rounded">gld.pixeeplay.com</code> est ajouté en bas à droite de chaque carte.</p>
             <div className="flex items-center gap-2 text-fuchsia-300 font-bold pt-2 border-t border-zinc-800">
               <Sparkles size={12} /> Logo GLD
             </div>

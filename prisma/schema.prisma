@@ -1004,6 +1004,36 @@ model SoulEntry {
   @@index([mood])
 }
 
+/// Plan annuel de newsletters auto-générées par IA.
+/// Une entrée = 1 newsletter prévue à une date donnée (max 52 par an).
+/// Modifiable manuellement avant envoi. Image et vidéo IA générables on-demand.
+model NewsletterPlan {
+  id            String   @id @default(cuid())
+  scheduledFor  DateTime @unique  // date prévue d'envoi (semaine du)
+  weekNumber    Int      // numéro de semaine 1-53
+  year          Int
+  title         String   // titre éditorial
+  theme         String?  // thème de la semaine ("rentrée", "Pride", "Noël", etc.)
+  subject       String?  // objet email final (peut différer du titre)
+  preheader     String?  // texte de preview email
+  htmlContent   String?  @db.Text  // corps HTML complet
+  markdownContent String? @db.Text
+  imageUrl      String?  // URL image IA générée (data URI ou MinIO)
+  imagePrompt   String?  @db.Text  // prompt utilisé pour générer l'image
+  videoUrl      String?  // URL vidéo IA (Seedance / autre)
+  videoPrompt   String?  @db.Text
+  status        String   @default("draft") // draft | ready | sent | skipped
+  manuallyEdited Boolean @default(false)  // true si admin a touché manuellement
+  generatedBy   String   @default("gemini")
+  sentAt        DateTime?
+  campaignId    String?  // référence vers NewsletterCampaign si envoyée
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([year, weekNumber])
+  @@index([status, scheduledFor])
+}
+
 /// Manuels auto-générés par IA (user / admin / superadmin), versionnés.
 /// Régénérés 2×/jour par cron pour rester à jour avec les évolutions du site.
 model Manual {
