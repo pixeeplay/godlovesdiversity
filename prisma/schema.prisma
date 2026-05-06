@@ -1647,3 +1647,121 @@ model PrayerPresence {
 
   @@index([circle, lastSeenAt])
 }
+
+// ───────────────────────────────────────────────
+// SPRINT 4 — Camino + Genius + Officiants
+// ───────────────────────────────────────────────
+
+/// Chemin de pèlerinage virtuel collectif (Compostelle, Bénarès, Jérusalem, Camino Inca, etc.).
+model CaminoPath {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  name            String                  // "Compostelle Camino Francés"
+  faith           String                  // "catholic" | "interfaith" | "buddhist" | "hindu" | "muslim" | …
+  totalKm         Int                     // ex: 800 (Compostelle)
+  description     String?  @db.Text
+  emoji           String?
+  color           String?
+  startCity       String?                 // "Saint-Jean-Pied-de-Port"
+  endCity         String?                 // "Santiago de Compostela"
+  coverImage      String?
+  published       Boolean  @default(true)
+
+  steps           CaminoStep[]
+  contributions   CaminoContribution[]
+  createdAt       DateTime @default(now())
+}
+
+/// Étape du chemin avec contenu narratif.
+model CaminoStep {
+  id              String   @id @default(cuid())
+  pathId          String
+  path            CaminoPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  order           Int                      // 1, 2, 3…
+  name            String                   // "Pamplona"
+  kmFromStart     Int                      // ex: 75
+  description     String?  @db.Text
+  scriptureQuote  String?  @db.Text        // verset / sutra à méditer
+  imageUrl        String?
+
+  @@unique([pathId, order])
+  @@index([pathId, kmFromStart])
+}
+
+/// Contribution d'un user au pèlerinage collectif (1 contribution = 1 km).
+/// Triggers : prière dans un cercle, intention partagée, bougie allumée, méditation 10min, etc.
+model CaminoContribution {
+  id              String   @id @default(cuid())
+  pathId          String
+  path            CaminoPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  userHash        String?                  // anonyme par défaut
+  source          String                   // "prayer-circle" | "intention" | "candle" | "meditation" | "manual"
+  km              Int      @default(1)
+  createdAt       DateTime @default(now())
+
+  @@index([pathId, createdAt])
+}
+
+/// Annotation inclusive d'un passage de texte sacré ("Genius des textes sacrés").
+model SacredAnnotation {
+  id              String   @id @default(cuid())
+  scripture       String                   // "bible" | "quran" | "talmud" | "tipitaka" | "vedas" | "guru-granth-sahib"
+  reference       String                   // "Galates 3:28" | "Coran 2:256" | "Berakhot 4a"
+  passageText     String?  @db.Text        // citation du passage en français
+  annotation      String   @db.Text        // commentaire inclusif
+  authorName      String?                  // pseudo ou expert
+  authorRole      String?                  // "théologien", "rabbin", "imam", "fidèle"
+  faith           String                   // "christian" | "muslim" | "jewish" | "buddhist" | "hindu" | "sikh"
+  perspective     String?                  // "queer-theology" | "feminist" | "liberation" | "personal-witness"
+  upvotes         Int      @default(0)
+  status          String   @default("approved")  // pending | approved | hidden
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([scripture, reference])
+  @@index([faith, status, createdAt])
+}
+
+/// Officiant·e religieux·se LGBT-friendly (rabbin, imam, prêtre, pasteur, etc.) prêt·e à célébrer mariages, baptêmes, funérailles, conversions.
+model InclusiveOfficiant {
+  id              String   @id @default(cuid())
+  name            String
+  faith           String                   // "catholic" | "protestant" | "muslim" | "jewish" | …
+  role            String                   // "prêtre" | "pasteur" | "rabbin" | "imam" | "moine" | "lay-preacher"
+  affiliations    String[] @default([])    // ["David et Jonathan", "Beit Haverim", "HM2F", …]
+  city            String?
+  country         String?
+  email           String?
+  phone           String?
+  website         String?
+  bio             String?  @db.Text
+  servicesOffered String[] @default([])    // ["mariage", "baptême", "funérailles", "conversion", "bénédiction"]
+  languages       String[] @default([])
+  verified        Boolean  @default(false) // vérifié par GLD
+  published       Boolean  @default(true)
+  avatarUrl       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  bookings        OfficiantBooking[]
+
+  @@index([faith, country, city])
+}
+
+/// Demande de réservation d'un officiant.
+model OfficiantBooking {
+  id              String   @id @default(cuid())
+  officiantId     String
+  officiant       InclusiveOfficiant @relation(fields: [officiantId], references: [id], onDelete: Cascade)
+  requesterName   String
+  requesterEmail  String
+  serviceType     String                   // "mariage" | "baptême" | "funérailles" | "bénédiction" | …
+  proposedDate    DateTime?
+  city            String?
+  message         String?  @db.Text
+  status          String   @default("pending") // pending | contacted | accepted | declined | completed
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([officiantId, status])
+}
