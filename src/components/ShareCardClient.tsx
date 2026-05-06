@@ -37,44 +37,47 @@ export function ShareCardClient() {
   const svgParams = new URLSearchParams({ text, author, country, qr: '1', targetUrl });
   const svgUrl = `/api/share-card/${topic}?${svgParams.toString()}`;
 
-  // ─── PREVIEW LOGIC : compose client-side si photo, sinon utilise l'URL serveur ───
+  // ─── PREVIEW LOGIC : compose client-side avec logo+QR overlay ───
+  // - photo : photo user en fond + overlay branding
+  // - ai : image IA en fond + overlay branding (logo + QR systématiques)
   useEffect(() => {
     if (style === 'photo' && photoUrl) {
-      composePhotoCard();
+      composeBrandedCard(photoUrl);
+    } else if (style === 'ai' && aiUrl) {
+      composeBrandedCard(aiUrl);
     } else {
       setComposedPng(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [style, photoUrl, text, author, country]);
+  }, [style, photoUrl, aiUrl, text, author, country]);
 
   const previewUrl =
-    style === 'ai' && aiUrl ? aiUrl :
-    style === 'photo' && composedPng ? composedPng :
+    (style === 'photo' || style === 'ai') && composedPng ? composedPng :
     svgUrl;
 
   // ────────────────────────────────────────────────────────────
-  // Composition photo + texte + logo + QR sur Canvas (client-side)
+  // Composition image (photo OU IA) + texte + logo GLD + QR sur Canvas
   // ────────────────────────────────────────────────────────────
-  async function composePhotoCard() {
+  async function composeBrandedCard(bgImageUrl: string) {
     const canvas = canvasRef.current;
-    if (!canvas || !photoUrl) return;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     canvas.width = 1080;
     canvas.height = 1080;
 
-    // 1. Fond noir
+    // 1. Fond noir (failsafe)
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, 1080, 1080);
 
-    // 2. Photo de fond (cover)
+    // 2. Image de fond (cover) — photo user OU image IA
     const img = new Image();
     img.crossOrigin = 'anonymous';
     await new Promise<void>((resolve, reject) => {
       img.onload = () => resolve();
       img.onerror = reject;
-      img.src = photoUrl;
+      img.src = bgImageUrl;
     });
 
     // Cover-style scale
@@ -283,12 +286,9 @@ export function ShareCardClient() {
   async function downloadAsPng() {
     try {
       let blob: Blob;
-      if (style === 'photo' && composedPng) {
-        // Convertit data URI → Blob
+      // Photo OU IA : on download la version composée (avec logo/QR overlay)
+      if ((style === 'photo' || style === 'ai') && composedPng) {
         const r = await fetch(composedPng);
-        blob = await r.blob();
-      } else if (style === 'ai' && aiUrl) {
-        const r = await fetch(aiUrl);
         blob = await r.blob();
       } else {
         // Classique : download le SVG via canvas
@@ -374,6 +374,13 @@ export function ShareCardClient() {
                   <Wand2 size={36} className="mx-auto text-fuchsia-300 mb-3 opacity-80" />
                   <div className="text-sm text-fuchsia-100 font-bold mb-1">Affiche IA pas encore générée</div>
                   <div className="text-[11px] text-zinc-400 mb-4">Clique le bouton ci-contre →</div>
+                </div>
+              </div>
+            ) : style === 'ai' && aiUrl && !composedPng ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-zinc-950">
+                <div className="text-center">
+                  <Loader2 size={32} className="animate-spin mx-auto text-zinc-400 mb-2" />
+                  <div className="text-xs text-zinc-400">Composition logo + QR…</div>
                 </div>
               </div>
             ) : style === 'photo' && !photoUrl ? (
