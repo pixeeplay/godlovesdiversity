@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Save, Trash2, Loader2, ArrowLeft, ExternalLink, MapPin, Phone, Mail, Globe, Facebook, Instagram, ShieldCheck, Eye, EyeOff, Image as ImageIcon, CheckCircle2, Sparkles, Wand2 } from 'lucide-react';
 
@@ -205,6 +205,9 @@ export function VenueEditor({ venue }: { venue: any }) {
         </div>
       )}
 
+      {/* PANNEAU FRESHNESS — score de complétude de la fiche + ce qui manque */}
+      <FreshnessPanel venueId={v.id} venue={v} onSuggestEnrich={() => enrich(false, false)} />
+
       {/* TOGGLES rapides */}
       <div className="flex gap-2 mb-5">
         <Toggle label="Publié" icon={Eye} checked={v.published} onChange={(x) => set('published', x)} color="emerald" />
@@ -378,4 +381,81 @@ function Toggle({ label, icon: Icon, checked, onChange, color }: any) {
 }
 function Empty({ label }: { label: string }) {
   return <div className="text-center py-8 text-zinc-500 text-sm">{label}</div>;
+}
+
+
+// ─────────────────────────────────────────────
+// FRESHNESS PANEL — score de complétude de la fiche
+// ─────────────────────────────────────────────
+function FreshnessPanel({ venueId, venue, onSuggestEnrich }: { venueId: string; venue: any; onSuggestEnrich: () => void }) {
+  const [data, setData] = useState<{ score: number; parts: any[]; missing: string[] } | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function refresh() {
+    setLoading(true);
+    const r = await fetch(`/api/admin/venues/${venueId}/freshness`).then((r) => r.json()).catch(() => null);
+    setLoading(false);
+    if (r?.score !== undefined) setData(r);
+  }
+  // Chargement initial
+  useEffect(() => { refresh(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [venueId]);
+
+  if (!data) {
+    return (
+      <div className="mb-4 bg-zinc-900/50 border border-zinc-800 rounded-lg p-3 text-xs text-zinc-500 flex items-center justify-between">
+        <span>{loading ? 'Calcul fraîcheur…' : 'Calcul du score de complétude…'}</span>
+        <button onClick={refresh} className="text-cyan-300 hover:underline">Calculer</button>
+      </div>
+    );
+  }
+
+  const color = data.score >= 80 ? 'emerald' : data.score >= 60 ? 'cyan' : data.score >= 40 ? 'amber' : 'rose';
+  const colorMap: any = {
+    emerald: { bar: 'bg-emerald-500', text: 'text-emerald-300', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+    cyan: { bar: 'bg-cyan-500', text: 'text-cyan-300', bg: 'bg-cyan-500/10', border: 'border-cyan-500/30' },
+    amber: { bar: 'bg-amber-500', text: 'text-amber-300', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
+    rose: { bar: 'bg-rose-500', text: 'text-rose-300', bg: 'bg-rose-500/10', border: 'border-rose-500/30' }
+  };
+  const c = colorMap[color];
+
+  return (
+    <div className={`mb-4 ${c.bg} border ${c.border} rounded-lg p-4`}>
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className={`text-2xl font-black ${c.text}`}>{data.score}%</div>
+          <div>
+            <div className="text-xs font-bold">Fraîcheur de la fiche</div>
+            <div className="text-[10px] text-zinc-400">{data.score >= 80 ? '🌟 Excellente' : data.score >= 60 ? '👍 Bonne' : data.score >= 40 ? '⚡ À enrichir' : '⚠️ Très pauvre'}</div>
+          </div>
+        </div>
+        <div className="flex gap-1">
+          <button onClick={refresh} disabled={loading} className="bg-zinc-800 hover:bg-zinc-700 text-xs px-2 py-1 rounded">↻</button>
+          {data.score < 80 && (
+            <button onClick={onSuggestEnrich} className={`text-xs px-2 py-1 rounded font-bold bg-fuchsia-500/30 text-fuchsia-200 hover:bg-fuchsia-500/40`}>
+              ⚡ Enrichir IA
+            </button>
+          )}
+        </div>
+      </div>
+      {/* Barre de progression */}
+      <div className="bg-zinc-800 rounded h-2 overflow-hidden mb-3">
+        <div className={`h-full ${c.bar} transition-all`} style={{ width: `${data.score}%` }} />
+      </div>
+      {/* Breakdown par champ */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-1">
+        {data.parts.map((p, i) => (
+          <div key={i} className={`text-[10px] flex items-center gap-1 ${p.ok ? 'text-emerald-300/70' : 'text-zinc-500'}`}>
+            <span>{p.ok ? '✓' : '○'}</span>
+            <span className="truncate">{p.label}</span>
+            <span className="ml-auto opacity-60">{p.got}/{p.max}</span>
+          </div>
+        ))}
+      </div>
+      {data.missing.length > 0 && (
+        <div className="mt-2 text-[10px] text-zinc-500">
+          <b>À ajouter :</b> {data.missing.slice(0, 6).join(' · ')}
+        </div>
+      )}
+    </div>
+  );
 }

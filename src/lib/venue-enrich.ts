@@ -30,9 +30,11 @@ export interface EnrichResult {
     facebook: string;
     instagram: string;
     photos: string[];
+    videos: string[];
     coverImage: string;
     googlePlaceId: string;
     tags: string[];
+    upcomingEventsHint: Array<{ title: string; date?: string; source?: string }>;
   }>;
   sources: Array<{ url: string; title: string; fields?: string[] }>;
   notes: string;
@@ -75,22 +77,29 @@ export async function enrichVenue(venue: VenueInput): Promise<EnrichResult> {
 
   const locator = [venue.name, venue.address, venue.city, venue.country].filter(Boolean).join(', ');
 
-  const prompt = `Tu es un assistant de recherche pour un annuaire LGBT-friendly. Trouve sur le web les informations VÉRIFIABLES sur cet établissement :
+  const prompt = `Tu es un assistant de recherche pour un annuaire LGBT-friendly. Trouve sur le web les informations VÉRIFIABLES sur cet établissement et SOIS GÉNÉREUX dans la recherche de médias.
 
 ÉTABLISSEMENT : ${locator}
 TYPE : ${venue.type || 'inconnu'}
 ${venue.existing?.website ? `Site connu : ${venue.existing.website}` : ''}
 ${venue.existing?.facebook ? `Facebook connu : ${venue.existing.facebook}` : ''}
 
-Cherche sur Google :
-1. Site officiel + page Google Maps + page Facebook + Instagram
+Cherche en profondeur :
+1. **Site officiel + page Google Maps + Facebook + Instagram + Yelp + TripAdvisor**
 2. Téléphone, email, adresse complète
-3. Horaires d'ouverture (par jour de la semaine)
-4. Photos publiques (URLs absolues d'images publiques uniquement)
-5. Description courte (1 phrase) + description longue (3-5 phrases) en FRANÇAIS
-6. Tags pertinents pour une audience LGBT (ex : "drag-show", "happy-hour", "safe-space", "wheelchair-accessible")
+3. **Horaires d'ouverture** (par jour de la semaine)
+4. **Photos publiques RICHES** : 6-12 URLs d'images JPG/PNG/WebP. Cherche dans :
+   - Site officiel (souvent /gallery, /photos, /accueil)
+   - Page Google Maps (photos publiques)
+   - Page Facebook (photos d'évènements, intérieur, ambiance)
+   - Articles de presse / blogs locaux LGBT
+   - Yelp / TripAdvisor
+5. **Vidéos** : 1-3 URLs YouTube/Vimeo de l'établissement (visite, ambiance, événements)
+6. **Événements à venir** détectables sur leur page FB/site (3 max)
+7. Description courte (1 phrase) + description longue (4-6 phrases) en FRANÇAIS
+8. Tags pertinents pour une audience LGBT
 
-RÉPONDS UNIQUEMENT avec un JSON valide dans ce format strict (pas de markdown, pas de \`\`\`) :
+RÉPONDS UNIQUEMENT en JSON strict (pas de markdown) :
 {
   "found": true|false,
   "phone": "+33...|null",
@@ -99,21 +108,23 @@ RÉPONDS UNIQUEMENT avec un JSON valide dans ce format strict (pas de markdown, 
   "facebook": "https://www.facebook.com/...|null",
   "instagram": "https://www.instagram.com/...|null",
   "googlePlaceId": "ChIJ...|null",
-  "shortDescription": "1 phrase punchy en FR ≤ 100 chars|null",
-  "description": "3-5 phrases en FR|null",
+  "shortDescription": "1 phrase punchy ≤ 100 chars|null",
+  "description": "4-6 phrases en FR|null",
   "openingHours": {"mon":"10:00-22:00","tue":"...","wed":"...","thu":"...","fri":"...","sat":"...","sun":"closed"} | null,
-  "photos": ["https://...", "..."]|null,
+  "photos": ["https://...","..."],
+  "videos": ["https://www.youtube.com/watch?v=...","..."],
   "coverImage": "https://...|null",
-  "tags": ["tag1","tag2"]|null,
-  "notes": "Mention si infos contradictoires ou incomplètes"
+  "upcomingEventsHint": [{"title":"...","date":"YYYY-MM-DD","source":"facebook|site"}],
+  "tags": ["safe-space","drag-show","..."],
+  "notes": "Mention si infos contradictoires"
 }
 
-Règles strictes :
-- Si tu n'es PAS SÛR, mets null. Mieux vaut vide que faux.
-- Pas d'invention d'URL. Si pas trouvé, null.
-- Téléphone au format international (+33 X XX XX XX XX).
-- Photos : URLs publiques absolues uniquement (pas de blob, pas de localhost).
-- Description en FR, ton inclusif, pas de ton commercial racoleur.`;
+RÈGLES STRICTES :
+- Photos : URLs publiques absolues UNIQUEMENT (pas blob:, pas localhost). Privilégie .jpg/.png/.webp directs. Vise 6-12 photos.
+- Videos : YouTube/Vimeo direct URL avec ID visible (pas de raccourci suspect)
+- Si pas sûr → null ou tableau vide. JAMAIS d'invention d'URL.
+- Description : ton inclusif, pas commercial racoleur, ≥ 100 chars
+- Tags : 4-8 tags pertinents (drag-show, happy-hour, terrasse, safe-space, etc.)`;
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
   const callGemini = async (extraInstruction = '') => {
@@ -237,9 +248,16 @@ Règles strictes :
   if (parsed.shortDescription) patch.shortDescription = String(parsed.shortDescription).slice(0, 200);
   if (parsed.description) patch.description = String(parsed.description).slice(0, 2000);
   if (parsed.openingHours && typeof parsed.openingHours === 'object') patch.openingHours = parsed.openingHours;
-  if (Array.isArray(parsed.photos) && parsed.photos.length) patch.photos = parsed.photos.filter((u: any) => typeof u === 'string' && /^https?:\/\//.test(u)).slice(0, 12);
+  if (Array.isArray(parsed.photos) && parsed.photos.length) patch.photos = parsed.photos.filter((u: any) => typeof u === 'string' && /^https?:\/\//.test(u) && /\.(jpg|jpeg|png|webp|gif)(\?|$)/i.test(u)).slice(0, 12);
+  if (Array.isArray(parsed.videos) && parsed.videos.length) patch.videos = parsed.videos.filter((u: any) => typeof u === 'string' && /^https?:\/\/(www\.)?(youtube\.com|youtu\.be|vimeo\.com)\//i.test(u)).slice(0, 5);
   if (parsed.coverImage && /^https?:\/\//.test(parsed.coverImage)) patch.coverImage = parsed.coverImage;
   if (Array.isArray(parsed.tags) && parsed.tags.length) patch.tags = parsed.tags.filter((t: any) => typeof t === 'string').slice(0, 15);
+  if (Array.isArray(parsed.upcomingEventsHint) && parsed.upcomingEventsHint.length) {
+    patch.upcomingEventsHint = parsed.upcomingEventsHint
+      .filter((e: any) => e && typeof e.title === 'string')
+      .slice(0, 5)
+      .map((e: any) => ({ title: String(e.title).slice(0, 200), date: e.date, source: e.source }));
+  }
 
   // Score de confiance heuristique
   const confidence = computeConfidence(patch, sources);

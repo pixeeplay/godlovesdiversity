@@ -796,6 +796,12 @@ model Venue {
   enrichmentSources     Json?       // [{url, title, fields:["phone","hours"]}, ...] — citations Gemini
   enrichmentNotes       String?     @db.Text // résumé textuel des modifs faites par l'IA + warnings
 
+  // Médias enrichis (V2)
+  videos                String[]   @default([])  // URLs YouTube/Vimeo trouvées par IA
+  upcomingEventsHint    Json?      // [{title, date, source}] events détectés depuis FB/IG sans encore importer
+  freshnessScore        Float?     // 0..100, % de complétude de la fiche
+  freshnessCheckedAt    DateTime?
+
   events        Event[]                 // events qui se passent dans ce lieu
   coupons       VenueCoupon[]
   createdAt     DateTime    @default(now())
