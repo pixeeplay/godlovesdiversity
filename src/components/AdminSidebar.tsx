@@ -96,6 +96,7 @@ const NAV: Entry[] = [
     icon: Sparkles,
     children: [
       { href: '/admin/ai', label: 'Studio IA', icon: Sparkles },
+      { href: '/admin/ai-settings', label: 'AI Settings (multi-providers) 🧠', icon: Sparkles, badge: 'NEW' },
       { href: '/admin/ai-autopilot', label: 'AI Autopilot 🎛', icon: Sparkles },
       { href: '/admin/manuals', label: 'Manuels auto IA 📚', icon: FileText },
       { href: '/admin/ai/knowledge', label: 'Cerveau de GLD (RAG)', icon: Sparkles },
