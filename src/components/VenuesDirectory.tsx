@@ -200,6 +200,13 @@ function VenueCard({ v }: { v: any }) {
             ✨ {typeof v.freshnessScore === 'number' ? `${Math.round(v.freshnessScore)}%` : 'Enrichi'}
           </div>
         )}
+        {/* Logo en avatar bottom-left (style profil Instagram) */}
+        {v.logo && (
+          <div className="absolute bottom-2 left-2 w-12 h-12 rounded-full bg-zinc-950 border-2 border-white/80 shadow-xl overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={v.logo} alt={`Logo ${v.name}`} className="w-full h-full object-cover" loading="lazy" />
+          </div>
+        )}
       </div>
       <div className="p-4">
         <div className="flex items-start gap-2 mb-1">
@@ -274,6 +281,13 @@ function VenueRow({ v }: { v: any }) {
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-fuchsia-500/15 via-violet-500/15 to-cyan-500/15">
             <GldLogoPlaceholder size={32} />
+          </div>
+        )}
+        {/* Logo en pastille bottom-right si présent ET cover existe (sinon le placeholder déjà affiché fait office) */}
+        {v.logo && v.coverImage && (
+          <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-zinc-950 border border-white/70 overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={v.logo} alt="" className="w-full h-full object-cover" loading="lazy" />
           </div>
         )}
       </div>

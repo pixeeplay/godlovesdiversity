@@ -7,7 +7,7 @@ import { NeonHeart } from './NeonHeart';
 import { ThemeToggle } from './ThemeToggle';
 import { CartBadge } from './CartBadge';
 import { MegaMenuTrigger } from './MegaMenu';
-import { MegaSearch } from './MegaSearch';
+import { DynamicIslandSearch } from './DynamicIslandSearch';
 import { useSession, signOut } from 'next-auth/react';
 
 const LOCALES = ['fr', 'en', 'es', 'pt'] as const;
@@ -171,9 +171,9 @@ export function Navbar() {
           <MegaMenuTrigger label="Boutique" type="shop" locale={locale} />
         </nav>
 
-        {/* MEGA SEARCH desktop */}
-        <div className="hidden md:block flex-1 max-w-md mx-4">
-          <MegaSearch scope="public" placeholder="Rechercher un lieu, un événement…" />
+        {/* DYNAMIC ISLAND SEARCH (desktop) */}
+        <div className="hidden md:flex flex-1 justify-end mx-4">
+          <DynamicIslandSearch scope="public" />
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
@@ -281,6 +281,10 @@ export function Navbar() {
 
       {open && (
         <nav className="lg:hidden border-t border-white/10 px-6 py-4 flex flex-col gap-3 bg-black/95 backdrop-blur-xl mt-2">
+          {/* Dynamic Island search en haut du menu mobile */}
+          <div className="pb-2 border-b border-white/10">
+            <DynamicIslandSearch scope="public" fullWidth />
+          </div>
           {items.map((m) => {
             const localePrefix = locale !== 'fr' ? `/${locale}` : '';
             return (
