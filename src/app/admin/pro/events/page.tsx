@@ -22,7 +22,14 @@ export default async function ProEventsPage() {
       where: isAdmin ? {} : { ownerId: userId },
       select: { id: true, name: true, slug: true }
     });
-    if (venues.length > 0) {
+    if (isAdmin) {
+      // ADMIN voit TOUS les événements (incluant les events globaux sans venueId)
+      events = await prisma.event.findMany({
+        orderBy: { startsAt: 'desc' },
+        take: 500
+      });
+    } else if (venues.length > 0) {
+      // Pro non-admin : seulement events de ses venues
       events = await prisma.event.findMany({
         where: { venueId: { in: venues.map(v => v.id) } },
         orderBy: { startsAt: 'desc' },

@@ -23,6 +23,7 @@ function isGroup(e: Entry): e is Group {
 
 const NAV: Entry[] = [
   { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
+  { href: '/admin/sitemap', label: 'Site map (front + back)', icon: MapPin, badge: 'NEW' },
   {
     id: 'pro',
     label: 'Espace Pro 🏪',
@@ -220,7 +221,10 @@ export function AdminSidebar({
                   ${active ? 'bg-brand-pink/15 text-brand-pink font-semibold' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
               >
                 <Icon size={18} />
-                {entry.label}
+                <span className="flex-1">{entry.label}</span>
+                {entry.badge && (
+                  <span className="bg-fuchsia-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{entry.badge}</span>
+                )}
               </Link>
             );
           }

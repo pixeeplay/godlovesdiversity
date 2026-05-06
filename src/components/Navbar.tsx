@@ -62,6 +62,17 @@ export function Navbar() {
     { id: 'm', label: t('message'), href: '/message', external: false, children: [] },
     { id: 'a', label: t('argumentaire'), href: '/argumentaire', external: false, children: [] },
     {
+      id: 'spiritual', label: '🕊 Spirituel ✨NEW', href: '/cercles-priere', external: false, children: [
+        { id: 'cercles',   label: '🙏 Cercles de prière live',   href: '/cercles-priere',     external: false, children: [] },
+        { id: 'champ',     label: '🕯 Champ de prières mondial', href: '/champ-de-priere',    external: false, children: [] },
+        { id: 'compagnon', label: '✨ Compagnon spirituel IA',   href: '/compagnon-spirituel', external: false, children: [] },
+        { id: 'camino',    label: '🚶 Camino virtuel',           href: '/camino',             external: false, children: [] },
+        { id: 'textes',    label: '📖 Textes sacrés inclusifs',  href: '/textes-sacres',      external: false, children: [] },
+        { id: 'officiants',label: '🤝 Officiants LGBT-friendly', href: '/officiants',         external: false, children: [] },
+        { id: 'calrel',    label: '🌍 Calendrier religieux',     href: '/calendrier-religieux', external: false, children: [] }
+      ]
+    },
+    {
       id: 'community', label: 'Communauté', href: '/forum', external: false, children: [
         { id: 'forum',     label: '💬 Forum',           href: '/forum',                   external: false, children: [] },
         { id: 'temo',      label: '🎥 Témoignages',     href: '/temoignages',             external: false, children: [] },
