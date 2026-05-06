@@ -1004,6 +1004,27 @@ model SoulEntry {
   @@index([mood])
 }
 
+/// Manuels auto-générés par IA (user / admin / superadmin), versionnés.
+/// Régénérés 2×/jour par cron pour rester à jour avec les évolutions du site.
+model Manual {
+  id           String   @id @default(cuid())
+  audience     String   // "user" | "admin" | "superadmin"
+  version      String   // ex "2026.05.06.1" (date + ordre)
+  htmlContent  String   @db.Text
+  markdownContent String? @db.Text  // version markdown pour script vidéo
+  pdfUrl       String?  // URL MinIO du PDF rendu (optionnel)
+  videoScript  String?  @db.Text  // script narration vidéo + timecodes screenshots
+  sectionCount Int      @default(0)
+  wordCount    Int      @default(0)
+  publishedAt  DateTime?
+  publishedToTelegram Boolean @default(false)
+  generatedBy  String   @default("gemini")
+  createdAt    DateTime @default(now())
+
+  @@index([audience, createdAt])
+  @@index([publishedAt])
+}
+
 /// Décisions de modération IA sur les posts du forum (audit trail).
 model ModerationDecision {
   id         String   @id @default(cuid())
