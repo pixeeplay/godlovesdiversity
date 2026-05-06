@@ -70,6 +70,7 @@ const NAV: Entry[] = [
     icon: Mail,
     children: [
       { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
+      { href: '/admin/newsletter/plan', label: 'Plan newsletter annuel 📅', icon: Calendar },
       { href: '/admin/calendar', label: 'Calendrier social', icon: Calendar },
       { href: '/admin/pages', label: 'Pages riches', icon: Layers },
       { href: '/admin/content', label: 'Pages & blog', icon: FileText },
@@ -94,6 +95,8 @@ const NAV: Entry[] = [
     icon: Sparkles,
     children: [
       { href: '/admin/ai', label: 'Studio IA', icon: Sparkles },
+      { href: '/admin/ai-autopilot', label: 'AI Autopilot 🎛', icon: Sparkles },
+      { href: '/admin/manuals', label: 'Manuels auto IA 📚', icon: FileText },
       { href: '/admin/ai/knowledge', label: 'Cerveau de GLD (RAG)', icon: Sparkles },
       { href: '/admin/ai/avatar', label: 'GLD Live (avatar vidéo)', icon: Video },
       { href: '/admin/i18n', label: 'Traductions IA (FR/EN/ES/PT)', icon: Sparkles },
