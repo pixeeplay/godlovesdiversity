@@ -27,6 +27,16 @@ const RATING_BADGE: Record<string, { color: string; label: string; emoji: string
   CAUTION:  { color: 'from-amber-500 to-red-500', label: 'À approfondir', emoji: '⚠️' }
 };
 
+// Distance Haversine en km
+function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371;
+  const toRad = (d: number) => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
 export function VenuesDirectory({ initial }: { initial: any[] }) {
   const [venues] = useState<any[]>(initial);
   const [type, setType] = useState<string>('');
@@ -35,19 +45,99 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
   const [q, setQ] = useState('');
   const [view, setView] = useState<'list' | 'map'>('map');
 
+  // Distance mode : géoloc utilisateur + filtre "près de moi"
+  const [userLoc, setUserLoc] = useState<{ lat: number; lng: number } | null>(null);
+  const [maxDistanceKm, setMaxDistanceKm] = useState<number | null>(null); // null = pas de filtre distance
+  const [geoLoading, setGeoLoading] = useState(false);
+  const [geoError, setGeoError] = useState<string | null>(null);
+
+  // Route planner Waze-like : multi-sélection de venues (max 9 = limite Google Maps)
+  const [selectedRoute, setSelectedRoute] = useState<string[]>([]); // venue IDs ordered
+  const [routeMode, setRouteMode] = useState(false);
+
+  function requestGeo() {
+    if (!navigator.geolocation) { setGeoError('Géolocalisation non supportée'); return; }
+    setGeoLoading(true); setGeoError(null);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLoc({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setGeoLoading(false);
+        if (maxDistanceKm == null) setMaxDistanceKm(50); // défaut 50 km
+      },
+      (err) => {
+        setGeoError(err.message || 'Géolocalisation refusée');
+        setGeoLoading(false);
+      },
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
+    );
+  }
+
+  function toggleRouteSelect(id: string) {
+    setSelectedRoute((prev) => {
+      if (prev.includes(id)) return prev.filter(x => x !== id);
+      if (prev.length >= 9) { alert('Limite de 9 étapes (limitation Google Maps)'); return prev; }
+      return [...prev, id];
+    });
+  }
+
+  function clearRoute() { setSelectedRoute([]); }
+
+  function openRouteInMaps() {
+    const stops = selectedRoute
+      .map(id => venues.find(v => v.id === id))
+      .filter(v => v && v.lat && v.lng);
+    if (stops.length < 2) { alert('Sélectionne au moins 2 étapes'); return; }
+    // Format Google Maps : /dir/origin/waypoint1/waypoint2/.../destination
+    const points = stops.map((s: any) => `${s.lat},${s.lng}`);
+    const url = `https://www.google.com/maps/dir/${points.join('/')}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  function openRouteInWaze() {
+    // Waze ne supporte qu'un seul destination param dans le deeplink → on prend le premier non-départ
+    const stops = selectedRoute.map(id => venues.find(v => v.id === id)).filter(v => v && v.lat && v.lng);
+    if (stops.length < 1) { alert('Sélectionne au moins 1 étape'); return; }
+    const dest: any = stops[stops.length - 1];
+    window.open(`https://waze.com/ul?ll=${dest.lat},${dest.lng}&navigate=yes`, '_blank', 'noopener,noreferrer');
+  }
+
   const cities = useMemo(() => Array.from(new Set(venues.map(v => v.city).filter(Boolean))).sort() as string[], [venues]);
   const countries = useMemo(() => Array.from(new Set(venues.map(v => v.country).filter(Boolean))).sort() as string[], [venues]);
 
-  const filtered = useMemo(() => venues.filter(v => {
-    if (type && v.type !== type) return false;
-    if (country && v.country !== country) return false;
-    if (city && v.city !== city) return false;
-    if (q) {
-      const ql = q.toLowerCase();
-      if (!v.name?.toLowerCase().includes(ql) && !v.description?.toLowerCase().includes(ql) && !v.city?.toLowerCase().includes(ql)) return false;
+  const filtered = useMemo(() => {
+    let arr = venues.filter(v => {
+      if (type && v.type !== type) return false;
+      if (country && v.country !== country) return false;
+      if (city && v.city !== city) return false;
+      if (q) {
+        const ql = q.toLowerCase();
+        const tagsStr = Array.isArray(v.tags) ? v.tags.join(' ').toLowerCase() : '';
+        const hit =
+          v.name?.toLowerCase().includes(ql) ||
+          v.description?.toLowerCase().includes(ql) ||
+          v.shortDescription?.toLowerCase().includes(ql) ||
+          v.city?.toLowerCase().includes(ql) ||
+          v.country?.toLowerCase().includes(ql) ||
+          v.address?.toLowerCase().includes(ql) ||
+          tagsStr.includes(ql);
+        if (!hit) return false;
+      }
+      // Filtre distance "près de moi"
+      if (userLoc && maxDistanceKm != null) {
+        if (v.lat == null || v.lng == null) return false;
+        const dist = haversineKm(userLoc.lat, userLoc.lng, v.lat, v.lng);
+        if (dist > maxDistanceKm) return false;
+      }
+      return true;
+    });
+    // Si distance active, trier par distance asc
+    if (userLoc) {
+      arr = arr
+        .map(v => ({ ...v, _distanceKm: v.lat != null && v.lng != null ? haversineKm(userLoc.lat, userLoc.lng, v.lat, v.lng) : null }))
+        .sort((a, b) => (a._distanceKm ?? 1e9) - (b._distanceKm ?? 1e9));
     }
-    return true;
-  }), [venues, type, country, city, q]);
+    return arr;
+  }, [venues, type, country, city, q, userLoc, maxDistanceKm]);
 
   const counts: Record<string, number> = {};
   for (const v of venues) counts[v.type] = (counts[v.type] || 0) + 1;
@@ -89,7 +179,7 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
       </section>
 
       {/* Filtres */}
-      <section className="bg-zinc-900 border border-zinc-800 rounded-2xl p-3 mb-6 flex flex-wrap gap-2 items-center">
+      <section className="bg-zinc-900 border border-zinc-800 rounded-2xl p-3 mb-3 flex flex-wrap gap-2 items-center">
         <Filter size={14} className="text-zinc-500 ml-1" />
         <select value={country} onChange={(e) => setCountry(e.target.value)} className="bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs">
           <option value="">Pays (tous)</option>
@@ -101,9 +191,12 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
         </select>
         <div className="flex items-center gap-2 flex-1 min-w-[200px] bg-zinc-950 border border-zinc-700 rounded-lg px-2">
           <Search size={12} className="text-zinc-500" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher un lieu, ville…" className="bg-transparent flex-1 px-1 py-1.5 text-xs outline-none" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher (nom, ville, tag, description)…" className="bg-transparent flex-1 px-1 py-1.5 text-xs outline-none" />
+          {q && (
+            <button onClick={() => setQ('')} className="text-zinc-500 hover:text-white text-xs px-1">×</button>
+          )}
         </div>
-        <span className="text-xs text-zinc-500 ml-auto pr-2">{filtered.length} résultat(s)</span>
+        <span className="text-xs text-zinc-500 ml-auto pr-2">{filtered.length} résultat{filtered.length > 1 ? 's' : ''}</span>
         <div className="flex bg-zinc-950 border border-zinc-700 rounded-lg overflow-hidden">
           <button
             onClick={() => setView('list')}
@@ -121,6 +214,132 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
           </button>
         </div>
       </section>
+
+      {/* MODES SPÉCIAUX : Distance "près de moi" + Route planner Waze-like */}
+      <section className="bg-zinc-900 border border-zinc-800 rounded-2xl p-3 mb-6 flex flex-wrap items-center gap-2">
+        {/* Distance */}
+        {!userLoc ? (
+          <button
+            onClick={requestGeo}
+            disabled={geoLoading}
+            className="bg-emerald-500/15 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-200 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5"
+          >
+            {geoLoading ? '⏳' : '📍'} Près de moi
+          </button>
+        ) : (
+          <div className="bg-emerald-500/15 border border-emerald-500/40 text-emerald-200 text-xs px-3 py-1.5 rounded-full flex items-center gap-2">
+            <span className="font-bold">📍 Près de moi :</span>
+            <select
+              value={maxDistanceKm ?? 50}
+              onChange={(e) => setMaxDistanceKm(Number(e.target.value))}
+              className="bg-zinc-950 border border-emerald-500/30 rounded px-1.5 py-0.5 text-[11px]"
+            >
+              <option value={5}>5 km</option>
+              <option value={10}>10 km</option>
+              <option value={25}>25 km</option>
+              <option value={50}>50 km</option>
+              <option value={100}>100 km</option>
+              <option value={500}>500 km</option>
+              <option value={5000}>Monde entier</option>
+            </select>
+            <button
+              onClick={() => { setUserLoc(null); setMaxDistanceKm(null); }}
+              title="Désactiver"
+              className="hover:text-white text-emerald-300/70"
+            >×</button>
+          </div>
+        )}
+        {geoError && <span className="text-[11px] text-rose-300">⚠ {geoError}</span>}
+
+        <span className="text-zinc-700">·</span>
+
+        {/* Route planner */}
+        <button
+          onClick={() => setRouteMode((r) => !r)}
+          className={`text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 border transition ${
+            routeMode
+              ? 'bg-blue-500 border-blue-400 text-white'
+              : 'bg-blue-500/15 hover:bg-blue-500/30 border-blue-500/40 text-blue-200'
+          }`}
+        >
+          🚗 Route multi-étapes {selectedRoute.length > 0 && `(${selectedRoute.length})`}
+        </button>
+
+        {routeMode && (
+          <span className="text-[11px] text-blue-200/80 italic">
+            Clique sur les lieux pour les ajouter à ta route (max 9). Réordonner via × pour retirer.
+          </span>
+        )}
+      </section>
+
+      {/* Panel Route active : récap des étapes + boutons ouvrir Maps/Waze */}
+      {routeMode && selectedRoute.length > 0 && (
+        <section className="bg-blue-500/5 border-2 border-blue-500/40 rounded-2xl p-4 mb-6">
+          <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+            <h3 className="font-bold text-blue-200 text-sm flex items-center gap-2">
+              🚗 Mon itinéraire ({selectedRoute.length} étape{selectedRoute.length > 1 ? 's' : ''})
+            </h3>
+            <div className="flex gap-2 flex-wrap">
+              <button onClick={clearRoute} className="text-[11px] bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-full">
+                Vider
+              </button>
+              <button
+                onClick={openRouteInWaze}
+                className="text-[11px] bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-3 py-1.5 rounded-full flex items-center gap-1"
+              >
+                Ouvrir dans Waze
+              </button>
+              <button
+                onClick={openRouteInMaps}
+                disabled={selectedRoute.length < 2}
+                className="text-[11px] bg-blue-500 hover:bg-blue-400 disabled:opacity-50 text-white font-bold px-3 py-1.5 rounded-full flex items-center gap-1"
+              >
+                Itinéraire Google Maps →
+              </button>
+            </div>
+          </div>
+          <ol className="space-y-1.5">
+            {selectedRoute.map((id, i) => {
+              const v = venues.find(x => x.id === id);
+              if (!v) return null;
+              return (
+                <li key={id} className="flex items-center gap-3 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2">
+                  <span className="bg-blue-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0">{i + 1}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-bold text-sm truncate">{v.name}</div>
+                    <div className="text-[10px] text-zinc-500">
+                      {[v.address, v.city, v.country].filter(Boolean).join(', ')}
+                      {v.lat == null && <span className="text-amber-300 ml-2">⚠ pas géocodé</span>}
+                    </div>
+                  </div>
+                  {i > 0 && (
+                    <button
+                      onClick={() => setSelectedRoute((p) => { const n = [...p]; [n[i-1], n[i]] = [n[i], n[i-1]]; return n; })}
+                      title="Monter"
+                      className="text-zinc-500 hover:text-white text-xs px-1"
+                    >▲</button>
+                  )}
+                  {i < selectedRoute.length - 1 && (
+                    <button
+                      onClick={() => setSelectedRoute((p) => { const n = [...p]; [n[i+1], n[i]] = [n[i], n[i+1]]; return n; })}
+                      title="Descendre"
+                      className="text-zinc-500 hover:text-white text-xs px-1"
+                    >▼</button>
+                  )}
+                  <button
+                    onClick={() => toggleRouteSelect(id)}
+                    title="Retirer"
+                    className="text-rose-400 hover:text-rose-200 px-1.5 text-sm"
+                  >×</button>
+                </li>
+              );
+            })}
+          </ol>
+          <p className="text-[10px] text-blue-200/60 mt-2 italic">
+            💡 Astuce : Google Maps optimise automatiquement le sens de la route. Pour Waze, on ouvre la dernière étape comme destination directe.
+          </p>
+        </section>
+      )}
 
       {/* LAYOUT MODERNE : carte en premier + liste sidebar à droite (en mode 'map')
           OU grille classique en mode 'list' */}
@@ -142,7 +361,16 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
               </div>
             ) : (
               <div className="divide-y divide-zinc-800 overflow-y-auto lg:max-h-[calc(100vh-180px)]">
-                {filtered.slice(0, 100).map((v) => <VenueRow key={v.id} v={v} />)}
+                {filtered.slice(0, 100).map((v) => (
+                  <VenueRow
+                    key={v.id}
+                    v={v}
+                    distanceKm={v._distanceKm}
+                    routeMode={routeMode}
+                    isSelected={selectedRoute.includes(v.id)}
+                    onToggleRoute={toggleRouteSelect}
+                  />
+                ))}
                 {filtered.length > 100 && (
                   <div className="px-4 py-3 text-[11px] text-zinc-500 text-center">
                     + {filtered.length - 100} autres lieux (affine ta recherche pour voir les autres)
@@ -158,7 +386,16 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((v) => <VenueCard key={v.id} v={v} />)}
+          {filtered.map((v) => (
+            <VenueCard
+              key={v.id}
+              v={v}
+              distanceKm={v._distanceKm}
+              routeMode={routeMode}
+              isSelected={selectedRoute.includes(v.id)}
+              onToggleRoute={toggleRouteSelect}
+            />
+          ))}
         </div>
       )}
 
@@ -169,13 +406,30 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
   );
 }
 
-function VenueCard({ v }: { v: any }) {
+function VenueCard({
+  v,
+  distanceKm,
+  routeMode = false,
+  isSelected = false,
+  onToggleRoute
+}: {
+  v: any;
+  distanceKm?: number | null;
+  routeMode?: boolean;
+  isSelected?: boolean;
+  onToggleRoute?: (id: string) => void;
+}) {
   const T = TYPE_LABELS[v.type] || TYPE_LABELS.OTHER;
   const Icon = T.icon;
   const rating = RATING_BADGE[v.rating] || RATING_BADGE.FRIENDLY;
 
-  return (
-    <Link href={`/lieux/${v.slug}`} className="block bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-pink-500/40 transition group">
+  // En mode route → div clickable. Sinon → Link vers la fiche.
+  const wrapperClass = routeMode
+    ? `relative block bg-zinc-900 border-2 rounded-2xl overflow-hidden hover:border-blue-500/60 transition group cursor-pointer ${isSelected ? 'border-blue-500 ring-2 ring-blue-500/40' : 'border-zinc-800'}`
+    : 'relative block bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-pink-500/40 transition group';
+
+  const inner = (
+    <>
       <div className="aspect-[16/10] bg-zinc-950 relative overflow-hidden">
         {v.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -233,9 +487,26 @@ function VenueCard({ v }: { v: any }) {
             <Calendar size={10} /> {v.events.length} événement(s) à venir
           </div>
         )}
+        {distanceKm != null && (
+          <div className="text-[10px] text-emerald-300 mt-1.5 flex items-center gap-1 font-bold">
+            📍 {distanceKm < 1 ? `${Math.round(distanceKm * 1000)} m` : `${distanceKm.toFixed(distanceKm < 10 ? 1 : 0)} km`}
+          </div>
+        )}
       </div>
-    </Link>
+    </>
   );
+
+  if (routeMode) {
+    return (
+      <div onClick={() => onToggleRoute?.(v.id)} className={wrapperClass}>
+        <div className={`absolute top-2 left-2 z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shadow-lg ${isSelected ? 'bg-blue-500 text-white' : 'bg-zinc-950/80 backdrop-blur text-zinc-400 border border-zinc-700'}`}>
+          {isSelected ? '✓' : '+'}
+        </div>
+        {inner}
+      </div>
+    );
+  }
+  return <Link href={`/lieux/${v.slug}`} className={wrapperClass}>{inner}</Link>;
 }
 
 // ─────────────────────────────────────────────
@@ -268,12 +539,25 @@ function GldLogoPlaceholder({ size = 88 }: { size?: number }) {
 // ─────────────────────────────────────────────
 // VenueRow : ligne compacte pour la sidebar liste (à côté de la carte)
 // ─────────────────────────────────────────────
-function VenueRow({ v }: { v: any }) {
+function VenueRow({
+  v,
+  distanceKm,
+  routeMode = false,
+  isSelected = false,
+  onToggleRoute
+}: {
+  v: any;
+  distanceKm?: number | null;
+  routeMode?: boolean;
+  isSelected?: boolean;
+  onToggleRoute?: (id: string) => void;
+}) {
   const T = TYPE_LABELS[v.type] || TYPE_LABELS.OTHER;
   const Icon = T.icon;
   const rating = RATING_BADGE[v.rating] || RATING_BADGE.FRIENDLY;
-  return (
-    <Link href={`/lieux/${v.slug}`} className="flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-800/60 transition group">
+
+  const inner = (
+    <>
       <div className="w-14 h-14 rounded-lg bg-zinc-950 overflow-hidden flex-shrink-0 relative">
         {v.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -283,7 +567,6 @@ function VenueRow({ v }: { v: any }) {
             <GldLogoPlaceholder size={32} />
           </div>
         )}
-        {/* Logo en pastille bottom-right si présent ET cover existe (sinon le placeholder déjà affiché fait office) */}
         {v.logo && v.coverImage && (
           <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-zinc-950 border border-white/70 overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -300,6 +583,11 @@ function VenueRow({ v }: { v: any }) {
         <div className="flex items-center gap-1 text-[10px] text-zinc-500">
           <MapPin size={9} className="flex-shrink-0" />
           <span className="truncate">{v.city || '?'}{v.country ? `, ${v.country}` : ''}</span>
+          {distanceKm != null && (
+            <span className="ml-1 text-emerald-300 font-bold">
+              · {distanceKm < 1 ? `${Math.round(distanceKm * 1000)}m` : `${distanceKm.toFixed(distanceKm < 10 ? 1 : 0)}km`}
+            </span>
+          )}
           {v.events && v.events.length > 0 && (
             <span className="ml-auto bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded text-[9px] font-bold flex-shrink-0">
               📅 {v.events.length}
@@ -307,6 +595,24 @@ function VenueRow({ v }: { v: any }) {
           )}
         </div>
       </div>
-    </Link>
+      {routeMode && (
+        <span className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+          isSelected ? 'bg-blue-500 text-white' : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
+        }`}>
+          {isSelected ? '✓' : '+'}
+        </span>
+      )}
+    </>
   );
+
+  const className = `flex items-center gap-3 px-3 py-2.5 transition group ${
+    routeMode
+      ? `cursor-pointer ${isSelected ? 'bg-blue-500/15 border-l-4 border-blue-500' : 'hover:bg-zinc-800/60'}`
+      : 'hover:bg-zinc-800/60'
+  }`;
+
+  if (routeMode) {
+    return <div onClick={() => onToggleRoute?.(v.id)} className={className}>{inner}</div>;
+  }
+  return <Link href={`/lieux/${v.slug}`} className={className}>{inner}</Link>;
 }
