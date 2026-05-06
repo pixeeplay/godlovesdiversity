@@ -719,11 +719,25 @@ enum VenueType {
   CLUB
   HOTEL
   SHOP
-  CULTURAL          // musée, galerie, théâtre
-  CHURCH            // église
-  TEMPLE            // temple, synagogue, mosquée, autre lieu de culte
-  COMMUNITY_CENTER  // centre LGBT
-  HEALTH            // santé, planning familial
+  CULTURAL              // musée, galerie, théâtre
+  CHURCH                // église chrétienne générique
+  CHURCH_CATHOLIC       // catholique romaine
+  CHURCH_PROTESTANT     // protestant
+  CHURCH_ORTHODOX       // orthodoxe
+  CHURCH_ANGLICAN       // anglican / épiscopalien
+  CHURCH_EVANGELICAL    // évangélique inclusif
+  MOSQUE                // mosquée
+  SYNAGOGUE             // synagogue
+  TEMPLE                // temple générique (legacy compat)
+  TEMPLE_BUDDHIST       // temple bouddhiste
+  TEMPLE_HINDU          // temple hindou
+  GURDWARA              // gurdwara sikh
+  MEDITATION_CENTER     // centre de méditation, dojo zen
+  HOLY_SITE             // lieu saint, pèlerinage, sanctuaire
+  PILGRIMAGE_PATH       // chemin de pèlerinage
+  INTERFAITH_CENTER     // centre inter-religieux
+  COMMUNITY_CENTER      // centre LGBT communautaire
+  HEALTH                // santé, planning familial
   ASSOCIATION
   OTHER
 }

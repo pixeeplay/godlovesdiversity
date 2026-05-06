@@ -5,20 +5,48 @@ import { MapPin, Star, Globe, Phone, Filter, Search, Calendar, Tag, ExternalLink
 import { VenuesMap } from './VenuesMap';
 
 const TYPE_LABELS: Record<string, { label: string; icon: any }> = {
-  RESTAURANT:       { label: 'Restaurants', icon: Utensils },
-  BAR:              { label: 'Bars',        icon: Wine },
-  CAFE:             { label: 'Cafés',       icon: Coffee },
-  CLUB:             { label: 'Clubs',       icon: Music },
-  HOTEL:            { label: 'Hôtels',      icon: Hotel },
-  SHOP:             { label: 'Boutiques',   icon: ShoppingBag },
-  CULTURAL:         { label: 'Culturel',    icon: Palette },
-  CHURCH:           { label: 'Églises',     icon: Church },
-  TEMPLE:           { label: 'Lieux de culte', icon: Church },
-  COMMUNITY_CENTER: { label: 'Centres LGBT', icon: Users2 },
-  HEALTH:           { label: 'Santé',       icon: HeartHandshake },
-  ASSOCIATION:      { label: 'Associations', icon: Users },
-  OTHER:            { label: 'Autres',      icon: Sparkles }
+  RESTAURANT:        { label: 'Restaurants', icon: Utensils },
+  BAR:               { label: 'Bars',        icon: Wine },
+  CAFE:              { label: 'Cafés',       icon: Coffee },
+  CLUB:              { label: 'Clubs',       icon: Music },
+  HOTEL:             { label: 'Hôtels',      icon: Hotel },
+  SHOP:              { label: 'Boutiques',   icon: ShoppingBag },
+  CULTURAL:          { label: 'Culturel',    icon: Palette },
+  CHURCH:            { label: 'Églises',     icon: Church },
+  CHURCH_CATHOLIC:   { label: 'Catholique',  icon: Church },
+  CHURCH_PROTESTANT: { label: 'Protestant',  icon: Church },
+  CHURCH_ORTHODOX:   { label: 'Orthodoxe',   icon: Church },
+  CHURCH_ANGLICAN:   { label: 'Anglican',    icon: Church },
+  CHURCH_EVANGELICAL:{ label: 'Évangélique', icon: Church },
+  MOSQUE:            { label: 'Mosquée',     icon: Church },
+  SYNAGOGUE:         { label: 'Synagogue',   icon: Church },
+  TEMPLE:            { label: 'Temple',      icon: Church },
+  TEMPLE_BUDDHIST:   { label: 'Bouddhiste',  icon: Church },
+  TEMPLE_HINDU:      { label: 'Hindou',      icon: Church },
+  GURDWARA:          { label: 'Sikh',        icon: Church },
+  MEDITATION_CENTER: { label: 'Méditation',  icon: Sparkles },
+  HOLY_SITE:         { label: 'Lieu saint',  icon: Church },
+  PILGRIMAGE_PATH:   { label: 'Pèlerinage',  icon: Globe },
+  INTERFAITH_CENTER: { label: 'Inter-religieux', icon: HeartHandshake },
+  COMMUNITY_CENTER:  { label: 'Centres LGBT', icon: Users2 },
+  HEALTH:            { label: 'Santé',       icon: HeartHandshake },
+  ASSOCIATION:       { label: 'Associations', icon: Users },
+  OTHER:             { label: 'Autres',      icon: Sparkles }
 };
+
+/**
+ * Groupes confessionnels pour le filtre "Par confession" sur /lieux.
+ * Chaque groupe rassemble plusieurs VenueType.
+ */
+const FAITH_GROUPS: { id: string; label: string; emoji: string; types: string[] }[] = [
+  { id: 'christian',  label: 'Christianisme', emoji: '✝️', types: ['CHURCH', 'CHURCH_CATHOLIC', 'CHURCH_PROTESTANT', 'CHURCH_ORTHODOX', 'CHURCH_ANGLICAN', 'CHURCH_EVANGELICAL'] },
+  { id: 'muslim',     label: 'Islam',         emoji: '☪️', types: ['MOSQUE'] },
+  { id: 'jewish',     label: 'Judaïsme',      emoji: '✡️', types: ['SYNAGOGUE'] },
+  { id: 'buddhist',   label: 'Bouddhisme',    emoji: '☸️', types: ['TEMPLE_BUDDHIST', 'MEDITATION_CENTER'] },
+  { id: 'hindu',      label: 'Hindouisme',    emoji: '🕉️', types: ['TEMPLE_HINDU'] },
+  { id: 'sikh',       label: 'Sikhisme',      emoji: '☬',  types: ['GURDWARA'] },
+  { id: 'interfaith', label: 'Inter-religieux', emoji: '🌍', types: ['INTERFAITH_CENTER', 'HOLY_SITE', 'PILGRIMAGE_PATH', 'TEMPLE'] }
+];
 
 const RATING_BADGE: Record<string, { color: string; label: string; emoji: string }> = {
   RAINBOW:  { color: 'from-pink-500 via-violet-500 to-cyan-500', label: '100% LGBT', emoji: '🏳️‍🌈' },
@@ -44,6 +72,8 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
   const [city, setCity] = useState<string>('');
   const [q, setQ] = useState('');
   const [view, setView] = useState<'list' | 'map'>('map');
+  // Filtre par confession (groupe de types)
+  const [faithGroup, setFaithGroup] = useState<string>('');
 
   // Distance mode : géoloc utilisateur + filtre "près de moi"
   const [userLoc, setUserLoc] = useState<{ lat: number; lng: number } | null>(null);
@@ -105,8 +135,10 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
   const countries = useMemo(() => Array.from(new Set(venues.map(v => v.country).filter(Boolean))).sort() as string[], [venues]);
 
   const filtered = useMemo(() => {
+    const faithTypes = faithGroup ? FAITH_GROUPS.find(g => g.id === faithGroup)?.types || [] : [];
     let arr = venues.filter(v => {
       if (type && v.type !== type) return false;
+      if (faithGroup && !faithTypes.includes(v.type)) return false;
       if (country && v.country !== country) return false;
       if (city && v.city !== city) return false;
       if (q) {
@@ -137,7 +169,7 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
         .sort((a, b) => (a._distanceKm ?? 1e9) - (b._distanceKm ?? 1e9));
     }
     return arr;
-  }, [venues, type, country, city, q, userLoc, maxDistanceKm]);
+  }, [venues, type, faithGroup, country, city, q, userLoc, maxDistanceKm]);
 
   const counts: Record<string, number> = {};
   for (const v of venues) counts[v.type] = (counts[v.type] || 0) + 1;
@@ -156,6 +188,39 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
           Géolocalisés et notés par notre communauté.
         </p>
       </header>
+
+      {/* Filtre confessionnel — pills couleurs par confession */}
+      <section className="bg-zinc-900 border border-zinc-800 rounded-2xl p-3 mb-3">
+        <div className="text-[10px] uppercase font-bold text-zinc-500 tracking-widest mb-2 flex items-center gap-1.5">
+          🕊 Filtrer par confession
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            onClick={() => setFaithGroup('')}
+            className={`text-xs px-3 py-1.5 rounded-full font-bold transition ${
+              !faithGroup ? 'bg-fuchsia-500 text-white shadow shadow-fuchsia-500/30' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
+            }`}
+          >
+            Toutes
+          </button>
+          {FAITH_GROUPS.map((g) => {
+            const groupCount = venues.filter(v => g.types.includes(v.type)).length;
+            const active = faithGroup === g.id;
+            return (
+              <button
+                key={g.id}
+                onClick={() => setFaithGroup(active ? '' : g.id)}
+                className={`text-xs px-3 py-1.5 rounded-full font-bold transition flex items-center gap-1.5 ${
+                  active ? 'bg-violet-500 text-white shadow shadow-violet-500/30' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
+                }`}
+                disabled={groupCount === 0}
+              >
+                <span>{g.emoji}</span> {g.label} <span className={active ? 'text-white/80' : 'text-zinc-500'}>({groupCount})</span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
       {/* Catégories tuiles */}
       <section className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2 mb-6">
