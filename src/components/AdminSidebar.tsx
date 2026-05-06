@@ -24,6 +24,9 @@ function isGroup(e: Entry): e is Group {
 const NAV: Entry[] = [
   { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
   { href: '/admin/sitemap', label: 'Site map (front + back)', icon: MapPin, badge: 'NEW' },
+  { href: '/admin/feature-chat', label: '💡 Feature Chat IA', icon: Sparkles, badge: 'NEW' },
+  { href: '/admin/time-machine', label: '🕰 Time Machine', icon: Settings, badge: 'NEW' },
+  { href: '/admin/invitations', label: '🔑 Invitations admin', icon: Users, badge: 'NEW' },
   {
     id: 'pro',
     label: 'Espace Pro 🏪',

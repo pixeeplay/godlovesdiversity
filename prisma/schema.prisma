@@ -1765,3 +1765,26 @@ model OfficiantBooking {
 
   @@index([officiantId, status])
 }
+
+// ───────────────────────────────────────────────
+// INVITATIONS — accès iPad/device avec code temporaire
+// ───────────────────────────────────────────────
+
+/// Code d'invitation à usage unique pour qu'un device tier (iPad, etc.) puisse accéder au back-office.
+/// Workflow : ADMIN crée l'invitation avec email + role + TTL → email reçu avec lien magique → device se connecte
+/// avec NextAuth email provider, NextAuth signe un JWT, accès accordé.
+model AdminInvitation {
+  id           String   @id @default(cuid())
+  code         String   @unique @default(cuid())  // utilisé dans l'URL d'invitation
+  email        String                              // destinataire de l'invitation
+  role         String   @default("ADMIN")          // ADMIN | EDITOR | MODERATOR | VIEWER
+  expiresAt    DateTime                            // par défaut +24h
+  usedAt       DateTime?                           // null = non utilisé
+  usedByIp     String?
+  usedByUa     String?                             // user-agent du device qui l'a utilisé
+  createdById  String?                             // qui a créé l'invitation
+  createdAt    DateTime @default(now())
+
+  @@index([email, usedAt])
+  @@index([expiresAt])
+}
