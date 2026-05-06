@@ -818,6 +818,7 @@ model Venue {
 
   events        Event[]                 // events qui se passent dans ce lieu
   coupons       VenueCoupon[]
+  participations VenueParticipation[]   // participations à des fêtes religieuses
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
@@ -1542,4 +1543,53 @@ model ConnectPremium {
   cancelAtPeriodEnd  Boolean  @default(false)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+}
+
+// ───────────────────────────────────────────────
+// CALENDRIER RELIGIEUX MONDIAL (Sprint 2)
+// ───────────────────────────────────────────────
+
+/// Événement religieux de référence (Pâques, Ramadan, Diwali, etc.).
+/// Une entrée par fête + année (ou par fête si dateMode=fixed et applicable chaque année).
+model ReligiousEvent {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  name            String                // "Pâques catholique 2026", "Ramadan 2026", "Diwali 2026"
+  faith           String                // "christian" | "catholic" | "protestant" | "orthodox" | "muslim" | "jewish" | "buddhist" | "hindu" | "sikh" | "interfaith"
+  category        String                // "fete-majeure" | "fete-mineure" | "jeune" | "ramadan" | "shabbat" | "pelerinage" | "memorial"
+  dateMode        String   @default("fixed")  // "fixed" | "lunar" | "computed"
+  startsAt        DateTime              // date de début (toujours absolue)
+  endsAt          DateTime?             // date de fin (multi-jours)
+  duration        Int      @default(1)  // durée en jours
+  description     String?  @db.Text
+  inclusivityNote String?  @db.Text     // notes sur les officiants/lieux LGBT-friendly
+  emoji           String?
+  color           String?               // hex pour UI calendrier
+  externalUrl     String?
+  published       Boolean  @default(true)
+
+  participations  VenueParticipation[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([faith, startsAt])
+  @@index([startsAt, published])
+}
+
+/// Lien entre un Venue et un ReligiousEvent : "telle église célèbre Pâques 2026 le 5 avril à 11h".
+model VenueParticipation {
+  id               String          @id @default(cuid())
+  venueId          String
+  venue            Venue           @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  religiousEventId String
+  religiousEvent   ReligiousEvent  @relation(fields: [religiousEventId], references: [id], onDelete: Cascade)
+  startsAt         DateTime
+  endsAt           DateTime?
+  isInclusive      Boolean         @default(false) // affiche un cœur arc-en-ciel si oui
+  livestreamUrl    String?
+  notes            String?         @db.Text
+  createdAt        DateTime        @default(now())
+
+  @@unique([venueId, religiousEventId])
+  @@index([startsAt])
 }
