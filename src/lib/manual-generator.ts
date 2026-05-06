@@ -106,6 +106,62 @@ export interface GeneratedManual {
   sectionCount: number;
   wordCount: number;
   apiCalls: number;
+  /** Sections où l'IA a échoué et qui sont en fallback non-IA. */
+  fallbackSections?: string[];
+  /** Erreurs Gemini agrégées pour debug (jamais exposé au public). */
+  errors?: string[];
+}
+
+/** Extrait robustement un objet JSON depuis du texte Gemini, même bruyant. */
+function extractJson(raw: string): any | null {
+  if (!raw) return null;
+  // 1. Essayer tel quel après nettoyage léger
+  let s = raw
+    .replace(/^```(?:json|JSON)?\s*/m, '')
+    .replace(/\s*```\s*$/m, '')
+    .trim();
+  // Gemini met parfois du texte AVANT le JSON
+  const firstBrace = s.indexOf('{');
+  const lastBrace = s.lastIndexOf('}');
+  if (firstBrace > 0 && lastBrace > firstBrace) {
+    s = s.slice(firstBrace, lastBrace + 1);
+  }
+  try { return JSON.parse(s); } catch {}
+
+  // 2. Tenter de réparer les retours-ligne non-échappés dans les strings
+  try {
+    const repaired = s
+      .replace(/(?<!\\)\n/g, '\\n')
+      .replace(/(?<!\\)\r/g, '\\r')
+      .replace(/(?<!\\)\t/g, '\\t');
+    return JSON.parse(repaired);
+  } catch {}
+
+  // 3. Extraire manuellement html et markdown via regex (dernière chance)
+  const htmlMatch = s.match(/"html"\s*:\s*"((?:\\.|[^"\\])*)"/s);
+  const mdMatch = s.match(/"markdown"\s*:\s*"((?:\\.|[^"\\])*)"/s);
+  if (htmlMatch) {
+    return {
+      html: htmlMatch[1].replace(/\\"/g, '"').replace(/\\n/g, '\n'),
+      markdown: mdMatch?.[1]?.replace(/\\"/g, '"').replace(/\\n/g, '\n') || ''
+    };
+  }
+  return null;
+}
+
+/** Construit un fallback non-IA exploitable depuis le hint et les routes. */
+function nonAiFallback(sec: Section, audience: Audience): { html: string; markdown: string } {
+  const labels: Record<Audience, string> = {
+    user: 'Cette section concerne ton expérience utilisateur sur le site',
+    admin: 'Cette section couvre la gestion administrateur',
+    superadmin: 'Cette section couvre la configuration technique avancée'
+  };
+  const routesText = sec.routes.length
+    ? `Tu peux y accéder via : ${sec.routes.map(r => `<code>${r}</code>`).join(', ')}.`
+    : 'Cette fonctionnalité est transversale au site.';
+  const html = `<p>${labels[audience]}. <strong>${sec.title}</strong> — ${sec.hint}.</p><p>${routesText}</p>`;
+  const md = `${labels[audience]}. **${sec.title}** — ${sec.hint}.\n\n${sec.routes.length ? `Routes : ${sec.routes.join(', ')}` : 'Section transversale.'}`;
+  return { html, markdown: md };
 }
 
 export async function generateManual(audience: Audience): Promise<GeneratedManual> {
@@ -114,13 +170,26 @@ export async function generateManual(audience: Audience): Promise<GeneratedManua
   const version = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
 
   const sectionTexts: Array<{ title: string; emoji: string; routes: string[]; bodyHtml: string; bodyMd: string }> = [];
+  const fallbackSections: string[] = [];
+  const errors: string[] = [];
   let apiCalls = 0;
+  let quotaExhausted = false;
 
   for (const sec of cfg.sections) {
-    const quota = await checkQuota();
-    if (!quota.ok) break;
+    // Si quota épuisé, on N'ABANDONNE PLUS la boucle : on génère un fallback non-IA
+    let parsed: { html: string; markdown: string } | null = null;
+    let attemptError: string | null = null;
 
-    const prompt = `Tu rédiges UNE section d'un manuel utilisateur pour le site God Loves Diversity (réseau social inclusif religieux LGBT+, https://gld.pixeeplay.com).
+    if (!quotaExhausted) {
+      const quota = await checkQuota();
+      if (!quota.ok) {
+        quotaExhausted = true;
+        errors.push(`quota-exhausted-at-section: ${sec.title}`);
+      }
+    }
+
+    if (!quotaExhausted) {
+      const prompt = `Tu rédiges UNE section d'un manuel utilisateur pour le site God Loves Diversity (réseau social inclusif religieux LGBT+, https://gld.pixeeplay.com).
 
 AUDIENCE : ${audience.toUpperCase()}
 TON : ${cfg.tone}
@@ -146,25 +215,50 @@ Règles :
 - Mentionne 1 vrai chiffre si pertinent (ex: 2700+ lieux, 10 langues)
 - Reste factuel, pas de fluff`;
 
-    let parsed: any = { html: '<p>(génération échouée pour cette section)</p>', markdown: '' };
-    try {
-      const r = await generateText(prompt);
-      apiCalls++;
-      await bumpQuota(1);
-      const cleaned = (r.text || '').replace(/^```(?:json)?\s*|\s*```$/g, '').trim();
-      parsed = JSON.parse(cleaned);
-    } catch {}
+      // 2 tentatives : la 2e avec un prompt plus simple si la 1ère JSON-parse échoue
+      for (let attempt = 1; attempt <= 2 && !parsed; attempt++) {
+        try {
+          const r = await generateText(attempt === 1 ? prompt : `${prompt}\n\nIMPORTANT : ta réponse doit être UNIQUEMENT le JSON {"html":"...","markdown":"..."}, sans aucun texte avant ou après.`);
+          apiCalls++;
+          await bumpQuota(1);
+          const candidate = extractJson(r.text || '');
+          if (candidate && (candidate.html || candidate.markdown)) {
+            parsed = {
+              html: candidate.html || `<p>${candidate.markdown || ''}</p>`,
+              markdown: candidate.markdown || (candidate.html || '').replace(/<[^>]+>/g, '').trim()
+            };
+          } else {
+            attemptError = `parse-failed-attempt-${attempt}`;
+          }
+        } catch (e: any) {
+          attemptError = `gemini-error-attempt-${attempt}: ${e?.message || 'unknown'}`;
+          // Sur erreur réseau/quota au runtime → on n'insiste pas
+          if (e?.message?.includes('quota') || e?.message?.includes('429')) {
+            quotaExhausted = true;
+            break;
+          }
+        }
+      }
+
+      if (!parsed && attemptError) errors.push(`${sec.title}: ${attemptError}`);
+    }
+
+    // Si pas de contenu IA exploitable → fallback non-IA basé sur hint + routes
+    if (!parsed) {
+      parsed = nonAiFallback(sec, audience);
+      fallbackSections.push(sec.title);
+    }
 
     sectionTexts.push({
       title: sec.title,
       emoji: sec.emoji,
       routes: sec.routes,
-      bodyHtml: parsed.html || '<p>—</p>',
-      bodyMd: parsed.markdown || ''
+      bodyHtml: parsed.html,
+      bodyMd: parsed.markdown
     });
 
-    // Petit délai pour éviter de saturer Gemini
-    await new Promise((r) => setTimeout(r, 500));
+    // Petit délai pour éviter de saturer Gemini (skip si en fallback non-IA)
+    if (!quotaExhausted) await new Promise((r) => setTimeout(r, 500));
   }
 
   const html = renderHtml(audience, version, cfg.intro, sectionTexts);
@@ -180,7 +274,9 @@ Règles :
     videoScript,
     sectionCount: sectionTexts.length,
     wordCount,
-    apiCalls
+    apiCalls,
+    fallbackSections: fallbackSections.length ? fallbackSections : undefined,
+    errors: errors.length ? errors : undefined
   };
 }
 

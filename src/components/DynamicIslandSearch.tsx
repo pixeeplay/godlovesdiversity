@@ -281,32 +281,88 @@ export function DynamicIslandSearch({ scope = 'all', className = '', fullWidth =
 }
 
 function SuggestionsPanel({ onPick }: { onPick: (href: string) => void }) {
+  // Suggestions premium liquid-glass : chacune a son gradient signature + glow
   const SUGGESTIONS = [
-    { label: 'Lieux LGBT-friendly', href: '/lieux',         emoji: '📍' },
-    { label: 'Forum communauté',    href: '/forum',         emoji: '💬' },
-    { label: 'Newsletter',          href: '/newsletter',    emoji: '📧' },
-    { label: 'Cercles de prière',   href: '/cercles-priere',emoji: '🙏' },
-    { label: 'Boutique',            href: '/boutique',      emoji: '🏳️‍🌈' },
-    { label: 'Galerie',             href: '/galerie',       emoji: '🖼️' },
-    { label: 'Mentor',              href: '/mentor',        emoji: '🤝' },
-    { label: 'Manuel utilisateur',  href: '/api/manual/user', emoji: '📖' }
+    { label: 'Lieux LGBT-friendly',  href: '/lieux',          emoji: '📍', subtitle: '2700+ adresses · carte mondiale', gradient: 'from-emerald-500/40 via-emerald-400/20 to-transparent', glow: 'emerald' },
+    { label: 'Forum communauté',     href: '/forum',          emoji: '💬', subtitle: 'Échanges sur foi & orientation', gradient: 'from-violet-500/40 via-violet-400/20 to-transparent', glow: 'violet' },
+    { label: 'Newsletter',           href: '/newsletter',     emoji: '📧', subtitle: 'Le mouvement chaque mois',       gradient: 'from-pink-500/40 via-pink-400/20 to-transparent',     glow: 'pink' },
+    { label: 'Cercles de prière',    href: '/cercles-priere', emoji: '🙏', subtitle: 'Prier ensemble en visio',        gradient: 'from-amber-500/40 via-amber-400/20 to-transparent',   glow: 'amber' },
+    { label: 'Boutique',             href: '/boutique',       emoji: '🏳️‍🌈', subtitle: 'Mugs, tee-shirts, posters',     gradient: 'from-rose-500/40 via-rose-400/20 to-transparent',     glow: 'rose' },
+    { label: 'Galerie',              href: '/galerie',        emoji: '🖼️', subtitle: 'Photos communauté & événements', gradient: 'from-cyan-500/40 via-cyan-400/20 to-transparent',     glow: 'cyan' },
+    { label: 'Mentor',               href: '/mentor',         emoji: '🤝', subtitle: 'Trouve un accompagnant',         gradient: 'from-fuchsia-500/40 via-fuchsia-400/20 to-transparent', glow: 'fuchsia' },
+    { label: 'Manuel utilisateur',   href: '/api/manuals/user', emoji: '📖', subtitle: 'Guide complet du site',        gradient: 'from-blue-500/40 via-blue-400/20 to-transparent',     glow: 'blue' }
   ];
+
+  const GLOW_COLORS: Record<string, string> = {
+    emerald: 'shadow-emerald-500/30 group-hover:shadow-emerald-500/50',
+    violet:  'shadow-violet-500/30 group-hover:shadow-violet-500/50',
+    pink:    'shadow-pink-500/30 group-hover:shadow-pink-500/50',
+    amber:   'shadow-amber-500/30 group-hover:shadow-amber-500/50',
+    rose:    'shadow-rose-500/30 group-hover:shadow-rose-500/50',
+    cyan:    'shadow-cyan-500/30 group-hover:shadow-cyan-500/50',
+    fuchsia: 'shadow-fuchsia-500/30 group-hover:shadow-fuchsia-500/50',
+    blue:    'shadow-blue-500/30 group-hover:shadow-blue-500/50'
+  };
+
   return (
     <div className="p-4">
       <div className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 mb-3 px-1 flex items-center gap-1.5">
-        <Sparkles size={10} className="text-fuchsia-400" /> Suggestions populaires
+        <Sparkles size={10} className="text-fuchsia-400 animate-pulse" /> Suggestions populaires
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         {SUGGESTIONS.map((s) => (
           <button
             key={s.href}
             onClick={() => onPick(s.href)}
-            className="bg-white/5 hover:bg-white/10 border border-white/5 hover:border-fuchsia-500/30 rounded-xl p-3 text-center transition group"
+            className={`group relative overflow-hidden rounded-2xl p-3 text-center transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] ${GLOW_COLORS[s.glow] || ''} shadow-lg`}
           >
-            <div className="text-2xl mb-1.5 group-hover:scale-110 transition">{s.emoji}</div>
-            <div className="text-[11px] font-bold text-zinc-200 group-hover:text-white">{s.label}</div>
+            {/* Glassmorphism background couches */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${s.gradient}`} />
+            <div className="absolute inset-0 backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl" />
+
+            {/* Highlight haut (faux reflet glass) */}
+            <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/15 to-transparent rounded-t-2xl" />
+
+            {/* Sparkle decoratif */}
+            <div className="absolute top-1 right-1.5 opacity-0 group-hover:opacity-60 transition">
+              <Sparkles size={9} className="text-white" />
+            </div>
+
+            {/* Contenu */}
+            <div className="relative">
+              <div className="text-3xl mb-1.5 group-hover:scale-125 group-hover:rotate-[-4deg] transition-transform duration-300 inline-block">
+                {s.emoji}
+              </div>
+              <div className="text-[11px] font-bold text-white drop-shadow-md">{s.label}</div>
+              <div className="text-[9px] text-white/60 mt-0.5 leading-tight line-clamp-2">{s.subtitle}</div>
+            </div>
+
+            {/* Bottom shine */}
+            <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-white/15 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition" />
           </button>
         ))}
+      </div>
+
+      {/* Section "Raccourcis IA" */}
+      <div className="mt-4 pt-4 border-t border-white/10">
+        <div className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 mb-2 px-1 flex items-center gap-1.5">
+          <Sparkles size={10} className="text-violet-400" /> Actions IA
+        </div>
+        <div className="grid grid-cols-3 gap-1.5">
+          {[
+            { label: 'Aide IA',     href: '/#chat',           icon: '✨' },
+            { label: 'SOS urgence', href: '/urgence',         icon: '🆘' },
+            { label: 'Manuel',      href: '/api/manuals/user', icon: '📚' }
+          ].map((q) => (
+            <button
+              key={q.href}
+              onClick={() => onPick(q.href)}
+              className="bg-white/5 hover:bg-white/15 border border-white/10 hover:border-white/30 rounded-xl px-2.5 py-2 text-[11px] font-bold text-white/90 transition flex items-center justify-center gap-1.5"
+            >
+              <span className="text-base">{q.icon}</span> {q.label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

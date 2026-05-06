@@ -7,6 +7,7 @@ import {
   Instagram, Facebook, Star, Camera, Video, Info, Map as MapIcon,
   Heart, Share2, Clock, Sparkles, ChevronLeft, ChevronRight, Play, Image as ImgIcon
 } from 'lucide-react';
+import { VenueBanner } from './VenueBanner';
 
 // Leaflet (mini-map dans l'onglet Carte)
 const MapContainer = dynamic(() => import('react-leaflet').then((m) => m.MapContainer), { ssr: false });
@@ -96,7 +97,7 @@ export function VenueProfile({ venue: v }: Props) {
     <main className="bg-zinc-950 text-white min-h-screen pb-24">
       {/* HERO immersive avec photo + glassmorphism */}
       <section className="relative h-[60vh] min-h-[420px] max-h-[640px] overflow-hidden">
-        {/* Cover photo défilante */}
+        {/* Cover photo défilante OU banner SVG procédural */}
         {photos.length > 0 ? (
           <div className="absolute inset-0">
             {photos.map((p, i) => (
@@ -110,7 +111,9 @@ export function VenueProfile({ venue: v }: Props) {
             ))}
           </div>
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-900 via-violet-900 to-cyan-900" />
+          <div className="absolute inset-0">
+            <VenueBanner venueName={v.name} type={v.type} rating={v.rating} id={v.id || v.slug || 'banner'} />
+          </div>
         )}
 
         {/* Gradient overlay pour la lisibilité */}
@@ -161,11 +164,16 @@ export function VenueProfile({ venue: v }: Props) {
         {/* Bottom : logo + nom + meta */}
         <div className="absolute bottom-0 left-0 right-0 z-10 px-4 md:px-8 pb-6">
           <div className="max-w-5xl mx-auto flex items-end gap-4">
-            {/* Logo en cercle */}
+            {/* Logo en cercle — object-contain + padding pour respecter les ratios non-carrés */}
             <div className="relative shrink-0">
-              <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-zinc-900 border-2 border-white/30 shadow-2xl overflow-hidden flex items-center justify-center">
+              <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white shadow-2xl overflow-hidden flex items-center justify-center p-2 ring-2 ring-white/40">
                 {v.logo ? (
-                  <img src={v.logo} alt={`Logo ${v.name}`} className="w-full h-full object-cover" />
+                  <img
+                    src={v.logo}
+                    alt={`Logo ${v.name}`}
+                    className="max-w-full max-h-full object-contain"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
                 ) : (
                   <RainbowHeart size={64} />
                 )}
