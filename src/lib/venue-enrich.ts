@@ -116,20 +116,25 @@ Règles strictes :
 - Description en FR, ton inclusif, pas de ton commercial racoleur.`;
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
-  const body = {
-    contents: [{ parts: [{ text: prompt }] }],
-    tools: [{ google_search: {} }],
-    generationConfig: { temperature: 0.2, maxOutputTokens: 2048 }
-  };
-
-  let raw: any;
-  try {
+  const callGemini = async (extraInstruction = '') => {
+    const body = {
+      contents: [{ parts: [{ text: prompt + extraInstruction }] }],
+      tools: [{ google_search: {} }],
+      // 4096 tokens (au lieu de 2048) pour éviter la troncation quand grounded search ajoute du contexte.
+      // Temperature 0 pour déterminisme (toujours le même JSON pour le même venue).
+      generationConfig: { temperature: 0, maxOutputTokens: 4096 }
+    };
     const r = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     });
-    raw = await r.json();
+    return r.json();
+  };
+
+  let raw: any;
+  try {
+    raw = await callGemini();
   } catch (e: any) {
     return { ok: false, confidence: 0, patch: {}, sources: [], notes: '', error: 'fetch-failed: ' + e.message };
   }
@@ -138,22 +143,83 @@ Règles strictes :
     return { ok: false, confidence: 0, patch: {}, sources: [], notes: '', error: raw.error.message || 'gemini-error', raw };
   }
 
-  const cand = raw?.candidates?.[0];
-  const text: string = cand?.content?.parts?.map((p: any) => p.text).filter(Boolean).join('\n') || '';
-  const groundingMeta = cand?.groundingMetadata || {};
-  const groundingChunks: any[] = groundingMeta.groundingChunks || [];
-  const sources = groundingChunks
-    .map((c) => c.web)
-    .filter(Boolean)
-    .map((w: any) => ({ url: w.uri || w.url, title: w.title || '' }));
+  const extractText = (r: any): { text: string; sources: { url: string; title: string }[]; finishReason: string } => {
+    const cand = r?.candidates?.[0];
+    const text: string = cand?.content?.parts?.map((p: any) => p.text).filter(Boolean).join('\n') || '';
+    const groundingMeta = cand?.groundingMetadata || {};
+    const groundingChunks: any[] = groundingMeta.groundingChunks || [];
+    const sources = groundingChunks
+      .map((c) => c.web)
+      .filter(Boolean)
+      .map((w: any) => ({ url: w.uri || w.url, title: w.title || '' }));
+    return { text, sources, finishReason: cand?.finishReason || '' };
+  };
 
-  let parsed: any = {};
-  try {
-    // Le JSON peut être entouré de markdown malgré la consigne
-    const cleaned = text.replace(/^```(?:json)?\s*|\s*```$/g, '').trim();
-    parsed = JSON.parse(cleaned);
-  } catch {
-    return { ok: false, confidence: 0, patch: {}, sources, notes: text.slice(0, 500), error: 'json-parse-failed', raw };
+  let { text, sources, finishReason } = extractText(raw);
+
+  // Helper : tente d'extraire un JSON complet depuis un texte brouillé
+  const tryParseJson = (s: string): any | null => {
+    // 1) Strip markdown code fences éventuels
+    let cleaned = s.replace(/^[\s\S]*?```(?:json)?\s*/, '').replace(/\s*```[\s\S]*$/, '').trim();
+    // 2) Si ne commence pas par {, cherche le premier {
+    const firstBrace = cleaned.indexOf('{');
+    if (firstBrace > 0) cleaned = cleaned.slice(firstBrace);
+    // 3) Trouve la dernière } "matchante" pour avoir un objet équilibré
+    let depth = 0, lastValidEnd = -1, inString = false, escape = false;
+    for (let i = 0; i < cleaned.length; i++) {
+      const c = cleaned[i];
+      if (escape) { escape = false; continue; }
+      if (c === '\\') { escape = true; continue; }
+      if (c === '"' && !escape) inString = !inString;
+      if (inString) continue;
+      if (c === '{') depth++;
+      else if (c === '}') {
+        depth--;
+        if (depth === 0) { lastValidEnd = i; break; }
+      }
+    }
+    if (lastValidEnd > 0) cleaned = cleaned.slice(0, lastValidEnd + 1);
+
+    try { return JSON.parse(cleaned); } catch {}
+
+    // 4) Dernière chance : si le JSON a été tronqué (description coupée), essayer de fermer proprement
+    // en remplaçant la dernière chaîne incomplète par null
+    try {
+      const repaired = cleaned.replace(/"([^"]*)"$/, 'null}').replace(/,\s*$/, '');
+      return JSON.parse(repaired);
+    } catch {}
+
+    return null;
+  };
+
+  let parsed = tryParseJson(text);
+
+  // Retry une fois si parse échoué OU si finish=MAX_TOKENS (réponse tronquée)
+  if (!parsed || finishReason === 'MAX_TOKENS') {
+    try {
+      const retryRaw = await callGemini('\n\nIMPORTANT : RÉPONSE COURTE. Description max 200 chars. Photos : 3 max. Réponds SEULEMENT le JSON, RIEN d\'autre. Ferme bien toutes les accolades.');
+      if (!retryRaw?.error) {
+        const ret = extractText(retryRaw);
+        const retryParsed = tryParseJson(ret.text);
+        if (retryParsed) {
+          parsed = retryParsed;
+          sources = ret.sources.length ? ret.sources : sources;
+          raw = retryRaw;
+        }
+      }
+    } catch {}
+  }
+
+  if (!parsed) {
+    return {
+      ok: false,
+      confidence: 0,
+      patch: {},
+      sources,
+      notes: `Réponse Gemini non parsable (finishReason=${finishReason}). Aperçu : ${text.slice(0, 300)}…`,
+      error: 'json-parse-failed',
+      raw
+    };
   }
 
   if (parsed.found === false) {

@@ -38,8 +38,10 @@ export function VenueEditor({ venue }: { venue: any }) {
   // Enrichissement IA via Gemini grounded search
   const [enriching, setEnriching] = useState(false);
   const [enrichResult, setEnrichResult] = useState<any>(null);
+  const [enrichMenuOpen, setEnrichMenuOpen] = useState(false);
 
   async function enrich(overwrite = false, dry = false) {
+    setEnrichMenuOpen(false);
     setEnriching(true);
     setEnrichResult(null);
     const r = await fetch(`/api/admin/venues/${v.id}/enrich${dry ? '?dry=1' : ''}`, {
@@ -73,28 +75,60 @@ export function VenueEditor({ venue }: { venue: any }) {
           <a href={`/lieux/${v.slug}`} target="_blank" className="bg-zinc-800 hover:bg-zinc-700 px-3 py-2 rounded-lg text-xs flex items-center gap-1.5">
             <ExternalLink size={11} /> Voir front
           </a>
-          <div className="relative group">
+          <div className="relative">
             <button
-              onClick={() => enrich(false, false)}
+              onClick={() => setEnrichMenuOpen((o) => !o)}
               disabled={enriching}
               className="bg-gradient-to-r from-fuchsia-500 to-violet-500 text-white font-bold px-3 py-2 rounded-lg text-xs flex items-center gap-1.5 disabled:opacity-50"
               title="Cherche sur le web (Gemini grounded) et complète les champs vides"
             >
               {enriching ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
-              Enrichir IA
+              Enrichir IA <span className="opacity-60">▾</span>
             </button>
-            {/* Dropdown menu options */}
-            <div className="absolute right-0 top-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-10 w-56">
-              <button onClick={() => enrich(false, true)} disabled={enriching} className="w-full text-left px-3 py-2 text-xs hover:bg-zinc-800 flex items-center gap-2 border-b border-zinc-800">
-                <Wand2 size={11} /> Aperçu (sans sauver)
-              </button>
-              <button onClick={() => enrich(false, false)} disabled={enriching} className="w-full text-left px-3 py-2 text-xs hover:bg-zinc-800 flex items-center gap-2 border-b border-zinc-800">
-                <Sparkles size={11} /> Compléter vides uniquement
-              </button>
-              <button onClick={() => { if (confirm('Écraser TOUS les champs existants par les données IA ?')) enrich(true, false); }} disabled={enriching} className="w-full text-left px-3 py-2 text-xs hover:bg-zinc-800 flex items-center gap-2 text-amber-300">
-                ⚠️ Tout écraser
-              </button>
-            </div>
+            {enrichMenuOpen && (
+              <>
+                {/* Backdrop pour fermer en cliquant ailleurs */}
+                <div className="fixed inset-0 z-10" onClick={() => setEnrichMenuOpen(false)} />
+                <div className="absolute right-0 top-full mt-1 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl z-20 w-64 overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => enrich(false, true)}
+                    disabled={enriching}
+                    className="w-full text-left px-3 py-2.5 text-xs hover:bg-zinc-800 flex items-start gap-2 border-b border-zinc-800"
+                  >
+                    <Wand2 size={12} className="text-cyan-300 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-bold">Aperçu (sans sauver)</div>
+                      <div className="text-[10px] text-zinc-400 mt-0.5">Voit ce que Gemini propose</div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => enrich(false, false)}
+                    disabled={enriching}
+                    className="w-full text-left px-3 py-2.5 text-xs hover:bg-zinc-800 flex items-start gap-2 border-b border-zinc-800"
+                  >
+                    <Sparkles size={12} className="text-fuchsia-300 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-bold">Compléter vides uniquement</div>
+                      <div className="text-[10px] text-zinc-400 mt-0.5">Recommandé · ne touche pas l'existant</div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { if (confirm('Écraser TOUS les champs existants par les données IA ?')) enrich(true, false); }}
+                    disabled={enriching}
+                    className="w-full text-left px-3 py-2.5 text-xs hover:bg-zinc-800 flex items-start gap-2 text-amber-300"
+                  >
+                    <span className="flex-shrink-0">⚠️</span>
+                    <div>
+                      <div className="font-bold">Tout écraser</div>
+                      <div className="text-[10px] text-amber-400/70 mt-0.5">Remplace même les champs déjà remplis</div>
+                    </div>
+                  </button>
+                </div>
+              </>
+            )}
           </div>
           {saved && <span className="text-emerald-300 text-xs flex items-center gap-1"><CheckCircle2 size={12} /> Sauvé</span>}
           <button onClick={save} disabled={busy} className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center gap-2">
