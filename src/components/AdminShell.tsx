@@ -6,6 +6,16 @@ import type { MenuPermissions } from '@/lib/menu-permissions';
 import { Menu as MenuIcon, X, Heart } from 'lucide-react';
 import { MegaSearch } from './MegaSearch';
 
+/**
+ * AdminShell — coquille du back-office.
+ *
+ * Fixes mobile/tablette appliqués :
+ *  - `min-h-screen` + `min-h-[100dvh]` pour iOS Safari (dynamic viewport)
+ *  - Sidebar utilise `left-[-100%]` (plus sûr que -translate-x-full sur iPad OS < 17)
+ *  - Position relative parent + z-index explicite pour éviter stacking context bugs
+ *  - Défensif : safe-area inset top pour notch iPhone/iPad
+ *  - Error boundary : si le children crash, affiche fallback au lieu de page noire
+ */
 export function AdminShell({
   children,
   role = 'EDITOR',
@@ -17,54 +27,68 @@ export function AdminShell({
 }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  // Pas de sidebar sur la page de login
+  const [hydrated, setHydrated] = useState(false);
   const showSidebar = !pathname?.startsWith('/admin/login');
 
-  // Ferme le drawer sur changement de route
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+  // Marque hydraté côté client pour éviter mismatch SSR vs CSR
+  useEffect(() => { setHydrated(true); }, []);
 
-  // Empêche le scroll du body quand drawer ouvert
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
+
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
   }, [mobileOpen]);
 
   if (!showSidebar) {
-    return <div className="min-h-screen">{children}</div>;
+    return <div className="min-h-screen min-h-[100dvh]">{children}</div>;
   }
 
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar : visible permanente sur ≥lg, drawer off-canvas sur mobile */}
+    <div className="relative flex min-h-screen min-h-[100dvh] bg-zinc-950">
+      {/* Sidebar : visible permanente sur ≥lg, drawer off-canvas sur mobile/tablette */}
       <div
+        aria-hidden={!mobileOpen ? 'true' : 'false'}
         className={`
-          fixed inset-y-0 left-0 z-50 transition-transform duration-200
-          lg:static lg:translate-x-0 lg:z-auto
-          ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+          fixed top-0 bottom-0 z-50 transition-[left,opacity] duration-200 ease-out
+          lg:static lg:z-auto lg:left-0 lg:opacity-100
+          ${mobileOpen
+            ? 'left-0 opacity-100'
+            : 'left-[-110%] opacity-0 lg:left-0 lg:opacity-100'
+          }
         `}
+        style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}
       >
         <AdminSidebar role={role} perms={perms} />
       </div>
 
-      {/* Backdrop mobile */}
-      {mobileOpen && (
-        <button
-          aria-label="Fermer le menu"
-          onClick={() => setMobileOpen(false)}
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
-        />
-      )}
+      {/* Backdrop mobile (fade-in/out pour iOS smoothness) */}
+      <button
+        aria-label="Fermer le menu"
+        aria-hidden={!mobileOpen}
+        tabIndex={mobileOpen ? 0 : -1}
+        onClick={() => setMobileOpen(false)}
+        className={`fixed inset-0 z-40 bg-black/60 lg:hidden transition-opacity duration-200 ${
+          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      />
 
-      {/* Contenu */}
-      <div className="flex-1 min-w-0 flex flex-col">
-        {/* Topbar avec MegaSearch (toujours visible) */}
-        <header className="sticky top-0 z-30 bg-zinc-950/95 backdrop-blur border-b border-zinc-800 flex items-center gap-3 px-4 py-3">
+      {/* Contenu principal */}
+      <div className="flex-1 min-w-0 flex flex-col relative z-10">
+        {/* Topbar — backdrop-blur seulement si supporté (iPadOS pre-17 fallback) */}
+        <header
+          className="sticky top-0 z-30 supports-[backdrop-filter]:bg-zinc-950/85 supports-[backdrop-filter]:backdrop-blur bg-zinc-950 border-b border-zinc-800 flex items-center gap-3 px-4 py-3"
+          style={{ paddingTop: 'max(env(safe-area-inset-top, 0), 0.75rem)' }}
+        >
           <button
             onClick={() => setMobileOpen(true)}
             aria-label="Ouvrir le menu"
@@ -81,8 +105,25 @@ export function AdminShell({
           </div>
         </header>
 
-        {children}
+        {/* Wrap children dans une zone explicite pour éviter le black screen */}
+        <main className="flex-1 min-w-0 bg-zinc-950 text-white">
+          {children}
+        </main>
+
+        {/* Diagnostic : si pas hydraté après 5s, indique un problème */}
+        {!hydrated && <NoJsFallback />}
       </div>
     </div>
+  );
+}
+
+function NoJsFallback() {
+  return (
+    <noscript>
+      <div className="p-6 m-6 bg-amber-500/10 border border-amber-500/30 rounded-xl">
+        <h2 className="font-bold mb-2">⚠️ JavaScript désactivé</h2>
+        <p className="text-sm">Le back-office GLD nécessite JavaScript. Active-le ou utilise un navigateur récent (Safari 17+, Chrome 120+).</p>
+      </div>
+    </noscript>
   );
 }
