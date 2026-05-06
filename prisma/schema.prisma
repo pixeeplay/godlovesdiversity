@@ -980,6 +980,41 @@ model Setting {
   value String  @db.Text
 }
 
+/// GLD Soul — entrées du "journal" auto-écrit par l'IA chaque jour.
+/// Une voix à la 1ère personne qui synthétise l'activité, l'humeur et les vœux du site.
+model SoulEntry {
+  id         String   @id @default(cuid())
+  date       DateTime @unique  // une entrée par jour (YYYY-MM-DD à minuit UTC)
+  mood       String   // joyful | calm | somber | festive | neutral
+  moodScore  Float    @default(0.5)  // 0..1, intensité
+  body       String   @db.Text       // texte complet de la "voix" du site
+  bodyShort  String?  @db.Text       // version courte pour widget home
+  stats      Json?    // snapshot des chiffres ce jour-là (users, posts, events, etc.)
+  generatedBy String  @default('gemini')  // gemini | manual
+  approved   Boolean  @default(true)      // si false, ne pas afficher publiquement
+  createdAt  DateTime @default(now())
+
+  @@index([date])
+  @@index([mood])
+}
+
+/// Décisions de modération IA sur les posts du forum (audit trail).
+model ModerationDecision {
+  id         String   @id @default(cuid())
+  targetType String   // forum_post | forum_thread | testimony | photo
+  targetId   String
+  score      Float    // 0..1, plus c'est haut plus c'est toxique
+  category   String?  // toxic | hate | spam | nsfw | self_harm | safe
+  reason     String?  @db.Text
+  action     String   // hidden | flagged | approved
+  reviewedBy String?  // userId si revu manuellement
+  reviewedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([targetType, targetId])
+  @@index([action, createdAt])
+}
+
 /// Partenaires affichés dans le bandeau home + page /partenaires
 model Partner {
   id          String   @id @default(cuid())
