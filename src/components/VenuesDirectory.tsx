@@ -1,7 +1,8 @@
 'use client';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { MapPin, Star, Globe, Phone, Filter, Search, Calendar, Tag, ExternalLink, Utensils, Wine, Coffee, Music, Hotel, ShoppingBag, Palette, Church, Sparkles, HeartHandshake, Heart, Users, Users2 } from 'lucide-react';
+import { MapPin, Star, Globe, Phone, Filter, Search, Calendar, Tag, ExternalLink, Utensils, Wine, Coffee, Music, Hotel, ShoppingBag, Palette, Church, Sparkles, HeartHandshake, Heart, Users, Users2, Map as MapIcon, LayoutGrid } from 'lucide-react';
+import { VenuesMap } from './VenuesMap';
 
 const TYPE_LABELS: Record<string, { label: string; icon: any }> = {
   RESTAURANT:       { label: 'Restaurants', icon: Utensils },
@@ -32,6 +33,7 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
   const [country, setCountry] = useState<string>('');
   const [city, setCity] = useState<string>('');
   const [q, setQ] = useState('');
+  const [view, setView] = useState<'list' | 'map'>('list');
 
   const cities = useMemo(() => Array.from(new Set(venues.map(v => v.city).filter(Boolean))).sort() as string[], [venues]);
   const countries = useMemo(() => Array.from(new Set(venues.map(v => v.country).filter(Boolean))).sort() as string[], [venues]);
@@ -102,7 +104,30 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher un lieu, ville…" className="bg-transparent flex-1 px-1 py-1.5 text-xs outline-none" />
         </div>
         <span className="text-xs text-zinc-500 ml-auto pr-2">{filtered.length} résultat(s)</span>
+        <div className="flex bg-zinc-950 border border-zinc-700 rounded-lg overflow-hidden">
+          <button
+            onClick={() => setView('list')}
+            className={`px-3 py-1.5 text-xs flex items-center gap-1 ${view === 'list' ? 'bg-fuchsia-500 text-white' : 'hover:bg-zinc-800'}`}
+            title="Vue liste"
+          >
+            <LayoutGrid size={11} /> Liste
+          </button>
+          <button
+            onClick={() => setView('map')}
+            className={`px-3 py-1.5 text-xs flex items-center gap-1 ${view === 'map' ? 'bg-fuchsia-500 text-white' : 'hover:bg-zinc-800'}`}
+            title="Vue carte"
+          >
+            <MapIcon size={11} /> Carte
+          </button>
+        </div>
       </section>
+
+      {/* CARTE INTERACTIVE */}
+      {view === 'map' && (
+        <section className="mb-6">
+          <VenuesMap venues={filtered as any} />
+        </section>
+      )}
 
       {/* Grid des venues */}
       {filtered.length === 0 ? (
