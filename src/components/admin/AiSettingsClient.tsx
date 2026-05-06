@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Brain, Server, Zap, Save, RefreshCw, Loader2, CheckCircle2, AlertCircle, Sparkles, Cpu, Cloud, Image as ImageIcon, Mic, Video, Layers, Database, Globe } from 'lucide-react';
+import { AiTopologyMap } from './AiTopologyMap';
 
 const TASK_ICONS: Record<string, any> = {
   'text-short':        Zap,
@@ -173,6 +174,9 @@ export function AiSettingsClient() {
       </header>
 
       {msg && <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-sm text-emerald-200">{msg}</div>}
+
+      {/* Visual Topology Map — toujours visible en haut */}
+      <AiTopologyMap providers={providers} mappings={mappings} />
 
       {/* Tabs */}
       <nav className="flex gap-1 bg-zinc-900 border border-zinc-800 rounded-full p-1">
