@@ -996,7 +996,7 @@ model SoulEntry {
   body       String   @db.Text       // texte complet de la "voix" du site
   bodyShort  String?  @db.Text       // version courte pour widget home
   stats      Json?    // snapshot des chiffres ce jour-là (users, posts, events, etc.)
-  generatedBy String  @default('gemini')  // gemini | manual
+  generatedBy String  @default("gemini")  // gemini | manual
   approved   Boolean  @default(true)      // si false, ne pas afficher publiquement
   createdAt  DateTime @default(now())
 
