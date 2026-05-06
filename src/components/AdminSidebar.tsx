@@ -203,9 +203,21 @@ export function AdminSidebar({
 
   return (
     <aside className="w-72 sm:w-64 h-screen lg:h-auto shrink-0 bg-zinc-900 border-r border-zinc-800 flex flex-col">
-      <div className="p-5 border-b border-zinc-800 flex items-center gap-2">
-        <Heart className="text-brand-pink" />
-        <span className="font-display font-bold">GLD Admin</span>
+      <div className="p-5 border-b border-zinc-800 flex items-center justify-between gap-2">
+        <Link href="/admin" className="flex items-center gap-2 group hover:text-brand-pink transition" title="Retour au tableau de bord">
+          <Heart className="text-brand-pink group-hover:scale-110 transition" />
+          <span className="font-display font-bold">GLD Admin</span>
+        </Link>
+        <Link
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Voir le site front (nouvel onglet)"
+          className="bg-zinc-800 hover:bg-fuchsia-500/30 hover:text-fuchsia-300 text-zinc-400 p-1.5 rounded-lg transition flex items-center gap-1"
+        >
+          <Home size={14} />
+          <span className="text-[10px] font-bold uppercase">Front</span>
+        </Link>
       </div>
 
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">

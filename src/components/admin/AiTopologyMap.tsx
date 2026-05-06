@@ -82,7 +82,7 @@ interface Props {
 }
 
 export function AiTopologyMap({ providers, mappings }: Props) {
-  const [mode, setMode] = useState<'flow' | 'constellation' | 'brain' | 'stats'>('flow');
+  const [mode, setMode] = useState<'flow' | 'interactive' | 'constellation' | 'brain' | 'stats'>('flow');
   const [pings, setPings] = useState<Record<string, PingState>>({});
   const [pinging, setPinging] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
@@ -141,6 +141,7 @@ export function AiTopologyMap({ providers, mappings }: Props) {
           <div className="flex bg-zinc-950 border border-zinc-800 rounded-full p-1 gap-0.5">
             {[
               { id: 'flow',          icon: Zap,        label: 'Flow' },
+              { id: 'interactive',   icon: Network,    label: 'Interactive' },
               { id: 'constellation', icon: Sparkles,   label: 'Constellation' },
               { id: 'brain',         icon: BrainIcon,  label: 'Brain' },
               { id: 'stats',         icon: BarChart3,  label: 'Stats' }
@@ -187,6 +188,7 @@ export function AiTopologyMap({ providers, mappings }: Props) {
 
       {/* Le rendu change selon le mode */}
       {mode === 'flow' && <FlowMode providers={providers} mappings={mappings} pings={pings} />}
+      {mode === 'interactive' && <InteractiveMode providers={providers} mappings={mappings} pings={pings} />}
       {mode === 'constellation' && <ConstellationMode providers={providers} mappings={mappings} pings={pings} />}
       {mode === 'brain' && <BrainMode providers={providers} mappings={mappings} pings={pings} />}
       {mode === 'stats' && <StatsMode providers={providers} mappings={mappings} pings={pings} />}
@@ -614,6 +616,341 @@ function KPI({ label, value, color }: { label: string; value: string; color: str
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-center">
       <div className="text-2xl font-bold" style={{ color }}>{value}</div>
       <div className="text-[10px] uppercase text-zinc-500 mt-1">{label}</div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   MODE 5 — Interactive Flow (graphe directionnel)
+   - Catégories de tâches en couleurs distinctes
+   - Flèches explicites avec arrowheads
+   - Click sur task ou provider → highlight ses connections
+   - Hover : tooltip détaillé
+   ───────────────────────────────────────────── */
+
+const TASK_CATEGORY: Record<string, { category: string; color: string }> = {
+  'text-short':        { category: 'text',     color: '#8b5cf6' },  // violet
+  'text-medium':       { category: 'text',     color: '#a855f7' },
+  'text-long':         { category: 'text',     color: '#c084fc' },
+  'moderation':        { category: 'moderate', color: '#f59e0b' },  // amber
+  'classify-venue':    { category: 'analyze',  color: '#06b6d4' },  // cyan
+  'enrich-venue':      { category: 'analyze',  color: '#22d3ee' },
+  'persona-companion': { category: 'chat',     color: '#ec4899' },  // pink
+  'rag-chat':          { category: 'chat',     color: '#f472b6' },
+  'embeddings':        { category: 'data',     color: '#14b8a6' },  // teal
+  'stt':               { category: 'audio',    color: '#f97316' },  // orange
+  'image-generate':    { category: 'visual',   color: '#10b981' },  // emerald
+  'video-generate':    { category: 'visual',   color: '#84cc16' },  // lime
+  'avatar-realtime':   { category: 'visual',   color: '#3b82f6' }   // blue
+};
+
+const CATEGORIES_LABELS: Record<string, { label: string; color: string }> = {
+  text:     { label: 'Texte',         color: '#a855f7' },
+  moderate: { label: 'Modération',    color: '#f59e0b' },
+  analyze:  { label: 'Analyse',       color: '#06b6d4' },
+  chat:     { label: 'Conversation',  color: '#ec4899' },
+  data:     { label: 'Données/RAG',   color: '#14b8a6' },
+  audio:    { label: 'Audio',         color: '#f97316' },
+  visual:   { label: 'Visuel',        color: '#10b981' }
+};
+
+function InteractiveMode({ providers, mappings, pings }: { providers: Provider[]; mappings: Record<string, TaskMapping>; pings: Record<string, PingState> }) {
+  const tasks = Object.keys(TASK_LABELS);
+  const enabledProviders = providers.filter(p => p.enabled);
+  const [selectedTask, setSelectedTask] = useState<string | null>(null);
+  const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
+  const [hoverInfo, setHoverInfo] = useState<{ x: number; y: number; html: string } | null>(null);
+  const [activeCategories, setActiveCategories] = useState<Set<string>>(new Set(Object.keys(CATEGORIES_LABELS)));
+
+  function toggleCategory(cat: string) {
+    setActiveCategories(prev => {
+      const n = new Set(prev);
+      if (n.has(cat)) n.delete(cat); else n.add(cat);
+      return n;
+    });
+  }
+
+  function clearSelection() {
+    setSelectedTask(null);
+    setSelectedProvider(null);
+  }
+
+  // Layout : tasks à gauche groupées par catégorie, providers à droite
+  const W = 1000;
+  const padding = 30;
+  const taskX = 220;
+  const providerX = 780;
+
+  // Group tasks by category
+  const tasksByCat = Object.entries(TASK_CATEGORY).reduce<Record<string, string[]>>((acc, [taskKey, info]) => {
+    (acc[info.category] = acc[info.category] || []).push(taskKey);
+    return acc;
+  }, {});
+
+  // Compute Y position for each task (groupé par catégorie)
+  const taskPositions: Record<string, number> = {};
+  let cursorY = padding;
+  const orderedCats = Object.keys(CATEGORIES_LABELS).filter(c => tasksByCat[c]?.length);
+  orderedCats.forEach((cat) => {
+    cursorY += 12; // gap inter-categorie
+    tasksByCat[cat].forEach((taskKey) => {
+      taskPositions[taskKey] = cursorY;
+      cursorY += 32;
+    });
+  });
+  const totalH = cursorY + padding;
+
+  // Y position of providers (uniformly spread)
+  const providerStep = (totalH - 2 * padding) / Math.max(1, enabledProviders.length - 1);
+  const providerY = (i: number) => padding + i * providerStep;
+
+  // Helper : check if task is visible (selectionné OU pas de selection ET catégorie active)
+  function isTaskVisible(taskKey: string): boolean {
+    const cat = TASK_CATEGORY[taskKey].category;
+    if (!activeCategories.has(cat)) return false;
+    if (selectedProvider) {
+      const m = mappings[taskKey];
+      return m?.primary.providerId === selectedProvider || m?.fallback.some(f => f.providerId === selectedProvider);
+    }
+    if (selectedTask) return taskKey === selectedTask;
+    return true;
+  }
+
+  function isProviderVisible(providerId: string): boolean {
+    if (selectedTask) {
+      const m = mappings[selectedTask];
+      return m?.primary.providerId === providerId || m?.fallback.some(f => f.providerId === providerId);
+    }
+    return true;
+  }
+
+  return (
+    <div className="bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden">
+      {/* Toolbar : filtres catégorie */}
+      <div className="border-b border-zinc-800 p-3 flex flex-wrap items-center gap-2">
+        <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-widest">Catégories de flux :</span>
+        {Object.entries(CATEGORIES_LABELS).map(([cat, info]) => {
+          const active = activeCategories.has(cat);
+          return (
+            <button
+              key={cat}
+              onClick={() => toggleCategory(cat)}
+              className="text-[11px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 transition border"
+              style={{
+                backgroundColor: active ? info.color + '30' : 'transparent',
+                borderColor: active ? info.color : '#3f3f46',
+                color: active ? info.color : '#71717a'
+              }}
+            >
+              <span className="w-2 h-2 rounded-full" style={{ background: active ? info.color : '#3f3f46' }} />
+              {info.label}
+            </button>
+          );
+        })}
+        {(selectedTask || selectedProvider) && (
+          <button onClick={clearSelection} className="ml-auto text-[10px] bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-full">
+            ✕ Réinitialiser sélection
+          </button>
+        )}
+      </div>
+
+      <div className="relative">
+        <svg viewBox={`0 0 ${W} ${totalH}`} className="w-full h-auto" style={{ maxHeight: 700 }}>
+          <defs>
+            {/* Arrowheads par catégorie */}
+            {Object.entries(CATEGORIES_LABELS).map(([cat, info]) => (
+              <marker
+                key={cat}
+                id={`arrow-${cat}`}
+                viewBox="0 0 10 10"
+                refX="9" refY="5"
+                markerWidth="6" markerHeight="6"
+                orient="auto"
+              >
+                <path d="M 0 0 L 10 5 L 0 10 z" fill={info.color} />
+              </marker>
+            ))}
+            {/* Arrowhead pour fallback (gris) */}
+            <marker id="arrow-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#71717a" />
+            </marker>
+            {/* Arrowhead highlighted */}
+            <marker id="arrow-highlight" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24" />
+            </marker>
+          </defs>
+
+          {/* En-têtes */}
+          <text x={taskX - 80} y="18" fontSize="11" fontWeight="700" fill="#71717a" letterSpacing="2">TÂCHES IA</text>
+          <text x={providerX - 80} y="18" fontSize="11" fontWeight="700" fill="#71717a" letterSpacing="2">PROVIDERS</text>
+
+          {/* Labels de catégorie */}
+          {orderedCats.map((cat) => {
+            const firstTask = tasksByCat[cat][0];
+            const y = taskPositions[firstTask] - 14;
+            const info = CATEGORIES_LABELS[cat];
+            return (
+              <g key={`cat-${cat}`}>
+                <line x1={taskX - 100} y1={y} x2={taskX - 30} y2={y} stroke={info.color} strokeWidth="2" opacity="0.6" />
+                <text x={taskX - 100} y={y - 4} fontSize="9" fontWeight="700" fill={info.color} letterSpacing="1">
+                  {info.label.toUpperCase()}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Edges PRIMAIRE (avec arrowhead par catégorie) */}
+          {tasks.map((taskKey) => {
+            if (!isTaskVisible(taskKey)) return null;
+            const m = mappings[taskKey];
+            if (!m) return null;
+            const provIdx = enabledProviders.findIndex(p => p.id === m.primary.providerId);
+            if (provIdx === -1 || !isProviderVisible(m.primary.providerId)) return null;
+            const cat = TASK_CATEGORY[taskKey].category;
+            const isHighlighted = selectedTask === taskKey || selectedProvider === m.primary.providerId;
+            const x1 = taskX + 90;
+            const y1 = taskPositions[taskKey];
+            const x2 = providerX - 95;
+            const y2 = providerY(provIdx);
+            const cx = (x1 + x2) / 2;
+            const d = `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
+            const stroke = isHighlighted ? '#fbbf24' : CATEGORIES_LABELS[cat].color;
+            const arrowId = isHighlighted ? 'arrow-highlight' : `arrow-${cat}`;
+            return (
+              <g key={taskKey}>
+                <path
+                  d={d}
+                  fill="none"
+                  stroke={stroke}
+                  strokeWidth={isHighlighted ? '3' : '2'}
+                  opacity={isHighlighted ? 1 : 0.7}
+                  markerEnd={`url(#${arrowId})`}
+                  style={{ filter: isHighlighted ? 'drop-shadow(0 0 6px #fbbf24)' : 'none', transition: 'all 0.3s' }}
+                />
+                {pings[m.primary.providerId]?.ok && isHighlighted && (
+                  <circle r="4" fill="#fbbf24">
+                    <animateMotion dur="2s" repeatCount="indefinite" path={d} />
+                  </circle>
+                )}
+              </g>
+            );
+          })}
+
+          {/* Edges FALLBACK (gris pointillé) */}
+          {selectedTask && tasks.filter(t => t === selectedTask).map((taskKey) => {
+            const m = mappings[taskKey];
+            if (!m) return null;
+            return m.fallback.slice(0, 1).map((fb, fi) => {
+              const provIdx = enabledProviders.findIndex(p => p.id === fb.providerId);
+              if (provIdx === -1) return null;
+              const x1 = taskX + 90;
+              const y1 = taskPositions[taskKey];
+              const x2 = providerX - 95;
+              const y2 = providerY(provIdx);
+              const cx = (x1 + x2) / 2;
+              return (
+                <path
+                  key={`${taskKey}-fb-${fi}`}
+                  d={`M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`}
+                  fill="none"
+                  stroke="#71717a"
+                  strokeWidth="1.5"
+                  strokeDasharray="6 4"
+                  markerEnd="url(#arrow-fallback)"
+                  opacity="0.7"
+                />
+              );
+            });
+          })}
+
+          {/* Tâches (gauche) — clickable */}
+          {tasks.map((taskKey) => {
+            const info = TASK_LABELS[taskKey];
+            const cat = TASK_CATEGORY[taskKey];
+            const visible = isTaskVisible(taskKey);
+            const isSelected = selectedTask === taskKey;
+            return (
+              <g
+                key={taskKey}
+                transform={`translate(${taskX - 90}, ${taskPositions[taskKey] - 13})`}
+                style={{ cursor: 'pointer', opacity: visible ? 1 : 0.2, transition: 'opacity 0.3s' }}
+                onClick={() => setSelectedTask(isSelected ? null : taskKey)}
+              >
+                <rect
+                  width="180"
+                  height="26"
+                  rx="13"
+                  fill={isSelected ? cat.color : '#18181b'}
+                  stroke={cat.color}
+                  strokeWidth={isSelected ? '2' : '1'}
+                />
+                <text x="14" y="17" fill={isSelected ? '#0a0a0f' : '#fafafa'} fontSize="11" fontWeight="600">
+                  {info.emoji} {info.label}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Providers (droite) — clickable */}
+          {enabledProviders.map((p, i) => {
+            const ping = pings[p.id];
+            const c = PROVIDER_COLORS[p.type] || '#a855f7';
+            const visible = isProviderVisible(p.id);
+            const isSelected = selectedProvider === p.id;
+            return (
+              <g
+                key={p.id}
+                transform={`translate(${providerX - 95}, ${providerY(i) - 16})`}
+                style={{ cursor: 'pointer', opacity: visible ? 1 : 0.25, transition: 'opacity 0.3s' }}
+                onClick={() => setSelectedProvider(isSelected ? null : p.id)}
+              >
+                <rect
+                  width="190"
+                  height="32"
+                  rx="16"
+                  fill={isSelected ? c : '#18181b'}
+                  stroke={c}
+                  strokeWidth={isSelected ? '2' : '1.5'}
+                />
+                <circle cx="14" cy="16" r="5" fill={ping?.ok ? '#10b981' : (ping?.error ? '#ef4444' : '#71717a')}>
+                  {ping?.ok && <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite" />}
+                </circle>
+                <text x="26" y="14" fill={isSelected ? '#0a0a0f' : c} fontSize="11" fontWeight="700">
+                  {p.label.length > 22 ? p.label.slice(0, 21) + '…' : p.label}
+                </text>
+                <text x="26" y="26" fill={isSelected ? '#0a0a0f99' : '#a1a1aa'} fontSize="9">
+                  {ping?.latencyMs != null ? `${ping.latencyMs}ms · ${ping.models?.length || 0} mod.` : (ping?.error || 'non testé')}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* Tooltip flottant */}
+        {hoverInfo && (
+          <div
+            className="absolute z-10 bg-zinc-900 border border-fuchsia-500/40 rounded-lg p-2 text-xs shadow-2xl pointer-events-none"
+            style={{ left: hoverInfo.x + 12, top: hoverInfo.y + 12, maxWidth: 240 }}
+            dangerouslySetInnerHTML={{ __html: hoverInfo.html }}
+          />
+        )}
+      </div>
+
+      <div className="border-t border-zinc-800 p-3 text-[10px] text-zinc-500 flex flex-wrap gap-x-5 gap-y-1">
+        <span>💡 <strong>Click une tâche</strong> → voir son provider primaire + fallback</span>
+        <span>💡 <strong>Click un provider</strong> → voir toutes les tâches qu'il sert</span>
+        <span>💡 <strong>Toggle catégorie</strong> → masquer/afficher</span>
+        {selectedTask && (
+          <span className="text-fuchsia-300 font-bold">
+            Sélection : {TASK_LABELS[selectedTask].label}
+          </span>
+        )}
+        {selectedProvider && (
+          <span className="text-fuchsia-300 font-bold">
+            Sélection : {providers.find(p => p.id === selectedProvider)?.label}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
