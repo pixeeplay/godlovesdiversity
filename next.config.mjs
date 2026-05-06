@@ -66,8 +66,8 @@ const nextConfig = {
   },
   async rewrites() {
     return [
-      // /rapport → fichier statique HTML (zéro SSR, zéro middleware i18n, garantit le rendu)
-      { source: '/rapport', destination: '/rapport.html' }
+      // /rapport → API dynamique qui lit la DB live (HTML brut, zéro layout SSR)
+      { source: '/rapport', destination: '/api/rapport' }
     ];
   }
 };
