@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Loader2, Footprints, Sparkles, ArrowRight, Heart, Flame } from 'lucide-react';
+import { EmptyStateSeed } from './EmptyStateSeed';
 
 interface CaminoPath {
   id: string;
@@ -90,13 +91,13 @@ export function CaminoClient() {
   if (paths.length === 0) {
     return (
       <main className="container-wide py-12 max-w-4xl">
-        <div className="bg-amber-500/10 border border-amber-500/40 rounded-2xl p-8 text-center">
-          <Footprints size={36} className="text-amber-400 mx-auto mb-3" />
-          <h1 className="font-display font-bold text-2xl mb-2">Camino virtuel — bientôt</h1>
-          <p className="text-sm text-amber-200/80 max-w-xl mx-auto">
-            5 chemins de pèlerinage seront pré-remplis prochainement. Admin : <code className="bg-amber-500/20 px-1 rounded">POST /api/admin/seed-camino</code> pour seed initial.
-          </p>
-        </div>
+        <EmptyStateSeed
+          emoji="🚶"
+          title="Camino virtuel — pas encore initialisé"
+          description="Cliquer ci-dessous pour pré-remplir 5 chemins de pèlerinage : Compostelle (800 km · 10 étapes), Jérusalem (200 km · 7 étapes), Bénarès (50 km · 6 étapes), Shikoku 88 temples (1200 km · 5 étapes), Hajj symbolique (100 km · 6 étapes). Total ~36 étapes avec versets sacrés."
+          seedEndpoint="/api/admin/seed-camino"
+          seedLabel="🚶 Initialiser les 5 chemins maintenant"
+        />
       </main>
     );
   }

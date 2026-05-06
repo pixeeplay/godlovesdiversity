@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Loader2, HandHeart, MapPin, Mail, Phone, Globe, CheckCircle2, Send, X } from 'lucide-react';
+import { EmptyStateSeed } from './EmptyStateSeed';
 
 const FAITHS = [
   { id: 'catholic',   label: 'Catholique',   emoji: '✝️' },
@@ -101,14 +102,19 @@ export function OfficiantsClient() {
       {loading ? (
         <div className="p-12 text-center"><Loader2 className="animate-spin mx-auto text-zinc-500" /></div>
       ) : officiants.length === 0 ? (
-        <div className="bg-amber-500/10 border border-amber-500/40 rounded-2xl p-12 text-center">
-          <HandHeart size={40} className="text-amber-400 mx-auto mb-3" />
-          <h2 className="font-bold text-amber-200">Annuaire en construction</h2>
-          <p className="text-sm text-amber-300/80 mt-2 max-w-xl mx-auto">
-            Aucun officiant ne correspond encore à ce filtre. Tu es officiant·e LGBT-friendly ?
-            <a href="/contact?sujet=Inscription+officiant" className="text-fuchsia-400 hover:underline ml-1">Inscris-toi</a>.
-          </p>
-        </div>
+        <>
+          <EmptyStateSeed
+            emoji="🤝"
+            title="Annuaire en construction"
+            description="Cliquer ci-dessous pour pré-remplir 12 officiant·es LGBT-friendly de référence : Père James Martin SJ (catho US), David & Jonathan (catho FR), CCI (protestant FR), Rabbi Steven Greenberg (juif US), Beit Haverim (juif FR), Beit Simchat Torah (juif NYC), HM2F (musulman FR), Imam Zahed, Imame Seyran Ateş (Berlin), Galva-108 (hindou), Sangha Inclusive Européenne (bouddhiste). Chacun avec services + langues + bio."
+            seedEndpoint="/api/admin/seed-officiants"
+            seedLabel="🤝 Initialiser l'annuaire (12 officiant·es)"
+          />
+          <div className="mt-4 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-xl p-4 text-sm text-fuchsia-200 text-center">
+            🌟 Tu es officiant·e LGBT-friendly et veux figurer dans l'annuaire ?
+            <a href="/contact?sujet=Inscription+officiant" className="underline font-bold ml-1">Inscris-toi gratuitement</a>.
+          </div>
+        </>
       ) : (
         <div className="grid sm:grid-cols-2 gap-3">
           {officiants.map(o => {

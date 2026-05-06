@@ -245,40 +245,112 @@ function EventRow({ e, venues, busy, onEdit, onDelete, onToggle }: {
 }) {
   const v = venues.find(v => v.id === e.venueId);
   const start = new Date(e.startsAt);
+  const end = (e as any).endsAt ? new Date((e as any).endsAt) : null;
+  const tags: string[] = Array.isArray((e as any).tags) ? (e as any).tags : [];
+  const externalSource = (e as any).externalSource as string | undefined;
+  const isSeed = externalSource === 'gld-seed';
+  const description = (e as any).description as string | undefined;
+  const country = (e as any).country as string | undefined;
+  const venueId = e.venueId;
+
+  // Lien vers l'agenda public (si publié)
+  const publicLink = e.published ? `/agenda#event-${e.id}` : null;
+
   return (
-    <div className={`bg-zinc-900 border border-zinc-800 rounded-xl p-3 flex items-center gap-3 ${e.cancelled ? 'opacity-60' : ''}`}>
-      <div className="w-12 text-center bg-zinc-950 rounded-lg p-1.5 border border-zinc-800 shrink-0">
-        <div className="text-lg font-bold text-fuchsia-400 leading-none">{start.getDate()}</div>
-        <div className="text-[9px] text-zinc-400 uppercase mt-0.5">{start.toLocaleDateString('fr-FR', { month: 'short' })}</div>
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="font-bold text-sm truncate">
-          {e.cancelled && <span className="text-red-400 mr-1">[ANNULÉ]</span>}
-          {e.title}
+    <div className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 ${e.cancelled ? 'opacity-60' : ''} hover:border-zinc-700 transition`}>
+      <div className="flex items-start gap-3">
+        {/* Date */}
+        <div className="w-14 text-center bg-zinc-950 rounded-lg p-2 border border-zinc-800 shrink-0">
+          <div className="text-xl font-bold text-fuchsia-400 leading-none">{start.getDate()}</div>
+          <div className="text-[10px] text-zinc-400 uppercase mt-1">{start.toLocaleDateString('fr-FR', { month: 'short' })}</div>
+          <div className="text-[9px] text-zinc-600 mt-0.5">{start.getFullYear()}</div>
         </div>
-        <div className="text-[10px] text-zinc-500 flex items-center gap-2 flex-wrap mt-0.5">
-          <span>{start.toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</span>
-          {v && <span className="text-violet-400">{v.name}</span>}
-          {e.city && <span className="flex items-center gap-0.5"><MapPin size={9} /> {e.city}</span>}
-          {e.url && <a href={e.url} target="_blank" rel="noopener noreferrer" className="text-fuchsia-400 hover:underline flex items-center gap-0.5"><ExternalLink size={9} /> lien</a>}
-          <span className={e.published ? 'text-emerald-400' : 'text-amber-400'}>{e.published ? 'publié' : 'brouillon'}</span>
+
+        {/* Contenu principal */}
+        <div className="flex-1 min-w-0">
+          {/* Title row */}
+          <div className="flex items-center gap-2 flex-wrap mb-1">
+            {e.cancelled && <span className="text-rose-400 text-[10px] font-bold bg-rose-500/10 px-1.5 py-0.5 rounded">ANNULÉ</span>}
+            {isSeed && <span className="text-violet-300 text-[10px] font-bold bg-violet-500/15 px-1.5 py-0.5 rounded" title="Importé depuis le seed mondial">🌍 SEED</span>}
+            {externalSource === 'facebook' && <span className="text-blue-300 text-[10px] font-bold bg-blue-500/15 px-1.5 py-0.5 rounded">📘 FB</span>}
+            <h4 className="font-bold text-sm">{e.title}</h4>
+          </div>
+
+          {/* Description (1ʳᵉ ligne) */}
+          {description && (
+            <p className="text-xs text-zinc-300 line-clamp-2 mb-2">{description}</p>
+          )}
+
+          {/* Meta */}
+          <div className="text-[11px] text-zinc-500 flex items-center gap-3 flex-wrap">
+            <span className="flex items-center gap-0.5">
+              🕒 {start.toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+              {end && (start.getDate() !== end.getDate() || start.getMonth() !== end.getMonth())
+                ? <span className="ml-1 text-amber-400">→ {end.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}</span>
+                : null}
+            </span>
+            {v && <span className="text-violet-400 font-bold">📍 {v.name}</span>}
+            {e.city && <span className="flex items-center gap-0.5"><MapPin size={10} /> {e.city}{country ? `, ${country}` : ''}</span>}
+            {!v && country && !e.city && <span className="flex items-center gap-0.5"><Globe size={10} /> {country}</span>}
+            <span className={e.published ? 'text-emerald-400' : 'text-amber-400'}>
+              ● {e.published ? 'publié' : 'brouillon'}
+            </span>
+          </div>
+
+          {/* Tags */}
+          {tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-2">
+              {tags.slice(0, 6).map(t => (
+                <span key={t} className="text-[9px] px-1.5 py-0.5 rounded-full bg-fuchsia-500/15 text-fuchsia-200 border border-fuchsia-500/20">
+                  {t}
+                </span>
+              ))}
+              {tags.length > 6 && <span className="text-[9px] text-zinc-500">+{tags.length - 6}</span>}
+            </div>
+          )}
+
+          {/* Liens utiles */}
+          <div className="flex flex-wrap gap-2 mt-2 text-[11px]">
+            {e.url && (
+              <a href={e.url} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline flex items-center gap-1">
+                <ExternalLink size={10} /> Site / billetterie
+              </a>
+            )}
+            {publicLink && (
+              <a href={publicLink} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline flex items-center gap-1">
+                <ExternalLink size={10} /> Voir sur agenda public
+              </a>
+            )}
+            {v && (
+              <a href={`/lieux/${(v as any).slug || v.id}`} target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline flex items-center gap-1">
+                <ExternalLink size={10} /> Fiche lieu
+              </a>
+            )}
+            {venueId == null && country && (
+              <span className="text-[10px] text-zinc-600 italic">⚠ Pas attaché à un venue (event global)</span>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="flex gap-1 shrink-0">
-        <button onClick={() => onToggle(e.id, 'published', !e.published)} disabled={busy === e.id} className="text-[10px] px-2 py-1 rounded-full bg-zinc-800 hover:bg-zinc-700">
-          {e.published ? 'Dépublier' : 'Publier'}
-        </button>
-        {!e.cancelled && (
-          <button onClick={() => onToggle(e.id, 'cancelled', true)} disabled={busy === e.id} className="text-[10px] px-2 py-1 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-200">
-            Annuler
+
+        {/* Actions */}
+        <div className="flex flex-col gap-1 shrink-0">
+          <button onClick={() => onToggle(e.id, 'published', !e.published)} disabled={busy === e.id} className="text-[10px] px-2.5 py-1 rounded-full bg-zinc-800 hover:bg-zinc-700 whitespace-nowrap">
+            {e.published ? 'Dépublier' : 'Publier'}
           </button>
-        )}
-        <button onClick={() => onEdit(e)} className="bg-violet-500/20 hover:bg-violet-500/30 text-violet-200 p-1.5 rounded-full" title="Modifier">
-          <Edit3 size={11} />
-        </button>
-        <button onClick={() => onDelete(e.id)} disabled={busy === e.id} className="text-zinc-500 hover:text-red-400 p-1.5" title="Supprimer">
-          {busy === e.id ? <Loader2 size={11} className="animate-spin" /> : <Trash2 size={11} />}
-        </button>
+          {!e.cancelled && (
+            <button onClick={() => onToggle(e.id, 'cancelled', true)} disabled={busy === e.id} className="text-[10px] px-2.5 py-1 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 whitespace-nowrap">
+              Annuler
+            </button>
+          )}
+          <div className="flex gap-1 justify-end">
+            <button onClick={() => onEdit(e)} className="bg-violet-500/20 hover:bg-violet-500/30 text-violet-200 p-1.5 rounded-full" title="Modifier">
+              <Edit3 size={11} />
+            </button>
+            <button onClick={() => onDelete(e.id)} disabled={busy === e.id} className="text-zinc-500 hover:text-red-400 p-1.5" title="Supprimer">
+              {busy === e.id ? <Loader2 size={11} className="animate-spin" /> : <Trash2 size={11} />}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

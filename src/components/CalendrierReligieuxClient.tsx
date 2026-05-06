@@ -1,6 +1,7 @@
 'use client';
 import { useMemo, useState } from 'react';
 import { Calendar, Filter, Heart, Search, ChevronDown, ChevronRight, Globe, Sparkles } from 'lucide-react';
+import { EmptyStateSeed } from './EmptyStateSeed';
 
 interface ReligiousEvent {
   id: string;
@@ -138,14 +139,13 @@ export function CalendrierReligieuxClient({ events: initial }: { events: Religio
       </section>
 
       {events.length === 0 ? (
-        <div className="bg-amber-500/10 border border-amber-500/40 rounded-2xl p-8 text-center">
-          <Sparkles size={32} className="text-amber-400 mx-auto mb-3" />
-          <h2 className="font-bold text-amber-200">Calendrier en cours d'initialisation</h2>
-          <p className="text-sm text-amber-300/80 mt-2">Le calendrier sera pré-rempli prochainement avec ~70 fêtes religieuses 2026 et 2027.</p>
-          <p className="text-xs text-amber-200/70 mt-3">
-            Admin : POST <code className="bg-amber-500/20 px-1 rounded">/api/admin/seed-religious-events</code> pour seed initial.
-          </p>
-        </div>
+        <EmptyStateSeed
+          emoji="🌍"
+          title="Calendrier en cours d'initialisation"
+          description="Cliquer ci-dessous pour pré-remplir 50 fêtes religieuses pour 2026 et 2027 : Christianisme (Pâques catholique/orthodoxe, Pentecôte, Noël, Avent, Réformation), Islam (Ramadan, Aïd al-Fitr, Aïd al-Adha, Mawlid, Achoura, Laylat al-Qadr), Judaïsme (Pourim, Pessah, Chavouot, Roch Hachana, Yom Kippour, Soukkot, Hanouka), Bouddhisme (Vesak, Losar, Magha Puja, Asalha Puja, Ulambana), Hindouisme (Holi, Diwali, Navratri, Ganesh, Krishna), Sikhisme (Vaisakhi, Guru Nanak), Inter-religieux."
+          seedEndpoint="/api/admin/seed-religious-events"
+          seedLabel="📅 Initialiser le calendrier (50 fêtes)"
+        />
       ) : view === 'list' ? (
         <>
           {upcoming.length > 0 && (
