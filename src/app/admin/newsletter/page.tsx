@@ -5,8 +5,9 @@ import { prisma } from '@/lib/prisma';
 import { NewsletterEditor } from '@/components/admin/NewsletterEditor';
 import { SubscribersList } from '@/components/admin/SubscribersList';
 import { EmailDeliveryPanel } from '@/components/admin/EmailDeliveryPanel';
+import { CampaignHistoryList } from '@/components/admin/CampaignHistoryList';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
-import { Mail, Send, CheckCircle2, AlertCircle, Users, Clock } from 'lucide-react';
+import { Mail, Send, CheckCircle2, AlertCircle, Users, Clock, History } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,8 +15,7 @@ export default async function NewsletterAdmin() {
   const s = await getServerSession(authOptions);
   if (!s) redirect('/admin/login');
 
-  const [campaigns, active, pending, unsub, bounced] = await Promise.all([
-    prisma.newsletterCampaign.findMany({ orderBy: { createdAt: 'desc' }, take: 20 }),
+  const [active, pending, unsub, bounced] = await Promise.all([
     prisma.newsletterSubscriber.count({ where: { status: 'ACTIVE' } }),
     prisma.newsletterSubscriber.count({ where: { status: 'PENDING' } }),
     prisma.newsletterSubscriber.count({ where: { status: 'UNSUBSCRIBED' } }),
@@ -54,38 +54,14 @@ export default async function NewsletterAdmin() {
       </h2>
       <NewsletterEditor />
 
-      {/* HISTORIQUE CAMPAGNES */}
-      <h2 className="text-xl font-bold mt-8">Historique des campagnes</h2>
-      <div className="space-y-2">
-        {campaigns.length === 0 && (
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 text-center text-zinc-500">
-            Aucune campagne envoyée pour l'instant.
-          </div>
-        )}
-        {campaigns.map((c) => (
-          <div key={c.id} className="bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 flex items-center justify-between">
-            <div>
-              <div className="font-medium">{c.subject}</div>
-              <div className="text-xs text-zinc-500">
-                {new Date(c.createdAt).toLocaleString('fr-FR')}
-                {c.sentAt && ` · envoyée le ${new Date(c.sentAt).toLocaleString('fr-FR')}`}
-              </div>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <span className="text-zinc-400">{c.recipients} destinataires</span>
-              <span className={`text-xs px-2 py-1 rounded font-bold ${
-                c.status === 'SENT'
-                  ? 'bg-emerald-500/10 text-emerald-300'
-                  : c.status === 'FAILED'
-                  ? 'bg-red-500/10 text-red-300'
-                  : 'bg-zinc-700 text-zinc-300'
-              }`}>
-                {c.status}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* HISTORIQUE CAMPAGNES — vrai gestionnaire avec preview, test, schedule, etc. */}
+      <h2 className="text-xl font-bold mt-8 flex items-center gap-2">
+        <History size={18} className="text-brand-pink" /> Historique des campagnes
+      </h2>
+      <p className="text-xs text-zinc-500 -mt-3">
+        Aperçu, test, programmation, dupliquer, renvoyer — tout est possible depuis chaque ligne.
+      </p>
+      <CampaignHistoryList defaultTestEmail={s.user?.email || ''} />
     </div>
   );
 }

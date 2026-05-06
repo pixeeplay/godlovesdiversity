@@ -39,17 +39,25 @@ export async function POST(req: Request) {
     : [];
 
   let recipientEmails: string[] = [];
+  // target: 'all' (default, ACTIVE + manuel) | 'manual' (manuel uniquement)
+  const target = body.target === 'manual' ? 'manual' : 'all';
   if (body.send) {
-    const subs = await prisma.newsletterSubscriber.findMany({
-      where: { status: 'ACTIVE' },
-      select: { email: true }
-    });
-    const dbEmails = subs.map((s) => s.email);
-    recipientEmails = Array.from(new Set([...dbEmails, ...manualEmails]));
+    if (target === 'manual') {
+      recipientEmails = Array.from(new Set(manualEmails));
+    } else {
+      const subs = await prisma.newsletterSubscriber.findMany({
+        where: { status: 'ACTIVE' },
+        select: { email: true }
+      });
+      const dbEmails = subs.map((s) => s.email);
+      recipientEmails = Array.from(new Set([...dbEmails, ...manualEmails]));
+    }
 
     if (recipientEmails.length === 0) {
       return NextResponse.json({
-        error: 'Aucun destinataire. Ajoute des abonnés ACTIVE ou des emails manuels.'
+        error: target === 'manual'
+          ? 'Aucun email manuel ajouté à la liste.'
+          : 'Aucun destinataire. Ajoute des abonnés ACTIVE ou des emails manuels.'
       }, { status: 400 });
     }
   }

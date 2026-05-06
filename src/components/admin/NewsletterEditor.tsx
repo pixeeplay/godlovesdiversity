@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Send, Save, Sparkles, Loader2, Users, Plus, X, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Send, Save, Sparkles, Loader2, Users, Plus, X, CheckCircle2, AlertCircle, Eye, FlaskConical, Calendar } from 'lucide-react';
 
 type ProgressData = {
   campaign: { id: string; subject: string; status: string; recipients: number };
@@ -17,6 +17,15 @@ export function NewsletterEditor() {
   const [aiBusy, setAiBusy] = useState(false);
   const [msg, setMsg] = useState('');
   const [activeCount, setActiveCount] = useState<number>(0);
+
+  // Cible d'envoi : tous abonnés ACTIVE ou seulement les emails manuels
+  const [target, setTarget] = useState<'all' | 'manual'>('all');
+  // Modes complémentaires
+  const [showPreview, setShowPreview] = useState(false);
+  const [testEmail, setTestEmail] = useState('');
+  const [testBusy, setTestBusy] = useState(false);
+  const [scheduleAt, setScheduleAt] = useState('');
+  const [scheduleBusy, setScheduleBusy] = useState(false);
 
   // Suivi de l'envoi en cours
   const [activeCampaignId, setActiveCampaignId] = useState<string | null>(null);
@@ -71,7 +80,8 @@ export function NewsletterEditor() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           subject, htmlContent: html, send,
-          manualRecipients: manualEmails
+          manualRecipients: manualEmails,
+          target
         })
       });
       const j = await r.json();
@@ -84,6 +94,55 @@ export function NewsletterEditor() {
       setMsg(`❌ ${e?.message || 'Erreur'}`);
     }
     setBusy(false);
+  }
+
+  async function sendTest() {
+    if (!testEmail.trim() || !testEmail.includes('@')) { setMsg('⚠ Email de test invalide'); return; }
+    if (!subject.trim() || !html.trim()) { setMsg('⚠ Sujet et contenu requis pour tester'); return; }
+    setTestBusy(true); setMsg('');
+    try {
+      const r = await fetch('/api/admin/newsletter/test-send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subject, htmlContent: html, to: testEmail })
+      });
+      const j = await r.json();
+      setMsg(r.ok && j.ok ? `✓ Test envoyé à ${testEmail}` : `⚠ ${j.error || 'Échec'}`);
+    } catch (e: any) {
+      setMsg(`⚠ ${e?.message || 'Erreur'}`);
+    }
+    setTestBusy(false);
+  }
+
+  async function scheduleSend() {
+    if (!subject.trim() || !html.trim()) { setMsg('⚠ Sujet et contenu requis'); return; }
+    if (!scheduleAt) { setMsg('⚠ Choisis une date'); return; }
+    const when = new Date(scheduleAt);
+    if (when.getTime() < Date.now()) { setMsg('⚠ Date dans le passé'); return; }
+    setScheduleBusy(true); setMsg('');
+    try {
+      // 1. Crée le draft
+      const r1 = await fetch('/api/admin/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subject, htmlContent: html, send: false, manualRecipients: manualEmails })
+      });
+      const j1 = await r1.json();
+      if (!r1.ok) throw new Error(j1.error || 'create-failed');
+      // 2. Le passe en SCHEDULED
+      const r2 = await fetch(`/api/admin/newsletter/${j1.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'schedule', scheduledAt: when.toISOString() })
+      });
+      const j2 = await r2.json();
+      if (!r2.ok) throw new Error(j2.error || 'schedule-failed');
+      setMsg(`📅 Programmée pour ${when.toLocaleString('fr-FR')} — visible dans l'historique.`);
+      setScheduleAt('');
+    } catch (e: any) {
+      setMsg(`⚠ ${e?.message || 'Erreur'}`);
+    }
+    setScheduleBusy(false);
   }
 
   async function aiDraft() {
@@ -103,7 +162,7 @@ export function NewsletterEditor() {
     setAiBusy(false);
   }
 
-  const totalRecipients = activeCount + manualEmails.length;
+  const totalRecipients = target === 'manual' ? manualEmails.length : activeCount + manualEmails.length;
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4">
@@ -152,6 +211,29 @@ export function NewsletterEditor() {
           </span>
         </div>
 
+        {/* Sélecteur de cible */}
+        <div className="flex flex-wrap gap-2 pb-1">
+          <button
+            type="button"
+            onClick={() => setTarget('all')}
+            className={`text-xs px-3 py-1.5 rounded-full font-bold flex items-center gap-1.5 transition ${
+              target === 'all' ? 'bg-emerald-500 text-black' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
+            }`}
+          >
+            <Users size={11} /> Tous les actifs ({activeCount}) {manualEmails.length > 0 && `+ ${manualEmails.length} manuel${manualEmails.length > 1 ? 's' : ''}`}
+          </button>
+          <button
+            type="button"
+            onClick={() => setTarget('manual')}
+            disabled={manualEmails.length === 0}
+            className={`text-xs px-3 py-1.5 rounded-full font-bold flex items-center gap-1.5 transition disabled:opacity-50 ${
+              target === 'manual' ? 'bg-violet-500 text-white' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
+            }`}
+          >
+            <FlaskConical size={11} /> Liste de diffusion personnalisée seulement ({manualEmails.length})
+          </button>
+        </div>
+
         {/* Add manual email */}
         <div>
           <span className="text-[11px] uppercase font-bold text-zinc-500 block mb-1">
@@ -187,20 +269,109 @@ export function NewsletterEditor() {
         </div>
       </div>
 
+      {/* TEST + SCHEDULE inline panels */}
+      <div className="grid sm:grid-cols-2 gap-3">
+        {/* TEST */}
+        <div className="bg-amber-500/5 border border-amber-500/30 rounded-xl p-3">
+          <div className="flex items-center gap-1.5 mb-2">
+            <FlaskConical size={12} className="text-amber-300" />
+            <span className="text-[10px] uppercase font-bold text-amber-200 tracking-wider">Envoyer un test</span>
+          </div>
+          <div className="flex gap-2">
+            <input
+              value={testEmail}
+              onChange={(e) => setTestEmail(e.target.value)}
+              placeholder="moi@exemple.com"
+              className="flex-1 bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs outline-none focus:border-amber-500"
+            />
+            <button
+              onClick={sendTest}
+              disabled={testBusy || !testEmail.includes('@') || !subject || !html}
+              className="bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-black text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1"
+            >
+              {testBusy ? <Loader2 size={11} className="animate-spin" /> : <Send size={11} />}
+              Tester
+            </button>
+          </div>
+          <p className="text-[10px] text-amber-200/70 mt-1">Marque [TEST] · n'affecte pas la liste réelle.</p>
+        </div>
+
+        {/* SCHEDULE */}
+        <div className="bg-blue-500/5 border border-blue-500/30 rounded-xl p-3">
+          <div className="flex items-center gap-1.5 mb-2">
+            <Calendar size={12} className="text-blue-300" />
+            <span className="text-[10px] uppercase font-bold text-blue-200 tracking-wider">Programmer l'envoi</span>
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="datetime-local"
+              value={scheduleAt}
+              onChange={(e) => setScheduleAt(e.target.value)}
+              min={new Date(Date.now() + 5 * 60_000).toISOString().slice(0, 16)}
+              className="flex-1 bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs outline-none focus:border-blue-500"
+            />
+            <button
+              onClick={scheduleSend}
+              disabled={scheduleBusy || !scheduleAt || !subject || !html}
+              className="bg-blue-500 hover:bg-blue-400 disabled:opacity-50 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1"
+            >
+              {scheduleBusy ? <Loader2 size={11} className="animate-spin" /> : <Calendar size={11} />}
+              Programmer
+            </button>
+          </div>
+          <p className="text-[10px] text-blue-200/70 mt-1">Cron auto envoie au moment voulu.</p>
+        </div>
+      </div>
+
       {/* ACTIONS */}
-      <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-zinc-800">
+      <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-zinc-800">
+        <button
+          disabled={busy}
+          onClick={() => setShowPreview(true)}
+          className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-4 py-2 rounded-full text-sm flex items-center gap-2"
+        >
+          <Eye size={14} /> Aperçu
+        </button>
         <button disabled={busy} onClick={() => save(false)}
           className="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-4 py-2 rounded-full text-sm flex items-center gap-2">
           <Save size={14} /> Enregistrer brouillon
         </button>
         <button disabled={busy || !subject || totalRecipients === 0}
           onClick={() => save(true)}
-          className="bg-brand-pink hover:bg-pink-600 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-full text-sm flex items-center gap-2">
+          className="bg-gradient-to-r from-pink-500 to-violet-600 hover:opacity-90 disabled:opacity-50 text-white font-bold px-5 py-2 rounded-full text-sm flex items-center gap-2">
           {busy ? <Loader2 className="animate-spin" size={14} /> : <Send size={14} />}
-          Envoyer à {totalRecipients} destinataire{totalRecipients > 1 ? 's' : ''}
+          Envoyer maintenant à {totalRecipients} destinataire{totalRecipients > 1 ? 's' : ''}
         </button>
         {msg && <span className="text-sm text-zinc-300">{msg}</span>}
       </div>
+
+      {/* PREVIEW MODAL */}
+      {showPreview && (
+        <div className="fixed inset-0 z-[150] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowPreview(false)}>
+          <div className="bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <header className="flex items-center justify-between border-b border-zinc-800 px-5 py-3 sticky top-0 bg-zinc-950 z-10">
+              <h3 className="font-bold text-white truncate flex items-center gap-2"><Eye size={14} /> Aperçu : {subject || '(sans sujet)'}</h3>
+              <button onClick={() => setShowPreview(false)} className="text-zinc-400 hover:text-white p-1"><X size={16} /></button>
+            </header>
+            <div className="p-5">
+              <div className="bg-zinc-100 border border-zinc-300 rounded-lg overflow-hidden">
+                <div className="bg-zinc-200 px-4 py-2 border-b border-zinc-300 text-zinc-700 text-xs">
+                  <strong>De :</strong> God Loves Diversity &nbsp;·&nbsp; <strong>Sujet :</strong> {subject || '(vide)'}
+                </div>
+                <iframe
+                  srcDoc={`<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{font-family:system-ui,-apple-system,sans-serif;color:#222;padding:24px;line-height:1.6;background:#fff;margin:0}</style></head><body>${html}</body></html>`}
+                  className="w-full bg-white"
+                  style={{ height: '60vh', border: 'none' }}
+                  sandbox="allow-same-origin"
+                />
+              </div>
+              <p className="text-[11px] text-zinc-500 mt-3 flex items-center gap-1.5">
+                <Eye size={11} /> Aperçu rendu HTML — les images sont chargées dans la sandbox, les clients mail réels peuvent les bloquer par défaut.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* PROGRESSION ENVOI */}
       {progress && (
