@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { BookOpen, Sparkles, Send, ExternalLink, FileText, Video, Loader2, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Sparkles, Send, ExternalLink, FileText, Video, Loader2, RefreshCw, CheckCircle2, Mail } from 'lucide-react';
 
 const AUDIENCES = [
   { id: 'user' as const, label: 'Utilisateur', emoji: '👤', desc: 'Manuel grand public, ton chaleureux' },
@@ -167,6 +167,9 @@ export function ManualsAdminClient() {
         )}
       </div>
 
+      {/* EMAIL QUOTIDIEN CONFIGURABLE */}
+      <EmailDailySection />
+
       {/* INFO CRON */}
       <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-4 text-xs text-cyan-200">
         <p className="font-bold mb-2">⏰ Cron Coolify recommandés (à ajouter dans Scheduled Tasks) :</p>
@@ -176,8 +179,11 @@ wget -qO- --header="X-Cron-Secret: $CRON_SECRET" --post-data="" "http://localhos
 
 manual-evening · 0 18 * * *
 wget -qO- --header="X-Cron-Secret: $CRON_SECRET" --post-data="" "http://localhost:3000/api/admin/ai/manual/generate"
+
+manual-email-daily · 0 7 * * *
+wget -qO- --header="X-Cron-Secret: $CRON_SECRET" --post-data="" "http://localhost:3000/api/admin/ai/manual/email?send=1"
         </pre>
-        <p className="mt-2 text-cyan-300/70">Le 1er publie sur Telegram (annonce du jour), le 2nd régénère silencieusement le soir.</p>
+        <p className="mt-2 text-cyan-300/70">Le 1er publie sur Telegram, le 2nd régénère, le 3e envoie par email à l'adresse configurée ci-dessus (silencieux si désactivé).</p>
       </div>
 
       {/* LIENS PUBLICS */}
@@ -191,5 +197,117 @@ wget -qO- --header="X-Cron-Secret: $CRON_SECRET" --post-data="" "http://localhos
         <p className="mt-2 text-zinc-500">Ajoute <code>?format=markdown</code> ou <code>?format=video</code> pour les autres formats.</p>
       </div>
     </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// SECTION EMAIL QUOTIDIEN
+// ─────────────────────────────────────────────
+function EmailDailySection() {
+  const [cfg, setCfg] = useState<{ enabled: boolean; recipient: string; audience: string; hour: number; lastSentAt: string | null }>({ enabled: false, recipient: '', audience: 'admin', hour: 7, lastSentAt: null });
+  const [busy, setBusy] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [savedAt, setSavedAt] = useState(0);
+  const [sendResult, setSendResult] = useState<any>(null);
+
+  async function load() {
+    const r = await fetch('/api/admin/ai/manual/email').then((r) => r.json()).catch(() => null);
+    if (r) setCfg({ enabled: !!r.enabled, recipient: r.recipient || '', audience: r.audience || 'admin', hour: r.hour || 7, lastSentAt: r.lastSentAt });
+  }
+  useEffect(() => { load(); }, []);
+
+  async function save() {
+    setBusy(true);
+    await fetch('/api/admin/ai/manual/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cfg)
+    });
+    setBusy(false);
+    setSavedAt(Date.now());
+    setTimeout(() => setSavedAt(0), 2500);
+  }
+
+  async function sendNow() {
+    if (!cfg.recipient || !cfg.recipient.includes('@')) {
+      alert('Adresse email invalide');
+      return;
+    }
+    setSending(true);
+    setSendResult(null);
+    // Save d'abord, puis send
+    await fetch('/api/admin/ai/manual/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cfg)
+    });
+    const r = await fetch('/api/admin/ai/manual/email?send=1', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}'
+    });
+    const j = await r.json();
+    setSending(false);
+    setSendResult(j);
+    setTimeout(() => setSendResult(null), 8000);
+    load();
+  }
+
+  return (
+    <section className="bg-emerald-500/5 border border-emerald-500/30 rounded-xl p-5 space-y-3">
+      <div className="flex items-center gap-3">
+        <Mail size={20} className="text-emerald-300" />
+        <div className="flex-1">
+          <h2 className="font-bold text-lg">Envoi email quotidien</h2>
+          <p className="text-xs text-zinc-400">Reçois automatiquement le manuel chaque jour à une heure choisie. Désactivable.</p>
+        </div>
+        <label className="flex items-center gap-2 cursor-pointer text-xs">
+          <button type="button" onClick={() => setCfg((c) => ({ ...c, enabled: !c.enabled }))} className={`relative inline-flex h-7 w-12 rounded-full transition ${cfg.enabled ? 'bg-emerald-500' : 'bg-zinc-700'}`}>
+            <span className={`absolute top-0.5 h-6 w-6 bg-white rounded-full transition-transform ${cfg.enabled ? 'translate-x-5' : 'translate-x-0.5'}`} />
+          </button>
+          <span className="font-bold">{cfg.enabled ? 'Activé' : 'Désactivé'}</span>
+        </label>
+      </div>
+
+      <div className="grid sm:grid-cols-3 gap-3 pt-3 border-t border-emerald-500/20">
+        <div className="sm:col-span-2">
+          <label className="text-xs text-zinc-400 block mb-1">Adresse email destinataire</label>
+          <input type="email" value={cfg.recipient} onChange={(e) => setCfg((c) => ({ ...c, recipient: e.target.value }))} placeholder="arnaud@gredai.com" className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-sm" />
+        </div>
+        <div>
+          <label className="text-xs text-zinc-400 block mb-1">Heure d'envoi</label>
+          <input type="number" min={0} max={23} value={cfg.hour} onChange={(e) => setCfg((c) => ({ ...c, hour: parseInt(e.target.value) || 7 }))} className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-sm" />
+        </div>
+        <div className="sm:col-span-3">
+          <label className="text-xs text-zinc-400 block mb-1">Audience à envoyer</label>
+          <div className="flex gap-2">
+            {(['user', 'admin', 'superadmin'] as const).map((a) => (
+              <button key={a} type="button" onClick={() => setCfg((c) => ({ ...c, audience: a }))} className={`text-xs px-3 py-2 rounded font-bold transition ${cfg.audience === a ? 'bg-emerald-500/30 border border-emerald-400/60 text-emerald-100' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-400 border border-transparent'}`}>
+                {a === 'user' ? '👤 Utilisateur' : a === 'admin' ? '🛠 Admin' : '⚙️ Super-Admin'}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 pt-3 border-t border-emerald-500/20">
+        {savedAt > 0 && <span className="text-emerald-300 text-xs flex items-center gap-1"><CheckCircle2 size={12} /> Config sauvée</span>}
+        {cfg.lastSentAt && <span className="text-xs text-zinc-500">Dernier envoi : {new Date(cfg.lastSentAt).toLocaleString('fr-FR')}</span>}
+        <div className="ml-auto flex gap-2">
+          <button onClick={save} disabled={busy} className="bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded text-xs font-bold flex items-center gap-1 disabled:opacity-50">
+            {busy ? <Loader2 size={12} className="animate-spin" /> : '💾'} Sauvegarder config
+          </button>
+          <button onClick={sendNow} disabled={sending || !cfg.recipient.includes('@')} className="bg-emerald-500 hover:bg-emerald-400 text-black px-4 py-2 rounded text-xs font-bold flex items-center gap-1 disabled:opacity-50">
+            {sending ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />} Envoyer maintenant
+          </button>
+        </div>
+      </div>
+
+      {sendResult && (
+        <div className={`text-xs p-2 rounded ${sendResult.ok ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}`}>
+          {sendResult.ok ? `✓ Envoyé à ${sendResult.to} (audience ${sendResult.audience}, version ${sendResult.version})` : `⚠ ${sendResult.error || 'Erreur'}`}
+        </div>
+      )}
+    </section>
   );
 }

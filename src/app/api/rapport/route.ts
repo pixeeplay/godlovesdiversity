@@ -117,6 +117,7 @@ function generateHtml(s: Awaited<ReturnType<typeof loadStats>>): string {
     </div>
     <p style="margin-top:16px;">
       <button class="btn" onclick="window.print()">📄 Télécharger en PDF</button>
+      <button class="btn" onclick="location.reload()" style="background:#7f77dd;">🔄 Actualiser maintenant</button>
       <a class="btn" href="https://gld.pixeeplay.com">🌐 Voir le site</a>
     </p>
   </div>
