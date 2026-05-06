@@ -7,6 +7,7 @@ import { NeonHeart } from './NeonHeart';
 import { ThemeToggle } from './ThemeToggle';
 import { CartBadge } from './CartBadge';
 import { MegaMenuTrigger } from './MegaMenu';
+import { MegaSearch } from './MegaSearch';
 import { useSession, signOut } from 'next-auth/react';
 
 const LOCALES = ['fr', 'en', 'es', 'pt'] as const;
@@ -169,6 +170,11 @@ export function Navbar() {
           <MegaMenuTrigger label="Photos" type="gallery" locale={locale} />
           <MegaMenuTrigger label="Boutique" type="shop" locale={locale} />
         </nav>
+
+        {/* MEGA SEARCH desktop */}
+        <div className="hidden md:block flex-1 max-w-md mx-4">
+          <MegaSearch scope="public" placeholder="Rechercher un lieu, un événement…" />
+        </div>
 
         <div className="hidden lg:flex items-center gap-3">
           <CartBadge />

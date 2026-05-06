@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { AdminSidebar } from './AdminSidebar';
 import type { MenuPermissions } from '@/lib/menu-permissions';
 import { Menu as MenuIcon, X, Heart } from 'lucide-react';
+import { MegaSearch } from './MegaSearch';
 
 export function AdminShell({
   children,
@@ -62,18 +63,21 @@ export function AdminShell({
 
       {/* Contenu */}
       <div className="flex-1 min-w-0 flex flex-col">
-        {/* Topbar mobile uniquement */}
-        <header className="lg:hidden sticky top-0 z-30 bg-zinc-950/95 backdrop-blur border-b border-zinc-800 flex items-center gap-3 px-4 py-3">
+        {/* Topbar avec MegaSearch (toujours visible) */}
+        <header className="sticky top-0 z-30 bg-zinc-950/95 backdrop-blur border-b border-zinc-800 flex items-center gap-3 px-4 py-3">
           <button
             onClick={() => setMobileOpen(true)}
             aria-label="Ouvrir le menu"
-            className="p-2 -ml-2 rounded-lg hover:bg-zinc-800 active:bg-zinc-700"
+            className="lg:hidden p-2 -ml-2 rounded-lg hover:bg-zinc-800 active:bg-zinc-700"
           >
             <MenuIcon size={22} />
           </button>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 lg:hidden">
             <Heart size={18} className="text-brand-pink" />
             <span className="font-display font-bold">GLD Admin</span>
+          </div>
+          <div className="flex-1 max-w-2xl mx-auto">
+            <MegaSearch scope="admin" placeholder="Rechercher : page, lieu, événement, paramètre… (⌘K)" />
           </div>
         </header>
 
