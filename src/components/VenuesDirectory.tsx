@@ -33,7 +33,7 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
   const [country, setCountry] = useState<string>('');
   const [city, setCity] = useState<string>('');
   const [q, setQ] = useState('');
-  const [view, setView] = useState<'list' | 'map'>('list');
+  const [view, setView] = useState<'list' | 'map'>('map');
 
   const cities = useMemo(() => Array.from(new Set(venues.map(v => v.city).filter(Boolean))).sort() as string[], [venues]);
   const countries = useMemo(() => Array.from(new Set(venues.map(v => v.country).filter(Boolean))).sort() as string[], [venues]);
@@ -122,15 +122,37 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
         </div>
       </section>
 
-      {/* CARTE INTERACTIVE */}
-      {view === 'map' && (
-        <section className="mb-6">
-          <VenuesMap venues={filtered as any} />
+      {/* LAYOUT MODERNE : carte en premier + liste sidebar à droite (en mode 'map')
+          OU grille classique en mode 'list' */}
+      {view === 'map' ? (
+        <section className="grid lg:grid-cols-[1fr_380px] gap-4 mb-6">
+          {/* Carte (occupe la largeur principale) */}
+          <div className="order-2 lg:order-1">
+            <VenuesMap venues={filtered as any} />
+          </div>
+          {/* Sidebar liste : scrollable, 6-7 cartes visibles, sticky */}
+          <aside className="order-1 lg:order-2 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)]">
+            <div className="px-4 py-3 bg-gradient-to-r from-fuchsia-500/10 to-violet-500/10 border-b border-zinc-800">
+              <div className="font-bold text-sm">Liste ({filtered.length})</div>
+              <div className="text-[10px] text-zinc-500 mt-0.5">Clique pour ouvrir la fiche</div>
+            </div>
+            {filtered.length === 0 ? (
+              <div className="p-8 text-center text-zinc-500 text-sm">
+                Aucun lieu trouvé.
+              </div>
+            ) : (
+              <div className="divide-y divide-zinc-800 overflow-y-auto lg:max-h-[calc(100vh-180px)]">
+                {filtered.slice(0, 100).map((v) => <VenueRow key={v.id} v={v} />)}
+                {filtered.length > 100 && (
+                  <div className="px-4 py-3 text-[11px] text-zinc-500 text-center">
+                    + {filtered.length - 100} autres lieux (affine ta recherche pour voir les autres)
+                  </div>
+                )}
+              </div>
+            )}
+          </aside>
         </section>
-      )}
-
-      {/* Grid des venues */}
-      {filtered.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-12 text-center text-zinc-500">
           Aucun lieu trouvé avec ces filtres.
         </div>
@@ -159,8 +181,8 @@ function VenueCard({ v }: { v: any }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={v.coverImage} alt={v.name} className="w-full h-full object-cover group-hover:scale-105 transition" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <Icon size={48} className="text-zinc-700" />
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-fuchsia-500/10 via-violet-500/10 to-cyan-500/10">
+            <GldLogoPlaceholder />
           </div>
         )}
         {/* Badge rating */}
@@ -198,6 +220,72 @@ function VenueCard({ v }: { v: any }) {
             <Calendar size={10} /> {v.events.length} événement(s) à venir
           </div>
         )}
+      </div>
+    </Link>
+  );
+}
+
+// ─────────────────────────────────────────────
+// Logo GLD cœur arc-en-ciel (placeholder modernes)
+// ─────────────────────────────────────────────
+function GldLogoPlaceholder({ size = 88 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="opacity-60 group-hover:opacity-90 group-hover:scale-110 transition">
+      <defs>
+        <linearGradient id="rb-placeholder" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#e40303" />
+          <stop offset="20%" stopColor="#ff8c00" />
+          <stop offset="40%" stopColor="#ffed00" />
+          <stop offset="60%" stopColor="#008026" />
+          <stop offset="80%" stopColor="#004dff" />
+          <stop offset="100%" stopColor="#750787" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M50,30 C40,5 0,5 0,30 C0,50 50,90 50,90 C50,90 100,50 100,30 C100,5 60,5 50,30 Z"
+        fill="url(#rb-placeholder)"
+        stroke="white"
+        strokeOpacity="0.3"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+// ─────────────────────────────────────────────
+// VenueRow : ligne compacte pour la sidebar liste (à côté de la carte)
+// ─────────────────────────────────────────────
+function VenueRow({ v }: { v: any }) {
+  const T = TYPE_LABELS[v.type] || TYPE_LABELS.OTHER;
+  const Icon = T.icon;
+  const rating = RATING_BADGE[v.rating] || RATING_BADGE.FRIENDLY;
+  return (
+    <Link href={`/lieux/${v.slug}`} className="flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-800/60 transition group">
+      <div className="w-14 h-14 rounded-lg bg-zinc-950 overflow-hidden flex-shrink-0 relative">
+        {v.coverImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={v.coverImage} alt={v.name} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-fuchsia-500/15 via-violet-500/15 to-cyan-500/15">
+            <GldLogoPlaceholder size={32} />
+          </div>
+        )}
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5 mb-0.5">
+          <Icon size={11} className="text-pink-400 flex-shrink-0" />
+          <h3 className="font-bold text-sm truncate text-white group-hover:text-pink-200 transition">{v.name}</h3>
+          {v.featured && <Star size={10} className="text-amber-400 fill-amber-400 flex-shrink-0" />}
+        </div>
+        <div className="flex items-center gap-1 text-[10px] text-zinc-500">
+          <MapPin size={9} className="flex-shrink-0" />
+          <span className="truncate">{v.city || '?'}{v.country ? `, ${v.country}` : ''}</span>
+          {v.events && v.events.length > 0 && (
+            <span className="ml-auto bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded text-[9px] font-bold flex-shrink-0">
+              📅 {v.events.length}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );
