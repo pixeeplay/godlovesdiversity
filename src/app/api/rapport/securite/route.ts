@@ -116,7 +116,7 @@ async function loadDbChecks(): Promise<Check[]> {
 
   // Modération forum
   try {
-    const flagged = await p.forumPost?.count?.({ where: { hidden: true } });
+    const flagged = await p.forumPost?.count?.({ where: { status: { in: ['hidden', 'flagged'] } } });
     if (flagged !== undefined) {
       checks.push({
         category: 'Modération',
