@@ -114,23 +114,6 @@ export function AiAutopilotClient() {
         </div>
       </section>
 
-      {/* GLD SOUL */}
-      <FeatureCard
-        icon={<Sparkles className="text-fuchsia-300" size={20} />}
-        title="GLD Soul"
-        subtitle="La voix du site — une réflexion à la 1ère personne, écrite par IA chaque jour"
-      >
-        <Field label="Fréquence">
-            <option value="weekly">Hebdo (1×/semaine)</option>
-          </select>
-        </Field>
-        <Field label="Ton">
-          {running === 'soul' ? <Loader2 size={12} className="animate-spin" /> : <Play size={12} />} Générer maintenant l'entrée du jour
-        </button>
-        {runResult?.feature === 'soul' && (
-          <div className={`mt-2 text-xs p-2 rounded ${runResult.ok ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}`}>{runResult.ok ? '✓ ' : '⚠ '}{runResult.msg}</div>
-        )}
-      </FeatureCard>
 
       {/* MOOD ENGINE */}
       <FeatureCard

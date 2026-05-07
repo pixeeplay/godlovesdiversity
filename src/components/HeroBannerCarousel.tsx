@@ -41,12 +41,22 @@ export function HeroBannerCarousel({ banners, logoUrl }: { banners: Banner[]; lo
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Backdrop static */}
+      {/* Backdrop carousel */}
+      <div className="absolute inset-0">
+        {banners.map((b, i) => (
+          <div
+            key={b.id || i}
+            className={`absolute inset-0 transition-opacity duration-1000 ${i === index ? "opacity-100" : "opacity-0"}`}
+          >
+            {b.mediaUrl && (
+              <div className="absolute inset-0">
+                {b.mediaType === "video" ? (
+                  <video src={b.mediaUrl} autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={b.mediaUrl} alt="" className="w-full h-full object-cover" />
                 )}
-                {/* Voile pour lisibilité du texte — léger pour ne pas masquer la vidéo */}
+                {/* Voile pour lisibilité du texte */}
                 <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/30" />
               </div>
             )}
