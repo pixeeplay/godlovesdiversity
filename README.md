@@ -1,18 +1,20 @@
-# 🌈 God Loves Diversity
+# 🌈 parislgbt + francelgbt — Plateforme LGBTQIA+ communautaire
 
-Plateforme militante interreligieuse — front public + back-office + API mobile.
-Stack : **Next.js 14 · PostgreSQL (PostGIS) · Redis · MinIO · Prisma · NextAuth · Gemini · Tailwind**.
+> Plateforme indépendante, open source, sans publicité.
+> **parislgbt.com** (focus Paris) + **francelgbt.com** (toute la France) = **un seul codebase, deux domaines**.
+> Staging : `lgbt.pixeeplay.com`
+
+Stack : **Next.js 14 · PostgreSQL+PostGIS · Redis · MinIO · Prisma 5 · NextAuth · Gemini · BullMQ · Resend · Stripe · Tailwind**
 
 ---
 
-## 🚀 Démarrage local (5 minutes)
+## 🚀 Démarrage local (5 min)
 
 ### Prérequis
-
 - Docker Desktop (macOS/Windows) ou Docker Engine + Compose (Linux)
 - Node.js 20+ et npm (uniquement pour le mode dev hot-reload)
 
-### Option A — Tout dans Docker (le plus simple)
+### Option A — Tout dans Docker (simple)
 
 ```bash
 cp .env.example .env          # adapte si besoin
@@ -21,22 +23,22 @@ docker compose up --build
 
 Au premier boot :
 - Postgres, Redis, MinIO, Mailpit démarrent
-- Le bucket MinIO `godlovesdiversity` est créé
+- Le bucket MinIO `parislgbt` est créé
 - Les migrations Prisma sont appliquées
 - L'admin par défaut est créé via le seed
 
-Ensuite ouvre :
+Ouvre :
 
 | URL                          | Description |
 |------------------------------|-------------|
-| http://localhost:3000        | Site public |
+| http://localhost:3000        | Site public (auto-detect Paris vs France via header) |
 | http://localhost:3000/admin  | Back-office |
-| http://localhost:9001        | Console MinIO (gldminio / gldminio-secret) |
+| http://localhost:9001        | Console MinIO (lgbtminio / lgbtminio-secret) |
 | http://localhost:8025        | Mailpit (boîte mail de dev) |
 
-**Identifiants admin par défaut** (à changer immédiatement) :
+**Identifiants admin par défaut** (à changer immédiatement en prod) :
 - Email : `arnaud@gredai.com`
-- Mot de passe : `GodLoves2026!`
+- Mot de passe : défini dans `.env` (`ADMIN_PASSWORD`)
 
 ### Option B — Front en hot-reload local + services Docker
 
@@ -49,60 +51,105 @@ npm run db:seed
 npm run dev
 ```
 
-Le front démarre sur http://localhost:3000 et reflète tes changements à chaque sauvegarde.
+---
+
+## 🌍 Multi-domaines
+
+Une seule appli Next.js qui sert deux sites :
+
+```
+Hostname                    →  SITE_SCOPE  →  Comportement
+parislgbt.com               →  paris       →  Filtre auto sur city='Paris'
+francelgbt.com              →  france      →  Toute la France visible
+lgbt.pixeeplay.com          →  staging     →  Bascule manuelle via switcher
+localhost:3000              →  dev         →  Tout visible
+```
+
+Voir `src/middleware.ts` (injection du header `x-site-scope`) et `src/lib/scope.ts` (helpers serveur).
 
 ---
 
-## 🗂️ Arborescence du projet
+## 🗂️ Arborescence
 
 ```
 .
 ├── docker-compose.yml          # stack complète (prod-like)
-├── docker-compose.dev.yml      # uniquement les services (DB/Redis/MinIO/Mail)
-├── Dockerfile                  # build du front Next.js
+├── docker-compose.dev.yml      # uniquement les services
+├── Dockerfile                  # build Next.js standalone
 ├── .env.example                # variables d'env documentées
 ├── prisma/
-│   ├── schema.prisma           # modèles : User, Photo, Page, Article, Newsletter…
-│   └── seed.ts                 # admin + démo
+│   ├── schema.prisma           # models : User, Place, Event, Identity, Connect*, ...
+│   └── seed.ts                 # admin + 9 identités + lieux + événements
 ├── src/
+│   ├── middleware.ts           # auth + scope detection
 │   ├── app/
-│   │   ├── [locale]/           # site public (FR / EN / ES / PT)
-│   │   ├── admin/              # back-office (login, dashboard, modération…)
-│   │   └── api/                # routes API (upload, IA, newsletter, social, mobile)
-│   ├── components/             # UI publique + composants admin
-│   ├── lib/                    # prisma, auth, storage, gemini, email
+│   │   ├── [locale]/           # site public (FR / EN — ES + PT en V2)
+│   │   │   ├── pride/          # agenda Pride 365
+│   │   │   ├── soirees/        # nightlife
+│   │   │   ├── lieux/          # carte interactive
+│   │   │   ├── identites/      # glossaire identités + drapeaux
+│   │   │   ├── sante/          # PrEP, dépistage, ressources
+│   │   │   ├── assos/          # annuaire associations
+│   │   │   ├── manifeste/      # 5 valeurs
+│   │   │   ├── tech/           # open source / contribuer
+│   │   │   ├── connect/        # rencontres LGBT (Tinder-like)
+│   │   │   └── ...
+│   │   ├── admin/              # back-office complet (~100 sous-routes)
+│   │   └── api/                # ~250 routes
+│   ├── components/
+│   ├── lib/                    # prisma, auth, storage, gemini, scope, identity-flags…
 │   ├── i18n/                   # routing & messages next-intl
-│   └── messages/               # FR / EN / ES / PT JSON
-└── public/posters/             # affiches téléchargeables (PDF)
+│   └── messages/               # FR / EN / ES / PT
+└── public/
 ```
 
 ---
 
-## 🌍 Internationalisation
+## 🌈 Identités & drapeaux
 
-Quatre langues pré-câblées : **FR (par défaut), EN, ES, PT**.
-Pour ajouter une langue, créer `src/messages/<code>.json` puis ajouter le code dans `src/i18n/routing.ts`.
+Le projet maintient un référentiel **LGBTQIA+** des identités et orientations, avec drapeaux SVG inline (`src/lib/identity-flags.ts`) :
 
-URLs : `/`, `/en`, `/es`, `/pt` (préfixe ajouté uniquement quand nécessaire).
+- 🏳️‍🌈 Rainbow (gay), Lesbian, Bi, Trans, Non-binary, Queer (Progress flag)
+- Ace, Pan, Intersex
+- Nouveaux drapeaux ajoutables via `/admin/identities`
 
 ---
 
 ## 🛡️ Modération
 
-- Toute photo uploadée est en **`PENDING`**.
-- L'admin reçoit un email automatique (via Mailpit en dev, Resend en prod).
-- Validation manuelle dans `/admin/moderation`.
-- Préfiltrage IA Gemini Vision : prêt à brancher dans `src/lib/gemini.ts`.
+- Toute photo uploadée est en **`PENDING`**
+- L'admin reçoit un email automatique
+- Validation manuelle dans `/admin/moderation`
+- Préfiltrage IA Gemini Vision activable
+- Tolérance zéro pour la haine, le racisme, la LGBTphobie internalisée, la transphobie, la sérophobie
 
 ---
 
-## 🤖 IA Gemini
+## 🤖 IA Gemini (LGBT-friendly)
 
 Studio dans `/admin/ai` :
 - Génération de **textes** (légendes, articles, posts, témoignages anonymisés)
 - Génération d'**images** (prêt pour Imagen)
+- Prompts système configurés pour ton fun, sex-positif sans être cru, militant inclusif, écriture inclusive
 
-Ajoute `GEMINI_API_KEY=...` dans `.env`. Sans clé, les boutons restent fonctionnels mais retournent un message stub.
+`GEMINI_API_KEY=...` dans `.env`. Sans clé, les boutons restent fonctionnels mais retournent un message stub.
+
+---
+
+## 🎨 9 thèmes visuels (sélectionnables en BO)
+
+Dans `/admin/themes`, switche entre :
+1. Néon Nuit — Berlin / Berghain
+2. Pastel Pop — inclusif day-time
+3. Hybride Pride — editorial militant
+4. Y2K Queer — chrome 2000s
+5. Brutalist Pride — N&B + drapeau pride
+6. Drag Glam — or & paillettes
+7. Tropical Sunset — Lisbon / Miami / pride été
+8. Cyber Trans — vaporwave + drapeau trans
+9. Cabaret Belle Époque — Moulin Rouge queer
+
+Voir `MOODBOARDS_LGBT.html` (commit dans le repo) pour les aperçus.
 
 ---
 
@@ -126,16 +173,30 @@ Variables d'env à renseigner pour activer chaque canal :
 - Désinscription en 1 clic (token dédié)
 - Éditeur HTML simple dans `/admin/newsletter` + bouton **"brouillon par IA"**
 - Notification automatique de l'admin à chaque nouvelle inscription
+- Segments par scope (Paris / France) + identités déclarées
 
 En dev les emails sont visibles dans Mailpit (http://localhost:8025).
 En prod, ajouter `RESEND_API_KEY=...` pour l'envoi via Resend.
 
 ---
 
+## 💞 Connect — rencontres LGBT (Tinder-like)
+
+Module communautaire complet :
+- Profils avec identité + orientations + scope ville
+- Swipe / matches / messages
+- Posts communautaires (mur)
+- **Premium Stripe** (super likes, voir qui m'a swipé, mode incognito)
+- Modération renforcée + signalements + blocages
+
+Configuration : voir `STRIPE_*` dans `.env.example`.
+
+---
+
 ## 📱 App mobile (V2)
 
 Endpoint dédié : `POST /api/mobile/upload`
-Header : `X-Device-Token: <token>` (à générer dans le BO `Settings → API Keys` — V1.5)
+Header : `X-Device-Token: <token>`
 
 L'app Expo sera ajoutée dans un dossier `apps/mobile/` (V2). Elle réutilise 100 % de cette API.
 
@@ -143,11 +204,11 @@ L'app Expo sera ajoutée dans un dossier `apps/mobile/` (V2). Elle réutilise 10
 
 ## 🚢 Déploiement Coolify
 
-1. Pousse ce repo sur GitHub :
+1. Push ce repo sur GitHub :
    ```bash
-   git init && git add . && git commit -m "feat: initial GLD platform"
+   git init && git add . && git commit -m "feat: parislgbt platform initial commit"
    git branch -M main
-   git remote add origin git@github.com:<toi>/<repo>.git
+   git remote add origin git@github.com:pixeeplay/parislgbt-platform.git
    git push -u origin main
    ```
 
@@ -155,46 +216,30 @@ L'app Expo sera ajoutée dans un dossier `apps/mobile/` (V2). Elle réutilise 10
    - Source : ton repo GitHub
    - Branch : `main`
    - Compose file : `docker-compose.yml`
-   - Domains :
-     - `web` → `godlovesdiversity.com`
-     - (optionnel) `minio` → `cdn.godlovesdiversity.com`
+   - Domaines :
+     - `web` → `lgbt.pixeeplay.com` (staging)
+     - Plus tard : `parislgbt.com` + `francelgbt.com` (auto-detection middleware)
 
-3. Variables d'env à définir dans Coolify (copier depuis `.env.example`) :
-   - `DATABASE_URL`, `REDIS_URL` → utilisent les services internes
-   - `NEXTAUTH_URL=https://godlovesdiversity.com`
-   - `NEXTAUTH_SECRET` → `openssl rand -base64 32`
-   - `ADMIN_EMAIL`, `ADMIN_PASSWORD`
-   - `S3_PUBLIC_ENDPOINT=https://cdn.godlovesdiversity.com`
-   - `RESEND_API_KEY`, `GEMINI_API_KEY` → quand tu les as
-   - Tokens des réseaux sociaux
+3. Variables d'env à définir dans Coolify (copier depuis `.env.example`)
 
 4. **Deploy**. Coolify build le Dockerfile, applique les migrations Prisma au boot, et expose le service.
 
-5. Backup Postgres : active **Coolify → Database → Backups → Daily**.
+5. Backup Postgres : active **Coolify → Database → Backups → Daily**
 
 ---
 
-## 🧪 Vérifications après boot
+## 📦 Roadmap par phases
 
-- [ ] http://localhost:3000 affiche le hero "GOD ❤️ DIVERSITY"
-- [ ] Changer la langue (top-right) fonctionne (FR/EN/ES/PT)
-- [ ] http://localhost:3000/galerie montre les 4 photos de démo
-- [ ] http://localhost:3000/participer permet d'uploader (la photo apparaît dans `/admin/moderation`)
-- [ ] http://localhost:3000/admin/login → connexion avec les identifiants par défaut
-- [ ] http://localhost:8025 affiche les emails de notification admin et de double opt-in
-- [ ] L'icône MinIO (http://localhost:9001) montre le bucket `godlovesdiversity` avec les uploads
+Voir `PLAN_ACTION_LGBT_2026.md` et `INVENTAIRE_ET_MATRICE_DECISION.md` :
 
----
-
-## 📦 Ce qui n'est pas inclus en V1 (et pourquoi)
-
-| Fonctionnalité           | Statut V1 | Notes |
-|--------------------------|-----------|-------|
-| Carte interactive Mapbox | UI prête, à ajouter | Ajouter `NEXT_PUBLIC_MAPBOX_TOKEN` puis composant `<MapWorld />` |
-| Workers BullMQ           | API prête, worker non démarré | Microservice à ajouter (`apps/worker`) en V1.5 |
-| Publication réelle multi-réseaux | Endpoints à connecter | Intégrer SDK Meta / X / LinkedIn quand tokens fournis |
-| Imagen (image gen)       | wiring stub | activer via `GEMINI_API_KEY` |
-| App mobile Expo          | V2 | endpoint `/api/mobile/upload` déjà prêt |
+- **Phase 1** ✅ Purge religieuse + renaming + i18n + Prisma + libs (terminée)
+- **Phase 2** ✅ Multi-domaines middleware + scope.ts + identity-flags (terminée)
+- **Phase 3** 🚧 Refonte design (moodboard sélectionné en BO) — en cours
+- **Phase 4** ⏳ Adaptation features (carte Leaflet, Connect LGBT, IA prompts avancés, social hashtags)
+- **Phase 5** ⏳ Docker rebuild + test local
+- **Phase 6** ⏳ Push GitHub + déploiement Coolify
+- **Phase 7** ⏳ QA / SEO / a11y
+- **Phase 8** ⏳ Documentation finale
 
 ---
 
@@ -204,10 +249,22 @@ L'app Expo sera ajoutée dans un dossier `apps/mobile/` (V2). Elle réutilise 10
 - Tailwind utility-first (pas de CSS modules)
 - Server Components par défaut, `'use client'` seulement quand nécessaire
 - Toutes les actions admin journalisées dans `AuditLog`
+- Écriture inclusive raisonnée (point médian autorisé)
+- Tolérance zéro pour la haine
 
 ---
 
 ## 📞 Support
 
 Email admin : `arnaud@gredai.com`
-Hashtag : `#GodLovesDiversity`
+Hashtags : `#parislgbt #francelgbt #pride2026 #queerparis #queerfrance`
+
+---
+
+## 📊 Origine
+
+Refonte LGBT du projet **God Loves Diversity** (`pixeeplay/godlovesdiversity@b421449` du 7 mai 2026).
+
+Voir `AUDIT_RELIGIEUX_PHASE1.md` pour le détail de la migration (-50 fichiers, +13 commits atomiques, 0 référence religieuse résiduelle).
+
+Tag d'archive disponible : `archive/god-loves-diversity-2026-05-07`.
