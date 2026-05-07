@@ -62,6 +62,39 @@ async function main() {
     }
   });
   console.log('✅ Admin créé :', admin.email);
+  // ─── Reset Banner table (purge old religious banners) ──────
+  await prisma.banner.deleteMany({}).catch(() => null);
+  console.log('🧹 Old banners cleared');
+
+  // Seed Banner ticker (top scroll bar)
+  const lgbtBanners = [
+    { text: '🌈 Bienvenue sur parislgbt — le hub queer de Paris', active: true, priority: 1, locale: 'fr' },
+    { text: '✨ Marche des Fiertés Paris — Samedi 27 juin 2026', active: true, priority: 2, locale: 'fr' },
+    { text: '💖 Soumets ton lieu LGBT-friendly préféré', active: true, priority: 3, locale: 'fr' },
+    { text: '🏳️‍🌈 Indépendant · sans publicité · open source', active: true, priority: 4, locale: 'fr' },
+    { text: '🩺 Annuaire santé sexuelle & médecins LGBT-friendly', active: true, priority: 5, locale: 'fr' }
+  ];
+  for (const b of lgbtBanners) {
+    await prisma.banner.create({ data: b }).catch((e: any) => console.log('banner skip:', e?.message));
+  }
+  console.log('🌈 5 LGBT banners seeded');
+
+  // ─── Reset Setting branding ───────────────────────
+  const brandSettings = [
+    { key: 'site.name', value: 'parislgbt' },
+    { key: 'site.tagline', value: 'Le hub queer de Paris et de la France' },
+    { key: 'home.hero.titleA', value: 'PARIS' },
+    { key: 'home.hero.titleB', value: 'LGBT 365' },
+    { key: 'home.hero.subtitle', value: 'Le hub queer de Paris et de la France. Soirées, lieux safe, agenda Pride, ressources santé, communauté.' },
+    { key: 'home.pillars.title', value: 'BIENVENUE CHEZ TOI' },
+    { key: 'campaign.hashtag', value: '#parislgbt' },
+    { key: 'site.description', value: 'Plateforme communautaire LGBTQIA+ — Paris et toute la France. Indépendante, open source, sans publicité.' }
+  ];
+  for (const sb of brandSettings) {
+    await prisma.setting.upsert({ where: { key: sb.key }, update: { value: sb.value }, create: sb }).catch(() => null);
+  }
+  console.log('⚙️  Brand settings updated');
+
 
   // ─── Legal pages ────────────────────────────────────────────
   const pages = [
