@@ -8,11 +8,12 @@ import { AskGldWidget } from '@/components/AskGldWidget';
 import { TickerDonate } from '@/components/TickerDonate';
 import { AmbientPlayer } from '@/components/AmbientPlayer';
 import { PageTracker } from '@/components/PageTracker';
-import { ThemeProvider, themeInitScript } from '@/components/ThemeProvider';
+import { ThemeProvider } from '@/components/ThemeProvider';
 import { ThemeApplier } from '@/components/ThemeApplier';
 import { SOSFloatingButton } from '@/components/SOSFloatingButton';
 import { AccessibilityToggle } from '@/components/AccessibilityToggle';
 import { Providers } from '@/components/Providers';
+import { LangSetter } from '@/components/LangSetter';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -30,32 +31,30 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  // Note : <html>/<body> sont définis UNE SEULE FOIS dans app/layout.tsx (root).
+  // Sinon, Next.js 14 lève HierarchyRequestError (page noire). On utilise <LangSetter>
+  // pour mettre à jour document.documentElement.lang côté client selon la locale.
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
-      <body className="min-h-screen flex flex-col">
-        <Providers>
-          <ThemeProvider>
-            <NextIntlClientProvider messages={messages} locale={locale}>
-              {/* Bandeau sticky : ticker DON + navbar empilés, jamais de chevauchement */}
-              <div className="sticky top-0 z-50 shadow-xl shadow-black/40">
-                <TickerDonate />
-                <Navbar />
-              </div>
-              <main className="flex-1">{children}</main>
-              <Footer />
-              <AskGldWidget />
-              <AmbientPlayer />
-              <PageTracker />
-              <ThemeApplier />
-              <SOSFloatingButton />
-              <AccessibilityToggle />
-            </NextIntlClientProvider>
-          </ThemeProvider>
-        </Providers>
-      </body>
-    </html>
+    <Providers>
+      <ThemeProvider>
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <LangSetter locale={locale} />
+          <div className="min-h-screen flex flex-col">
+            <div className="sticky top-0 z-50 shadow-xl shadow-black/40">
+              <TickerDonate />
+              <Navbar />
+            </div>
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <AskGldWidget />
+            <AmbientPlayer />
+            <PageTracker />
+            <ThemeApplier />
+            <SOSFloatingButton />
+            <AccessibilityToggle />
+          </div>
+        </NextIntlClientProvider>
+      </ThemeProvider>
+    </Providers>
   );
 }
