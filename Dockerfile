@@ -8,6 +8,8 @@ FROM base AS deps
 COPY package.json package-lock.json* ./
 COPY prisma ./prisma
 RUN npm ci --include=optional --legacy-peer-deps || npm install --include=optional --legacy-peer-deps
+# Force install platform-specific sharp binary for Alpine musl
+RUN npm install --os=linux --libc=musl --cpu=x64 --no-save sharp || npm install --os=linux --libc=musl --cpu=arm64 --no-save sharp || true
 
 # ─── Build ────────────────────────────────────
 FROM base AS builder
