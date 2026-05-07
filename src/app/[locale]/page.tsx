@@ -13,6 +13,8 @@ import { ProductsCarousel } from '@/components/ProductsCarousel';
 import { PosterThumbnail } from '@/components/PosterThumbnail';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
+import { getScope } from '@/lib/scope';
+import { getSiteConfig } from '@/lib/site-configs';
 
 // SSR : la home appelle Prisma à chaque requête.
 // (Coolify n'a pas DATABASE_URL au build → on ne peut pas faire d'ISR pour le moment.)
@@ -24,20 +26,20 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale);
   const t = await getTranslations('home');
   const s = await getAllSettings();
+  const scope = getScope();
+  const cfg = getSiteConfig(scope);
 
   const v = (key: string, fallback: string) => s[`home.${key}`] || fallback;
-  const titleA = s['home.hero.titleA'] || 'PARIS';
-  const titleB = s['home.hero.titleB'] || 'LGBT 365';
-  const subtitle = v('hero.subtitle',
-    "Le hub queer de Paris et de la France. Soirées, lieux safe, agenda Pride, ressources santé, communauté. Indépendant · sans pub · open source."
-  );
+  const titleA = s[`${scope}.home.hero.titleA`] || s['home.hero.titleA'] || cfg.heroTitleA;
+  const titleB = s[`${scope}.home.hero.titleB`] || s['home.hero.titleB'] || cfg.heroTitleB;
+  const subtitle = s[`${scope}.home.hero.subtitle`] || v('hero.subtitle', cfg.heroSubtitle);
   const ctaPrimary = v('hero.ctaPrimary', 'Découvrir les lieux');
   const ctaSecondary = v('hero.ctaSecondary', 'Agenda Pride');
   const pillarsTitle = v('pillars.title', 'BIENVENUE CHEZ TOI');
   const postersTitle = v('posters.title', 'PARTAGE TES PHOTOS');
   const postersText = v('posters.text', 'Soumets tes plus belles photos de soirée, de Marche des Fiertés ou de lieux LGBT-friendly. Modération communautaire.');
   const logoUrl = s['site.logoUrl'];
-  const hashtag = s['campaign.hashtag'] || '#parislgbt';
+  const hashtag = s[`${scope}.campaign.hashtag`] || s['campaign.hashtag'] || cfg.hashtag;
 
   const pillars = [
     {

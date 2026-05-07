@@ -26,6 +26,7 @@ export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState<string>('');
+  const [navLogoLines, setNavLogoLines] = useState<string[]>(['PARIS', 'LGBT', '.com']);
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [openSub, setOpenSub] = useState<string | null>(null);
@@ -36,7 +37,7 @@ export function Navbar() {
   const isLogged = status === 'authenticated';
 
   useEffect(() => {
-    fetch('/api/branding').then((r) => r.json()).then((j) => setLogoUrl(j.logoUrl || ''));
+    fetch('/api/branding').then((r) => r.json()).then((j) => { setLogoUrl(j.logoUrl || ''); if (j.navLogoLines?.length) setNavLogoLines(j.navLogoLines); });
     fetch(`/api/menu?locale=${locale}`).then((r) => r.json()).then((j) => {
       setMenu(j.items || []);
     });
@@ -99,9 +100,9 @@ export function Navbar() {
             <img src={logoUrl} alt="" className="h-10 max-w-[180px] w-auto object-contain flex-none" />
           ) : (
             <span className="font-display font-black leading-none text-[color:var(--accent)] hidden sm:flex flex-col flex-none">
-              <span className="text-base">PARIS</span>
-              <span className="text-base">LGBT</span>
-              <span className="text-base">.com</span>
+              {navLogoLines.map((line, i) => (
+                <span key={i} className="text-base">{line}</span>
+              ))}
             </span>
           )}
         </a>

@@ -1,3 +1,4 @@
+import path from 'path';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
@@ -60,6 +61,13 @@ const nextConfig = {
   },
   experimental: {
     serverActions: { bodySizeLimit: '20mb' }
+  },
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.join(process.cwd(), 'src'),
+    };
+    return config;
   },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
