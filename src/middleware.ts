@@ -18,7 +18,8 @@ export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // 1) Routes admin protégées
-  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
+  // Exceptions : /admin/login (page de login standard) et /admin2access (page de secours)
+  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login') && !pathname.startsWith('/admin2access')) {
     // 1.a) Tailscale ACL — bloque l'accès admin depuis Internet public si flag activé
     if (process.env.ADMIN_TAILSCALE_ONLY === 'true' || process.env.ADMIN_TAILSCALE_ONLY === '1') {
       const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
