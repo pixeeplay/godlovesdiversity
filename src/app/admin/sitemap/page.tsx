@@ -38,9 +38,6 @@ const PUBLIC_GROUPS: RouteGroup[] = [
     ]
   },
   {
-    ]
-  },
-  {
     id: 'community', label: 'Communauté', emoji: '🤝', color: '#10b981',
     routes: [
       { href: '/lieux',           label: 'Lieux LGBTQ+', desc: '2700+ adresses · search · distance · route Waze multi-étapes', isNew: true },
