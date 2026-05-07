@@ -21,7 +21,7 @@ export async function GET() {
   // Stats associées
   const since7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const [soulCount, modCount, modHidden] = await Promise.all([
-    prisma.soulEntry.count({ where: { date: { gte: since7d } } }).catch(() => 0),
+    0,
     prisma.moderationDecision.count({ where: { createdAt: { gte: since7d } } }).catch(() => 0),
     prisma.moderationDecision.count({ where: { createdAt: { gte: since7d }, action: 'hidden' } }).catch(() => 0)
   ]);
