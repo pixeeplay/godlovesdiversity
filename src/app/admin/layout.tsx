@@ -7,13 +7,14 @@ import { getMenuPermissions } from '@/lib/menu-permissions';
 
 export const metadata = {
   title: 'Back-office — God Loves Diversity',
-  // Empêche les iPad/Android tablette d'afficher en blanc cassé en mode auto
   themeColor: '#09090b',
   viewport: 'width=device-width, initial-scale=1, viewport-fit=cover'
 };
 export const dynamic = 'force-dynamic';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  // Note : la redirection si pas connecté est gérée par middleware.ts (côté edge).
+  // Le layout reste light pour éviter les boucles avec /admin/login.
   const session = await getServerSession(authOptions);
   const role = ((session?.user as any)?.role as string) || 'EDITOR';
   const perms = await getMenuPermissions().catch(() => ({ hidden: [], editorHidden: [] }));

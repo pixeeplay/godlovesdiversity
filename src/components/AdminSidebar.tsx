@@ -27,6 +27,7 @@ const NAV: Entry[] = [
   { href: '/admin/feature-chat', label: '💡 Feature Chat IA', icon: Sparkles, badge: 'NEW' },
   { href: '/admin/time-machine', label: '🕰 Time Machine', icon: Settings, badge: 'NEW' },
   { href: '/admin/invitations', label: '🔑 Invitations admin', icon: Users, badge: 'NEW' },
+  { href: '/admin/security-settings', label: '🛡 Sécurité (super-admin)', icon: ShieldCheck, badge: 'NEW' },
   {
     id: 'pro',
     label: 'Espace Pro 🏪',
