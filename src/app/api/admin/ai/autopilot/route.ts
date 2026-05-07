@@ -20,7 +20,7 @@ export async function GET() {
 
   // Stats associées
   const since7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-    0,
+  const [modCount, modHidden] = await Promise.all([
     prisma.moderationDecision.count({ where: { createdAt: { gte: since7d } } }).catch(() => 0),
     prisma.moderationDecision.count({ where: { createdAt: { gte: since7d }, action: 'hidden' } }).catch(() => 0)
   ]);
