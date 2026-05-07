@@ -8,8 +8,8 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_DB: parislgbt
-      POSTGRES_USER: lgbt
-      POSTGRES_PASSWORD: lgbt
+      POSTGRES_USER: gld
+      POSTGRES_PASSWORD: gld
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:

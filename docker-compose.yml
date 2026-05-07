@@ -8,12 +8,12 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_DB: parislgbt
-      POSTGRES_USER: lgbt
-      POSTGRES_PASSWORD: lgbt
+      POSTGRES_USER: gld
+      POSTGRES_PASSWORD: gld
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U lgbt -d parislgbt"]
+      test: ["CMD-SHELL", "pg_isready -U gld -d parislgbt"]
       interval: 5s
       timeout: 5s
       retries: 10
