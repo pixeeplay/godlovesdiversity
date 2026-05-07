@@ -68,11 +68,9 @@ async function main() {
 
   // Seed Banner ticker (top scroll bar)
   const lgbtBanners = [
-    { text: '🌈 Bienvenue sur parislgbt — le hub queer de Paris', active: true, priority: 1, locale: 'fr' },
-    { text: '✨ Marche des Fiertés Paris — Samedi 27 juin 2026', active: true, priority: 2, locale: 'fr' },
-    { text: '💖 Soumets ton lieu LGBT-friendly préféré', active: true, priority: 3, locale: 'fr' },
-    { text: '🏳️‍🌈 Indépendant · sans publicité · open source', active: true, priority: 4, locale: 'fr' },
-    { text: '🩺 Annuaire santé sexuelle & médecins LGBT-friendly', active: true, priority: 5, locale: 'fr' }
+    { eyebrow: '🌈 Welcome', title: 'PARIS LGBT 365', subtitle: 'Le hub queer de Paris et de la France — soirées, lieux safe, agenda Pride, ressources santé', cta1Text: 'Explorer la carte', cta1Url: '/lieux', cta2Text: 'Agenda Pride', cta2Url: '/pride', accentColor: '#FF2BB1', locale: 'fr' },
+    { eyebrow: '✨ Pride 2026', title: 'Marche des Fiertés Paris', subtitle: 'Samedi 27 juin 2026 — départ Bastille → République. Cortège, chars, after dans le Marais.', cta1Text: "Voir l'agenda", cta1Url: '/pride', accentColor: '#8B5CF6', locale: 'fr' },
+    { eyebrow: '🩺 Santé', title: 'PrEP, dépistage, médecins LGBT-friendly', subtitle: 'Annuaire vérifié, confidentiel et gratuit. Hotlines disponibles 24/7.', cta1Text: 'Ressources santé', cta1Url: '/sante', accentColor: '#5BCEFA', locale: 'fr' }
   ];
   for (const b of lgbtBanners) {
     await prisma.banner.create({ data: b }).catch((e: any) => console.log('banner skip:', e?.message));
