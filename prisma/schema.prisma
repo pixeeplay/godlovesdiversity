@@ -87,10 +87,6 @@ model User {
   blocksReceived    ConnectBlock[]      @relation("blockedRel")
   premiumSub        ConnectPremium?
 
-  // V6 — Prière vocale + transcription IA
-  vocalPrayers      VocalPrayer[]
-  vocalPrayerConsent Boolean  @default(false)   // RGPD : consentement explicite traitement audio
-  vocalPrayerConsentedAt DateTime?
 }
 
 /// Bookmark générique (témoignages, lieux, posts, produits, events).
@@ -894,17 +890,6 @@ model Event {
   @@index([venueId, startsAt])
 }
 
-/// Message de chat dans un cercle de prière (group chat planifié).
-model PrayerMessage {
-  id          String   @id @default(cuid())
-  circle      String   // "catholique" | "protestant" | "musulman" | "juif" | "bouddhiste" | "interreligieux"
-  authorName  String?
-  message     String   @db.Text
-  createdAt   DateTime @default(now())
-
-  @@index([circle, createdAt])
-}
-
 /// Soumission générique utilisateur — absorbe mentor / hébergement / signalement / meetups / etc.
 /// Le champ `kind` discrimine, `data` contient le payload JSON spécifique.
 model UserSubmission {
@@ -1009,24 +994,6 @@ model Theme {
 model Setting {
   key   String  @id
   value String  @db.Text
-}
-
-/// GLD Soul — entrées du "journal" auto-écrit par l'IA chaque jour.
-/// Une voix à la 1ère personne qui synthétise l'activité, l'humeur et les vœux du site.
-model SoulEntry {
-  id         String   @id @default(cuid())
-  date       DateTime @unique  // une entrée par jour (YYYY-MM-DD à minuit UTC)
-  mood       String   // joyful | calm | somber | festive | neutral
-  moodScore  Float    @default(0.5)  // 0..1, intensité
-  body       String   @db.Text       // texte complet de la "voix" du site
-  bodyShort  String?  @db.Text       // version courte pour widget home
-  stats      Json?    // snapshot des chiffres ce jour-là (users, posts, events, etc.)
-  generatedBy String  @default("gemini")  // gemini | manual
-  approved   Boolean  @default(true)      // si false, ne pas afficher publiquement
-  createdAt  DateTime @default(now())
-
-  @@index([date])
-  @@index([mood])
 }
 
 /// Plan annuel de newsletters auto-générées par IA.
@@ -1605,177 +1572,7 @@ model VenueParticipation {
 }
 
 // ───────────────────────────────────────────────
-// SPRINT 3 — PRIÈRE LIVE & BOUGIES VIRTUELLES
 // ───────────────────────────────────────────────
-
-/// Bougie virtuelle posée sur la carte mondiale, durée 24h.
-model PrayerCandle {
-  id         String   @id @default(cuid())
-  userHash   String?              // hash anonyme pour rate-limit (pas user.id)
-  intention  String?  @db.Text    // texte court d'intention, modéré IA
-  faith      String?              // confession optionnelle (catholic, muslim, jewish, etc.)
-  lat        Float
-  lng        Float
-  city       String?
-  country    String?              // code ISO-2
-  expiresAt  DateTime             // pose=now()+24h
-  status     String   @default("active")  // active | expired | hidden (modéré)
-  createdAt  DateTime @default(now())
-
-  @@index([expiresAt, status])
-  @@index([lat, lng])
-}
-
-/// Intention de prière partagée dans un cercle ou en public.
-model PrayerIntention {
-  id           String   @id @default(cuid())
-  authorHash   String?              // anonyme par défaut
-  authorName   String?              // pseudo affiché
-  faith        String?              // confession
-  circle       String?              // catholic | protestant | muslim | jewish | buddhist | hindu | sikh | interfaith | null=public
-  text         String   @db.Text
-  prayerCount  Int      @default(0) // nombre de personnes qui ont cliqué "Je prie"
-  status       String   @default("approved") // pending | approved | hidden (modération IA)
-  isAnonymous  Boolean  @default(true)
-  createdAt    DateTime @default(now())
-
-  @@index([circle, createdAt])
-  @@index([status, createdAt])
-}
-
-/// Présence live dans un cercle — heartbeat toutes les 30s côté client.
-/// Auto-expire après 90s sans heartbeat.
-model PrayerPresence {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique  // cookie/uuid client
-  circle       String              // catholic | protestant | muslim | ...
-  faith        String?
-  city         String?
-  country      String?
-  lastSeenAt   DateTime @default(now())
-  joinedAt     DateTime @default(now())
-
-  @@index([circle, lastSeenAt])
-}
-
-// ───────────────────────────────────────────────
-// SPRINT 4 — Camino + Genius + Officiants
-// ───────────────────────────────────────────────
-
-/// Chemin de pèlerinage virtuel collectif (Compostelle, Bénarès, Jérusalem, Camino Inca, etc.).
-model CaminoPath {
-  id              String   @id @default(cuid())
-  slug            String   @unique
-  name            String                  // "Compostelle Camino Francés"
-  faith           String                  // "catholic" | "interfaith" | "buddhist" | "hindu" | "muslim" | …
-  totalKm         Int                     // ex: 800 (Compostelle)
-  description     String?  @db.Text
-  emoji           String?
-  color           String?
-  startCity       String?                 // "Saint-Jean-Pied-de-Port"
-  endCity         String?                 // "Santiago de Compostela"
-  coverImage      String?
-  published       Boolean  @default(true)
-
-  steps           CaminoStep[]
-  contributions   CaminoContribution[]
-  createdAt       DateTime @default(now())
-}
-
-/// Étape du chemin avec contenu narratif.
-model CaminoStep {
-  id              String   @id @default(cuid())
-  pathId          String
-  path            CaminoPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
-  order           Int                      // 1, 2, 3…
-  name            String                   // "Pamplona"
-  kmFromStart     Int                      // ex: 75
-  description     String?  @db.Text
-  scriptureQuote  String?  @db.Text        // verset / sutra à méditer
-  imageUrl        String?
-
-  @@unique([pathId, order])
-  @@index([pathId, kmFromStart])
-}
-
-/// Contribution d'un user au pèlerinage collectif (1 contribution = 1 km).
-/// Triggers : prière dans un cercle, intention partagée, bougie allumée, méditation 10min, etc.
-model CaminoContribution {
-  id              String   @id @default(cuid())
-  pathId          String
-  path            CaminoPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
-  userHash        String?                  // anonyme par défaut
-  source          String                   // "prayer-circle" | "intention" | "candle" | "meditation" | "manual"
-  km              Int      @default(1)
-  createdAt       DateTime @default(now())
-
-  @@index([pathId, createdAt])
-}
-
-/// Annotation inclusive d'un passage de texte sacré ("Genius des textes sacrés").
-model SacredAnnotation {
-  id              String   @id @default(cuid())
-  scripture       String                   // "bible" | "quran" | "talmud" | "tipitaka" | "vedas" | "guru-granth-sahib"
-  reference       String                   // "Galates 3:28" | "Coran 2:256" | "Berakhot 4a"
-  passageText     String?  @db.Text        // citation du passage en français
-  annotation      String   @db.Text        // commentaire inclusif
-  authorName      String?                  // pseudo ou expert
-  authorRole      String?                  // "théologien", "rabbin", "imam", "fidèle"
-  faith           String                   // "christian" | "muslim" | "jewish" | "buddhist" | "hindu" | "sikh"
-  perspective     String?                  // "queer-theology" | "feminist" | "liberation" | "personal-witness"
-  upvotes         Int      @default(0)
-  status          String   @default("approved")  // pending | approved | hidden
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@index([scripture, reference])
-  @@index([faith, status, createdAt])
-}
-
-/// Officiant·e religieux·se LGBT-friendly (rabbin, imam, prêtre, pasteur, etc.) prêt·e à célébrer mariages, baptêmes, funérailles, conversions.
-model InclusiveOfficiant {
-  id              String   @id @default(cuid())
-  name            String
-  faith           String                   // "catholic" | "protestant" | "muslim" | "jewish" | …
-  role            String                   // "prêtre" | "pasteur" | "rabbin" | "imam" | "moine" | "lay-preacher"
-  affiliations    String[] @default([])    // ["David et Jonathan", "Beit Haverim", "HM2F", …]
-  city            String?
-  country         String?
-  email           String?
-  phone           String?
-  website         String?
-  bio             String?  @db.Text
-  servicesOffered String[] @default([])    // ["mariage", "baptême", "funérailles", "conversion", "bénédiction"]
-  languages       String[] @default([])
-  verified        Boolean  @default(false) // vérifié par GLD
-  published       Boolean  @default(true)
-  avatarUrl       String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  bookings        OfficiantBooking[]
-
-  @@index([faith, country, city])
-}
-
-/// Demande de réservation d'un officiant.
-model OfficiantBooking {
-  id              String   @id @default(cuid())
-  officiantId     String
-  officiant       InclusiveOfficiant @relation(fields: [officiantId], references: [id], onDelete: Cascade)
-  requesterName   String
-  requesterEmail  String
-  serviceType     String                   // "mariage" | "baptême" | "funérailles" | "bénédiction" | …
-  proposedDate    DateTime?
-  city            String?
-  message         String?  @db.Text
-  status          String   @default("pending") // pending | contacted | accepted | declined | completed
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@index([officiantId, status])
-}
-
 // ───────────────────────────────────────────────
 // INVITATIONS — accès iPad/device avec code temporaire
 // ───────────────────────────────────────────────
@@ -1898,37 +1695,6 @@ model LoginAttempt {
   @@index([ip, createdAt])
 }
 
-/// Prière vocale enregistrée par l'utilisateur. Audio sur MinIO (privé), texte transcrit par IA.
-/// RGPD : données sensibles (croyances religieuses) — accès strictement perso, droit à suppression totale.
-model VocalPrayer {
-  id            String        @id @default(cuid())
-  userId        String
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  storageKey    String                                        // clé MinIO (ex: "vocal-prayers/2026/05/cuid.webm")
-  audioMime     String        @default("audio/webm")
-  durationSec   Int?                                          // durée enregistrement (utile pour billing IA)
-  fileSizeBytes Int?
-  language      String        @default("fr")                  // code BCP-47 hint pour transcription
-  transcription String?       @db.Text
-  title         String?                                       // titre auto extrait par IA (1ère phrase)
-  mood          String?                                       // "joie" | "tristesse" | "espoir" | "colère" | "paix" | "questionnement"
-  status        VocalPrayerStatus @default(PROCESSING)
-  errorMessage  String?       @db.Text
-  isPublic      Boolean       @default(false)                 // partage anonyme dans wall public
-  transcribedAt DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  @@index([userId, createdAt])
-  @@index([status])
-}
-
-enum VocalPrayerStatus {
-  PROCESSING
-  COMPLETED
-  FAILED
-}
-
 /// Sources webcam découvertes (manuelles ou agent IA), avec statut live cache.
 model WebcamSource {
   id              String    @id @default(cuid())
@@ -1963,3 +1729,31 @@ model WebcamSource {
   @@index([active, faith])
   @@index([lastVerifiedAt])
 }
+
+// ───────────────────────────────────────────────
+// LGBT REFONTE — Identités, Pride, Scope multi-domaines
+// ───────────────────────────────────────────────
+
+/// Identité ou orientation à mettre en avant. Drapeau + glossaire.
+/// Affichée comme étiquette sur Place / Event / ConnectProfile et dans /identites.
+model Identity {
+  id          String   @id @default(cuid())
+  slug        String   @unique          // "gay" | "lesbian" | "bi" | "trans" | "nb" | "queer" | "ace" | "pan" | "intersex" | "+"
+  labelFr     String                    // "Gay", "Lesbienne", "Bi·e", "Trans", "Non-binaire"...
+  labelEn     String
+  flagSvg     String   @db.Text         // SVG du drapeau (rainbow / trans / bi / lesbian / ace / pan / nb / progress / intersex)
+  description String?  @db.Text         // glossaire pédagogique
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([active, order])
+}
+
+enum Scope {
+  PARIS
+  FRANCE
+}
+
