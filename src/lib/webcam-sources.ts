@@ -70,3 +70,7 @@ export const SEED_WEBCAM_SOURCES: WebcamSource[] = [
 ];
 
 export default SEED_WEBCAM_SOURCES;
+
+
+// Backward-compat alias (some imports use WEBCAM_SOURCES)
+export const WEBCAM_SOURCES = SEED_WEBCAM_SOURCES;
