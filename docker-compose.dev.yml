@@ -7,7 +7,7 @@ services:
     container_name: gld-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: godlovesdiversity
+      POSTGRES_DB: parislgbt
       POSTGRES_USER: gld
       POSTGRES_PASSWORD: gld
     volumes:
@@ -30,8 +30,8 @@ services:
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: gldminio
-      MINIO_ROOT_PASSWORD: gldminio-secret
+      MINIO_ROOT_USER: lgbtminio
+      MINIO_ROOT_PASSWORD: lgbtminio-secret
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -44,9 +44,9 @@ services:
     entrypoint: >
       /bin/sh -c "
       sleep 5 &&
-      mc alias set local http://minio:9000 gldminio gldminio-secret &&
-      mc mb -p local/godlovesdiversity || true &&
-      mc anonymous set download local/godlovesdiversity || true
+      mc alias set local http://minio:9000 lgbtminio lgbtminio-secret &&
+      mc mb -p local/parislgbt || true &&
+      mc anonymous set download local/parislgbt || true
       "
 
   mailpit:

@@ -7,13 +7,13 @@ services:
     image: postgis/postgis:16-3.4
     restart: unless-stopped
     environment:
-      POSTGRES_DB: godlovesdiversity
+      POSTGRES_DB: parislgbt
       POSTGRES_USER: gld
       POSTGRES_PASSWORD: gld
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U gld -d godlovesdiversity"]
+      test: ["CMD-SHELL", "pg_isready -U gld -d parislgbt"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -29,8 +29,8 @@ services:
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: gldminio
-      MINIO_ROOT_PASSWORD: gldminio-secret
+      MINIO_ROOT_USER: lgbtminio
+      MINIO_ROOT_PASSWORD: lgbtminio-secret
     volumes:
       - miniodata:/data
     healthcheck:
@@ -46,10 +46,10 @@ services:
         condition: service_healthy
     entrypoint: >
       /bin/sh -c "
-      mc alias set local http://minio:9000 gldminio gldminio-secret &&
-      mc mb -p local/godlovesdiversity || true &&
-      mc anonymous set download local/godlovesdiversity || true &&
-      echo '✅ MinIO bucket godlovesdiversity ready'
+      mc alias set local http://minio:9000 lgbtminio lgbtminio-secret &&
+      mc mb -p local/parislgbt || true &&
+      mc anonymous set download local/parislgbt || true &&
+      echo '✅ MinIO bucket parislgbt ready'
       "
 
   mailpit:
