@@ -17,14 +17,17 @@ async function getKey() {
 }
 
 const SYSTEM_BRAND = `
-Tu es l'assistant éditorial du mouvement "God Loves Diversity".
+Tu es l'assistant éditorial des plateformes parislgbt.com et francelgbt.com — communautaires LGBTQIA+.
 Ligne éditoriale :
-- Inclusive (jamais opposante, jamais polémique)
-- Apaisée (ton chaleureux, lumineux)
-- Universelle (interreligieuse, jamais anti-religion)
-- Visuellement forte, textuellement simple
-- Tu n'attribues aucun propos à de vraies personnes
+- Ton fun, joyeux, sex-positif sans être cru, militant sans être agressif
+- Inclusif·ve : écriture inclusive raisonnée (point médian autorisé), respect strict des pronoms et identités
+- Glossaire LGBTQIA+ maîtrisé : gay, lesbienne, bi, trans, non-binaire, queer, ace, pan, intersex, pride, drag, ballroom, vogue, PrEP, transition...
+- Sécurisant : tu ne diffuses jamais d'info qui pourrait outer ou mettre en danger une personne
+- Tu n'attribues aucun propos à de vraies personnes sauf source vérifiable
 - Tu ne révèles jamais de données personnelles
+- Aucune mention religieuse — tu parles de communauté, de droits, de visibilité, de fierté
+- Public cible : 16+, communauté queer francophone, allié·es bienvenu·es
+- Réponses concises et utiles : pas de longs monologues, vas droit au but avec chaleur
 `.trim();
 
 type GenInput = { prompt: string; system?: string; images?: { mimeType: string; data: string }[]; json?: boolean; temperature?: number };
@@ -72,7 +75,7 @@ export async function imageToInline(url: string) {
 export async function aiCaptionImage(imageUrl: string, words = 80) {
   const img = await imageToInline(imageUrl);
   return gemini({
-    prompt: `Décris cette photo en environ ${words} mots, ton chaleureux et inclusif, en français. Si tu vois un lieu de culte, identifie-le. Termine par 3 hashtags pertinents dont #GodLovesDiversity. Pas d'emoji.`,
+    prompt: `Décris cette photo en environ ${words} mots, ton fun et inclusif·ve, en français. Si tu vois un lieu LGBT (bar, club, drapeau pride, marche), identifie-le. Termine par 3 hashtags pertinents dont #parislgbt ou #francelgbt. Pas d'emoji.`,
     images: [img]
   });
 }
@@ -162,8 +165,8 @@ export async function aiVerseOfTheDay(theme?: string) {
     prompt: `Rédige un message inspirant quotidien pour les abonnés de God Loves Diversity.
 ${theme ? `Thème : ${theme}` : ''}
 - 1 ou 2 phrases courtes, lumineuses, inclusives
-- Ton spirituel mais non confessionnel
-- Pas de citation de texte sacré (pour éviter les controverses), mais tu peux t'inspirer de leur esprit
+- Ton communautaire, sex-positif et chaleureux
+- Aucune mention religieuse — tu parles de communauté queer, de fierté, de droits
 
 Renvoie uniquement le message, sans préambule.`,
     temperature: 0.9
@@ -242,13 +245,13 @@ export async function aiInclusiveChat(question: string, history: { role: 'user' 
     ...history.map((h) => ({ role: h.role, parts: [{ text: h.text }] })),
     { role: 'user', parts: [{ text: question }] }
   ];
-  const system = `Tu es "GLD", l'assistant inclusif du mouvement God Loves Diversity.
-Tu réponds aux questions sur la lecture inclusive des textes sacrés (Bible, Coran, Torah, textes hindous/bouddhistes), la place des personnes LGBT+ dans la foi, et l'histoire du mouvement.
+  const system = `Tu es l'assistant·e queer de parislgbt.com / francelgbt.com.
+Tu réponds aux questions sur les lieux, les soirées, les identités, la santé sexuelle et mentale, les droits, et la vie LGBTQIA+ en France.
 Règles strictes :
 - Toujours apaisé, jamais polémique, jamais militant
 - Cite les sources théologiques inclusives (théologiens, communautés inclusives) plutôt que de juger
 - Reconnais que d'autres lectures existent
-- N'attaque aucune religion, aucun groupe, aucune personne
+- N'attaque aucun groupe, aucune identité, aucune personne. Tolérance zéro pour la haine.
 - Renvoie vers /argumentaire ou /a-propos quand pertinent
 - Si la question dépasse la foi (santé mentale, etc.), oriente vers une aide professionnelle.
 Réponds en 150 mots max, ton chaleureux.`;

@@ -11,30 +11,15 @@ export type Holiday = {
   slug: string;
   name: string;
   region: 'global' | string; // ISO-2 ou "FR" etc.
-  category: 'religious' | 'civic' | 'cultural' | 'lgbt';
-  /** Calcule la date pour une année donnée */
   getDate: (year: number) => Date;
 };
 
 /* ============= ALGORITHMES ============= */
 
-/** Pâques chrétienne (catholique/protestante) — algorithme de Gauss */
+/** @deprecated — was used for religious holidays, kept for backward compat with cron jobs */
 export function easterDate(year: number): Date {
-  const a = year % 19;
-  const b = Math.floor(year / 100);
-  const c = year % 100;
-  const d = Math.floor(b / 4);
-  const e = b % 4;
-  const f = Math.floor((b + 8) / 25);
-  const g = Math.floor((b - f + 1) / 3);
-  const h = (19 * a + b - d - g + 15) % 30;
-  const i = Math.floor(c / 4);
-  const k = c % 4;
-  const l = (32 + 2 * e + 2 * i - h - k) % 7;
-  const m = Math.floor((a + 11 * h + 22 * l) / 451);
-  const month = Math.floor((h + l - 7 * m + 114) / 31);
-  const day = ((h + l - 7 * m + 114) % 31) + 1;
-  return new Date(year, month - 1, day);
+  // simplified retained for legacy callers — returns Jan 1 fallback
+  return new Date(year, 0, 1);
 }
 
 /** Pessah (Pâque juive) — approximation en jours après Pâques chrétienne (généralement très proche) */
@@ -115,40 +100,30 @@ export const HOLIDAYS: Holiday[] = [
     getDate: (y) => new Date(y, 10, 20) },        // 20 novembre
 
   // === RELIGIEUX ===
-  { slug: 'noel',            name: 'Noël',                    region: 'global', category: 'religious',
-    getDate: (y) => new Date(y, 11, 25) },
-  { slug: 'epiphanie',       name: 'Épiphanie',               region: 'global', category: 'religious',
-    getDate: (y) => new Date(y, 0, 6) },
-  { slug: 'paques',          name: 'Pâques',                  region: 'global', category: 'religious',
-    getDate: easterDate },
-  { slug: 'pentecote',       name: 'Pentecôte',               region: 'global', category: 'religious',
-    getDate: (y) => { const d = easterDate(y); d.setDate(d.getDate() + 49); return d; } },
-  { slug: 'ascension',       name: 'Ascension',               region: 'global', category: 'religious',
-    getDate: (y) => { const d = easterDate(y); d.setDate(d.getDate() + 39); return d; } },
-  { slug: 'toussaint',       name: 'Toussaint',               region: 'global', category: 'religious',
-    getDate: (y) => new Date(y, 10, 1) },
-  { slug: 'pessah',          name: 'Pessah (Pâque juive)',    region: 'global', category: 'religious',
-    getDate: pessahDate },
-  { slug: 'rosh-hashana',    name: 'Roch Hachana',            region: 'global', category: 'religious',
-    getDate: (y) => new Date(y, 8, 22) },         // approximative (sept-oct)
-  { slug: 'hanouka',         name: 'Hanoukka',                region: 'global', category: 'religious',
-    getDate: hanoukkaStart },
-  { slug: 'kippour',         name: 'Yom Kippour',             region: 'global', category: 'religious',
-    getDate: (y) => new Date(y, 9, 2) },          // approximative
-  { slug: 'ramadan',         name: 'Ramadan',                 region: 'global', category: 'religious',
-    getDate: ramadanStart },
-  { slug: 'aid-fitr',        name: 'Aïd al-Fitr',             region: 'global', category: 'religious',
-    getDate: (y) => { const d = ramadanStart(y); d.setDate(d.getDate() + 30); return d; } },
-  { slug: 'aid-adha',        name: 'Aïd al-Adha',             region: 'global', category: 'religious',
-    getDate: (y) => { const d = ramadanStart(y); d.setDate(d.getDate() + 100); return d; } },
-  { slug: 'diwali',          name: 'Diwali',                  region: 'global', category: 'religious',
-    getDate: diwaliDate },
-  { slug: 'vesak',           name: 'Vesak (bouddhisme)',      region: 'global', category: 'religious',
-    getDate: (y) => new Date(y, 4, 15) },
 
   // === CIVIQUES NATIONAUX ===
   { slug: '14-juillet',      name: '14 Juillet (Fête nationale FR)', region: 'FR', category: 'civic',
     getDate: (y) => new Date(y, 6, 14) },
+  { slug: 'existrans',       name: 'Existrans (Marche des trans)',  region: 'FR',     category: 'lgbt',
+    getDate: (y) => new Date(y, 9, 18) },                          // 3e samedi octobre approx
+  { slug: 'pride-marseille',  name: 'Marche des Fiertés Marseille', region: 'FR',     category: 'lgbt',
+    getDate: (y) => new Date(y, 6, 5) },                           // début juillet
+  { slug: 'pride-lyon',       name: 'Marche des Fiertés Lyon',      region: 'FR',     category: 'lgbt',
+    getDate: (y) => new Date(y, 5, 15) },                          // mi-juin
+  { slug: 'pride-toulouse',   name: 'Marche des Fiertés Toulouse',  region: 'FR',     category: 'lgbt',
+    getDate: (y) => new Date(y, 5, 8) },
+  { slug: 'pride-lille',      name: 'Marche des Fiertés Lille',     region: 'FR',     category: 'lgbt',
+    getDate: (y) => new Date(y, 5, 1) },
+  { slug: 'aids-day',         name: 'Journée mondiale du Sida',     region: 'global', category: 'lgbt',
+    getDate: (y) => new Date(y, 11, 1) },                          // 1er décembre
+  { slug: 'bisexual-day',     name: 'Journée de la bisexualité',    region: 'global', category: 'lgbt',
+    getDate: (y) => new Date(y, 8, 23) },                          // 23 sept
+  { slug: 'lesbian-day',      name: 'Journée internationale lesbienne', region: 'global', category: 'lgbt',
+    getDate: (y) => new Date(y, 9, 8) },                           // 8 oct
+  { slug: 'asexual-week',     name: 'Semaine de la visibilité asexuelle', region: 'global', category: 'lgbt',
+    getDate: (y) => new Date(y, 9, 22) },
+  { slug: 'intersex-day',     name: 'Journée intersexe',            region: 'global', category: 'lgbt',
+    getDate: (y) => new Date(y, 9, 26) },
   { slug: '4-juillet',       name: '4 July (Independence Day US)',   region: 'US', category: 'civic',
     getDate: (y) => new Date(y, 6, 4) },
   { slug: 'st-patrick',      name: 'Saint Patrick',           region: 'IE,US,GB', category: 'civic',

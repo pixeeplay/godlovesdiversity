@@ -15,7 +15,7 @@ import { getSettings, setSetting } from './settings';
 // ─────────────────────────────────────────────
 
 export const AI_KEYS = {
-  // GLD Soul — la "voix" du site
+  // LGBT Soul (deprecated) — la "voix" du site, retirée Phase 1
   soulEnabled: 'ai.soul.enabled',
   soulFrequency: 'ai.soul.frequency',         // "daily" | "weekly"
   soulTone: 'ai.soul.tone',                   // ex: "poétique, chaleureux, inclusif"

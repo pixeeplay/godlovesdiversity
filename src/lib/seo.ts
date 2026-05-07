@@ -16,11 +16,10 @@ type SeoOpts = {
 };
 
 const SITE_NAME = 'God Loves Diversity';
-const DEFAULT_DESC = "Mouvement interreligieux pour l'inclusion LGBT+. Photos d'églises, mosquées, synagogues et temples du monde entier qui célèbrent la diversité.";
+const DEFAULT_DESC = "Plateforme communautaire LGBTQIA+ — Paris et France. Lieux, soirées, agenda Pride, ressources santé, identités, communauté.";
 const KEYWORDS = [
-  'God Loves Diversity', 'foi inclusive', 'religion LGBT', 'église inclusive',
-  'mosquée inclusive', 'synagogue inclusive', 'spiritualité LGBT', 'théologie queer',
-  'diversité religieuse', 'tolérance interreligieuse', 'pride spirituelle',
+  'parislgbt', 'francelgbt', 'LGBT Paris', 'queer Paris', 'pride Paris', 'lieux LGBT France', 'soirées LGBT', 'communauté LGBTQIA+', 'PrEP Paris',
+  'identités LGBTQIA+', 'Pride 2026', 'Marche des Fiertés',
   'amour universel', 'foi et homosexualité'
 ];
 
@@ -61,7 +60,7 @@ export function buildMetadata(o: SeoOpts = {}): Metadata {
       title,
       description,
       images: [image],
-      creator: '@GodLovesDiv'
+      creator: '@parislgbt'
     },
     robots: o.noIndex
       ? { index: false, follow: false }
@@ -83,14 +82,14 @@ export const organizationJsonLd = {
   logo: `${BASE}/logo.png`,
   description: DEFAULT_DESC,
   sameAs: [
-    'https://www.facebook.com/godlovesdiversity',
-    'https://www.instagram.com/godlovesdiversity',
-    'https://twitter.com/GodLovesDiv'
+    'https://www.facebook.com/parislgbt',
+    'https://www.instagram.com/parislgbt',
+    'https://twitter.com/parislgbt'
   ],
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer support',
-    email: 'contact@godlovesdiversity.org',
+    email: 'contact@parislgbt.com',
     availableLanguage: ['French', 'English', 'Spanish', 'Portuguese']
   }
 };

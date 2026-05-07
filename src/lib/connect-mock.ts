@@ -51,14 +51,14 @@ export type MockProRecord = {
 };
 
 export const MOCK_USERS: MockUser[] = [
-  { id: 'u1', handle: 'marc-antoine', name: 'Marc-Antoine', age: 34, city: 'Lyon',     identity: 'gay',       tradition: 'catholique inclusif', bio: 'Catholique queer, fils d\'une famille très pratiquante. J\'aide les autres à concilier foi et identité.', avatarColor: ['#D4537E', '#534AB7'], verified: true },
+  { id: 'u1', handle: 'marc-antoine', name: 'Marc-Antoine', age: 34, city: 'Lyon',     identity: 'gay',       tradition: 'queer', bio: 'Catholique queer, fils d\'une famille très pratiquante. J\'aide les autres à concilier foi et identité.', avatarColor: ['#D4537E', '#534AB7'], verified: true },
   { id: 'u2', handle: 'lea-soufie',   name: 'Léa',          age: 29, city: 'Marseille',identity: 'lesbienne', tradition: 'soufie',              bio: 'Doctorante en théologie. J\'organise des iftars inclusifs pendant le Ramadan.', avatarColor: ['#1D9E75', '#378ADD'], verified: true },
   { id: 'u3', handle: 'sami-r',       name: 'Sami',         age: 32, city: 'Bordeaux', identity: 'gay',       tradition: 'soufi inclusif',      bio: 'Musulman queer en chemin. Je cherche quelqu\'un qui sait que la spiritualité et l\'amour ne sont pas opposés. Bonus si tu connais Rumi par cœur.', avatarColor: ['#BA7517', '#D85A30'], verified: true },
   { id: 'u4', handle: 'yael-c',       name: 'Yaël',         age: 27, city: 'Paris',    identity: 'non-binaire',tradition: 'juive libérale',     bio: 'Ingé logiciel, trans non-binaire, très impliqué·e dans la communauté Beit Haverim.', avatarColor: ['#534AB7', '#185FA5'], verified: true },
   { id: 'u5', handle: 'ines-m',       name: 'Inès',         age: 41, city: 'Toulouse', identity: 'bi',        tradition: 'agnostique',          bio: 'Mère de 2 enfants. Mentor pour personnes en coming-out tardif.', avatarColor: ['#993556', '#D4537E'], verified: true },
-  { id: 'u6', handle: 'remi-faure',   name: 'Dr Rémi Faure',age: 48, city: 'Paris',    identity: 'gay',       tradition: 'protestant libéral',  bio: 'Psychologue clinicien, 12 ans d\'accompagnement personnes LGBT issues de milieux religieux.', avatarColor: ['#185FA5', '#1D9E75'], verified: true },
-  { id: 'u7', handle: 'pere-etienne', name: 'Père Étienne Mallet', age: 52, city: 'Lyon', identity: 'allié·e', tradition: 'catholique inclusif', bio: 'Aumônier diocésain, ancien membre du Hospitalier Saint-Eustache. Accompagnement spirituel des couples LGBT.', avatarColor: ['#D85A30', '#BA7517'], verified: true },
-  { id: 'u8', handle: 'sarah-photo',  name: 'Sarah Levin',  age: 31, city: 'Lyon',     identity: 'lesbienne', tradition: 'juive réformée',      bio: 'Photographe spécialisée mariages interreligieux et cérémonies inclusives.', avatarColor: ['#0F6E56', '#1D9E75'], verified: true },
+  { id: 'u6', handle: 'remi-faure',   name: 'Dr Rémi Faure',age: 48, city: 'Paris',    identity: 'gay',       tradition: 'queer',  bio: 'Psychologue clinicien, 12 ans d\'accompagnement personnes LGBT issues de milieux religieux.', avatarColor: ['#185FA5', '#1D9E75'], verified: true },
+  { id: 'u7', handle: 'pere-etienne', name: 'Étienne Mallet', age: 52, city: 'Lyon', identity: 'allié·e', tradition: 'queer', bio: 'Mentor LGBT pour jeunes adultes en questionnement.', avatarColor: ['#D85A30', '#BA7517'], verified: true },
+  { id: 'u8', handle: 'sarah-photo',  name: 'Sarah Levin',  age: 31, city: 'Lyon',     identity: 'lesbienne', tradition: 'juive réformée',      bio: 'Photographe spécialisée événements communautaires et portraits queer.', avatarColor: ['#0F6E56', '#1D9E75'], verified: true },
   { id: 'u9', handle: 'marius-k',     name: 'Marius',       age: 26, city: 'Nantes',   identity: 'gay',       tradition: 'agnostique',          bio: 'Étudiant en master, cherche colocs LGBT-friendly + groupe de discussion philo.', avatarColor: ['#7F77DD', '#5DCAA5'], verified: false },
 ];
 
@@ -77,7 +77,7 @@ export const MOCK_POSTS: MockPost[] = [
   },
   {
     id: 'p3', authorHandle: 'yael-c', type: 'priere',
-    text: 'Demande de prière : ma mère ne me parle plus depuis ma transition. Si vous pouvez tenir une intention pour qu\'on se reparle, ça m\'aiderait énormément. Merci à toustes ❤️',
+    text: 'Cherche un peu de soutien : ma mère ne me parle plus depuis ma transition. Si vous avez vécu ça, vos retours d''expérience sont bienvenus ❤️'on se reparle, ça m\'aiderait énormément. Merci à toustes ❤️',
     createdAt: '2026-05-04T08:15:00Z', likes: 89, prayers: 142, comments: 31
   },
   {
@@ -112,15 +112,15 @@ export const MOCK_PRO_DIRECTORY: MockProRecord[] = [
   {
     userHandle: 'pere-etienne', category: 'pasteur',
     categoryLabel: '⛪ Aumônier inclusif',
-    jobTitle: 'Aumônier diocésain',
-    pitch: 'Disponible pour entretiens, accompagnement spirituel, bénédictions de couples (privé). Diocèse de Lyon.',
+    jobTitle: 'Mentor LGBT pour jeunes adultes en questionnement.',
+    pitch: 'Disponible pour entretiens, écoute communautaire, événements queer locaux. Diocèse de Lyon.',
     recommendations: 12, available: true, badge: 'Vérifié diocèse'
   },
   {
     userHandle: 'sarah-photo', category: 'photographe',
     categoryLabel: '📸 Photographe mariage inclusif',
     jobTitle: 'Photographe pro',
-    pitch: 'Spécialisée mariages interreligieux, PACS, cérémonies de bénédiction. Devis sur mesure, sliding scale.',
+    pitch: 'Spécialisée portraits queer, mariages alternatifs. Devis sliding scale.',
     recommendations: 18, available: true
   },
   {
