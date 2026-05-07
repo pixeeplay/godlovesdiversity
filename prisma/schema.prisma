@@ -86,6 +86,11 @@ model User {
   blocksGiven       ConnectBlock[]      @relation("blockerRel")
   blocksReceived    ConnectBlock[]      @relation("blockedRel")
   premiumSub        ConnectPremium?
+
+  // V6 — Prière vocale + transcription IA
+  vocalPrayers      VocalPrayer[]
+  vocalPrayerConsent Boolean  @default(false)   // RGPD : consentement explicite traitement audio
+  vocalPrayerConsentedAt DateTime?
 }
 
 /// Bookmark générique (témoignages, lieux, posts, produits, events).
@@ -1891,6 +1896,37 @@ model LoginAttempt {
 
   @@index([email, createdAt])
   @@index([ip, createdAt])
+}
+
+/// Prière vocale enregistrée par l'utilisateur. Audio sur MinIO (privé), texte transcrit par IA.
+/// RGPD : données sensibles (croyances religieuses) — accès strictement perso, droit à suppression totale.
+model VocalPrayer {
+  id            String        @id @default(cuid())
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storageKey    String                                        // clé MinIO (ex: "vocal-prayers/2026/05/cuid.webm")
+  audioMime     String        @default("audio/webm")
+  durationSec   Int?                                          // durée enregistrement (utile pour billing IA)
+  fileSizeBytes Int?
+  language      String        @default("fr")                  // code BCP-47 hint pour transcription
+  transcription String?       @db.Text
+  title         String?                                       // titre auto extrait par IA (1ère phrase)
+  mood          String?                                       // "joie" | "tristesse" | "espoir" | "colère" | "paix" | "questionnement"
+  status        VocalPrayerStatus @default(PROCESSING)
+  errorMessage  String?       @db.Text
+  isPublic      Boolean       @default(false)                 // partage anonyme dans wall public
+  transcribedAt DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+enum VocalPrayerStatus {
+  PROCESSING
+  COMPLETED
+  FAILED
 }
 
 /// Sources webcam découvertes (manuelles ou agent IA), avec statut live cache.
