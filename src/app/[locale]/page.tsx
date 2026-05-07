@@ -143,11 +143,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   if (banners.length === 0) {
     banners = [{
       id: 'default', order: 1, locale, published: true,
-      eyebrow: 'Plateforme LGBTQIA+ • 2026',
-      title: 'GOD LOVES DIVERSITY',
+      eyebrow: '🌈 Plateforme LGBTQIA+ · 2026',
+      title: "PARIS LGBT 365",
       subtitle, accentColor: '#FF2BB1',
-      cta1Text: 'COMPRENDRE LE MESSAGE', cta1Url: '/argumentaire',
-      cta2Text: 'VOIR LES PHOTOS', cta2Url: '/galerie',
+      cta1Text: 'EXPLORER LA CARTE', cta1Url: '/lieux',
+      cta2Text: 'AGENDA PRIDE', cta2Url: '/pride',
       mediaUrl: null, mediaType: null,
       createdAt: new Date(), updatedAt: new Date()
     } as any];
