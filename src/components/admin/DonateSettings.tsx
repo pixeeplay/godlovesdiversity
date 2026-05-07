@@ -9,7 +9,7 @@ export function DonateSettings({ initial }: { initial: Record<string, string> })
     'integrations.square.applicationId': initial['integrations.square.applicationId'] || '',
     'integrations.square.environment': initial['integrations.square.environment'] || 'sandbox',
     'donate.amounts': initial['donate.amounts'] || '5,10',
-    'donate.tickerItems': initial['donate.tickerItems'] || '💖 Soutenez le mouvement\n✨ Chaque don fait la différence\n🌍 Aidez-nous à diffuser l\'affiche partout dans le monde\n🏳️‍🌈 Foi et diversité, ensemble\n📣 Faites connaître le mouvement'
+    'donate.tickerItems': initial['donate.tickerItems'] || '💖 Soutenez le mouvement\n✨ Chaque don fait la différence\n🌍 Aidez-nous à diffuser l\'affiche partout dans le monde\n🏳️‍🌈 Foi et diversité, ensemble\n📣 Découvre la communauté'
   });
   const [show, setShow] = useState<Record<string, boolean>>({});
   const [busy, setBusy] = useState(false);

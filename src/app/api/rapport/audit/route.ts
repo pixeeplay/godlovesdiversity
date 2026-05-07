@@ -114,7 +114,7 @@ async function loadModules(): Promise<Module[]> {
 
     /* ─── IA ─── */
     { category: 'IA', name: 'Studio IA Gemini', status: 'live', stats: 'Texte (Gemini 2.0 Flash) + Image (Imagen 3) + Vidéo (fal.ai)', routes: ['/admin/ai-studio'] },
-    { category: 'IA', name: 'Demandez à GLD (chat)', status: 'live', stats: 'Widget chat avec RAG sur knowledge base' },
+    { category: 'IA', name: 'Assistant queer (chat)', status: 'live', stats: 'Widget chat avec RAG sur knowledge base' },
     { category: 'IA', name: 'AI Autopilot', status: 'live', stats: `Mood, Modération, Newsletter auto`, routes: ['/admin/ai-autopilot'] },
     { category: 'IA', name: 'AI Text Helper inline', status: 'live', stats: '8 actions : fix, rewrite, shorter, longer, inclusive, punchy, warm, pro' },
     { category: 'IA', name: 'Avatar IA temps-réel', status: 'live', stats: 'Vidéo HeyGen + Live Gemini Realtime', routes: ['/admin/avatar'] },

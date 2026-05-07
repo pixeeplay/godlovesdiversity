@@ -50,7 +50,7 @@ const TASK_LABELS: Record<string, { label: string; tokens: number; description: 
   'classify-venue':    { label: 'Classification venue → type religieux', tokens: 200,  description: 'CHURCH_CATHOLIC, MOSQUE, etc.' },
   'enrich-venue':      { label: 'Enrichissement venue (grounded)',       tokens: 3000, description: 'REQUIERT grounded search Google. Garde Gemini.' },
   'persona-companion': { label: 'Compagnon spirituel (4 personas)',     tokens: 2000, description: 'Mère Marie, Sœur Khadija, Rav Yossef, Maître Tenku.' },
-  'rag-chat':          { label: '"Demandez à GLD" RAG',                  tokens: 3000, description: 'Chat avec retrieval sur knowledge base.' },
+  'rag-chat':          { label: '"Assistant queer" RAG',                  tokens: 3000, description: 'Chat avec retrieval sur knowledge base.' },
   'embeddings':        { label: 'Embeddings RAG',                        tokens: 0,    description: 'Vectorisation sémantique.' },
   'stt':               { label: 'Speech-to-Text',                        tokens: 0,    description: 'Transcription audio/vidéo.' },
   'image-generate':    { label: 'Génération image',                      tokens: 0,    description: 'Posters, share cards.' },

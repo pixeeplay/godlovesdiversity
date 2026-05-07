@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 /**
- * Indique quels modes du widget « Demandez à GLD » sont disponibles.
+ * Indique quels modes du widget « Assistant queer » sont disponibles.
  *  - videoEnabled : mode Vidéo HeyGen générée (~30s par clip)
  *  - localLiveEnabled : mode Live local (avatar SVG + ElevenLabs, gratuit)
  *  - streamingEnabled : reservé pour future migration LiveAvatar

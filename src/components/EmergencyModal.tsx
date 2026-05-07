@@ -316,7 +316,7 @@ const SCENARIOS = [
     'Rejoins une communauté inclusive : Carrefour des Chrétiens Inclusifs, David & Jonathan, Beit Haverim, HM2F.',
     'Si une thérapie de conversion t\'est proposée : c\'est interdit en France et dangereux. Refuse, signale.',
     'Lis les théologies inclusives : Justin Lee, Matthew Vines, Daniel Helminiak.',
-    'Notre RAG « Demandez à GLD » t\'aide aussi sur ces sujets — ouvre le widget chat.'
+    'Notre RAG « Assistant queer » t\'aide aussi sur ces sujets — ouvre le widget chat.'
   ]},
   { id: 'isolement', title: '🌑 Je me sens seul·e', steps: [
     'L\'isolement est temporaire, même quand il pèse. Tu n\'es pas oublié·e.',

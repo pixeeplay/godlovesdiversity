@@ -160,11 +160,11 @@ export function AskAssistantWidget() {
         <button
           onClick={() => setOpen(true)}
           className="fixed bottom-6 right-6 z-40 group"
-          aria-label="Demandez à GLD"
+          aria-label="Assistant queer"
         >
           <span className="absolute inset-0 rounded-full bg-brand-pink animate-ping opacity-30" />
           <span className="relative flex items-center gap-2 bg-brand-pink hover:bg-brand-rose text-white pl-4 pr-5 py-3 rounded-full font-bold shadow-[0_0_30px_rgba(255,43,177,.6)]">
-            <Sparkles size={18} /> Demandez à GLD
+            <Sparkles size={18} /> Assistant queer
           </span>
         </button>
       )}
@@ -190,7 +190,7 @@ export function AskAssistantWidget() {
             <div className="flex items-center gap-2">
               <Sparkles size={18} style={{ color: 'var(--accent)' }} />
               <div>
-                <div className="font-bold text-sm" style={{ color: 'var(--fg)' }}>Demandez à GLD</div>
+                <div className="font-bold text-sm" style={{ color: 'var(--fg)' }}>Assistant queer</div>
                 <div className="text-[10px]" style={{ color: 'var(--fg-muted)' }}>
                   Assistant inclusif IA · {mode === 'video' ? 'Mode vidéo' : 'Mode texte'}
                 </div>

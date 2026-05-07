@@ -65,7 +65,7 @@ export function KnowledgeAdmin({
           </span>
         </div>
         <p className="text-zinc-400 text-sm max-w-3xl">
-          La bibliothèque que tu donnes ici devient la <strong>seule source de vérité</strong> du chat « Demandez à GLD ».
+          La bibliothèque que tu donnes ici devient la <strong>seule source de vérité</strong> du chat « Assistant queer ».
           Plus tu lui donnes de textes (sermons, livres, articles, citations), plus il devient pointu et collé à ta voix.
         </p>
       </header>

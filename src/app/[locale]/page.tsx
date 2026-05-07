@@ -26,16 +26,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const s = await getAllSettings();
 
   const v = (key: string, fallback: string) => s[`home.${key}`] || fallback;
-  const titleA = s['home.hero.titleA'] || 'GOD';
-  const titleB = s['home.hero.titleB'] || 'LOVES DIVERSITY';
+  const titleA = s['home.hero.titleA'] || 'PARIS';
+  const titleB = s['home.hero.titleB'] || 'LGBT 365';
   const subtitle = v('hero.subtitle',
-    "Dieu n'est pas opposé aux personnes LGBT. L'amour, la justice et la compassion sont au cœur des grandes religions monothéistes."
+    "Le hub queer de Paris et de la France. Soirées, lieux safe, agenda Pride, ressources santé, communauté. Indépendant · sans pub · open source."
   );
-  const ctaPrimary = v('hero.ctaPrimary', 'Comprendre le message');
-  const ctaSecondary = v('hero.ctaSecondary', 'Voir les photos');
-  const pillarsTitle = v('pillars.title', 'L\'AMOUR EST UNIVERSEL');
-  const postersTitle = v('posters.title', 'TÉLÉCHARGEZ L\'AFFICHE');
-  const postersText = v('posters.text', 'Imprimez, affichez, prenez une photo et soyez acteur du changement !');
+  const ctaPrimary = v('hero.ctaPrimary', 'Découvrir les lieux');
+  const ctaSecondary = v('hero.ctaSecondary', 'Agenda Pride');
+  const pillarsTitle = v('pillars.title', 'BIENVENUE CHEZ TOI');
+  const postersTitle = v('posters.title', 'PARTAGE TES PHOTOS');
+  const postersText = v('posters.text', 'Soumets tes plus belles photos de soirée, de Marche des Fiertés ou de lieux LGBT-friendly. Modération communautaire.');
   const logoUrl = s['site.logoUrl'];
   const hashtag = s['campaign.hashtag'] || '#parislgbt';
 
@@ -43,26 +43,26 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     {
       icon: Heart,
       color: '#FF2BB1',
-      title: v('pillar1.title', 'DIEU EST AMOUR'),
-      text: v('pillar1.text', 'Au cœur des trois grandes religions monothéistes, Dieu est amour, miséricorde et compassion.')
+      title: v('pillar1.title', 'COMMUNAUTÉ ENTIÈRE'),
+      text: v('pillar1.text', 'Toutes les identités, tous les âges (16+), toutes les régions. Lesbiennes, gays, bi·es, trans, non-binaires, queer, ace, pan, intersex — allié·es bienvenu·es.')
     },
     {
       icon: BookOpen,
       color: '#FBBF24',
-      title: v('pillar2.title', 'LES TEXTES SONT CONTEXTUALISÉS'),
-      text: v('pillar2.text', 'Les passages souvent cités doivent être compris dans leur contexte historique, culturel et social.')
+      title: v('pillar2.title', 'PRIDE 365'),
+      text: v('pillar2.text', 'Toutes les Marches des Fiertés en France, Existrans, festivals queer, Tea Dance, drag shows. Toute l\'année, partout.')
     },
     {
       icon: Handshake,
       color: '#34D399',
-      title: v('pillar3.title', 'L\'INTERPRÉTATION EST HUMAINE'),
-      text: v('pillar3.text', 'Les traductions et interprétations ont été influencées par des normes culturelles pas toujours en accord avec l\'amour universel.')
+      title: v('pillar3.title', 'SANTÉ & SÉCURITÉ'),
+      text: v('pillar3.text', 'PrEP, dépistage gratuit, médecins LGBT-friendly, soutien santé mentale, ressources transition. Annuaire vérifié et confidentiel.')
     },
     {
       icon: Users,
       color: '#8B5CF6',
-      title: v('pillar4.title', 'FOI ET DIVERSITÉ SONT COMPATIBLES'),
-      text: v('pillar4.text', 'De nombreuses communautés religieuses inclusives existent et accueillent les personnes LGBT+.')
+      title: v('pillar4.title', 'INDÉPENDANT · SANS PUB'),
+      text: v('pillar4.text', 'Plateforme communautaire, sans publicité, open source. Financée par les abonnements premium et les partenariats associatifs.')
     }
   ];
 

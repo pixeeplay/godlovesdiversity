@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ask } from '@/lib/rag';
 
 /**
- * Endpoint public du chat « Demandez à GLD » — utilise le RAG.
+ * Endpoint public du chat « Assistant queer » — utilise le RAG.
  * POST { question: string, locale?: string }
  * → { answer: string, sources: [...], topScore, offTopic }
  */

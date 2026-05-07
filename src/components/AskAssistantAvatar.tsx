@@ -7,7 +7,7 @@ type State = 'idle' | 'asking' | 'rendering' | 'ready' | 'error';
 
 /**
  * Widget public « GLD Live » — un avatar HeyGen qui répond en vidéo,
- * piloté par le RAG « Demandez à GLD ».
+ * piloté par le RAG « Assistant queer ».
  *
  * S'affiche à côté du widget chat texte si avatar.enabled = '1'.
  */

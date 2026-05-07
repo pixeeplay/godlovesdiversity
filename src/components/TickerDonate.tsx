@@ -12,7 +12,7 @@ const DEFAULT_ITEMS = [
   '✨ Chaque don fait la différence',
   '🌍 Aidez-nous à diffuser l\'affiche partout dans le monde',
   '🏳️‍🌈 Foi et diversité, ensemble',
-  '📣 Faites connaître le mouvement',
+  '📣 Découvre la communauté',
   '❤️ Merci pour votre engagement'
 ];
 

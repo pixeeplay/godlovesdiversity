@@ -99,9 +99,9 @@ export function Navbar() {
             <img src={logoUrl} alt="" className="h-10 max-w-[180px] w-auto object-contain flex-none" />
           ) : (
             <span className="font-display font-black leading-none text-[color:var(--accent)] hidden sm:flex flex-col flex-none">
-              <span className="text-base">GOD</span>
-              <span className="text-base">LOVES</span>
-              <span className="text-base">DIVERSITY</span>
+              <span className="text-base">PARIS</span>
+              <span className="text-base">LGBT</span>
+              <span className="text-base">.com</span>
             </span>
           )}
         </a>

@@ -168,7 +168,7 @@ function generateHtml(s: Awaited<ReturnType<typeof loadStats>>): string {
     ['Espace Pro venues + agenda', 80],
     ['Forum + témoignages', 78],
     ['SOS multi-pays + helplines', 95],
-    ['IA (Demandez à GLD, Studio, Avatar)', 82],
+    ['IA (Assistant queer, Studio, Avatar)', 82],
     ['Mobile (PWA + iOS natif)', 70],
     ['i18n (10 langues auto-traduites)', 88],
   ].map(([label, p]) => `
