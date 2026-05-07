@@ -77,7 +77,7 @@ export const MOCK_POSTS: MockPost[] = [
   },
   {
     id: 'p3', authorHandle: 'yael-c', type: 'priere',
-    text: 'Cherche un peu de soutien : ma mère ne me parle plus depuis ma transition. Si vous avez vécu ça, vos retours d''expérience sont bienvenus ❤️'on se reparle, ça m\'aiderait énormément. Merci à toustes ❤️',
+    text: "Cherche un peu de soutien : ma mere ne me parle plus depuis ma transition. Si vous avez vecu ca, vos retours d\u2019experience sont bienvenus.",
     createdAt: '2026-05-04T08:15:00Z', likes: 89, prayers: 142, comments: 31
   },
   {
