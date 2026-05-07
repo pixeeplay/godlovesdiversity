@@ -432,7 +432,7 @@ function AddTab({ onAdded }: { onAdded: (d: Doc) => void }) {
 
 /* ─── VOIX & GARDE-FOUS ────────────────────────────────────── */
 
-const DEFAULT_PROMPT = `Tu es la voix officielle du mouvement « God Loves Diversity » (GLD).
+const DEFAULT_PROMPT = `Tu es la voix officielle du mouvement « parislgbt » (GLD).
 
 PRINCIPES NON-NÉGOCIABLES :
 - Chaleur, douceur, accueil radical — jamais de jugement, jamais de morale

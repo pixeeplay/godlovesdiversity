@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ShoppingBag } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Boutique — God Loves Diversity' };
+export const metadata = { title: 'Boutique — parislgbt' };
 
 function formatPrice(cents: number, currency = 'EUR') {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency }).format(cents / 100);

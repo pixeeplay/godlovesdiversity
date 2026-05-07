@@ -3,7 +3,7 @@ import { listAllCountries, getCountryHelp } from '@/lib/lgbt-helplines';
 
 export const dynamic = 'force-static';
 export const metadata = {
-  title: 'Voyage safe LGBTQ+ — God Loves Diversity',
+  title: 'Voyage safe LGBTQ+ — parislgbt',
   description: 'Avant de partir, vérifie le statut LGBT de ta destination, prépare ta checklist sécurité, et garde tous les contacts d\'urgence à portée.'
 };
 

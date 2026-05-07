@@ -13,11 +13,11 @@ export async function GET() {
     const map = Object.fromEntries(rows.map((r) => [r.key, r.value]));
     return NextResponse.json({
       logoUrl: map['site.logoUrl'] || null,
-      title: map['site.title'] || 'God Loves Diversity',
+      title: map['site.title'] || 'parislgbt',
       tagline: map['site.tagline'] || '',
-      hashtag: map['campaign.hashtag'] || '#GodLovesDiversity'
+      hashtag: map['campaign.hashtag'] || '#parislgbt'
     });
   } catch {
-    return NextResponse.json({ logoUrl: null, title: 'God Loves Diversity', tagline: '', hashtag: '#GodLovesDiversity' });
+    return NextResponse.json({ logoUrl: null, title: 'parislgbt', tagline: '', hashtag: '#parislgbt' });
   }
 }

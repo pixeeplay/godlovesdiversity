@@ -63,7 +63,7 @@ export function AgendaClient({ initial }: { initial: AgendaEvent[] }) {
             <h1 className="font-display font-bold text-4xl">Agenda</h1>
           </div>
           <p className="text-zinc-400 max-w-2xl text-sm">
-            Tous les événements LGBTQ+ inclusifs : prières, rencontres, concerts, marches, conférences. Filtre par ville ou par lieu.
+            Tous les événements LGBTQ+ inclusifs : rencontres, concerts, marches, conférences, ateliers, drag shows, ballroom. Filtre par ville ou par lieu.
           </p>
         </div>
         <div className="flex gap-1 bg-zinc-900 border border-zinc-800 rounded-full p-1">

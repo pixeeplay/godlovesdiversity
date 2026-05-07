@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { Handshake, ExternalLink } from 'lucide-react';
 
-export const metadata = { title: 'Partenaires — God Loves Diversity' };
+export const metadata = { title: 'Partenaires — parislgbt' };
 
 export default async function PartnersPage() {
   let partners: { id: string; name: string; url: string; logoUrl: string | null; description: string | null; category: string | null }[] = [];

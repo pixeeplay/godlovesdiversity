@@ -83,7 +83,7 @@ export default function ProPage() {
           <div className="flex items-start gap-3">
             <span className="text-2xl">💼</span>
             <div className="flex-1">
-              <h3 className="font-bold text-sm">Recherche photographe pour mariage interreligieux — Lyon, sept. 2026</h3>
+              <h3 className="font-bold text-sm">Recherche photographe queer pour mariage Lyon, sept. 2026</h3>
               <p className="text-xs text-zinc-300 mt-1">Posté par Léa · 18 candidatures · Budget 1500-2500€</p>
               <button onClick={() => {
                 const msg = prompt('Ton message de candidature :');

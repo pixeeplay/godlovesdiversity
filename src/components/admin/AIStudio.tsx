@@ -23,7 +23,7 @@ type Tool = {
 const TOOLS: Tool[] = [
   // Visuels & Images
   { id: 'visuals', group: 'visuals', icon: Wand2, title: 'Visuels Hero', desc: 'Génère des images cathédrale + arc-en-ciel pour la home (Imagen / Nano Banana)', gradient: 'from-pink-500 to-fuchsia-500', badge: 'POPULAR' },
-  { id: 'music', group: 'visuals', icon: Music, title: 'Musique IA', desc: '9 thèmes ambiants : prière, méditation, cathédrale, taizé, soufi, mantra…', gradient: 'from-violet-500 to-purple-500', badge: 'NEW' },
+  { id: 'music', group: 'visuals', icon: Music, title: 'Musique IA', desc: '9 thèmes ambiants : pride anthem, club, tea dance, drag, ballroom, ambient queer…', gradient: 'from-violet-500 to-purple-500', badge: 'NEW' },
   { id: 'photo-tools', group: 'visuals', icon: ScanFace, title: 'Outils photo', desc: 'Floutage visages, détection doublons, analyse Vision Gemini', gradient: 'from-cyan-500 to-blue-500' },
   { id: 'caption', group: 'visuals', icon: ImageIcon, title: 'Légende photo', desc: 'Décrit une photo en 80 mots avec hashtags inclusifs', gradient: 'from-rose-500 to-pink-500' },
 
@@ -433,7 +433,7 @@ function SeoMetaTab() {
   const [busy, setBusy] = useState(false);
   async function go() {
     setBusy(true); setOut('');
-    const prompt = `Tu es un expert SEO. Pour cette page :\nURL: ${pageUrl}\nContenu (extrait):\n"""${pageContent.slice(0, 1500)}"""\n\nGénère :\n1. UN TITLE optimisé Google (max 60 caractères, contient mot-clé principal, mention "God Loves Diversity")\n2. UNE META DESCRIPTION (max 155 caractères, incitative, contient verbe d'action)\n3. 5 MOTS-CLÉS principaux (par ordre de priorité)\n4. SUGGESTION OG IMAGE alt (description courte de l'image idéale)\n\nFormat clair avec labels.`;
+    const prompt = `Tu es un expert SEO. Pour cette page :\nURL: ${pageUrl}\nContenu (extrait):\n"""${pageContent.slice(0, 1500)}"""\n\nGénère :\n1. UN TITLE optimisé Google (max 60 caractères, contient mot-clé principal, mention "parislgbt")\n2. UNE META DESCRIPTION (max 155 caractères, incitative, contient verbe d'action)\n3. 5 MOTS-CLÉS principaux (par ordre de priorité)\n4. SUGGESTION OG IMAGE alt (description courte de l'image idéale)\n\nFormat clair avec labels.`;
     const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: prompt, network: 'LinkedIn', count: 1 }) });
     const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
@@ -453,7 +453,7 @@ function SeoKeywordsTab() {
   const [busy, setBusy] = useState(false);
   async function go() {
     setBusy(true); setOut('');
-    const prompt = `Liste les 30 meilleurs mots-clés SEO français pour le sujet : "${topic}", dans le contexte du mouvement God Loves Diversity (foi inclusive LGBT+).\nMix : 10 mots-clés courts/concurrentiels, 10 longue traîne (3-5 mots), 10 questions exactes que les gens tapent dans Google.\nFormat : un par ligne, sans numérotation, sans caractère spécial.`;
+    const prompt = `Liste les 30 meilleurs mots-clés SEO français pour le sujet : "${topic}", dans le contexte du mouvement parislgbt (foi inclusive LGBT+).\nMix : 10 mots-clés courts/concurrentiels, 10 longue traîne (3-5 mots), 10 questions exactes que les gens tapent dans Google.\nFormat : un par ligne, sans numérotation, sans caractère spécial.`;
     const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: prompt, network: 'LinkedIn', count: 1 }) });
     const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
@@ -472,7 +472,7 @@ function CommentReplyTab() {
   const [busy, setBusy] = useState(false);
   async function go() {
     setBusy(true); setOut('');
-    const prompt = `Quelqu'un a posté ce commentaire sur le site God Loves Diversity :\n"""${comment}"""\n\nPropose 3 réponses bienveillantes différentes (tons : chaleureux, factuel, spirituel). Chacune en 2-3 phrases max, ton inclusif et apaisé. Format : "Option 1: ..." etc.`;
+    const prompt = `Quelqu'un a posté ce commentaire sur le site parislgbt :\n"""${comment}"""\n\nPropose 3 réponses bienveillantes différentes (tons : chaleureux, factuel, spirituel). Chacune en 2-3 phrases max, ton inclusif et apaisé. Format : "Option 1: ..." etc.`;
     const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: prompt, network: 'LinkedIn', count: 1 }) });
     const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }
@@ -491,7 +491,7 @@ function EmailReplyTab() {
   const [busy, setBusy] = useState(false);
   async function go() {
     setBusy(true); setOut('');
-    const prompt = `Quelqu'un a écrit cet email à God Loves Diversity :\n"""${email}"""\n\nRédige un brouillon de réponse (max 200 mots) :\n- Ton chaleureux et personnel\n- Reformule pour montrer qu'on a bien compris\n- Réponds aux questions s'il y en a\n- Termine par une formule humaine (pas "cordialement")\nSi l'email est sensible (souffrance, doute spirituel), oriente avec délicatesse vers une ressource.`;
+    const prompt = `Quelqu'un a écrit cet email à parislgbt :\n"""${email}"""\n\nRédige un brouillon de réponse (max 200 mots) :\n- Ton chaleureux et personnel\n- Reformule pour montrer qu'on a bien compris\n- Réponds aux questions s'il y en a\n- Termine par une formule humaine (pas "cordialement")\nSi l'email est sensible (souffrance, doute spirituel), oriente avec délicatesse vers une ressource.`;
     const r = await fetch('/api/admin/ai/post-variants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: prompt, network: 'LinkedIn', count: 1 }) });
     const j = await r.json(); setOut(j.text || ''); setBusy(false);
   }

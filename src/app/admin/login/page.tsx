@@ -50,7 +50,7 @@ function LoginFallback() {
         <div className="inline-block bg-gradient-to-br from-fuchsia-500 via-violet-500 to-cyan-500 rounded-2xl p-3 mb-3 shadow-2xl shadow-fuchsia-500/30">
           <Heart size={32} className="text-white" />
         </div>
-        <h1 className="font-display font-bold text-3xl text-white">God Loves Diversity</h1>
+        <h1 className="font-display font-bold text-3xl text-white">parislgbt</h1>
         <p className="text-zinc-400 text-sm mt-2">Chargement…</p>
         <Loader2 size={20} className="animate-spin text-fuchsia-400 mx-auto mt-4" />
       </div>
@@ -180,7 +180,7 @@ function LoginInner() {
         <div className="inline-block bg-gradient-to-br from-fuchsia-500 via-violet-500 to-cyan-500 rounded-2xl p-3 mb-3 shadow-2xl shadow-fuchsia-500/30">
           <Heart size={32} className="text-white" />
         </div>
-        <h1 className="font-display font-bold text-3xl text-white">God Loves Diversity</h1>
+        <h1 className="font-display font-bold text-3xl text-white">parislgbt</h1>
         <p className="text-zinc-400 text-sm mt-1">
           Connecte-toi pour accéder au {next?.startsWith('/admin') ? 'back-office' : 'site'}.
         </p>

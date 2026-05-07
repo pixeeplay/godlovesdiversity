@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { VenuesDirectory } from '@/components/VenuesDirectory';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Lieux LGBTQ+ — God Loves Diversity' };
+export const metadata = { title: 'Lieux LGBTQ+ — parislgbt' };
 
 export default async function LieuxPage() {
   let venues: any[] = [];

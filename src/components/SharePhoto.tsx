@@ -5,7 +5,7 @@ import { Share2, Facebook, Twitter, Mail, MessageCircle, Send, Link2, Check } fr
 type Props = {
   url: string;       // URL absolue de la photo
   title?: string;    // Titre/légende
-  hashtags?: string; // ex: 'GodLovesDiversity,Inclusion'
+  hashtags?: string; // ex: 'parislgbt,Inclusion'
 };
 
 /**
@@ -13,11 +13,11 @@ type Props = {
  * - Web Share API natif si dispo
  * - Sinon fallback : boutons Facebook, X, WhatsApp, Telegram, LinkedIn, Email + copier le lien
  */
-export function SharePhoto({ url, title = 'Photo — God Loves Diversity', hashtags = 'GodLovesDiversity,FoiEtDiversite' }: Props) {
+export function SharePhoto({ url, title = 'Photo — parislgbt', hashtags = 'parislgbt,FoiEtDiversite' }: Props) {
   const [copied, setCopied] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const text = `${title} 🌈 #GodLovesDiversity`;
+  const text = `${title} 🌈 #parislgbt`;
   const enc = (s: string) => encodeURIComponent(s);
 
   async function nativeShare() {

@@ -79,7 +79,7 @@ const AUDIENCES: Record<Audience, { sections: Section[]; tone: string; intro: st
   user: {
     sections: SECTIONS_USER,
     tone: 'chaleureux, accessible, pas de jargon technique, comme un ami qui guide. Tutoiement.',
-    intro: 'Bienvenue dans God Loves Diversity ! Ce manuel te guide à travers toutes les fonctionnalités du site pour que tu te sentes chez toi.'
+    intro: 'Bienvenue dans parislgbt ! Ce manuel te guide à travers toutes les fonctionnalités du site pour que tu te sentes chez toi.'
   },
   admin: {
     sections: SECTIONS_ADMIN,
@@ -189,7 +189,7 @@ export async function generateManual(audience: Audience): Promise<GeneratedManua
     }
 
     if (!quotaExhausted) {
-      const prompt = `Tu rédiges UNE section d'un manuel utilisateur pour le site God Loves Diversity (réseau social inclusif religieux LGBT+, https://gld.pixeeplay.com).
+      const prompt = `Tu rédiges UNE section d'un manuel utilisateur pour le site parislgbt (réseau social inclusif religieux LGBT+, https://gld.pixeeplay.com).
 
 AUDIENCE : ${audience.toUpperCase()}
 TON : ${cfg.tone}
@@ -321,7 +321,7 @@ function renderHtml(audience: Audience, version: string, intro: string, sections
 <div class="container">
   <div class="hero">
     <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.85">Manuel ${audienceLabels[audience]}</div>
-    <h1>🌈 God Loves Diversity</h1>
+    <h1>🌈 parislgbt</h1>
     <p>${intro}</p>
     <span class="badge">v${version} · ${dateLong}</span>
     <p style="margin-top:16px"><a href="javascript:window.print()" class="btn">📄 Télécharger en PDF</a></p>
@@ -344,7 +344,7 @@ function renderHtml(audience: Audience, version: string, intro: string, sections
 
   <div class="meta">
     Manuel généré automatiquement par IA le ${dateLong}.<br/>
-    Régénéré 2×/jour pour rester à jour. — God Loves Diversity · gld.pixeeplay.com
+    Régénéré 2×/jour pour rester à jour. — parislgbt · gld.pixeeplay.com
   </div>
 </div>
 </body>
@@ -353,7 +353,7 @@ function renderHtml(audience: Audience, version: string, intro: string, sections
 
 function renderMarkdown(audience: Audience, version: string, intro: string, sections: any[]): string {
   const labels: Record<Audience, string> = { user: 'Utilisateur', admin: 'Administrateur', superadmin: 'Super-Admin' };
-  let md = `# 🌈 God Loves Diversity — Manuel ${labels[audience]}\n\nv${version}\n\n${intro}\n\n## Sommaire\n\n`;
+  let md = `# 🌈 parislgbt — Manuel ${labels[audience]}\n\nv${version}\n\n${intro}\n\n## Sommaire\n\n`;
   md += sections.map((s, i) => `${i + 1}. ${s.emoji} ${s.title}`).join('\n') + '\n\n---\n\n';
   for (const s of sections) {
     md += `## ${s.emoji} ${s.title}\n\n`;
@@ -368,7 +368,7 @@ function renderVideoScript(audience: Audience, sections: any[]): string {
   let script = `# 🎬 SCRIPT VIDÉO — Manuel ${labels[audience]} GLD\n\n`;
   script += `**Durée totale estimée :** ${Math.ceil(sections.length * 0.7)} minutes\n\n`;
   script += `---\n\n## 🎬 OUVERTURE (0:00 - 0:15)\n\n`;
-  script += `**Voix off :**\n> Bienvenue dans God Loves Diversity. Voici un tour complet du site.\n\n`;
+  script += `**Voix off :**\n> Bienvenue dans parislgbt. Voici un tour complet du site.\n\n`;
   script += `**Screenshot :** \`/\` (home)\n**Animation :** zoom doux sur le hero\n\n---\n\n`;
 
   let timestamp = 15;

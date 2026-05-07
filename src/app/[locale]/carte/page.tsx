@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { CountryMapClient } from '@/components/CountryMapClient';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Carte mondiale — God Loves Diversity' };
+export const metadata = { title: 'Carte mondiale — parislgbt' };
 
 export default async function CountryMapPage() {
   let venues: any[] = [];

@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const { verse, tradition = 'auto' } = await req.json();
     if (!verse || verse.length < 5) return NextResponse.json({ error: 'verset trop court' }, { status: 400 });
 
-    const sys = `Tu es théologien·ne inclusif·ve pour GLD (God Loves Diversity).
+    const sys = `Tu es théologien·ne inclusif·ve pour GLD (parislgbt).
 L'utilisateur te soumet un verset (souvent utilisé contre les personnes LGBT) et tu fournis une analyse théologique inclusive sourcée.
 
 Tradition à analyser : ${tradition === 'auto' ? 'détecte automatiquement (Bible chrétienne, Coran, Torah, soutras bouddhistes…)' : tradition}.

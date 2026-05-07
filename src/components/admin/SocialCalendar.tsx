@@ -287,8 +287,8 @@ function PostEditor({ post, onClose, onSaved }: {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        prompt: `Rédige un post court (≤280 caractères) pour ${channels.join(', ')} pour le mouvement God Loves Diversity. Inclusif, lumineux, hashtag #GodLovesDiversity.`,
-        system: 'Tu es community manager de God Loves Diversity.'
+        prompt: `Rédige un post court (≤280 caractères) pour ${channels.join(', ')} pour le mouvement parislgbt. Inclusif, lumineux, hashtag #parislgbt.`,
+        system: 'Tu es community manager de parislgbt.'
       })
     });
     const j = await r.json();

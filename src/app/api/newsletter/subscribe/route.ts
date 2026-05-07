@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
   await sendEmail(
     email,
-    'Confirmez votre inscription — God Loves Diversity',
+    'Confirmez votre inscription — parislgbt',
     `<div style="font-family:sans-serif;max-width:520px;margin:auto;padding:24px;background:#0a0a0a;color:#fff;border-radius:12px">
       <h1 style="color:#FF1493">Bienvenue 🌈</h1>
       <p>Pour recevoir la newsletter, confirme ton email :</p>

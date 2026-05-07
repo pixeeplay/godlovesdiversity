@@ -236,7 +236,7 @@ function InviteModal({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [city, setCity] = useState('');
-  const [message, setMessage] = useState('Bonjour,\n\nNous serions ravis de vous accueillir dans l\'annuaire God Loves Diversity — un mouvement spirituel inclusif qui met en valeur les lieux LGBT-friendly.\n\nVous pouvez créer votre fiche en quelques minutes en cliquant sur le lien ci-dessous.\n\nÀ très bientôt,\nL\'équipe GLD');
+  const [message, setMessage] = useState('Bonjour,\n\nNous serions ravis de vous accueillir dans l\'annuaire parislgbt — un mouvement spirituel inclusif qui met en valeur les lieux LGBT-friendly.\n\nVous pouvez créer votre fiche en quelques minutes en cliquant sur le lien ci-dessous.\n\nÀ très bientôt,\nL\'équipe GLD');
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
 

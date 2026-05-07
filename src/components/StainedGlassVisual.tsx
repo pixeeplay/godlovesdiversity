@@ -12,7 +12,7 @@ const SILHOUETTES: Record<Variant, string> = {
   woman: `M0,180 Q-38,140 -42,100 Q-44,80 -28,50 Q-32,30 -22,20 Q-12,5 -10,-5 Q-12,-15 -8,-22 Q-12,-32 0,-34 Q12,-32 8,-22 Q12,-15 10,-5 Q12,5 22,20 Q32,30 28,50 Q44,80 42,100 Q38,140 0,180 Z`,
   // Groupe (3 silhouettes)
   group: `M-60,180 Q-72,140 -75,90 Q-78,55 -72,35 Q-76,15 -64,5 Q-66,-5 -60,-15 Q-66,-25 -55,-27 Q-44,-25 -50,-15 Q-44,-5 -46,5 Q-34,15 -38,35 Q-32,55 -35,90 Q-32,140 -20,180 Z M0,180 Q-12,140 -15,90 Q-18,55 -12,35 Q-16,15 -4,5 Q-6,-5 0,-15 Q-6,-25 5,-27 Q16,-25 10,-15 Q16,-5 14,5 Q26,15 22,35 Q28,55 25,90 Q28,140 40,180 Z M60,180 Q48,140 45,90 Q42,55 48,35 Q44,15 56,5 Q54,-5 60,-15 Q54,-25 65,-27 Q76,-25 70,-15 Q76,-5 74,5 Q86,15 82,35 Q88,55 85,90 Q88,140 100,180 Z`,
-  // Personne agenouillée en prière
+  // Silhouette de personne
   praying: `M-30,180 Q-32,150 -28,130 Q-25,110 -15,90 Q-10,70 -5,50 Q-15,30 -10,15 Q-12,-5 -8,-15 Q-12,-25 0,-27 Q12,-25 8,-15 Q12,-5 10,15 Q15,30 5,50 Q10,70 15,90 Q25,110 28,130 Q32,150 30,180 Z`
 };
 
@@ -30,7 +30,7 @@ export function StainedGlassVisual({ variant = 'man', className = '', showSilhou
       xmlns="http://www.w3.org/2000/svg"
       className={`w-full h-full ${className}`}
       preserveAspectRatio="xMidYMid slice"
-      aria-label="Vitrail arc-en-ciel — God Loves Diversity"
+      aria-label="Vitrail arc-en-ciel — parislgbt"
     >
       <defs>
         {/* Vitrail dégradé sombre */}

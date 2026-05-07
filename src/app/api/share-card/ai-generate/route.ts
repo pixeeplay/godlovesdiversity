@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
 
   const visualHint = VISUAL_GUIDELINES[topic] || VISUAL_GUIDELINES.testimony;
 
-  const prompt = `Generate a 1080x1080 social media share card image for a LGBT-friendly inclusive religious platform called "God Loves Diversity" (gld.pixeeplay.com).
+  const prompt = `Generate a 1080x1080 social media share card image for a LGBT-friendly inclusive religious platform called "parislgbt" (gld.pixeeplay.com).
 
 CONTEXT FROM USER :
 - Topic : ${topic}

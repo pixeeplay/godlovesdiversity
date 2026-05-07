@@ -61,7 +61,7 @@ const STEPS: Step[] = [
     ],
     fields: [
       { key: 'integrations.resend.apiKey', label: 'Clé API Resend', type: 'password', placeholder: 're_…' },
-      { key: 'integrations.resend.from', label: 'Email expéditeur', placeholder: '"GLD" <hello@godlovesdiversity.com>' }
+      { key: 'integrations.resend.from', label: 'Email expéditeur', placeholder: '"GLD" <hello@parislgbt.com>' }
     ]
   },
 
@@ -206,7 +206,7 @@ const STEPS: Step[] = [
   },
   {
     id: 'elevenlabs', category: 'growth', icon: Music, title: 'ElevenLabs (musique IA ambient)',
-    why: 'Génère de la musique d\'ambiance (prière, méditation, cathédrale) pour le lecteur audio du site.',
+    why: 'Génère de la musique d\'ambiance (Pride anthem, club after, tea dance) pour le lecteur audio du site.',
     cost: 'freemium', difficulty: 1, timeMinutes: 3,
     externalUrl: 'https://elevenlabs.io', externalLabel: 'Créer un compte ElevenLabs',
     steps: [

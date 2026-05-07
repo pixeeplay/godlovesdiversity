@@ -99,7 +99,7 @@ async function translateRecord(model: string, source: any, fromLocale: Supported
 async function translateString(text: string, from: SupportedLocale, to: SupportedLocale, preserveJson: boolean = false): Promise<string> {
   const fromName = LOCALE_NAMES[from];
   const toName = LOCALE_NAMES[to];
-  const sys = `Tu es un traducteur professionnel pour le site « God Loves Diversity » (mouvement interreligieux et inclusif).
+  const sys = `Tu es un traducteur professionnel pour le site « parislgbt / francelgbt » (plateforme communautaire LGBTQIA+).
 Traduis du ${fromName} vers le ${toName}.
 ${preserveJson
     ? 'Le texte est un JSON valide. Traduis UNIQUEMENT les valeurs textuelles, conserve la structure et les clés intactes. Renvoie un JSON valide.'

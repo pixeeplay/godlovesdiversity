@@ -94,7 +94,6 @@ export default function MurPage() {
       <aside className="hidden lg:block">
         <div className="backdrop-blur-2xl bg-white/[0.04] border border-white/10 rounded-2xl p-3 sticky top-32">
           <SidebarLink active href="/connect/mur" label="Mon mur" emoji="🏠" />
-          <SidebarLink href="/cercles-priere" label="Cercles de prière" emoji="🕊" count={4} />
           <SidebarLink href="/connect/amis" label="Mes amis" emoji="👥" count={47} />
           <SidebarLink href="/connect/groupes" label="Groupes" emoji="✨" count={12} />
           <SidebarLink href="/agenda" label="Événements" emoji="📅" count={3} />
@@ -287,7 +286,7 @@ function PostCard({ post }: { post: any }) {
           <Heart size={13} fill={liked ? 'currentColor' : 'none'} /> {post.likes + (liked ? 1 : 0)}
         </button>
         <button onClick={() => setPrayed(!prayed)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition ${prayed ? 'bg-violet-500/20 text-violet-300' : 'text-zinc-400 hover:bg-white/5'}`}>
-          <Sparkles size={13} /> {post.prayers + (prayed ? 1 : 0)} <span className="hidden sm:inline">je prie</span>
+          <Sparkles size={13} /> {post.reactions + (prayed ? 1 : 0)} <span className="hidden sm:inline">❤️</span>
         </button>
         <button onClick={() => alert('Commentaires bientôt — pour l\'instant utilise Demande de prière')} className="flex items-center gap-1.5 text-zinc-400 hover:bg-white/5 px-3 py-1.5 rounded-full text-xs font-bold">
           <MessageCircle size={13} /> {post.comments}

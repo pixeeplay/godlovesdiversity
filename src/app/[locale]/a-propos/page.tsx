@@ -16,7 +16,7 @@ function View() {
       <hr className="border-white/10 my-10" />
       <p className="text-white/70">
         Le mouvement est porté par des bénévoles, croyants et non-croyants, partout dans le monde.
-        Pour rejoindre l'équipe, écrire à <a className="text-brand-pink" href="mailto:hello@godlovesdiversity.com">hello@godlovesdiversity.com</a>.
+        Pour rejoindre l'équipe, écrire à <a className="text-brand-pink" href="mailto:hello@parislgbt.com">hello@parislgbt.com</a>.
       </p>
     </section>
   );

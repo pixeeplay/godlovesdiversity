@@ -14,7 +14,7 @@ type Props = {
 const DEFAULT_TEXT = `En envoyant cette photo, vous certifiez :
 
 • avoir le droit de partager ce contenu (vous en êtes l'auteur ou avez l'autorisation des personnes visibles) ;
-• autoriser le mouvement God Loves Diversity à utiliser cette image gratuitement, dans le monde entier, pour ses communications (site web, réseaux sociaux, newsletters, affiches, supports promotionnels et tout autre support de communication relatif au mouvement) ;
+• autoriser le mouvement parislgbt à utiliser cette image gratuitement, dans le monde entier, pour ses communications (site web, réseaux sociaux, newsletters, affiches, supports promotionnels et tout autre support de communication relatif au mouvement) ;
 • comprendre que la photo pourra être éditée, recadrée, ou floutée pour préserver la vie privée des personnes visibles.
 
 Vous pouvez à tout moment demander le retrait d'une photo en écrivant à contact@godlovesdiversity.org.`;
@@ -99,7 +99,7 @@ export function UploadConsentModal({ open, countryCode, countryName, onAccept, o
             <input type="checkbox" checked={agreePromo} onChange={(e) => setAgreePromo(e.target.checked)}
                    className="mt-1 w-5 h-5 accent-brand-pink shrink-0" />
             <span className="text-sm text-white/90">
-              <strong>J'autorise</strong> God Loves Diversity à utiliser cette image dans toutes ses communications
+              <strong>J'autorise</strong> parislgbt à utiliser cette image dans toutes ses communications
               (site, réseaux, newsletters, affiches, promotion).
             </span>
           </label>

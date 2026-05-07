@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
       <div style="font-family:system-ui;max-width:600px;margin:0 auto;padding:24px;background:#fff;color:#222">
         <h1 style="color:#d61b80">🔑 Invitation GLD Admin</h1>
         <p>Bonjour,</p>
-        <p>Tu as été invité·e à rejoindre le back-office <strong>God Loves Diversity</strong> avec le rôle <strong>${role}</strong>.</p>
+        <p>Tu as été invité·e à rejoindre le back-office <strong>parislgbt</strong> avec le rôle <strong>${role}</strong>.</p>
         <p style="background:#fef0e6;border-left:4px solid #d61b80;padding:12px;border-radius:4px">
           ⏰ Cette invitation expire dans <strong>${ttlHours}h</strong> (le ${expiresAt.toLocaleString('fr-FR')}).<br/>
           🔒 Usage unique — détruite après la première utilisation.
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
         </p>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0"/>
         <p style="font-size:11px;color:#888">
-          🌈 God Loves Diversity — Mouvement interreligieux pour réconcilier foi et diversité.<br/>
+          🌈 parislgbt / francelgbt — Plateforme communautaire LGBTQIA+ Paris + France.<br/>
           Si tu n'es pas l'expéditeur ou que tu ne reconnais pas cette invitation, ignore-la simplement.
         </p>
       </div>

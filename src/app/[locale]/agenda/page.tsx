@@ -3,7 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { AgendaClient } from '@/components/AgendaClient';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Agenda — God Loves Diversity' };
+export const metadata = { title: 'Agenda — parislgbt' };
 
 export default async function AgendaPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

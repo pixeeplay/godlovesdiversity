@@ -57,7 +57,6 @@ const SECTIONS: Array<{ label: string; items: Array<{ href: string; icon: any; l
     label: 'Communauté',
     items: [
       { href: '/mon-espace/rsvp',     icon: Calendar, label: 'Mes meetups' },
-      { href: '/mon-espace/cercles',  icon: BookOpen, label: 'Cercles prière' },
       { href: '/mon-espace/mentor',   icon: Users,    label: 'Mentor 1-1' }
     ]
   },

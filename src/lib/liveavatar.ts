@@ -300,7 +300,7 @@ export async function listContexts(): Promise<{ count: number; results: Array<{ 
  */
 export async function buildGldContextPrompt(maxChars: number = 24000): Promise<{ prompt: string; opening: string; docCount: number; chunksUsed: number }> {
   const cfg = await getSettings(['rag.systemPrompt']).catch(() => ({} as Record<string, string>));
-  const sysPrompt = cfg['rag.systemPrompt'] || `Tu es l'assistant officiel du mouvement « God Loves Diversity » (GLD).
+  const sysPrompt = cfg['rag.systemPrompt'] || `Tu es l'assistant officiel du mouvement « parislgbt » (GLD).
 Réponds avec chaleur et accueil, en tutoyant. Tu parles de foi, d'inclusion, et d'amour radical.
 Réponses courtes (3-5 phrases max) et termine par une question d'ouverture.`;
 

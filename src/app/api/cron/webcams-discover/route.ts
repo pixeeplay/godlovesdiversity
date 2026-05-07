@@ -112,7 +112,7 @@ export async function GET(req: Request) {
       const known = (await prisma.webcamSource.findMany({ select: { name: true, city: true, channelId: true } }))
         .map(s => `${s.name} (${s.city}) [${s.channelId || 'no-yt'}]`).join('\n');
 
-      const prompt = `Tu es un agent de veille pour la plateforme God Loves Diversity (lieux saints inclusifs / LGBT-friendly).
+      const prompt = `Tu es un agent de veille pour la plateforme parislgbt (lieux saints inclusifs / LGBT-friendly).
 
 OBJECTIF : trouver des webcams live YouTube de lieux saints, sanctuaires, basiliques, mosquées, synagogues, temples bouddhistes/hindous/sikhs qui :
 - Diffusent réellement en LIVE (24/7 idéalement, ou aux heures d'office)
@@ -132,7 +132,7 @@ Réponds UNIQUEMENT en JSON valide, format :
       "name": "Nom du lieu",
       "city": "Ville",
       "country": "code ISO 2",
-      "faith": "catholic|orthodox|protestant|muslim|jewish|buddhist|hindu|sikh|interfaith",
+      "category": "pride|place|venue|event",
       "emoji": "✝️",
       "description": "1 phrase courte",
       "channelId": "UCxxxxxxxxxxxxxxxxxxxxxx",
@@ -185,7 +185,7 @@ Pas de texte autour, juste le JSON.`;
                 name: cand.name || cand.slug,
                 city: cand.city || '?',
                 country: (cand.country || '??').toUpperCase().slice(0, 2),
-                faith: ['catholic','orthodox','protestant','muslim','jewish','buddhist','hindu','sikh','interfaith'].includes(cand.faith) ? cand.faith : 'interfaith',
+                faith: ['pride','place','venue','event'].includes(cand.category) ? cand.category : 'place',
                 emoji: cand.emoji || '⛪',
                 description: cand.description?.slice(0, 500) || null,
                 channelId: cand.channelId,

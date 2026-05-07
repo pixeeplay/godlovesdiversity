@@ -152,8 +152,8 @@ export function NewsletterEditor() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: `Rédige une newsletter mensuelle pour le mouvement God Loves Diversity. Sujet du mois : témoignages reçus, actions à venir. Ton inclusif, apaisé, simple. Format HTML simple, max 200 mots, sans <html> tag wrapper.`,
-          system: 'Tu es l\'éditorialiste du mouvement God Loves Diversity. Tu écris en français, ton chaleureux et lumineux.'
+          prompt: `Rédige une newsletter mensuelle pour le mouvement parislgbt. Sujet du mois : témoignages reçus, actions à venir. Ton inclusif, apaisé, simple. Format HTML simple, max 200 mots, sans <html> tag wrapper.`,
+          system: 'Tu es l\'éditorialiste du mouvement parislgbt. Tu écris en français, ton chaleureux et lumineux.'
         })
       });
       const j = await r.json();
@@ -172,7 +172,7 @@ export function NewsletterEditor() {
         <input
           value={subject} onChange={(e) => setSubject(e.target.value)}
           className="mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-pink"
-          placeholder="🌈 Newsletter d'avril — God Loves Diversity"
+          placeholder="🌈 Newsletter d'avril — parislgbt"
         />
       </label>
 
@@ -356,7 +356,7 @@ export function NewsletterEditor() {
             <div className="p-5">
               <div className="bg-zinc-100 border border-zinc-300 rounded-lg overflow-hidden">
                 <div className="bg-zinc-200 px-4 py-2 border-b border-zinc-300 text-zinc-700 text-xs">
-                  <strong>De :</strong> God Loves Diversity &nbsp;·&nbsp; <strong>Sujet :</strong> {subject || '(vide)'}
+                  <strong>De :</strong> parislgbt &nbsp;·&nbsp; <strong>Sujet :</strong> {subject || '(vide)'}
                 </div>
                 <iframe
                   srcDoc={`<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{font-family:system-ui,-apple-system,sans-serif;color:#222;padding:24px;line-height:1.6;background:#fff;margin:0}</style></head><body>${html}</body></html>`}

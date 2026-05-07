@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const { question, country = 'FR', context = '' } = await req.json();
     if (!question || question.length < 5) return NextResponse.json({ error: 'question trop courte' }, { status: 400 });
 
-    const sys = `Tu es un assistant juridique LGBT+ pour le site GLD (God Loves Diversity).
+    const sys = `Tu es un assistant juridique LGBT+ pour le site GLD (parislgbt).
 L'utilisateur pose une question sur ses droits ou sa situation. Tu réponds en :
 1. Donnant une réponse claire et structurée (max 6 paragraphes courts)
 2. Citant les articles de loi ou textes pertinents PAR PAYS (${country})

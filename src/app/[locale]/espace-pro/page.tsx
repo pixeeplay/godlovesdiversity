@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Espace Pro — God Loves Diversity' };
+export const metadata = { title: 'Espace Pro — parislgbt' };
 
 /**
  * /espace-pro est désormais en back-office sous /admin/pro.

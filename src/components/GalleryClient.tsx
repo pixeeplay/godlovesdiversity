@@ -144,7 +144,7 @@ export function GalleryClient({ photos }: { photos: Photo[] }) {
                 <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
                   <SharePhoto
                     url={`${typeof window !== 'undefined' ? window.location.origin : ''}/photo/${active.id}`}
-                    title={active.placeName || 'Photo — God Loves Diversity'}
+                    title={active.placeName || 'Photo — parislgbt'}
                   />
                   <a href={`/photo/${active.id}`} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-white text-sm font-bold transition">
                     <ExternalLink size={14} /> Page complète + commentaires

@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
   const html = `
     <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 24px;">
-      <h1 style="color: #d61b80;">✨ Invitation God Loves Diversity</h1>
+      <h1 style="color: #d61b80;">✨ Invitation parislgbt</h1>
       <p style="white-space: pre-wrap;">${(message || '').replace(/</g, '&lt;')}</p>
       <p style="margin: 24px 0;">
         <a href="${inviteLink}" style="display: inline-block; background: linear-gradient(135deg, #10b981, #06b6d4); color: white; padding: 12px 24px; text-decoration: none; border-radius: 999px; font-weight: bold;">

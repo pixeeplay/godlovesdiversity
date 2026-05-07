@@ -16,12 +16,6 @@ import { getSettings, setSetting } from './settings';
 
 export const AI_KEYS = {
   // LGBT Soul (deprecated) — la "voix" du site, retirée Phase 1
-  soulEnabled: 'ai.soul.enabled',
-  soulFrequency: 'ai.soul.frequency',         // "daily" | "weekly"
-  soulTone: 'ai.soul.tone',                   // ex: "poétique, chaleureux, inclusif"
-  soulShowOnHome: 'ai.soul.showOnHome',       // "1" | "0"
-  soulLastRunAt: 'ai.soul.lastRunAt',
-  soulLastEntryId: 'ai.soul.lastEntryId',
 
   // Mood Engine — humeur visuelle du site
   moodEnabled: 'ai.mood.enabled',
@@ -57,10 +51,6 @@ export const AI_KEYS = {
 // ─────────────────────────────────────────────
 
 export const AI_DEFAULTS: Record<string, string> = {
-  [AI_KEYS.soulEnabled]: '0',
-  [AI_KEYS.soulFrequency]: 'daily',
-  [AI_KEYS.soulTone]: 'poétique, chaleureux, inclusif, pudique',
-  [AI_KEYS.soulShowOnHome]: '1',
 
   [AI_KEYS.moodEnabled]: '0',
   [AI_KEYS.moodAffectsTheme]: '1',

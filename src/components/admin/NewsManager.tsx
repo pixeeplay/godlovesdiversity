@@ -152,7 +152,7 @@ function ArticleEditor({ article, onClose, onSaved }: {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        prompt: `Rédige un article court (200 mots) pour le mouvement God Loves Diversity. Sujet : ${title || 'inclusion religieuse'}. Ton chaleureux et apaisé, format markdown.`,
+        prompt: `Rédige un article court (200 mots) pour le mouvement parislgbt. Sujet : ${title || 'inclusion religieuse'}. Ton chaleureux et apaisé, format markdown.`,
         system: 'Tu es éditorialiste pour le mouvement.'
       })
     });

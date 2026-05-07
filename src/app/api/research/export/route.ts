@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({
     license: 'CC-BY-4.0',
-    source: 'God Loves Diversity (gld.pixeeplay.com)',
+    source: 'parislgbt (gld.pixeeplay.com)',
     notice: 'Données 100% anonymes. Aucune donnée personnelle.',
     kind,
     count: data.length,

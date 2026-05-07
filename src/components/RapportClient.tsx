@@ -88,7 +88,7 @@ export function RapportClient({ stats }: { stats: Stats }) {
           <div className="flex items-start justify-between gap-4 flex-wrap" style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'space-between' }}>
             <div>
               <div className="text-xs uppercase tracking-widest text-fuchsia-300 font-bold mb-2" style={{ fontSize: 11, color: '#f0abfc', fontWeight: 700, marginBottom: 8, textTransform: 'uppercase' }}>Rapport projet · {new Date().toLocaleDateString('fr-FR', { dateStyle: 'long' })}</div>
-              <h1 className="text-4xl font-display font-black mb-2" style={{ fontSize: 36, fontWeight: 900, marginBottom: 8 }}>🌈 God Loves Diversity</h1>
+              <h1 className="text-4xl font-display font-black mb-2" style={{ fontSize: 36, fontWeight: 900, marginBottom: 8 }}>🌈 parislgbt</h1>
               <p className="text-lg text-zinc-300 max-w-2xl" style={{ fontSize: 18, color: '#d4d4d8', maxWidth: 640 }}>Le réseau social inclusif religieux LGBT+ — état du projet, fonctionnalités live, sécurité, et prochaines évolutions.</p>
             </div>
             <div className="flex gap-2 no-print">
@@ -253,7 +253,7 @@ export function RapportClient({ stats }: { stats: Stats }) {
         {/* FOOTER */}
         <footer className="text-center text-xs text-zinc-500 pt-8 border-t border-zinc-800">
           <p>Rapport généré le {new Date().toLocaleDateString('fr-FR', { dateStyle: 'long', timeStyle: 'short' })} — données live depuis la base de production</p>
-          <p className="mt-2">🌈 <a href="https://gld.pixeeplay.com" className="text-fuchsia-400 hover:underline">gld.pixeeplay.com</a> — God Loves Diversity</p>
+          <p className="mt-2">🌈 <a href="https://gld.pixeeplay.com" className="text-fuchsia-400 hover:underline">gld.pixeeplay.com</a> — parislgbt</p>
         </footer>
       </main>
     </div>

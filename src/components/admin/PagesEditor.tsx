@@ -228,7 +228,7 @@ function SectionEditor({ section, defaultPageSlug, onClose, onSaved }: {
     const r = await fetch('/api/ai/text', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        prompt: `Rédige un paragraphe (80-120 mots) pour une section ${layout} de la page /${pageSlug} du mouvement God Loves Diversity. ${title ? `Sujet : ${title}` : ''} Ton inclusif, lumineux, jamais polémique.`
+        prompt: `Rédige un paragraphe (80-120 mots) pour une section ${layout} de la page /${pageSlug} du mouvement parislgbt. ${title ? `Sujet : ${title}` : ''} Ton inclusif, lumineux, jamais polémique.`
       })
     });
     const j = await r.json();

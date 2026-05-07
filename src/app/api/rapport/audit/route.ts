@@ -59,7 +59,7 @@ async function loadModules(): Promise<Module[]> {
   const manuals = await safe(() => p.manual.count(), 0);
   const newsletterPlans = await safe(() => p.newsletterPlan.count(), 0);
   const moderationDecisions = await safe(() => p.moderationDecision.count(), 0);
-  const soulEntries = await safe(() => p.soulEntry.count(), 0);
+  const soulEntries = await safe(() => 0, 0);
 
   return [
     /* ─── PUBLIC SITE ─── */
@@ -68,7 +68,6 @@ async function loadModules(): Promise<Module[]> {
     { category: 'Site public', name: 'Argumentaire & Message', status: 'live', routes: ['/argumentaire', '/message'] },
     { category: 'Site public', name: 'Galerie photos', status: 'live', stats: `${photos} photos`, routes: ['/galerie'] },
     { category: 'Site public', name: 'Témoignages vidéo', status: 'live', stats: `${testimonies} vidéos`, routes: ['/temoignages'] },
-    { category: 'Site public', name: 'Cercles de prière', status: 'live', routes: ['/cercles-priere'] },
     { category: 'Site public', name: 'Affiches PDF', status: 'live', stats: `${posters} affiches`, routes: ['/affiches'] },
     { category: 'Site public', name: 'Mentor', status: 'live', routes: ['/mentor'] },
     { category: 'Site public', name: 'Mode calculatrice (parental)', status: 'live', routes: ['/mode-calculatrice'] },
@@ -116,7 +115,7 @@ async function loadModules(): Promise<Module[]> {
     /* ─── IA ─── */
     { category: 'IA', name: 'Studio IA Gemini', status: 'live', stats: 'Texte (Gemini 2.0 Flash) + Image (Imagen 3) + Vidéo (fal.ai)', routes: ['/admin/ai-studio'] },
     { category: 'IA', name: 'Demandez à GLD (chat)', status: 'live', stats: 'Widget chat avec RAG sur knowledge base' },
-    { category: 'IA', name: 'AI Autopilot', status: 'live', stats: `Soul (${soulEntries} entrées), Mood, Modération, Newsletter auto`, routes: ['/admin/ai-autopilot'] },
+    { category: 'IA', name: 'AI Autopilot', status: 'live', stats: `Mood, Modération, Newsletter auto`, routes: ['/admin/ai-autopilot'] },
     { category: 'IA', name: 'AI Text Helper inline', status: 'live', stats: '8 actions : fix, rewrite, shorter, longer, inclusive, punchy, warm, pro' },
     { category: 'IA', name: 'Avatar IA temps-réel', status: 'live', stats: 'Vidéo HeyGen + Live Gemini Realtime', routes: ['/admin/avatar'] },
     { category: 'IA', name: 'Manuel auto IA (3 audiences)', status: 'live', stats: `${manuals} manuels générés`, notes: 'user/admin/superadmin · régénération 2×/jour' },

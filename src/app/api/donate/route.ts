@@ -58,7 +58,7 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         idempotency_key: crypto.randomUUID(),
         quick_pay: {
-          name: `Don à God Loves Diversity — ${amount} ${currency}`,
+          name: `Don à parislgbt — ${amount} ${currency}`,
           price_money: { amount: amountCents, currency },
           location_id: locationId
         },
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
           allow_tipping: true,
           merchant_support_email: process.env.ADMIN_EMAIL
         },
-        note: note || `Don de soutien au mouvement God Loves Diversity`
+        note: note || `Don de soutien au mouvement parislgbt`
       })
     });
     const j = await r.json();

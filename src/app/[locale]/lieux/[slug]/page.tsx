@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const v = await prisma.venue.findUnique({ where: { slug }, select: { name: true, shortDescription: true, description: true, coverImage: true, city: true } });
     if (!v) return { title: 'Lieu introuvable · GLD' };
-    const desc = v.shortDescription || v.description?.slice(0, 160) || `${v.name} — lieu LGBT-friendly à découvrir sur God Loves Diversity.`;
+    const desc = v.shortDescription || v.description?.slice(0, 160) || `${v.name} — lieu LGBT-friendly à découvrir sur parislgbt.`;
     return {
       title: `${v.name}${v.city ? ' · ' + v.city : ''} — GLD`,
       description: desc,

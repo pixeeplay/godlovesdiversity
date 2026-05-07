@@ -39,7 +39,7 @@ const FAITH_META: Record<string, { label: string; emoji: string; color: string }
   buddhist:    { label: 'Bouddhisme',     emoji: '☸️',  color: '#f59e0b' },
   hindu:       { label: 'Hindouisme',     emoji: '🕉️',  color: '#ec4899' },
   sikh:        { label: 'Sikhisme',       emoji: '☬',   color: '#f97316' },
-  interfaith:  { label: 'Inter-religieux', emoji: '🌍',  color: '#22d3ee' }
+  pride:       { label: 'Pride / Live', emoji: '🌈',  color: '#ff2d92' }
 };
 
 export function WebcamsLiveClient() {
@@ -196,7 +196,7 @@ export function WebcamsLiveClient() {
       {!loading && filtered.length > 0 && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map(c => {
-            const meta = FAITH_META[c.faith] || FAITH_META.interfaith;
+            const meta = FAITH_META[c.faith] || FAITH_META.pride;
             return (
               <article
                 key={c.id}

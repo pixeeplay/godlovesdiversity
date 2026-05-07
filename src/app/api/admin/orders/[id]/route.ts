@@ -76,7 +76,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
             </div>
           ` : ''}
           <p><a href="${followLink}" style="display:inline-block;background:#FF2BB1;color:white;padding:12px 24px;border-radius:24px;text-decoration:none;font-weight:bold">Voir ma commande</a></p>
-          <p style="color:#666;font-size:14px;margin-top:30px">Merci de soutenir le mouvement 🌈<br>L'équipe God Loves Diversity</p>
+          <p style="color:#666;font-size:14px;margin-top:30px">Merci de soutenir le mouvement 🌈<br>L'équipe parislgbt</p>
         </div>`;
       void sendEmail(updated.email, subject, html).catch((e: any) => console.error('Email shipped failed', e));
       void trackingPart; // keep var used

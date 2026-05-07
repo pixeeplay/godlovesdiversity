@@ -30,7 +30,6 @@ export function MonEspaceClient({ user, stats, flags }: Props) {
     { flag: 'testimonies',       href: '/temoignages',      icon: Video,       label: 'Témoignages',     color: 'pink' },
     { flag: 'gldLocal',          href: '/gld-local',        icon: MapPin,      label: 'GLD Local',       color: 'cyan' },
     { flag: 'mentor',            href: '/mentor',           icon: Users,       label: 'Mentor 1-1',      color: 'violet' },
-    { flag: 'cerclesPriere',     href: '/cercles-priere',   icon: Heart,       label: 'Cercles prière',  color: 'rose' },
     { flag: 'meetups',           href: '/meetups',          icon: Calendar,    label: 'Meetups',         color: 'amber' },
     { flag: 'signalement',       href: '/signalement',      icon: ShieldAlert, label: 'Signaler',        color: 'red' },
     { flag: 'hebergement',       href: '/hebergement',      icon: HomeIcon,    label: 'Hébergement',     color: 'emerald' },

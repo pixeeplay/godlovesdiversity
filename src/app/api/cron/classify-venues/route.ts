@@ -32,7 +32,7 @@ const RELIGIOUS_TYPES_VALUES = [
   'MOSQUE', 'SYNAGOGUE',
   'TEMPLE', 'TEMPLE_BUDDHIST', 'TEMPLE_HINDU',
   'GURDWARA', 'MEDITATION_CENTER',
-  'HOLY_SITE', 'PILGRIMAGE_PATH', 'INTERFAITH_CENTER'
+  'BAR_LGBT', 'CLUB_QUEER', 'CABARET_DRAG'
 ];
 
 const SECULAR_TYPES_VALUES = [
@@ -64,7 +64,7 @@ function quickClassify(name: string, description: string | null): string | null 
   // Méditation
   if (/(centre de méditation|centre de meditation|meditation center|méditation transcendantale|vipassana|mindfulness center)/.test(txt)) return 'MEDITATION_CENTER';
   // Inter-religieux
-  if (/(inter-religieux|interfaith|interreligieux)/.test(txt)) return 'INTERFAITH_CENTER';
+  if (/(drag|cabaret|drag queen|drag king)/.test(txt)) return 'CABARET_DRAG';
   return null;
 }
 

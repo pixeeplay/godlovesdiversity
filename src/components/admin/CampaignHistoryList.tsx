@@ -275,7 +275,7 @@ export function CampaignHistoryList({ defaultTestEmail = '' }: Props) {
           <div className="bg-zinc-100 border border-zinc-300 rounded-lg overflow-hidden">
             <div className="bg-zinc-200 px-4 py-2 border-b border-zinc-300 flex items-center gap-2 text-zinc-700 text-xs">
               <Mail size={12} />
-              <strong>De :</strong> God Loves Diversity &lt;hello@godlovesdiversity.com&gt;
+              <strong>De :</strong> parislgbt &lt;hello@parislgbt.com&gt;
               <span className="ml-3"><strong>Sujet :</strong> {previewCamp.subject}</span>
             </div>
             <iframe

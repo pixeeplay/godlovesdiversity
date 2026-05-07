@@ -4,7 +4,7 @@ import { Link } from '@/i18n/routing';
 import { Instagram, Facebook, Youtube, Twitter, Mail, Heart, FileText, MessageCircle, BookOpen, Sparkles, Send } from 'lucide-react';
 
 export function Footer() {
-  const [hashtag, setHashtag] = useState('#GodLovesDiversity');
+  const [hashtag, setHashtag] = useState('#parislgbt');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -39,7 +39,7 @@ export function Footer() {
         <div className="col-span-2 lg:col-span-2">
           <div className="text-brand-pink font-display font-bold tracking-wider text-2xl mb-3">{hashtag}</div>
           <p className="text-sm text-white/60 max-w-xs mb-4">
-            Mouvement interreligieux pour l'inclusion LGBT+. Photos, témoignages, ressources et outils pour rendre la foi accueillante partout dans le monde.
+            Plateforme communautaire LGBTQIA+ — Paris et France. Lieux, soirées, agenda Pride, ressources santé, identités, communauté.
           </p>
           <div className="flex items-center gap-3 text-white/70">
             <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-brand-pink transition" aria-label="Instagram"><Instagram size={20} /></a>
@@ -124,7 +124,7 @@ export function Footer() {
       {/* Bas footer */}
       <div className="border-t border-white/5">
         <div className="container-wide py-4 flex flex-wrap items-center justify-between gap-3 text-xs text-white/50">
-          <div>© {new Date().getFullYear()} GodLovesDiversity.com — Tous droits réservés.</div>
+          <div>© {new Date().getFullYear()} parislgbt.com — Tous droits réservés.</div>
           <div className="flex gap-5">
             <Link href="/mentions-legales" className="hover:text-brand-pink">Mentions légales</Link>
             <Link href="/rgpd" className="hover:text-brand-pink">Confidentialité</Link>

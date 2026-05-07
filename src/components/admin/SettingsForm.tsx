@@ -49,10 +49,10 @@ const GROUPS: Group[] = [
     icon: Globe, category: 'site',
     description: 'Identité publique, slogan, hashtag de campagne.',
     fields: [
-      { key: 'site.title', label: 'Nom du site', placeholder: 'God Loves Diversity' },
+      { key: 'site.title', label: 'Nom du site', placeholder: 'parislgbt' },
       { key: 'site.tagline', label: 'Slogan', placeholder: 'Dieu est amour. La foi se conjugue au pluriel.' },
-      { key: 'campaign.hashtag', label: 'Hashtag de campagne', placeholder: '#GodLovesDiversity' },
-      { key: 'site.contactEmail', label: 'Email de contact public', placeholder: 'hello@godlovesdiversity.com' }
+      { key: 'campaign.hashtag', label: 'Hashtag de campagne', placeholder: '#parislgbt' },
+      { key: 'site.contactEmail', label: 'Email de contact public', placeholder: 'hello@parislgbt.com' }
     ]
   },
   {
@@ -133,7 +133,7 @@ const GROUPS: Group[] = [
     description: 'Envoi des newsletters et notifications admin. Récupère ta clé sur https://resend.com/api-keys',
     fields: [
       { key: 'integrations.resend.apiKey', label: 'Clé API Resend', type: 'password', placeholder: 're_…' },
-      { key: 'integrations.resend.from', label: 'Adresse expéditeur', placeholder: '"God Loves Diversity" <hello@godlovesdiversity.com>' },
+      { key: 'integrations.resend.from', label: 'Adresse expéditeur', placeholder: '"parislgbt" <hello@parislgbt.com>' },
       { key: 'integrations.admin.email', label: 'Email admin (notifications)', placeholder: 'arnaud@gredai.com' }
     ]
   },
@@ -175,7 +175,7 @@ const GROUPS: Group[] = [
     description: 'Liste des domaines connectés à GLD. Configuration DNS chez ton registrar (OVH, Gandi, Namecheap, etc.).',
     fields: [
       { key: 'domains.primary', label: 'Domaine principal', placeholder: 'gld.pixeeplay.com' },
-      { key: 'domains.aliases', label: 'Domaines secondaires (CSV)', placeholder: 'godlovesdiversity.com, godlovesdiversity.fr' },
+      { key: 'domains.aliases', label: 'Domaines secondaires (CSV)', placeholder: 'parislgbt.com, godlovesdiversity.fr' },
       { key: 'domains.subdomains', label: 'Sous-domaines actifs (CSV)', placeholder: 'connect.gld.pixeeplay.com, pro.gld.pixeeplay.com', help: 'Tous les sous-domaines avec records DNS A/CNAME' },
       { key: 'domains.registrar', label: 'Registrar', placeholder: 'OVH / Gandi / Namecheap…' },
       { key: 'domains.notes', label: 'Notes DNS', type: 'textarea', placeholder: 'Records SPF/DKIM/DMARC configurés…' }

@@ -67,7 +67,7 @@ async function describeVenue(venue: any, payload: any, locales?: string[]) {
 
   for (const lang of langs) {
     const langLabel: any = { fr: 'français', en: 'anglais', es: 'espagnol', pt: 'portugais brésilien' };
-    const sys = `Tu rédiges la description publique d'un lieu LGBT-friendly référencé sur le site GLD (God Loves Diversity).
+    const sys = `Tu rédiges la description publique d'un lieu LGBT-friendly référencé sur le site GLD (parislgbt).
 Lieu : "${name}" (type ${type}${city ? `, à ${city}` : ''})
 Ton : ${tone}, accueillant, inclusif. Évite le jargon militant lourd.
 Indications de l'utilisateur : ${hint || '(aucune)'}

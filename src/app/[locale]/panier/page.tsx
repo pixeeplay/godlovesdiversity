@@ -1,6 +1,6 @@
 import { CartView } from '@/components/CartView';
 
-export const metadata = { title: 'Mon panier — God Loves Diversity' };
+export const metadata = { title: 'Mon panier — parislgbt' };
 
 export default function CartPage() {
   return (

@@ -335,7 +335,7 @@ export function ShareCardClient() {
       return;
     }
     try {
-      await navigator.share({ title: 'God Loves Diversity', text, url: fullUrl });
+      await navigator.share({ title: 'parislgbt', text, url: fullUrl });
     } catch {}
   }
 

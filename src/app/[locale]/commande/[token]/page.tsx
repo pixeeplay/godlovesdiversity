@@ -4,7 +4,7 @@ import { Package, Truck, CheckCircle2, Clock, ExternalLink } from 'lucide-react'
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Suivi de ma commande — God Loves Diversity' };
+export const metadata = { title: 'Suivi de ma commande — parislgbt' };
 
 const STATUS_META: Record<string, { label: string; color: string; icon: any; step: number }> = {
   PENDING:   { label: 'En attente de paiement', color: '#FBBF24', icon: Clock, step: 1 },

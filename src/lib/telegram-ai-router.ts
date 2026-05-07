@@ -65,7 +65,7 @@ export type IntentResult =
   | { matched: true; command: string; args?: string; reason?: string }
   | { matched: false; suggestion?: string; reason?: string };
 
-const SYSTEM_PROMPT = `Tu es un routeur d'intentions pour le bot Telegram « God Loves Diversity » (mouvement LGBT).
+const SYSTEM_PROMPT = `Tu es un routeur d'intentions pour le bot Telegram « parislgbt » (mouvement LGBT).
 L'utilisateur écrit en FR/EN/ES/PT. Choisis UNE commande parmi : ${KNOWN_COMMANDS.map(c => c.cmd).join(', ')}.
 
 RÉPONDS STRICTEMENT en JSON (pas de markdown) :

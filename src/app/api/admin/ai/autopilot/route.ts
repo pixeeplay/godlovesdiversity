@@ -20,7 +20,6 @@ export async function GET() {
 
   // Stats associées
   const since7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-  const [soulCount, modCount, modHidden] = await Promise.all([
     0,
     prisma.moderationDecision.count({ where: { createdAt: { gte: since7d } } }).catch(() => 0),
     prisma.moderationDecision.count({ where: { createdAt: { gte: since7d }, action: 'hidden' } }).catch(() => 0)
@@ -29,7 +28,6 @@ export async function GET() {
   return NextResponse.json({
     config,
     stats: {
-      soul: { entriesLast7d: soulCount },
       moderation: { decisionsLast7d: modCount, hiddenLast7d: modHidden },
       quotaUsedToday: parseInt(config[AI_KEYS.quotaUsedToday] || '0'),
       quotaMax: parseInt(config[AI_KEYS.quotaDailyMax] || '500')

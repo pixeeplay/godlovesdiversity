@@ -15,7 +15,7 @@ type SeoOpts = {
   noIndex?: boolean;
 };
 
-const SITE_NAME = 'God Loves Diversity';
+const SITE_NAME = 'parislgbt';
 const DEFAULT_DESC = "Plateforme communautaire LGBTQIA+ — Paris et France. Lieux, soirées, agenda Pride, ressources santé, identités, communauté.";
 const KEYWORDS = [
   'parislgbt', 'francelgbt', 'LGBT Paris', 'queer Paris', 'pride Paris', 'lieux LGBT France', 'soirées LGBT', 'communauté LGBTQIA+', 'PrEP Paris',
@@ -100,7 +100,7 @@ export function photoJsonLd(p: { id: string; placeName?: string | null; caption?
     '@context': 'https://schema.org',
     '@type': 'ImageObject',
     contentUrl: p.imageUrl,
-    name: p.placeName || 'Photo God Loves Diversity',
+    name: p.placeName || 'Photo parislgbt',
     description: p.caption || `Photo prise à ${p.city || ''} ${p.country || ''}`,
     contentLocation: p.city || p.country ? {
       '@type': 'Place',

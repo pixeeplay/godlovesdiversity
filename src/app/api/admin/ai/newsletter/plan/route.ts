@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
     let preheader = '';
     try {
       const r = await generateText(
-        `Génère un titre court et accrocheur (max 60 chars) + un preheader (max 90 chars) pour une newsletter du site God Loves Diversity (réseau social inclusif religieux LGBT+) sur le thème : "${theme}". Date : semaine ${weekNum} de ${yr}. Réponds UNIQUEMENT en JSON strict : {"title":"...","preheader":"..."}`
+        `Génère un titre court et accrocheur (max 60 chars) + un preheader (max 90 chars) pour une newsletter du site parislgbt (réseau social inclusif religieux LGBT+) sur le thème : "${theme}". Date : semaine ${weekNum} de ${yr}. Réponds UNIQUEMENT en JSON strict : {"title":"...","preheader":"..."}`
       );
       await bumpQuota(1);
       const parsed = JSON.parse((r.text || '{}').replace(/^```(?:json)?\s*|\s*```$/g, '').trim());

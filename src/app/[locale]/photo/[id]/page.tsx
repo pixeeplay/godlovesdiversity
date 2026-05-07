@@ -32,7 +32,7 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
   const host = h.get('host') || 'gld.pixeeplay.com';
   const proto = host.includes('localhost') ? 'http' : 'https';
   const shareUrl = `${proto}://${host}/photo/${photo.id}`;
-  const shareTitle = photo.placeName ? `${photo.placeName} — God Loves Diversity` : 'God Loves Diversity';
+  const shareTitle = photo.placeName ? `${photo.placeName} — parislgbt` : 'parislgbt';
 
   return (
     <div className="min-h-screen bg-black">

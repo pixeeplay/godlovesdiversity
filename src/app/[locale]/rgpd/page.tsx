@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       <h1 className="font-display text-4xl">RGPD & confidentialité</h1>
       <p>Vos données ne sont jamais revendues. Géolocalisation arrondie au km.</p>
       <p>Vous pouvez demander la suppression complète de vos données à tout moment :
-        <a className="text-brand-pink" href="mailto:rgpd@godlovesdiversity.com"> rgpd@godlovesdiversity.com</a>
+        <a className="text-brand-pink" href="mailto:rgpd@parislgbt.com"> rgpd@parislgbt.com</a>
       </p>
     </article>
   );

@@ -286,7 +286,6 @@ function SuggestionsPanel({ onPick }: { onPick: (href: string) => void }) {
     { label: 'Lieux LGBT-friendly',  href: '/lieux',          emoji: '📍', subtitle: '2700+ adresses · carte mondiale', gradient: 'from-emerald-500/40 via-emerald-400/20 to-transparent', glow: 'emerald' },
     { label: 'Forum communauté',     href: '/forum',          emoji: '💬', subtitle: 'Échanges sur foi & orientation', gradient: 'from-violet-500/40 via-violet-400/20 to-transparent', glow: 'violet' },
     { label: 'Newsletter',           href: '/newsletter',     emoji: '📧', subtitle: 'Le mouvement chaque mois',       gradient: 'from-pink-500/40 via-pink-400/20 to-transparent',     glow: 'pink' },
-    { label: 'Cercles de prière',    href: '/cercles-priere', emoji: '🙏', subtitle: 'Prier ensemble en visio',        gradient: 'from-amber-500/40 via-amber-400/20 to-transparent',   glow: 'amber' },
     { label: 'Boutique',             href: '/boutique',       emoji: '🏳️‍🌈', subtitle: 'Mugs, tee-shirts, posters',     gradient: 'from-rose-500/40 via-rose-400/20 to-transparent',     glow: 'rose' },
     { label: 'Galerie',              href: '/galerie',        emoji: '🖼️', subtitle: 'Photos communauté & événements', gradient: 'from-cyan-500/40 via-cyan-400/20 to-transparent',     glow: 'cyan' },
     { label: 'Mentor',               href: '/mentor',         emoji: '🤝', subtitle: 'Trouve un accompagnant',         gradient: 'from-fuchsia-500/40 via-fuchsia-400/20 to-transparent', glow: 'fuchsia' },

@@ -82,7 +82,7 @@ export async function aiCaptionImage(imageUrl: string, words = 80) {
 
 export async function aiPolishTestimony(rawText: string, anonymize = true) {
   return gemini({
-    prompt: `Réécris ce témoignage brut pour publication sur le site God Loves Diversity.
+    prompt: `Réécris ce témoignage brut pour publication sur le site parislgbt.
 ${anonymize ? '- Anonymise (supprime noms, lieux précis, numéros).' : ''}
 - Ton lumineux et chaleureux, jamais victimaire ni polémique.
 - 100 mots maximum.
@@ -113,7 +113,7 @@ Renvoie un JSON valide : { "variants": [ { "version": 1, "content": "..." }, ...
 
 export async function aiNewsletterMonth(stats: any) {
   return gemini({
-    prompt: `Rédige une newsletter mensuelle pour le mouvement God Loves Diversity, en HTML simple (pas de <html>/<body>).
+    prompt: `Rédige une newsletter mensuelle pour le mouvement parislgbt, en HTML simple (pas de <html>/<body>).
 Statistiques du mois :
 ${JSON.stringify(stats, null, 2)}
 
@@ -162,7 +162,7 @@ Texte original : """${text}"""`
 
 export async function aiVerseOfTheDay(theme?: string) {
   return gemini({
-    prompt: `Rédige un message inspirant quotidien pour les abonnés de God Loves Diversity.
+    prompt: `Rédige un message inspirant quotidien pour les abonnés de parislgbt.
 ${theme ? `Thème : ${theme}` : ''}
 - 1 ou 2 phrases courtes, lumineuses, inclusives
 - Ton communautaire, sex-positif et chaleureux
@@ -209,7 +209,7 @@ ${items.map((it) => `[${it.id}] ${it.text.slice(0, 200)}`).join('\n')}`,
 
 export async function aiWeeklyDigest(stats: any) {
   return gemini({
-    prompt: `Rédige une synthèse hebdomadaire pour l'admin du mouvement God Loves Diversity.
+    prompt: `Rédige une synthèse hebdomadaire pour l'admin du mouvement parislgbt.
 Stats brutes : ${JSON.stringify(stats)}
 Format Markdown, 6-8 puces, ton de coach (énergique, factuel). Termine par 1 reco d'action prioritaire.`
   });

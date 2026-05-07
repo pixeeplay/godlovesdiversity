@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'God Loves Diversity',
+    name: 'parislgbt',
     short_name: 'GLD',
-    description: 'Mouvement interreligieux pour réconcilier foi et diversité. Communauté LGBT+ inclusive.',
+    description: 'Plateforme communautaire LGBTQIA+ Paris et France. Indépendante, open source.',
     start_url: '/',
     display: 'standalone',
     orientation: 'portrait',

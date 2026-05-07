@@ -25,9 +25,6 @@ const TYPE_LABELS: Record<string, { label: string; icon: any }> = {
   TEMPLE_HINDU:      { label: 'Hindou',      icon: Church },
   GURDWARA:          { label: 'Sikh',        icon: Church },
   MEDITATION_CENTER: { label: 'Méditation',  icon: Sparkles },
-  HOLY_SITE:         { label: 'Lieu saint',  icon: Church },
-  PILGRIMAGE_PATH:   { label: 'Pèlerinage',  icon: Globe },
-  INTERFAITH_CENTER: { label: 'Inter-religieux', icon: HeartHandshake },
   COMMUNITY_CENTER:  { label: 'Centres LGBT', icon: Users2 },
   HEALTH:            { label: 'Santé',       icon: HeartHandshake },
   ASSOCIATION:       { label: 'Associations', icon: Users },
@@ -45,7 +42,6 @@ const FAITH_GROUPS: { id: string; label: string; emoji: string; types: string[] 
   { id: 'buddhist',   label: 'Bouddhisme',    emoji: '☸️', types: ['TEMPLE_BUDDHIST', 'MEDITATION_CENTER'] },
   { id: 'hindu',      label: 'Hindouisme',    emoji: '🕉️', types: ['TEMPLE_HINDU'] },
   { id: 'sikh',       label: 'Sikhisme',      emoji: '☬',  types: ['GURDWARA'] },
-  { id: 'interfaith', label: 'Inter-religieux', emoji: '🌍', types: ['INTERFAITH_CENTER', 'HOLY_SITE', 'PILGRIMAGE_PATH', 'TEMPLE'] }
 ];
 
 const RATING_BADGE: Record<string, { color: string; label: string; emoji: string }> = {

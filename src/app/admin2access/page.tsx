@@ -95,7 +95,7 @@ export default function Admin2AccessPage() {
           >
             ❤
           </div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>God Loves Diversity</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>parislgbt</h1>
           <p style={{ color: '#a1a1aa', fontSize: 13, marginTop: 6 }}>Accès admin — page de secours</p>
         </div>
 

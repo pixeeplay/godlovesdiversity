@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { Video, Heart, Eye } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Témoignages — God Loves Diversity' };
+export const metadata = { title: 'Témoignages — parislgbt' };
 
 export default async function TestimoniesPage() {
   let testimonies: any[] = [];

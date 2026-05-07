@@ -22,7 +22,7 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string
 
   const carrier = order.carrier ? CARRIERS[order.carrier as keyof typeof CARRIERS] : null;
   const SENDER = {
-    name: 'God Loves Diversity',
+    name: 'parislgbt',
     address: 'Boutique GLD',
     line2: 'À retirer en bureau de poste',
     zip: '75001',

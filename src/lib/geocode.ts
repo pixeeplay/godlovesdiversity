@@ -12,7 +12,7 @@ type GeoResult = {
 };
 
 const HEADERS = {
-  'User-Agent': 'GodLovesDiversity/1.0 (https://godlovesdiversity.com)'
+  'User-Agent': 'parislgbt/1.0 (https://parislgbt.com)'
 };
 
 let lastCall = 0;

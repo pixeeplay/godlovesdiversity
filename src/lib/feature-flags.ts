@@ -19,7 +19,6 @@ export const FEATURE_DEFINITIONS = {
   signalement:     { name: 'Signalement collaboratif', defaultOn: true, category: 'community' },
   hebergement:     { name: 'Hébergement urgence',   defaultOn: false, category: 'community' },
   mentor:          { name: 'Mentor 1-1',             defaultOn: false, category: 'community' },
-  cerclesPriere:   { name: 'Cercles de prière',      defaultOn: true,  category: 'community' },
   meetups:         { name: 'Meetups IRL',            defaultOn: false, category: 'community' },
   voiceCoach:      { name: 'Voice Coach IA',         defaultOn: true,  category: 'ai' },
   legalAI:         { name: 'Aide juridique IA',     defaultOn: true,  category: 'ai' },
@@ -28,12 +27,10 @@ export const FEATURE_DEFINITIONS = {
   marketplace:     { name: 'Marketplace artisans',   defaultOn: false, category: 'monetization' },
   crowdfunding:    { name: 'Crowdfunding projets',   defaultOn: false, category: 'monetization' },
   membrePlus:      { name: 'Abonnement Membre+',    defaultOn: false, category: 'monetization' },
-  gldLocal:        { name: 'GLD Local par ville',   defaultOn: true,  category: 'community' },
+  localCity:       { name: 'Vue par ville (Paris/France)',   defaultOn: true,  category: 'community' },
   podcast:         { name: 'Podcast RSS Spotify',   defaultOn: true,  category: 'viral' },
   widget:          { name: 'Widget embeddable',     defaultOn: true,  category: 'viral' },
-  dataExport:      { name: 'Export données anonymes', defaultOn: false, category: 'research' },
-  prayerChat:      { name: 'Chat cercles de prière', defaultOn: false, category: 'community' }
-} as const;
+  dataExport:      { name: 'Export données anonymes', defaultOn: false, category: 'research' },} as const;
 
 export type FeatureKey = keyof typeof FEATURE_DEFINITIONS;
 

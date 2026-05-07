@@ -5,7 +5,7 @@ import { Map, Sparkles, ExternalLink, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Site map admin · GLD' };
+export const metadata = { title: 'Site map admin · parislgbt' };
 
 interface RouteEntry {
   href: string;
@@ -30,7 +30,7 @@ const PUBLIC_GROUPS: RouteGroup[] = [
     routes: [
       { href: '/', label: 'Accueil', desc: 'Hero + ticker dons + témoignages' },
       { href: '/argumentaire', label: 'Argumentaire', desc: 'Quatre vérités simples' },
-      { href: '/message', label: 'Le message', desc: 'Manifeste GLD' },
+      { href: '/message', label: 'Le message', desc: 'Manifeste parislgbt' },
       { href: '/affiches', label: 'Affiches PDF', desc: 'Imprime + diffuse' },
       { href: '/galerie', label: 'Galerie photos', desc: 'Photos communauté' },
       { href: '/temoignages', label: 'Témoignages vidéo' },
@@ -38,15 +38,6 @@ const PUBLIC_GROUPS: RouteGroup[] = [
     ]
   },
   {
-    id: 'spiritual', label: 'Spirituel — NOUVEAU', emoji: '🕊', color: '#a855f7',
-    routes: [
-      { href: '/cercles-priere',     label: 'Cercles de prière live', desc: '9 cercles avec présence en direct + intentions', isNew: true },
-      { href: '/champ-de-priere',    label: 'Champ de prières mondial', desc: 'Carte Leaflet + bougies virtuelles 24h', isNew: true },
-      { href: '/compagnon-spirituel',label: 'Compagnon spirituel IA', desc: '4 personas (Mère Marie, Sœur Khadija, Rav Yossef, Maître Tenku)', isNew: true },
-      { href: '/camino',             label: 'Camino virtuel collectif', desc: 'Pèlerinage gamifié — 5 chemins (Compostelle, Jérusalem, Bénarès, Shikoku, Hajj)', isNew: true },
-      { href: '/textes-sacres',      label: 'Textes sacrés inclusifs', desc: 'Genius — annotations communautaires sur Bible/Coran/Talmud/Suttas/Vedas/GGS', isNew: true },
-      { href: '/officiants',         label: 'Officiants LGBT-friendly', desc: 'Annuaire mariages/baptêmes/funérailles inclusifs', isNew: true },
-      { href: '/calendrier-religieux', label: 'Calendrier religieux mondial', desc: '70+ fêtes 9 confessions 2026/2027', isNew: true }
     ]
   },
   {
@@ -57,8 +48,6 @@ const PUBLIC_GROUPS: RouteGroup[] = [
       { href: '/agenda',          label: 'Agenda événements' },
       { href: '/connect',         label: 'Connect (réseau social)', desc: 'Communauté · Rencontres · Pro' },
       { href: '/mentor',          label: 'Mentor 1-1' },
-      { href: '/cercles-priere',  label: '→ Cercles de prière (Spirituel)' },
-      { href: '/sos',             label: 'SOS LGBT urgence' },
       { href: '/urgence',         label: 'Page urgence', desc: '⚠️ Possible bug black screen' }
     ]
   },
@@ -74,7 +63,6 @@ const PUBLIC_GROUPS: RouteGroup[] = [
     routes: [
       { href: '/mon-espace',          label: 'Tableau de bord perso' },
       { href: '/mon-espace/profil',   label: 'Mon profil' },
-      { href: '/mon-espace/journal',  label: 'Journal intime' },
       { href: '/mon-espace/lettres',  label: 'Lettres au futur' },
       { href: '/mon-espace/favoris',  label: 'Favoris' },
       { href: '/mon-espace/parametres', label: 'Paramètres' }
@@ -86,7 +74,6 @@ const PUBLIC_GROUPS: RouteGroup[] = [
       { href: '/rapport',                       label: 'Rapport live (stats prod)' },
       { href: '/api/rapport/audit',             label: 'Audit complet (77 modules)', isNew: true },
       { href: '/api/rapport/securite',          label: 'Rapport sécurité', isNew: true },
-      { href: '/api/rapport/religious-census',  label: 'Census religieux', isNew: true }
     ]
   }
 ];
@@ -169,9 +156,6 @@ const ADMIN_GROUPS: RouteGroup[] = [
 ];
 
 const SEEDS_TO_RUN: { label: string; method: string; url: string; description: string }[] = [
-  { label: '🌍 Seed events mondial (85)',     method: 'POST', url: '/api/admin/seed-world-events',     description: 'Prides 2026 + journées LGBT + fêtes religieuses' },
-  { label: '📅 Seed fêtes religieuses (50)',  method: 'POST', url: '/api/admin/seed-religious-events', description: '9 confessions · 2026 + 2027' },
-  { label: '🚶 Seed Camino (5 chemins)',     method: 'POST', url: '/api/admin/seed-camino',           description: 'Compostelle, Jérusalem, Bénarès, Shikoku, Hajj symbolique' },
   { label: '✝️ Cron classify venues',        method: 'GET',  url: '/api/cron/classify-venues?limit=30',description: 'Reclassifie OTHER → CHURCH_CATHOLIC, MOSQUE, etc. (heuristique + Gemini)' }
 ];
 
@@ -195,7 +179,7 @@ export default async function AdminSitemapPage() {
           <Map size={24} className="text-white" />
         </div>
         <div>
-          <h1 className="text-2xl md:text-3xl font-display font-bold leading-none">Site map GLD</h1>
+          <h1 className="text-2xl md:text-3xl font-display font-bold leading-none">Site map parislgbt</h1>
           <p className="text-zinc-400 text-xs mt-1">
             Toutes les pages publiques + admin avec tags ✨ <span className="text-fuchsia-300 font-bold">NEW</span> sur les ajouts récents.
           </p>

@@ -19,7 +19,7 @@ export async function GET() {
   iframe.src = origin + '/embed/' + topic;
   iframe.style.cssText = 'width:100%;border:none;min-height:400px;background:transparent;';
   iframe.allow = 'autoplay';
-  iframe.title = 'God Loves Diversity — ' + topic;
+  iframe.title = 'parislgbt — ' + topic;
   script.parentNode.insertBefore(iframe, script.nextSibling);
 })();`;
   return new Response(js, {

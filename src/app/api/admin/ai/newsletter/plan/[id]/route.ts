@@ -72,7 +72,7 @@ export async function POST(req: NextRequest, ctx: { params: { id: string } }) {
 async function generateHtmlContent(item: any) {
   const dateLong = new Date(item.scheduledFor).toLocaleDateString('fr-FR', { dateStyle: 'long' });
 
-  const prompt = `Rédige une newsletter hebdo COMPLÈTE pour le site God Loves Diversity (réseau social inclusif religieux LGBT+).
+  const prompt = `Rédige une newsletter hebdo COMPLÈTE pour le site parislgbt (réseau social inclusif religieux LGBT+).
 
 THÈME : ${item.theme || 'Communauté'}
 TITRE : ${item.title}
@@ -198,7 +198,7 @@ function wrapHtml(subject: string, preheader: string, body: string): string {
 <body style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#111;background:#f9f9f9;">
 <div style="background:white;padding:32px;border-radius:12px;">
 <div style="font-size:11px;color:#888;margin-bottom:8px;">${preheader}</div>
-<h1 style="font-size:22px;color:#d4537e;margin:0 0 16px;">🌈 God Loves Diversity</h1>
+<h1 style="font-size:22px;color:#d4537e;margin:0 0 16px;">🌈 parislgbt</h1>
 ${body}
 <hr style="margin:32px 0;border:0;border-top:1px solid #eee;"/>
 <p style="font-size:12px;color:#999;text-align:center;">

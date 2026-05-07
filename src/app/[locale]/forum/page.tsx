@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { MessageSquare, Pin, Lock, Users, Plus } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Forum — God Loves Diversity' };
+export const metadata = { title: 'Forum — parislgbt' };
 
 export default async function ForumPage() {
   let categories: any[] = [];

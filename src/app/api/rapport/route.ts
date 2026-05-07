@@ -56,7 +56,7 @@ function generateHtml(s: Awaited<ReturnType<typeof loadStats>>): string {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Rapport GLD Live · ${fmt(s.venues)} lieux · ${fmt(s.users)} membres</title>
-<meta name="description" content="État live du projet God Loves Diversity, données extraites de la base de production." />
+<meta name="description" content="État live du projet parislgbt, données extraites de la base de production." />
 <meta name="theme-color" content="#0a0a0f" />
 <meta name="robots" content="noindex" />
 <style>
@@ -104,7 +104,7 @@ function generateHtml(s: Awaited<ReturnType<typeof loadStats>>): string {
     <div style="margin-bottom:12px;">
       <span class="live-pill">Live · ${date}</span>
     </div>
-    <h1>🌈 God Loves Diversity</h1>
+    <h1>🌈 parislgbt</h1>
     <p style="color:#d4d4d8; margin-top:8px;">
       Le réseau social inclusif religieux LGBT+ — données extraites de la base de production.
       Cette page se régénère à chaque visite et est rafraîchie toutes les 2h par un cron Claude.

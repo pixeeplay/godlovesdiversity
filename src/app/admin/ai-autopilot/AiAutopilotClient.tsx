@@ -3,11 +3,6 @@ import { useEffect, useState } from 'react';
 import { Sparkles, Heart, ShieldAlert, Mail, Activity, Loader2, Save, Play, CheckCircle2, AlertTriangle, Info } from 'lucide-react';
 
 const KEYS = {
-  soulEnabled: 'ai.soul.enabled',
-  soulFrequency: 'ai.soul.frequency',
-  soulTone: 'ai.soul.tone',
-  soulShowOnHome: 'ai.soul.showOnHome',
-  soulLastRunAt: 'ai.soul.lastRunAt',
   moodEnabled: 'ai.mood.enabled',
   moodAffectsTheme: 'ai.mood.affectsTheme',
   moodAffectsMusic: 'ai.mood.affectsMusic',
@@ -63,7 +58,7 @@ export function AiAutopilotClient() {
     setTimeout(() => setSavedAt(0), 2500);
   }
 
-  async function runNow(feature: 'soul' | 'newsletter') {
+  async function runNow(feature:  'newsletter') {
     setRunning(feature);
     setRunResult(null);
     const r = await fetch(`/api/admin/ai/${feature}/generate`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
@@ -124,22 +119,12 @@ export function AiAutopilotClient() {
         icon={<Sparkles className="text-fuchsia-300" size={20} />}
         title="GLD Soul"
         subtitle="La voix du site — une réflexion à la 1ère personne, écrite par IA chaque jour"
-        enabled={isOn(KEYS.soulEnabled)}
-        onToggle={(v) => set(KEYS.soulEnabled, v)}
-        lastRun={cfg[KEYS.soulLastRunAt]}
-        accent="fuchsia"
       >
         <Field label="Fréquence">
-          <select value={cfg[KEYS.soulFrequency] || 'daily'} onChange={(e) => set(KEYS.soulFrequency, e.target.value)} className="bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-sm">
-            <option value="daily">Quotidien (1×/jour)</option>
             <option value="weekly">Hebdo (1×/semaine)</option>
           </select>
         </Field>
         <Field label="Ton">
-          <input type="text" value={cfg[KEYS.soulTone] || ''} onChange={(e) => set(KEYS.soulTone, e.target.value)} placeholder="poétique, chaleureux, inclusif" className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-sm" />
-        </Field>
-        <Toggle label="Afficher sur la home" checked={isOn(KEYS.soulShowOnHome)} onChange={(v) => set(KEYS.soulShowOnHome, v)} />
-        <button onClick={() => runNow('soul')} disabled={running === 'soul'} className="mt-2 bg-fuchsia-500/20 hover:bg-fuchsia-500/30 border border-fuchsia-500/40 text-fuchsia-200 px-3 py-2 rounded text-xs font-bold flex items-center gap-2 disabled:opacity-50">
           {running === 'soul' ? <Loader2 size={12} className="animate-spin" /> : <Play size={12} />} Générer maintenant l'entrée du jour
         </button>
         {runResult?.feature === 'soul' && (

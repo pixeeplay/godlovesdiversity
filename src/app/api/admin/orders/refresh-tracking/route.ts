@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
           await sendEmail(
             o.email,
             `✅ Ta commande #${o.id.slice(0, 8)} est livrée !`,
-            `<p>Bonjour ${o.name || ''},</p><p>Bonne nouvelle : ta commande a été <strong>livrée</strong> ! 🎉</p><p>Merci pour ton soutien au mouvement.<br>L'équipe God Loves Diversity 🌈</p>`
+            `<p>Bonjour ${o.name || ''},</p><p>Bonne nouvelle : ta commande a été <strong>livrée</strong> ! 🎉</p><p>Merci pour ton soutien au mouvement.<br>L'équipe parislgbt 🌈</p>`
           ).catch(() => {});
         }
         if (o.phone) {

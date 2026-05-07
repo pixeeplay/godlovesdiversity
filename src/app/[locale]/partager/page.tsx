@@ -1,7 +1,7 @@
 import { ShareCardClient } from '@/components/ShareCardClient';
 
 export const dynamic = 'force-static';
-export const metadata = { title: 'Crée ta carte de partage — God Loves Diversity' };
+export const metadata = { title: 'Crée ta carte de partage — parislgbt' };
 
 export default function PartagerPage() {
   return <ShareCardClient />;

@@ -394,7 +394,7 @@ async function callOpenAICompat(provider: ProviderConfig, model: string, opts: G
   // OpenRouter required headers
   if (kind === 'openrouter') {
     headers['HTTP-Referer'] = 'https://gld.pixeeplay.com';
-    headers['X-Title'] = 'God Loves Diversity';
+    headers['X-Title'] = 'parislgbt';
   }
   const r = await fetch(url, {
     method: 'POST',

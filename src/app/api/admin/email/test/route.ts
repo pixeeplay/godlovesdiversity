@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       <h1 style="color: #FF2BB1; margin: 0 0 16px;">✅ Email de test reçu</h1>
       <p>Si tu lis ce message, c'est que ta configuration Resend (ou SMTP) fonctionne correctement.</p>
       <p style="color: #888; font-size: 13px;">
-        Envoyé depuis le back-office God Loves Diversity le ${new Date().toLocaleString('fr-FR')}.
+        Envoyé depuis le back-office parislgbt le ${new Date().toLocaleString('fr-FR')}.
       </p>
       <hr style="border: 0; border-top: 1px solid #eee; margin: 24px 0;">
       <p style="color: #888; font-size: 12px;">

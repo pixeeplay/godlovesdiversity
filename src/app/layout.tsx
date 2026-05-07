@@ -13,12 +13,12 @@ const themeInitScript = `
 `.trim();
 
 export const metadata: Metadata = {
-  title: 'God Loves Diversity',
+  title: 'parislgbt',
   description:
-    'Mouvement interreligieux pour réconcilier foi et diversité. Dieu est amour.',
+    'Plateforme communautaire LGBTQIA+ — Paris et France. Indépendante, sans publicité.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   openGraph: {
-    title: 'God Loves Diversity',
+    title: 'parislgbt',
     description: 'Dieu est amour. La foi se conjugue au pluriel.',
     type: 'website'
   }

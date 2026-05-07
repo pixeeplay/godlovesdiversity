@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     const { prompt, save } = await req.json();
     if (!prompt) return NextResponse.json({ error: 'prompt requis' }, { status: 400 });
 
-    const sys = `Tu génères un thème visuel complet pour le site GLD (God Loves Diversity, mouvement LGBT+ inclusif).
+    const sys = `Tu génères un thème visuel complet pour le site GLD (parislgbt, mouvement LGBT+ inclusif).
 L'utilisateur décrit l'ambiance souhaitée : "${prompt}"
 
 Tu réponds STRICTEMENT en JSON valide (commence par "{", finit par "}"), avec cette structure :

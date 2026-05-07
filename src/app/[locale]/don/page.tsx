@@ -2,7 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { DonateButtons } from '@/components/DonateButtons';
 import { Heart } from 'lucide-react';
 
-export const metadata = { title: 'Faire un don — God Loves Diversity' };
+export const metadata = { title: 'Faire un don — parislgbt' };
 
 export default async function DonatePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

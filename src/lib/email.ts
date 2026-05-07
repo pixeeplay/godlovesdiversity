@@ -19,7 +19,7 @@ async function loadConfig() {
   ]).catch(() => ({} as Record<string, string>));
   return {
     resendKey: db['integrations.resend.apiKey'] || process.env.RESEND_API_KEY,
-    from: db['integrations.resend.from'] || process.env.EMAIL_FROM || '"God Loves Diversity" <hello@godlovesdiversity.com>',
+    from: db['integrations.resend.from'] || process.env.EMAIL_FROM || '"parislgbt" <hello@parislgbt.com>',
     adminEmail: db['integrations.admin.email'] || process.env.ADMIN_EMAIL
   };
 }

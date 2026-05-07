@@ -20,7 +20,7 @@ export default async function P({ params }: { params: Promise<{ topic: string }>
     <html><body style={{ margin: 0, fontFamily: 'system-ui', background: 'transparent', color: '#fff' }}>
       <div style={{ padding: 12, background: 'linear-gradient(135deg,#1a0a2a,#0a0a14)', borderRadius: 12 }}>
         <div style={{ fontSize: 11, fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 2, color: '#d61b80', marginBottom: 8 }}>
-          ✨ God Loves Diversity · {topic}
+          ✨ parislgbt · {topic}
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(180px,1fr))', gap: 8 }}>
           {items.map((it: any, i: number) => (

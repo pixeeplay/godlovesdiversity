@@ -37,7 +37,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const postersTitle = v('posters.title', 'TÉLÉCHARGEZ L\'AFFICHE');
   const postersText = v('posters.text', 'Imprimez, affichez, prenez une photo et soyez acteur du changement !');
   const logoUrl = s['site.logoUrl'];
-  const hashtag = s['campaign.hashtag'] || '#GodLovesDiversity';
+  const hashtag = s['campaign.hashtag'] || '#parislgbt';
 
   const pillars = [
     {
@@ -143,7 +143,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   if (banners.length === 0) {
     banners = [{
       id: 'default', order: 1, locale, published: true,
-      eyebrow: 'Mouvement interreligieux • 2026',
+      eyebrow: 'Plateforme LGBTQIA+ • 2026',
       title: 'GOD LOVES DIVERSITY',
       subtitle, accentColor: '#FF2BB1',
       cta1Text: 'COMPRENDRE LE MESSAGE', cta1Url: '/argumentaire',

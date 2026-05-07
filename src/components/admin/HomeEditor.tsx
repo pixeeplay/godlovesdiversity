@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { Save, Loader2, CheckCircle2, UploadCloud, Image as ImageIcon, Trash2, Eye } from 'lucide-react';
 
 const FIELDS: { key: string; label: string; placeholder: string; type?: 'text' | 'textarea' }[] = [
-  { key: 'home.hero.eyebrow', label: 'Pré-titre du hero', placeholder: 'Mouvement interreligieux • 2026' },
+  { key: 'home.hero.eyebrow', label: 'Pré-titre du hero', placeholder: 'Plateforme LGBTQIA+ Paris + France · 2026' },
   { key: 'home.hero.title', label: 'Titre principal', placeholder: 'GOD ❤ DIVERSITY' },
   { key: 'home.hero.subtitle', label: 'Sous-titre', placeholder: 'Aucune lecture n\'est définitive. La foi se conjugue au pluriel.', type: 'textarea' },
   { key: 'home.hero.ctaPrimary', label: 'Bouton principal', placeholder: 'Participer' },
