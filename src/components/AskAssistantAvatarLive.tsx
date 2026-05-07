@@ -13,7 +13,7 @@ type Status = 'idle' | 'connecting' | 'connected' | 'listening' | 'thinking' | '
 
 const MAX_DURATION_SEC = 120; // 2 minutes plafond visiteur
 
-export function AskGldAvatarLive({ onClose }: { onClose: () => void }) {
+export function AskAssistantAvatarLive({ onClose }: { onClose: () => void }) {
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [transcript, setTranscript] = useState<string>('');   // ce que dit le visiteur en cours

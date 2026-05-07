@@ -11,7 +11,7 @@
  *   2. Récupérer la nouvelle API key
  *   3. Refaire l'intégration avec leur SDK
  *
- * Alternative gratuite codée dans /api/avatar/local-live/* + AskGldAvatarLocal
+ * Alternative gratuite codée dans /api/avatar/local-live/* + AskAssistantAvatarLocal
  * (avatar SVG + ElevenLabs + Web Speech).
  */
 import { getSettings } from './settings';

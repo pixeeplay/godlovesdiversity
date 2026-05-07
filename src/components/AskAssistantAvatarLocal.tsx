@@ -16,7 +16,7 @@ type Status = 'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking' | 'e
 
 const MAX_DURATION_SEC = 120;
 
-export function AskGldAvatarLocal({ onClose }: { onClose: () => void }) {
+export function AskAssistantAvatarLocal({ onClose }: { onClose: () => void }) {
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [transcript, setTranscript] = useState<string>('');

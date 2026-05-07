@@ -11,7 +11,7 @@ type State = 'idle' | 'asking' | 'rendering' | 'ready' | 'error';
  *
  * S'affiche à côté du widget chat texte si avatar.enabled = '1'.
  */
-export function AskGldAvatar() {
+export function AskAssistantAvatar() {
   const [enabled, setEnabled] = useState(false);
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState('');

@@ -4,8 +4,8 @@ import {
   Video, Sparkles, Save, Loader2, CheckCircle2, AlertCircle, Play, Pause,
   Volume2, ExternalLink, Power, PowerOff, Eye, KeyRound, Zap, RefreshCw, Mic, Home, Radio, type LucideIcon
 } from 'lucide-react';
-import { AskGldAvatarLocal } from '@/components/AskGldAvatarLocal';
-import { AskGldAvatarLiveAvatar } from '@/components/AskGldAvatarLiveAvatar';
+import { AskAssistantAvatarLocal } from '@/components/AskAssistantAvatarLocal';
+import { AskAssistantAvatarLiveAvatar } from '@/components/AskAssistantAvatarLiveAvatar';
 
 type Avatar = {
   avatar_id: string;
@@ -801,14 +801,14 @@ export function AvatarStudio({ apiKeyConfigured, hasElevenLabs = false, hasLiveA
 
       {/* Modal Live local pour test depuis l'admin */}
       {testLocalLive && (
-        <AskGldAvatarLocal onClose={() => setTestLocalLive(false)} />
+        <AskAssistantAvatarLocal onClose={() => setTestLocalLive(false)} />
       )}
 
       {/* Modal Streaming LiveAvatar pour test depuis l'admin
           On passe l'avatar choisi DANS LE STATE (pas la DB) pour pouvoir
           tester sans avoir à sauvegarder d'abord. */}
       {testLiveAvatar && (
-        <AskGldAvatarLiveAvatar
+        <AskAssistantAvatarLiveAvatar
           onClose={() => setTestLiveAvatar(false)}
           avatarIdOverride={config.liveAvatarId}
           voiceIdOverride={config.liveAvatarVoiceId || undefined}

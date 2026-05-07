@@ -1,8 +1,8 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { Send, X, Loader2, Sparkles, BookOpen, MessageSquare, Video, Play, Mic, Radio, ShieldAlert } from 'lucide-react';
-import { AskGldAvatarLocal } from './AskGldAvatarLocal';
-import { AskGldAvatarLiveAvatar } from './AskGldAvatarLiveAvatar';
+import { AskAssistantAvatarLocal } from './AskAssistantAvatarLocal';
+import { AskAssistantAvatarLiveAvatar } from './AskAssistantAvatarLiveAvatar';
 import { DivineLightAvatar } from './DivineLightAvatar';
 import { EmergencyModal } from './EmergencyModal';
 
@@ -25,7 +25,7 @@ const SUGGESTIONS = [
   'Comment concilier ma foi et mon identité ?'
 ];
 
-export function AskGldWidget() {
+export function AskAssistantWidget() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>('text');
   const [avatarAvailable, setAvatarAvailable] = useState(false);
@@ -404,12 +404,12 @@ export function AskGldWidget() {
 
       {/* Modal Live local (overlay plein écran) */}
       {liveOpen && (
-        <AskGldAvatarLocal onClose={() => { setLiveOpen(false); setMode('text'); }} />
+        <AskAssistantAvatarLocal onClose={() => { setLiveOpen(false); setMode('text'); }} />
       )}
 
       {/* Modal Streaming LiveAvatar (overlay plein écran) */}
       {streamingOpen && (
-        <AskGldAvatarLiveAvatar onClose={() => { setStreamingOpen(false); setMode('text'); }} />
+        <AskAssistantAvatarLiveAvatar onClose={() => { setStreamingOpen(false); setMode('text'); }} />
       )}
 
       {/* Modal Urgence LGBT — bouton SOS */}

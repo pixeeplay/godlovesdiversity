@@ -2,7 +2,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { NeonHeart } from './NeonHeart';
-import { SacredSkyline } from './SacredSkyline';
 
 type Banner = {
   id: string;
@@ -43,20 +42,6 @@ export function HeroBannerCarousel({ banners, logoUrl }: { banners: Banner[]; lo
       onMouseLeave={() => setPaused(false)}
     >
       {/* Backdrop static */}
-      <SacredSkyline height={620} />
-
-      {/* Slides */}
-      <div className="relative z-10 min-h-[620px]">
-        {banners.map((b, i) => (
-          <div
-            key={b.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ${i === index ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-          >
-            {/* Background média par slide */}
-            {b.mediaUrl && (
-              <div className="absolute inset-0">
-                {b.mediaType === 'video' ? (
-                  <video src={b.mediaUrl} muted autoPlay loop playsInline className="w-full h-full object-cover" />
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={b.mediaUrl} alt="" className="w-full h-full object-cover" />

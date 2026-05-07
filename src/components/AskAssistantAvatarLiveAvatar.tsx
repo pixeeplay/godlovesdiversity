@@ -30,7 +30,7 @@ type Props = {
  *  5. Keep-alive serveur toutes les 60 s
  *  6. Plafond auto basé sur max_session_duration
  */
-export function AskGldAvatarLiveAvatar({ onClose, avatarIdOverride, voiceIdOverride, language, fromAdmin }: Props) {
+export function AskAssistantAvatarLiveAvatar({ onClose, avatarIdOverride, voiceIdOverride, language, fromAdmin }: Props) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [error, setError] = useState<string | null>(null);
   const [muted, setMuted] = useState(false);

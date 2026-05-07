@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { AskGldWidget } from '@/components/AskGldWidget';
+import { AskAssistantWidget } from '@/components/AskAssistantWidget';
 import { TickerDonate } from '@/components/TickerDonate';
 import { AmbientPlayer } from '@/components/AmbientPlayer';
 import { PageTracker } from '@/components/PageTracker';
@@ -46,7 +46,7 @@ export default async function LocaleLayout({
             </div>
             <main className="flex-1">{children}</main>
             <Footer />
-            <AskGldWidget />
+            <AskAssistantWidget />
             <AmbientPlayer />
             <PageTracker />
             <ThemeApplier />
