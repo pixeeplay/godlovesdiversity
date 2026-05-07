@@ -2,6 +2,7 @@ import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { routing } from './i18n/routing';
+import { detectScope } from './lib/scope';
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -18,6 +19,12 @@ const intlMiddleware = createMiddleware(routing);
  * /fr/admin/* qui n'existe pas → 404.
  */
 export default async function middleware(req: NextRequest) {
+  // Multi-domain scope detection (parislgbt.com / francelgbt.com / lgbt.pixeeplay.com)
+  const hostHeader = req.headers.get('host') ?? '';
+  const scope = detectScope(hostHeader);
+  // We propagate the scope via request headers so server components can read it
+  req.headers.set('x-site-scope', scope);
+
   const { pathname } = req.nextUrl;
 
   // === Bloc 0 : routes admin (toutes, login + protégées + page de secours) ===
@@ -28,7 +35,7 @@ export default async function middleware(req: NextRequest) {
       pathname.startsWith('/admin/login') || pathname.startsWith('/admin2access');
 
     if (isPublicLoginPage) {
-      return NextResponse.next();
+      return (() => { const r = NextResponse.next(); r.headers.set('x-site-scope', scope); return r; })();
     }
 
     // Tailscale ACL — bloque l'accès admin depuis Internet public si flag activé
@@ -66,7 +73,7 @@ export default async function middleware(req: NextRequest) {
     const isAdmin = role === 'ADMIN' || role === 'EDITOR';
 
     if (pathname.startsWith('/admin/pro')) {
-      return NextResponse.next();
+      return (() => { const r = NextResponse.next(); r.headers.set('x-site-scope', scope); return r; })();
     }
 
     if (pathname.startsWith('/admin/venues') && !isAdmin) {
@@ -81,7 +88,7 @@ export default async function middleware(req: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    return NextResponse.next();
+    return (() => { const r = NextResponse.next(); r.headers.set('x-site-scope', scope); return r; })();
   }
 
   // === Bloc 1 : sous-apps indépendants ===
