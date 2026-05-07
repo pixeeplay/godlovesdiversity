@@ -1,97 +1,211 @@
 {
   "nav": {
     "home": "Accueil",
-    "message": "Le message",
-    "argumentaire": "Argumentaire",
+    "pride": "Pride",
+    "soirees": "Soirées",
+    "lieux": "Lieux",
+    "carte": "Carte",
+    "identites": "Identités",
+    "sante": "Santé",
+    "assos": "Assos",
+    "agenda": "Agenda",
+    "blog": "Blog",
+    "boutique": "Boutique",
+    "forum": "Forum",
     "participate": "Participer",
     "gallery": "Galerie",
-    "posters": "Affiches",
-    "about": "À propos",
+    "manifeste": "Manifeste",
+    "tech": "Tech",
     "newsletter": "Newsletter",
-    "blog": "Blog"
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "signup": "Créer un compte",
+    "myspace": "Mon espace"
   },
   "home": {
-    "tagline": "Dieu aime la diversité",
-    "subtitle": "Aucune lecture n'est définitive. La foi se conjugue au pluriel.",
-    "cta_participate": "Participer",
-    "cta_understand": "Comprendre",
-    "cta_gallery": "Voir les photos",
-    "manifesto_title": "Le message",
-    "manifesto_text": "Dieu n'est pas opposé aux personnes LGBT. Ce rejet est le produit d'interprétations historiques et humaines des textes sacrés.",
-    "pillars_title": "Quatre vérités simples",
-    "pillar1_title": "Dieu est amour universel",
-    "pillar1_text": "Les grandes religions monothéistes reposent sur l'amour, la compassion et la justice. Aucune condamnation explicite de l'homosexualité n'est formulée par Jésus, qui prône l'inclusion.",
-    "pillar2_title": "Les textes sont contextualisés",
-    "pillar2_text": "Les passages utilisés contre les personnes LGBT doivent être compris dans leur contexte historique : rites, normes sociales, codes anciens.",
-    "pillar3_title": "L'interprétation est humaine",
-    "pillar3_text": "Les lectures religieuses ont été influencées par des normes culturelles : patriarcat, hétérocentrisme, pouvoir.",
-    "pillar4_title": "Foi et diversité sont compatibles",
-    "pillar4_text": "De nombreuses communautés religieuses inclusives existent aujourd'hui partout dans le monde.",
-    "join_title": "Rejoignez le mouvement",
-    "join_text": "Téléchargez l'affiche, prenez-la en photo devant un lieu de culte, et partagez sous #GodLovesDiversity."
+    "tagline": "Paris queer, sans filtre.",
+    "subtitle": "Le hub LGBTQIA+ de Paris et de la France. Soirées, lieux safe, agenda Pride, ressources santé, assos, communauté.",
+    "cta_explore": "Explorer la carte",
+    "cta_pride": "L'agenda Pride",
+    "cta_join": "Rejoindre la communauté",
+    "cta_gallery": "Voir la galerie",
+    "manifesto_title": "Notre raison d'être",
+    "manifesto_text": "Une plateforme indépendante, sans publicité, par et pour la communauté LGBTQIA+. On recense, on partage, on protège.",
+    "pillars_title": "4 promesses simples",
+    "pillar1_title": "Tout LGBTQIA+, partout en France",
+    "pillar1_text": "Bars, clubs, saunas, cabarets, librairies, assos, médecins LGBT-friendly, espaces safe. De Paris à Marseille, Lyon, Lille, Toulouse, Nantes et plus.",
+    "pillar2_title": "Pride 365",
+    "pillar2_text": "L'agenda complet des Marches des Fiertés, des Existrans, festivals queer et soirées thématiques toute l'année.",
+    "pillar3_title": "Santé sexuelle & mentale",
+    "pillar3_text": "PrEP, dépistage, médecins formé·es, hotlines, soutien santé mentale, ressources transition. Annuaire vérifié et confidentiel.",
+    "pillar4_title": "Communauté libre",
+    "pillar4_text": "Forum, témoignages, mentorat, voyage safe. Modération renforcée, anonymat possible, RGPD respecté.",
+    "join_title": "Rejoins le mouvement",
+    "join_text": "Inscris-toi à la newsletter, partage tes lieux préférés, soumets un événement, ou simplement viens dire bonjour."
   },
   "footer": {
-    "tagline": "Dieu est amour. La foi se conjugue au pluriel.",
+    "tagline": "Plateforme indépendante LGBTQIA+ — Paris + France entière.",
     "rights": "Tous droits réservés",
     "legal": "Mentions légales",
     "privacy": "Confidentialité",
-    "contact": "Contact"
+    "contact": "Contact",
+    "manifesto": "Manifeste",
+    "tech": "Open source · auto-hébergé",
+    "follow": "Nous suivre"
   },
   "participate": {
-    "title": "Partagez votre lumière",
-    "subtitle": "Photographiez-vous devant un lieu de culte avec l'affiche, et rejoignez le mouvement mondial.",
-    "drop_label": "Glissez votre photo ici ou cliquez pour parcourir",
-    "name_label": "Votre prénom (optionnel)",
+    "title": "Participe à la communauté",
+    "subtitle": "Partage une photo de soirée, propose un lieu, signale une événement Pride, ou raconte ton expérience.",
+    "drop_label": "Glisse ta photo ici ou clique pour parcourir",
+    "name_label": "Ton prénom (optionnel)",
     "place_label": "Nom du lieu",
     "place_type_label": "Type de lieu",
     "city_label": "Ville",
     "country_label": "Pays",
-    "caption_label": "Témoignage court (optionnel)",
-    "submit": "Envoyer ma photo",
+    "caption_label": "Légende (optionnel)",
+    "identities_label": "Identités accueillies (optionnel)",
+    "consent_label": "J'autorise la publication après modération.",
+    "submit": "Envoyer",
     "submitting": "Envoi…",
     "success_title": "Merci !",
-    "success_text": "Votre photo a été envoyée. Elle sera publiée après une rapide modération.",
-    "error": "Une erreur est survenue. Réessayez."
+    "success_text": "Ton contenu a été reçu. Notre équipe valide sous 48h.",
+    "error": "Une erreur est survenue. Réessaie."
   },
   "gallery": {
-    "title": "Galerie mondiale",
-    "subtitle": "Chaque photo est un témoignage. Chaque témoignage est un pas.",
-    "filter_all": "Tous",
-    "filter_country": "Pays",
-    "filter_place": "Lieu",
-    "empty": "Aucune photo pour ces filtres pour le moment."
+    "title": "Galerie communautaire",
+    "subtitle": "Soirées, marches, lieux, portraits. Chaque photo raconte une histoire.",
+    "filter_all": "Tout",
+    "filter_city": "Ville",
+    "filter_type": "Type",
+    "filter_identity": "Identité",
+    "empty": "Aucune photo pour ces filtres."
   },
-  "posters": {
-    "title": "Téléchargez les affiches",
-    "subtitle": "Imprimez. Posez. Photographiez. Partagez.",
-    "format": "Format",
-    "download": "Télécharger",
-    "tip_title": "Conseils",
-    "tip1": "Posez l'affiche dans l'espace public ou tenez-la devant un lieu de culte.",
-    "tip2": "Prenez la photo et partagez-la avec #GodLovesDiversity.",
-    "tip3": "Importez-la directement ici pour rejoindre la galerie mondiale."
+  "pride": {
+    "title": "Pride 365",
+    "subtitle": "L'agenda complet de toutes les Marches des Fiertés, festivals queer, marches dissidentes et events spéciaux Pride en France.",
+    "official_marches": "Marches officielles",
+    "alt_marches": "Marches dissidentes",
+    "festivals": "Festivals queer",
+    "history": "Histoire des Pride en France"
+  },
+  "soirees": {
+    "title": "Soirées",
+    "subtitle": "Clubs, drag shows, ballrooms, cabarets, tea dances. La nuit queer parisienne et française au quotidien.",
+    "tonight": "Ce soir",
+    "this_week": "Cette semaine",
+    "recurring": "Soirées récurrentes",
+    "filter_type": "Type de soirée",
+    "filter_price": "Prix",
+    "filter_age": "Âge"
+  },
+  "lieux": {
+    "title": "Lieux",
+    "subtitle": "Bars, clubs, saunas, cabarets, librairies, assos, espaces safe. Annuaire vérifié et communautaire.",
+    "filter_type": "Type",
+    "filter_identity": "Identité accueillie",
+    "filter_accessibility": "Accessibilité",
+    "filter_city": "Ville",
+    "submit_place": "Soumettre un lieu",
+    "view_map": "Voir sur la carte",
+    "view_list": "Voir en liste"
+  },
+  "identites": {
+    "title": "Identités & orientations",
+    "subtitle": "Glossaire pédagogique des identités de genre et orientations sexuelles. Drapeaux, ressources, FAQ.",
+    "intro": "Personne n'est obligé de se définir. Mais si les mots aident, en voici quelques-uns.",
+    "flags": "Drapeaux",
+    "glossary": "Glossaire",
+    "faq": "Questions fréquentes",
+    "resources": "Ressources"
+  },
+  "sante": {
+    "title": "Santé sexuelle & mentale",
+    "subtitle": "PrEP, dépistage gratuit, médecins LGBT-friendly, soutien santé mentale, ressources transition.",
+    "prep": "PrEP & TPE",
+    "depistage": "Dépistage VIH/IST",
+    "mental": "Santé mentale",
+    "trans": "Ressources trans",
+    "doctors": "Médecins formé·es",
+    "hotlines": "Hotlines & écoute",
+    "find_close": "Centres près de toi"
+  },
+  "assos": {
+    "title": "Associations LGBT+",
+    "subtitle": "Annuaire des associations LGBT+ en France. Permanences, activités, mentorat, soutien.",
+    "filter_focus": "Focus",
+    "filter_city": "Ville",
+    "submit_asso": "Soumettre une asso"
+  },
+  "agenda": {
+    "title": "Agenda",
+    "subtitle": "Tous les événements LGBT+ : Pride, soirées, ateliers, conférences, permanences, dépistages.",
+    "today": "Aujourd'hui",
+    "this_week": "Cette semaine",
+    "this_month": "Ce mois-ci"
+  },
+  "manifeste": {
+    "title": "Notre manifeste",
+    "subtitle": "Pourquoi parislgbt + francelgbt existent.",
+    "p1_title": "Indépendant",
+    "p1_text": "Pas de publicité. Pas d'investisseur. Plateforme communautaire, financée par les abonnements premium et les partenariats associatifs.",
+    "p2_title": "Inclusif",
+    "p2_text": "Toutes les identités, tous les âges (à partir de 16 ans), toutes les régions. Lesbiennes, gays, bi·es, trans, non-binaires, queer, ace, pan, intersex, allié·es bienvenu·es.",
+    "p3_title": "Modéré",
+    "p3_text": "Modération a priori sur les contenus sensibles. Tolérance zéro pour la haine, le racisme, la LGBTphobie internalisée, la transphobie, la sérophobie.",
+    "p4_title": "Open source",
+    "p4_text": "Code disponible publiquement, données portables RGPD, auto-hébergeable. La communauté garde le contrôle.",
+    "p5_title": "Engagé",
+    "p5_text": "Pour les droits, contre la haine. On documente, on signale, on relaie les associations. On est partenaire de Inter-LGBT, SOS Homophobie, Centre LGBT Paris-IDF, Acceptess-T, AIDES."
+  },
+  "tech": {
+    "title": "Comment ça marche",
+    "subtitle": "Plateforme open source en Next.js + PostgreSQL + Prisma. Auto-hébergeable, RGPD-friendly.",
+    "stack": "Stack technique",
+    "self_host": "Auto-héberger",
+    "contribute": "Contribuer",
+    "api": "API publique"
   },
   "newsletter": {
-    "title": "Recevez l'actualité du mouvement",
-    "subtitle": "Une fois par mois, des témoignages, des rendez-vous, des inspirations.",
-    "email_label": "Votre email",
+    "title": "Newsletter",
+    "subtitle": "Une fois par semaine : meilleures soirées, nouveau lieu, alertes événements. Sans spam, désinscription en 1 clic.",
+    "email_label": "Ton email",
+    "scope_label": "Tu veux recevoir quoi ?",
+    "scope_paris": "Paris",
+    "scope_france": "France entière",
     "subscribe": "S'abonner",
-    "success": "Vérifiez votre boîte mail pour confirmer votre inscription.",
-    "error": "Erreur, réessayez plus tard."
+    "success": "Vérifie ta boîte mail pour confirmer.",
+    "error": "Erreur, réessaie plus tard."
   },
   "about": {
     "title": "À propos",
-    "intro": "God Loves Diversity est un mouvement citoyen, interreligieux et international, pour réconcilier la foi et la diversité."
+    "intro": "parislgbt et francelgbt sont des plateformes communautaires LGBTQIA+. Indépendantes, open source, sans publicité."
   },
-  "message": {
-    "title": "Le message"
-  },
-  "argumentaire": {
-    "title": "Argumentaire"
+  "scope": {
+    "switcher_title": "Tu visites :",
+    "paris": "Paris",
+    "france": "France entière",
+    "switch_to_paris": "Voir Paris uniquement",
+    "switch_to_france": "Voir toute la France"
   },
   "common": {
     "loading": "Chargement…",
-    "error": "Erreur",
-    "back": "Retour"
+    "error": "Une erreur est survenue.",
+    "back": "Retour",
+    "close": "Fermer",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "submit": "Envoyer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "share": "Partager",
+    "more": "Voir plus",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "yes": "Oui",
+    "no": "Non"
   }
 }
