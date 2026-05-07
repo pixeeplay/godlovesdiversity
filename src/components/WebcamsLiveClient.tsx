@@ -1,313 +1,34 @@
 'use client';
-import { useMemo, useState } from 'react';
-import { Tv, Filter, MapPin, Play, ExternalLink, Globe, Search } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Tv, Filter, MapPin, Play, ExternalLink, Search, RefreshCw, Loader2, Sparkles } from 'lucide-react';
 
-/**
- * Webcams live des lieux saints du monde.
- *
- * Sources : flux YouTube live publics + flux dédiés des grandes institutions.
- * Tous les liens sont publics et officiels (pas de scraping).
- *
- * NB : certains streams sont 24/7, d'autres uniquement aux heures d'office.
- *      L'icône 🟢 LIVE indique les streams qui sont historiquement live, mais
- *      l'état réel dépend du moment de la consultation.
- */
-
-interface Webcam {
+interface LiveCam {
   id: string;
   name: string;
   city: string;
   country: string;
-  faith: string;            // catholic, orthodox, protestant, muslim, jewish, buddhist, hindu, sikh, interfaith
+  faith: string;
   emoji: string;
   description: string;
-  embedUrl: string;          // URL embed YouTube/Vimeo
-  externalUrl: string;       // URL canonique
-  schedule?: string;         // ex "Messes 7h/12h/18h CET"
-  inclusive?: boolean;       // LGBT-friendly notoirement
+  externalUrl: string;
+  schedule?: string;
+  inclusive?: boolean;
+  discoveredBy?: string;
+  live: boolean;
+  videoId: string | null;
+  liveTitle?: string;
+  thumbnailUrl?: string;
+  embedUrl: string | null;
 }
 
-const WEBCAMS: Webcam[] = [
-  // Christianisme catholique
-  {
-    id: 'vatican-st-peter',
-    name: 'Basilique Saint-Pierre',
-    city: 'Vatican',
-    country: 'VA',
-    faith: 'catholic',
-    emoji: '✝️',
-    description: 'Basilique majeure de la chrétienté. Audiences du Pape, messes, angélus.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCxw5Mjvc35MGRukZTV-jHWg',
-    externalUrl: 'https://www.vaticannews.va/en.html',
-    schedule: 'Audience générale mer 9h, Angélus dim 12h CET',
-    inclusive: false
-  },
-  {
-    id: 'lourdes-grotte',
-    name: 'Sanctuaire de Lourdes — Grotte Massabielle',
-    city: 'Lourdes',
-    country: 'FR',
-    faith: 'catholic',
-    emoji: '🕊️',
-    description: 'Grotte des apparitions, prière mariale 24/7. Cierges et procession.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCY6mFrXPq1mH0RonKzIuyZA',
-    externalUrl: 'https://www.lourdes-france.org/tv-lourdes/',
-    schedule: '24/7 grotte · Messes internationales 9h30 + procession 21h CET',
-    inclusive: true
-  },
-  {
-    id: 'taize',
-    name: 'Communauté de Taizé',
-    city: 'Taizé',
-    country: 'FR',
-    faith: 'protestant',
-    emoji: '🎵',
-    description: 'Prière œcuménique chantée. Frère Roger Schutz. Très inclusive.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCoF20oOxnk-1f9XXG_3CRTw',
-    externalUrl: 'https://www.taize.fr/en',
-    schedule: 'Prières 8h15, 12h20, 20h30 CET',
-    inclusive: true
-  },
-  {
-    id: 'notre-dame-paris',
-    name: 'Notre-Dame de Paris',
-    city: 'Paris',
-    country: 'FR',
-    faith: 'catholic',
-    emoji: '🏰',
-    description: 'Cathédrale historique reconstruite après l\'incendie de 2019.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCb9Lk9DLbITcEA3tEcGjdng',
-    externalUrl: 'https://www.notredamedeparis.fr',
-    schedule: 'Messes quotidiennes',
-    inclusive: false
-  },
-  {
-    id: 'medjugorje',
-    name: 'Medjugorje',
-    city: 'Medjugorje',
-    country: 'BA',
-    faith: 'catholic',
-    emoji: '🌹',
-    description: 'Sanctuaire marial bosniaque. Prières et apparitions.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCYTIpoGJW9wKVoG3_RhfVVw',
-    externalUrl: 'https://www.medjugorje.hr',
-    schedule: 'Rosaire 17h, Messe 18h CET',
-    inclusive: false
-  },
-
-  // Christianisme orthodoxe
-  {
-    id: 'mount-athos',
-    name: 'Mont Athos — Monastères',
-    city: 'Mont Athos',
-    country: 'GR',
-    faith: 'orthodox',
-    emoji: '☦️',
-    description: 'République monastique grecque, 2000 moines orthodoxes.',
-    embedUrl: 'https://www.youtube.com/embed/videoseries?list=PLxfL8yIXYjcVWYVCRLOEr8YyU4nDyIr3o',
-    externalUrl: 'https://athosweblive.com',
-    schedule: 'Vêpres 18h, Liturgie 6h30 EET'
-  },
-
-  // Islam
-  {
-    id: 'mecca-haram',
-    name: 'Masjid al-Haram (La Mecque)',
-    city: 'La Mecque',
-    country: 'SA',
-    faith: 'muslim',
-    emoji: '☪️',
-    description: 'La Kaaba, lieu le plus sacré de l\'islam. Tawaf 24/7.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCtUk5shN0XVZxNSP-z3wFlw',
-    externalUrl: 'https://makkahlive.net',
-    schedule: '5 prières/jour · Tawaf 24/7'
-  },
-  {
-    id: 'medina-prophet',
-    name: 'Mosquée du Prophète (Médine)',
-    city: 'Médine',
-    country: 'SA',
-    faith: 'muslim',
-    emoji: '🕌',
-    description: 'Tombeau du Prophète Muhammad ﷺ. Deuxième lieu saint de l\'islam.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UC-WVXcZLXPYEIyUkMgwUhsg',
-    externalUrl: 'https://madinahlive.net',
-    schedule: '5 prières/jour'
-  },
-  {
-    id: 'al-aqsa',
-    name: 'Mosquée Al-Aqsa (Jérusalem)',
-    city: 'Jérusalem',
-    country: 'IL',
-    faith: 'muslim',
-    emoji: '🕊️',
-    description: 'Esplanade des Mosquées, troisième lieu saint de l\'islam.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UC6N5XrFK9Q0_E7r9lXfO_Bw',
-    externalUrl: 'https://aqsa.tv',
-    schedule: 'Vendredi 12h30 IST'
-  },
-  {
-    id: 'ibn-rushd-berlin',
-    name: 'Mosquée Ibn Rushd-Goethe (Berlin)',
-    city: 'Berlin',
-    country: 'DE',
-    faith: 'muslim',
-    emoji: '🌈',
-    description: 'Mosquée libérale fondée par Seyran Ateş. Mixte, LGBT-friendly, lecture critique.',
-    embedUrl: '',  // pas de stream live officiel — page externe
-    externalUrl: 'https://ibn-rushd-goethe.de',
-    schedule: 'Vendredi 13h CET',
-    inclusive: true
-  },
-
-  // Judaïsme
-  {
-    id: 'kotel-jerusalem',
-    name: 'Mur des Lamentations (Kotel)',
-    city: 'Jérusalem',
-    country: 'IL',
-    faith: 'jewish',
-    emoji: '✡️',
-    description: 'Vestige du Second Temple. Prières 24/7.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCsmiTUpV50SJfkbNkPHd4hQ',
-    externalUrl: 'https://english.thekotel.org/cameras',
-    schedule: '24/7 — couvert/découvert sectionné par genre'
-  },
-  {
-    id: 'beit-simchat-torah',
-    name: 'Beit Simchat Torah (NYC)',
-    city: 'New York',
-    country: 'US',
-    faith: 'jewish',
-    emoji: '🌈',
-    description: 'Plus grande synagogue LGBT au monde. Offices Shabbat ouverts à toutes identités.',
-    embedUrl: '',
-    externalUrl: 'https://cbst.org/livestream',
-    schedule: 'Shabbat ven 18h30 EST, sam 10h EST',
-    inclusive: true
-  },
-  {
-    id: 'beit-haverim-paris',
-    name: 'Beit Haverim (Paris)',
-    city: 'Paris',
-    country: 'FR',
-    faith: 'jewish',
-    emoji: '🌈',
-    description: 'Plus ancienne communauté juive LGBT de France (1977).',
-    embedUrl: '',
-    externalUrl: 'https://beit-haverim.com',
-    schedule: 'Shabbat ven 19h30 CET',
-    inclusive: true
-  },
-
-  // Bouddhisme
-  {
-    id: 'plum-village',
-    name: 'Plum Village (Thich Nhat Hanh)',
-    city: 'Loubès-Bernac',
-    country: 'FR',
-    faith: 'buddhist',
-    emoji: '🪷',
-    description: 'Monastère bouddhiste fondé par Thich Nhat Hanh. Méditations guidées.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCcv7KJIAafC1_yeKvuYyflw',
-    externalUrl: 'https://plumvillage.org',
-    schedule: 'Sit méditation 6h, 11h, 17h CET',
-    inclusive: true
-  },
-  {
-    id: 'shasta-abbey',
-    name: 'Shasta Abbey',
-    city: 'Mount Shasta, CA',
-    country: 'US',
-    faith: 'buddhist',
-    emoji: '☸️',
-    description: 'Monastère zen Soto LGBT-friendly historique aux États-Unis.',
-    embedUrl: '',
-    externalUrl: 'https://www.shastaabbey.org',
-    schedule: 'Méditations 5h45, 18h PST',
-    inclusive: true
-  },
-  {
-    id: 'bodh-gaya',
-    name: 'Bodh Gaya — Mahabodhi Temple',
-    city: 'Bodh Gaya',
-    country: 'IN',
-    faith: 'buddhist',
-    emoji: '🌳',
-    description: 'Lieu de l\'illumination du Bouddha. UNESCO. Pèlerinages internationaux.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UC4nPkXg-UBb6MKJQ-_iIa9w',
-    externalUrl: 'https://www.bodhgayalive.com',
-    schedule: '24/7'
-  },
-
-  // Hindouisme
-  {
-    id: 'varanasi-ganges',
-    name: 'Varanasi — Ganga Aarti',
-    city: 'Varanasi (Bénarès)',
-    country: 'IN',
-    faith: 'hindu',
-    emoji: '🕉️',
-    description: 'Cérémonie du feu quotidienne sur le Gange à Dashashwamedh Ghat.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCOXyR8ub5SeVZ8YZfF7p9KQ',
-    externalUrl: 'https://www.varanasilive.com',
-    schedule: 'Aarti tous les soirs 18h45 IST'
-  },
-  {
-    id: 'tirupati',
-    name: 'Tirumala Tirupati',
-    city: 'Tirupati',
-    country: 'IN',
-    faith: 'hindu',
-    emoji: '🛕',
-    description: 'Temple de Venkateswara, l\'un des plus visités au monde.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCCS-dhoXowNvFrAoBLh6HwA',
-    externalUrl: 'https://www.tirumala.org',
-    schedule: 'Sevas dès 3h IST'
-  },
-  {
-    id: 'iskcon-mayapur',
-    name: 'ISKCON Mayapur',
-    city: 'Mayapur',
-    country: 'IN',
-    faith: 'hindu',
-    emoji: '🪈',
-    description: 'Centre mondial Hare Krishna. Galva-108 LGBT-friendly y est actif.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UC0_h0jJUpcbGpnMqYFxvhgg',
-    externalUrl: 'https://mayapur.tv',
-    schedule: 'Mangal Aarti 4h30 IST',
-    inclusive: true
-  },
-
-  // Sikhisme
-  {
-    id: 'golden-temple',
-    name: 'Harmandir Sahib (Golden Temple)',
-    city: 'Amritsar',
-    country: 'IN',
-    faith: 'sikh',
-    emoji: '☬',
-    description: 'Temple d\'Or, lieu le plus sacré du sikhisme.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCYI2_vCSpCyRSHQBL3YeAhg',
-    externalUrl: 'https://www.sgpc.net',
-    schedule: 'Kirtan 24/7'
-  },
-
-  // Inter-religieux
-  {
-    id: 'taize-rencontres',
-    name: 'Communauté de Taizé (Rencontres)',
-    city: 'Taizé',
-    country: 'FR',
-    faith: 'interfaith',
-    emoji: '🌍',
-    description: '100 000 jeunes/an en pèlerinage œcuménique chrétien inclusif.',
-    embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCoF20oOxnk-1f9XXG_3CRTw',
-    externalUrl: 'https://www.taize.fr',
-    schedule: '3 prières par jour, multilingue',
-    inclusive: true
-  }
-];
+interface ApiResp {
+  ok: boolean;
+  total: number;
+  live: number;
+  offline: number;
+  durationMs: number;
+  cams: LiveCam[];
+}
 
 const FAITH_META: Record<string, { label: string; emoji: string; color: string }> = {
   catholic:    { label: 'Catholique',     emoji: '✝️',  color: '#dc2626' },
@@ -322,22 +43,41 @@ const FAITH_META: Record<string, { label: string; emoji: string; color: string }
 };
 
 export function WebcamsLiveClient() {
+  const [data, setData] = useState<ApiResp | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [activeFaiths, setActiveFaiths] = useState<Set<string>>(new Set());
   const [inclusiveOnly, setInclusiveOnly] = useState(false);
   const [search, setSearch] = useState('');
-  const [activeCam, setActiveCam] = useState<Webcam | null>(null);
+  const [activeCam, setActiveCam] = useState<LiveCam | null>(null);
+
+  async function load(force = false) {
+    if (force) setRefreshing(true); else setLoading(true);
+    try {
+      const r = await fetch(`/api/webcams/live${force ? '?force=1' : ''}`, { cache: 'no-store' });
+      const j: ApiResp = await r.json();
+      setData(j);
+    } catch {
+      setData({ ok: false, total: 0, live: 0, offline: 0, durationMs: 0, cams: [] });
+    }
+    setLoading(false);
+    setRefreshing(false);
+  }
+
+  useEffect(() => { load(); }, []);
 
   const filtered = useMemo(() => {
-    return WEBCAMS.filter(c => {
+    if (!data?.cams) return [];
+    return data.cams.filter(c => {
       if (activeFaiths.size > 0 && !activeFaiths.has(c.faith)) return false;
       if (inclusiveOnly && !c.inclusive) return false;
       if (search) {
         const q = search.toLowerCase();
-        if (!c.name.toLowerCase().includes(q) && !c.city.toLowerCase().includes(q) && !c.description.toLowerCase().includes(q)) return false;
+        if (!c.name.toLowerCase().includes(q) && !c.city.toLowerCase().includes(q)) return false;
       }
       return true;
     });
-  }, [activeFaiths, inclusiveOnly, search]);
+  }, [data, activeFaiths, inclusiveOnly, search]);
 
   function toggleFaith(f: string) {
     setActiveFaiths(prev => {
@@ -348,7 +88,7 @@ export function WebcamsLiveClient() {
   }
 
   const counts: Record<string, number> = {};
-  for (const c of WEBCAMS) counts[c.faith] = (counts[c.faith] || 0) + 1;
+  for (const c of (data?.cams || [])) counts[c.faith] = (counts[c.faith] || 0) + 1;
 
   return (
     <main className="container-wide py-12 max-w-7xl">
@@ -358,117 +98,172 @@ export function WebcamsLiveClient() {
         </div>
         <h1 className="font-display font-bold text-3xl md:text-4xl">Webcams live des lieux saints</h1>
         <p className="text-zinc-400 text-sm mt-2 max-w-2xl mx-auto">
-          {WEBCAMS.length} sanctuaires, basiliques, mosquées, synagogues, temples bouddhistes/hindous/sikhs en direct du monde entier.
+          {loading ? 'Vérification en cours…' : (
+            <>
+              <strong className="text-emerald-400">{data?.live || 0} flux live</strong> en ce moment sur {data?.total || 0} sources connues.
+              {(data?.offline || 0) > 0 && <span className="text-zinc-500"> ({data?.offline} hors d'office actuellement, masqués)</span>}
+            </>
+          )}
         </p>
+        <button
+          onClick={() => load(true)}
+          disabled={refreshing}
+          className="mt-3 inline-flex items-center gap-2 text-xs bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-zinc-200 px-4 py-2 rounded-full font-bold"
+        >
+          {refreshing ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
+          Re-vérifier maintenant
+        </button>
       </header>
 
-      {/* Filtres */}
-      <section className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 mb-6">
-        <div className="flex flex-wrap gap-2 items-center mb-3">
-          <Filter size={14} className="text-zinc-500" />
-          <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-widest">Filtrer par confession</span>
+      {/* Filtres (uniquement si on a des résultats) */}
+      {!loading && (data?.cams?.length || 0) > 0 && (
+        <section className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 mb-6">
+          <div className="flex flex-wrap gap-2 items-center mb-3">
+            <Filter size={14} className="text-zinc-500" />
+            <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-widest">Filtrer par confession</span>
+            <button
+              onClick={() => setActiveFaiths(new Set())}
+              className={`text-[11px] px-3 py-1.5 rounded-full font-bold ${activeFaiths.size === 0 ? 'bg-fuchsia-500 text-white' : 'bg-zinc-800 text-zinc-300'}`}
+            >
+              Toutes ({data?.cams?.length || 0})
+            </button>
+            {Object.entries(FAITH_META).map(([id, meta]) => {
+              if (!counts[id]) return null;
+              const active = activeFaiths.has(id);
+              return (
+                <button
+                  key={id}
+                  onClick={() => toggleFaith(id)}
+                  className="text-[11px] px-3 py-1.5 rounded-full font-bold flex items-center gap-1.5 transition"
+                  style={{
+                    backgroundColor: active ? meta.color : 'rgb(39, 39, 42)',
+                    color: active ? 'white' : 'rgb(212, 212, 216)'
+                  }}
+                >
+                  <span>{meta.emoji}</span> {meta.label} ({counts[id]})
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-wrap gap-3 items-center">
+            <div className="flex items-center gap-2 flex-1 min-w-[220px] bg-zinc-950 border border-zinc-700 rounded-lg px-3">
+              <Search size={12} className="text-zinc-500" />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Chercher un lieu, une ville…"
+                className="bg-transparent flex-1 px-1 py-1.5 text-sm outline-none"
+              />
+            </div>
+            <label className="flex items-center gap-2 text-xs text-zinc-300 cursor-pointer">
+              <input type="checkbox" checked={inclusiveOnly} onChange={(e) => setInclusiveOnly(e.target.checked)} className="accent-fuchsia-500" />
+              🌈 LGBT-friendly seulement
+            </label>
+            <span className="text-[11px] text-zinc-500 ml-auto">{filtered.length} résultats</span>
+          </div>
+        </section>
+      )}
+
+      {/* Loading state */}
+      {loading && (
+        <div className="text-center py-20">
+          <Loader2 size={32} className="animate-spin text-fuchsia-400 mx-auto mb-4" />
+          <p className="text-zinc-400 text-sm">Vérification de chaque sanctuaire (chaînes YouTube)…</p>
+          <p className="text-zinc-500 text-[11px] mt-2">Ça prend ~5s, on filtre en temps réel les flux qui ne sont pas en cours.</p>
+        </div>
+      )}
+
+      {/* Empty state — aucun flux live */}
+      {!loading && (data?.cams?.length || 0) === 0 && (
+        <div className="text-center py-16 bg-zinc-900/50 border border-zinc-800 rounded-2xl">
+          <Tv size={48} className="text-zinc-700 mx-auto mb-4" />
+          <p className="text-zinc-300 font-bold mb-2">Aucun lieu saint ne diffuse en ce moment.</p>
+          <p className="text-zinc-500 text-xs max-w-md mx-auto mb-4">
+            Les diffusions live dépendent des heures d'office (matins/soirs selon le fuseau).
+            Reviens dans quelques heures, ou clique sur "Re-vérifier" pour rafraîchir.
+          </p>
           <button
-            onClick={() => setActiveFaiths(new Set())}
-            className={`text-[11px] px-3 py-1.5 rounded-full font-bold ${activeFaiths.size === 0 ? 'bg-fuchsia-500 text-white' : 'bg-zinc-800 text-zinc-300'}`}
+            onClick={() => load(true)}
+            className="inline-flex items-center gap-2 text-xs bg-fuchsia-500 hover:bg-fuchsia-400 text-white px-4 py-2 rounded-full font-bold"
           >
-            Toutes ({WEBCAMS.length})
+            <RefreshCw size={12} /> Re-vérifier
           </button>
-          {Object.entries(FAITH_META).map(([id, meta]) => {
-            if (!counts[id]) return null;
-            const active = activeFaiths.has(id);
+        </div>
+      )}
+
+      {/* Grid des webcams live */}
+      {!loading && filtered.length > 0 && (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filtered.map(c => {
+            const meta = FAITH_META[c.faith] || FAITH_META.interfaith;
             return (
-              <button
-                key={id}
-                onClick={() => toggleFaith(id)}
-                className="text-[11px] px-3 py-1.5 rounded-full font-bold flex items-center gap-1.5 transition"
-                style={{
-                  backgroundColor: active ? meta.color : 'rgb(39, 39, 42)',
-                  color: active ? 'white' : 'rgb(212, 212, 216)'
-                }}
+              <article
+                key={c.id}
+                className="bg-zinc-900 border-2 rounded-2xl overflow-hidden hover:border-fuchsia-500/50 transition cursor-pointer group"
+                style={{ borderColor: meta?.color + '40' }}
+                onClick={() => setActiveCam(c)}
               >
-                <span>{meta.emoji}</span> {meta.label} ({counts[id]})
-              </button>
+                <div className="aspect-video bg-zinc-950 relative overflow-hidden">
+                  {c.thumbnailUrl ? (
+                    <img
+                      src={c.thumbnailUrl}
+                      alt={c.name}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition"
+                      onError={(e) => {
+                        // fallback hqdefault si maxres pas dispo
+                        const img = e.target as HTMLImageElement;
+                        if (c.videoId && img.src.includes('maxresdefault')) {
+                          img.src = `https://img.youtube.com/vi/${c.videoId}/hqdefault.jpg`;
+                        }
+                      }}
+                    />
+                  ) : null}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-rose-500/90 backdrop-blur-md rounded-full p-4 group-hover:scale-110 transition shadow-2xl shadow-rose-500/50">
+                      <Play size={24} className="text-white" fill="white" />
+                    </div>
+                  </div>
+                  <span className="absolute top-2 left-2 bg-rose-500 text-white text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1 shadow-lg">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> EN DIRECT
+                  </span>
+                  {c.inclusive && (
+                    <span className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 to-violet-500 text-white text-[10px] font-bold px-2 py-1 rounded">
+                      🌈 Inclusif
+                    </span>
+                  )}
+                  {c.discoveredBy === 'ai-cron' && (
+                    <span className="absolute bottom-2 right-2 bg-cyan-500/90 text-white text-[9px] font-bold px-2 py-1 rounded flex items-center gap-1" title="Découvert par l'agent IA">
+                      <Sparkles size={9} /> IA
+                    </span>
+                  )}
+                  <div className="absolute bottom-2 left-2 text-3xl drop-shadow-lg">{c.emoji}</div>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-white">{c.name}</h3>
+                  <div className="text-xs text-zinc-400 flex items-center gap-1 mb-2 mt-0.5">
+                    <MapPin size={10} /> {c.city}, {c.country}
+                  </div>
+                  {c.liveTitle && (
+                    <p className="text-[11px] text-emerald-300 line-clamp-1 mb-1.5 italic">"{c.liveTitle}"</p>
+                  )}
+                  <p className="text-xs text-zinc-300 line-clamp-2 mb-2">{c.description}</p>
+                  {c.schedule && (
+                    <div className="text-[10px] text-amber-300 mb-2">⏰ {c.schedule}</div>
+                  )}
+                  <span className="text-[10px] px-2 py-0.5 rounded-full font-bold" style={{ backgroundColor: meta.color + '30', color: meta.color }}>
+                    {meta.emoji} {meta.label}
+                  </span>
+                </div>
+              </article>
             );
           })}
         </div>
-
-        <div className="flex flex-wrap gap-3 items-center">
-          <div className="flex items-center gap-2 flex-1 min-w-[220px] bg-zinc-950 border border-zinc-700 rounded-lg px-3">
-            <Search size={12} className="text-zinc-500" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Chercher un lieu, une ville…"
-              className="bg-transparent flex-1 px-1 py-1.5 text-sm outline-none"
-            />
-          </div>
-          <label className="flex items-center gap-2 text-xs text-zinc-300 cursor-pointer">
-            <input type="checkbox" checked={inclusiveOnly} onChange={(e) => setInclusiveOnly(e.target.checked)} className="accent-fuchsia-500" />
-            🌈 LGBT-friendly seulement
-          </label>
-          <span className="text-[11px] text-zinc-500 ml-auto">{filtered.length} résultats</span>
-        </div>
-      </section>
-
-      {/* Grid des webcams */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map(c => {
-          const meta = FAITH_META[c.faith];
-          return (
-            <article
-              key={c.id}
-              className="bg-zinc-900 border-2 rounded-2xl overflow-hidden hover:border-fuchsia-500/50 transition cursor-pointer group"
-              style={{ borderColor: meta?.color + '40' }}
-              onClick={() => setActiveCam(c)}
-            >
-              <div className="aspect-video bg-zinc-950 relative overflow-hidden">
-                {c.embedUrl ? (
-                  <img
-                    src={`https://img.youtube.com/vi/${c.embedUrl.match(/embed\/(?:live_stream\?channel=|videoseries\?list=)?([^&?]+)/)?.[1] || ''}/maxresdefault.jpg`}
-                    alt={c.name}
-                    className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-90 transition"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                ) : null}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-black/60 backdrop-blur-md rounded-full p-4 group-hover:scale-110 transition">
-                    <Play size={24} className="text-white" fill="white" />
-                  </div>
-                </div>
-                {c.embedUrl && (
-                  <span className="absolute top-2 left-2 bg-rose-500 text-white text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1 shadow-lg">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> LIVE
-                  </span>
-                )}
-                {c.inclusive && (
-                  <span className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 to-violet-500 text-white text-[10px] font-bold px-2 py-1 rounded">
-                    🌈 Inclusif
-                  </span>
-                )}
-                <div className="absolute bottom-2 left-2 text-3xl">{c.emoji}</div>
-              </div>
-              <div className="p-4">
-                <div className="flex items-start gap-2 mb-1">
-                  <h3 className="font-bold text-white flex-1">{c.name}</h3>
-                </div>
-                <div className="text-xs text-zinc-400 flex items-center gap-1 mb-2">
-                  <MapPin size={10} /> {c.city}, {c.country}
-                </div>
-                <p className="text-xs text-zinc-300 line-clamp-2 mb-2">{c.description}</p>
-                {c.schedule && (
-                  <div className="text-[10px] text-amber-300 mb-2">⏰ {c.schedule}</div>
-                )}
-                <span className="text-[10px] px-2 py-0.5 rounded-full font-bold" style={{ backgroundColor: meta.color + '30', color: meta.color }}>
-                  {meta.emoji} {meta.label}
-                </span>
-              </div>
-            </article>
-          );
-        })}
-      </div>
+      )}
 
       {/* Modal player */}
-      {activeCam && (
+      {activeCam && activeCam.embedUrl && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4" onClick={() => setActiveCam(null)}>
           <div className="bg-zinc-950 border border-fuchsia-500/40 rounded-2xl shadow-2xl max-w-5xl w-full overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <header className="flex items-center justify-between p-4 border-b border-zinc-800">
@@ -476,35 +271,34 @@ export function WebcamsLiveClient() {
                 <span className="text-2xl">{activeCam.emoji}</span>
                 <div>
                   <h2 className="font-bold">{activeCam.name}</h2>
-                  <p className="text-[11px] text-zinc-400">{activeCam.city}, {activeCam.country} · {activeCam.schedule}</p>
+                  <p className="text-[11px] text-zinc-400">{activeCam.city}, {activeCam.country} {activeCam.schedule ? `· ${activeCam.schedule}` : ''}</p>
                 </div>
               </div>
-              <button onClick={() => setActiveCam(null)} className="text-zinc-400 hover:text-white text-2xl leading-none">&times;</button>
+              <button onClick={() => setActiveCam(null)} className="text-zinc-400 hover:text-white text-3xl leading-none">&times;</button>
             </header>
             <div className="aspect-video bg-zinc-900">
-              {activeCam.embedUrl ? (
-                <iframe
-                  src={activeCam.embedUrl + '?autoplay=1'}
-                  title={activeCam.name}
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-center p-8">
-                  <div>
-                    <Globe size={40} className="text-zinc-600 mx-auto mb-3" />
-                    <p className="text-zinc-300 mb-3">Cette communauté n'a pas de stream live YouTube intégré.</p>
-                    <a href={activeCam.externalUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-fuchsia-500 hover:bg-fuchsia-400 text-white text-sm font-bold px-5 py-2 rounded-full">
-                      Voir sur le site officiel <ExternalLink size={11} className="inline ml-1" />
-                    </a>
-                  </div>
-                </div>
-              )}
+              <iframe
+                src={activeCam.embedUrl}
+                title={activeCam.name}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
             </div>
-            <div className="p-4 flex flex-wrap gap-2">
+            <div className="p-4 flex flex-wrap gap-2 items-center">
               <p className="text-sm text-zinc-300 flex-1">{activeCam.description}</p>
-              <a href={activeCam.externalUrl} target="_blank" rel="noopener noreferrer" className="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-3 py-1.5 rounded-full flex items-center gap-1">
+              <a
+                href={`https://www.youtube.com/watch?v=${activeCam.videoId}`}
+                target="_blank" rel="noopener noreferrer"
+                className="text-xs bg-rose-500 hover:bg-rose-400 text-white px-3 py-1.5 rounded-full flex items-center gap-1 font-bold"
+              >
+                <ExternalLink size={11} /> Ouvrir sur YouTube
+              </a>
+              <a
+                href={activeCam.externalUrl}
+                target="_blank" rel="noopener noreferrer"
+                className="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-3 py-1.5 rounded-full flex items-center gap-1"
+              >
                 <ExternalLink size={11} /> Site officiel
               </a>
             </div>
@@ -513,8 +307,9 @@ export function WebcamsLiveClient() {
       )}
 
       <div className="mt-8 bg-blue-500/5 border border-blue-500/30 rounded-xl p-4 text-xs text-blue-200 text-center">
-        💡 Les flux YouTube live sont publics. Si un stream n'est pas actif, c'est probablement hors heures d'office.
-        Un lieu saint que tu connais et qui a un stream public ? <a href="/contact?sujet=Webcam+live" className="underline font-bold ml-1">Propose-le</a>.
+        💡 La page ne montre que les flux <strong>réellement en direct</strong> sur YouTube en ce moment, pas de carte morte.
+        Un agent IA scanne le web tous les 6h pour découvrir de nouveaux sanctuaires (badge <Sparkles size={10} className="inline" /> IA).
+        Un lieu saint à proposer ? <a href="/contact?sujet=Webcam+live" className="underline font-bold ml-1">Contacte-nous</a>.
       </div>
     </main>
   );

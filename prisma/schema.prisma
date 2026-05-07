@@ -1892,3 +1892,38 @@ model LoginAttempt {
   @@index([email, createdAt])
   @@index([ip, createdAt])
 }
+
+/// Sources webcam découvertes (manuelles ou agent IA), avec statut live cache.
+model WebcamSource {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  name            String
+  city            String
+  country         String    // code ISO 2 lettres
+  faith           String    // catholic | orthodox | protestant | muslim | jewish | buddhist | hindu | sikh | interfaith
+  emoji           String?
+  description     String?
+  channelId       String?   // ID chaîne YouTube
+  videoId         String?   // ID vidéo fixe (si stream stable)
+  externalUrl     String?
+  schedule        String?
+  inclusive       Boolean   @default(false)
+  active          Boolean   @default(true)
+  // Cache résolution
+  lastVerifiedAt  DateTime?
+  lastLive        Boolean   @default(false)
+  lastVideoId     String?
+  // Source de la découverte
+  discoveredBy    String    @default("manual")  // "manual" | "ai-cron" | "user-suggestion"
+  discoveredAt    DateTime  @default(now())
+  // Stats
+  liveCount       Int       @default(0)         // nb fois trouvé live
+  failCount       Int       @default(0)         // nb fois pas live
+  reportedDeadAt  DateTime?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([active, faith])
+  @@index([lastVerifiedAt])
+}
