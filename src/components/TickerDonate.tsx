@@ -8,12 +8,12 @@ type Props = {
 };
 
 const DEFAULT_ITEMS = [
-  '💖 Soutenez le mouvement',
-  '✨ Chaque don fait la différence',
-  '🌍 Aidez-nous à diffuser l\'affiche partout dans le monde',
-  '🏳️‍🌈 Foi et diversité, ensemble',
-  '📣 Découvre la communauté',
-  '❤️ Merci pour votre engagement'
+  '🌈 Bienvenue chez parislgbt — le hub queer de Paris',
+  '✨ Marche des Fiertés Paris — Samedi 27 juin 2026',
+  '💖 Soumets ton lieu LGBT-friendly préféré',
+  '🏳️‍🌈 Indépendant · sans publicité · open source',
+  '🩺 Annuaire santé sexuelle & médecins LGBT-friendly',
+  '🎟️ Tea Dance · Drag Show · Ballroom · Voguing'
 ];
 
 /**
