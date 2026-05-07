@@ -1,6 +1,16 @@
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
-import { themeInitScript } from '@/components/ThemeProvider';
+
+// Script anti-flash inliné directement (évite import depuis fichier 'use client')
+const themeInitScript = `
+(function(){
+  try {
+    var t = localStorage.getItem('gld-theme');
+    if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.classList.add(t);
+  } catch(e){ document.documentElement.classList.add('dark'); }
+})();
+`.trim();
 
 export const metadata: Metadata = {
   title: 'God Loves Diversity',
