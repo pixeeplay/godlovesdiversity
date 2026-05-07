@@ -4,7 +4,7 @@
 services:
   postgres:
     image: postgis/postgis:16-3.4
-    container_name: gld-postgres
+    container_name: lgbt-postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: parislgbt
@@ -17,7 +17,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: gld-redis
+    container_name: lgbt-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -26,7 +26,7 @@ services:
 
   minio:
     image: minio/minio:latest
-    container_name: gld-minio
+    container_name: lgbt-minio
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
@@ -51,7 +51,7 @@ services:
 
   mailpit:
     image: axllent/mailpit:latest
-    container_name: gld-mailpit
+    container_name: lgbt-mailpit
     restart: unless-stopped
     ports:
       - "1025:1025"

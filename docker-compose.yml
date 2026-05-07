@@ -13,7 +13,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U gld -d parislgbt"]
+      test: ["CMD-SHELL", "pg_isready -U lgbt -d parislgbt"]
       interval: 5s
       timeout: 5s
       retries: 10
