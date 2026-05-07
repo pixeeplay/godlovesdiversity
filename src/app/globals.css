@@ -66,6 +66,28 @@ html, body {
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "ss01", "cv11";
   transition: background-color .3s ease, color .3s ease;
+  /* Fix viewport : empêche les void noirs à droite quand contenu < viewport */
+  width: 100%;
+  min-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* iOS : empêche les zones noires latérales sur les notch / dynamic viewport */
+  background: var(--bg);
+}
+
+body {
+  overflow-x: hidden;  /* coupe tout scroll horizontal accidentel sur mobile */
+}
+
+/* Empêche les enfants directs de body de dépasser le viewport */
+body > main,
+body > header,
+body > footer {
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Halos de vitrail en arrière-plan global */

@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Loader2, Send, Bold, Italic, List, Quote, Heading2 } from 'lucide-react';
+import { Loader2, Send, Bold, Italic, List, Quote, Heading2, ShieldCheck, Clock } from 'lucide-react';
 
 export function NewThreadForm({ categories, preselected }: { categories: any[]; preselected?: string }) {
   const router = useRouter();
@@ -11,6 +11,10 @@ export function NewThreadForm({ categories, preselected }: { categories: any[]; 
   const [title, setTitle] = useState('');
   const [categoryId, setCategoryId] = useState<string>(initial?.id || '');
   const [sending, setSending] = useState(false);
+  const [pendingMsg, setPendingMsg] = useState<string | null>(null);
+
+  const selectedCategory = categories.find((c) => c.id === categoryId);
+  const requireApproval = !!selectedCategory?.requireAdminApproval;
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -32,7 +36,10 @@ export function NewThreadForm({ categories, preselected }: { categories: any[]; 
         body: JSON.stringify({ title, content: html, categoryId })
       });
       const j = await r.json();
-      if (r.ok && j.thread) {
+      if (j.pending) {
+        // Catégorie nécessite validation admin via Telegram
+        setPendingMsg(j.message || 'Sujet en attente de validation par l\'équipe.');
+      } else if (r.ok && j.thread) {
         router.push(`/forum/sujet/${j.thread.slug}`);
       } else {
         alert(`Erreur : ${j.error}`);
@@ -56,9 +63,38 @@ export function NewThreadForm({ categories, preselected }: { categories: any[]; 
       >
         <option value="">— Catégorie —</option>
         {categories.map((c) => (
-          <option key={c.id} value={c.id}>{c.name}</option>
+          <option key={c.id} value={c.id}>
+            {c.requireAdminApproval ? '🛡 ' : ''}{c.name}{c.requireAdminApproval ? ' (modéré)' : ''}
+          </option>
         ))}
       </select>
+
+      {/* Avertissement si catégorie nécessite validation admin */}
+      {requireApproval && !pendingMsg && (
+        <div className="bg-amber-500/10 border border-amber-500/40 rounded-xl p-3 text-sm text-amber-200 flex items-start gap-2">
+          <ShieldCheck size={16} className="shrink-0 mt-0.5" />
+          <div>
+            <strong>Catégorie modérée</strong> — Cette catégorie demande une validation par l'équipe avant publication.
+            Notre admin recevra une notification Telegram avec ton sujet et pourra l'approuver en 1 clic.
+            Tu seras notifié·e quand il sera publié.
+          </div>
+        </div>
+      )}
+
+      {/* Message après soumission si pending */}
+      {pendingMsg && (
+        <div className="bg-emerald-500/10 border-2 border-emerald-500/40 rounded-2xl p-5 text-center">
+          <Clock size={36} className="text-emerald-400 mx-auto mb-2" />
+          <h3 className="font-bold text-emerald-200 text-lg mb-1">⏳ Sujet en attente</h3>
+          <p className="text-sm text-emerald-100">{pendingMsg}</p>
+          <button
+            onClick={() => router.push('/forum')}
+            className="mt-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-5 py-2 rounded-full text-sm"
+          >
+            Retour au forum
+          </button>
+        </div>
+      )}
 
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
         <div className="border-b border-zinc-800 px-2 py-1.5 flex items-center gap-1">

@@ -312,41 +312,30 @@ export function AiSettingsClient() {
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div>
                     <span className="text-[10px] uppercase font-bold text-emerald-400">Primaire</span>
-                    <div className="grid grid-cols-2 gap-1 mt-1">
-                      <select
-                        value={mapping.primary.providerId}
-                        onChange={(e) => updateMapping(taskKey, { primary: { ...mapping.primary, providerId: e.target.value } })}
-                        className="bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs"
-                      >
-                        {providers.filter(p => p.enabled).map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
-                      </select>
-                      <input
-                        value={mapping.primary.model}
-                        onChange={(e) => updateMapping(taskKey, { primary: { ...mapping.primary, model: e.target.value } })}
-                        placeholder="modèle"
-                        className="bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs font-mono"
-                      />
-                    </div>
+                    <ProviderModelSelect
+                      providerId={mapping.primary.providerId}
+                      model={mapping.primary.model}
+                      providers={providers}
+                      pings={pings}
+                      onProviderChange={(providerId) => updateMapping(taskKey, { primary: { ...mapping.primary, providerId, model: '' } })}
+                      onModelChange={(model) => updateMapping(taskKey, { primary: { ...mapping.primary, model } })}
+                      onPing={pingOne}
+                    />
                   </div>
                   <div>
                     <span className="text-[10px] uppercase font-bold text-amber-400">Fallback (1er)</span>
                     {mapping.fallback[0] ? (
-                      <div className="grid grid-cols-2 gap-1 mt-1">
-                        <select
-                          value={mapping.fallback[0].providerId}
-                          onChange={(e) => updateMapping(taskKey, { fallback: [{ ...mapping.fallback[0], providerId: e.target.value }, ...mapping.fallback.slice(1)] })}
-                          className="bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs"
-                        >
-                          {providers.filter(p => p.enabled).map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
-                        </select>
-                        <input
-                          value={mapping.fallback[0].model}
-                          onChange={(e) => updateMapping(taskKey, { fallback: [{ ...mapping.fallback[0], model: e.target.value }, ...mapping.fallback.slice(1)] })}
-                          className="bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs font-mono"
-                        />
-                      </div>
+                      <ProviderModelSelect
+                        providerId={mapping.fallback[0].providerId}
+                        model={mapping.fallback[0].model}
+                        providers={providers}
+                        pings={pings}
+                        onProviderChange={(providerId) => updateMapping(taskKey, { fallback: [{ ...mapping.fallback[0], providerId, model: '' }, ...mapping.fallback.slice(1)] })}
+                        onModelChange={(model) => updateMapping(taskKey, { fallback: [{ ...mapping.fallback[0], model }, ...mapping.fallback.slice(1)] })}
+                        onPing={pingOne}
+                      />
                     ) : (
-                      <button onClick={() => updateMapping(taskKey, { fallback: [{ providerId: providers[0]?.id || '', model: '' }] })} className="text-[10px] text-amber-400 hover:underline">+ Ajouter fallback</button>
+                      <button onClick={() => updateMapping(taskKey, { fallback: [{ providerId: providers[0]?.id || '', model: '' }] })} className="text-[10px] text-amber-400 hover:underline mt-1 block">+ Ajouter fallback</button>
                     )}
                   </div>
                 </div>
@@ -490,6 +479,136 @@ Image/Vidéo/Avatar :
   → Cloud uniquement (fal.ai, HeyGen) — pas réaliste local</code></pre>
         </section>
       )}
+    </div>
+  );
+}
+
+/**
+ * Sélecteur Provider + Modèle avec :
+ *  - Dropdown providers (parmi ceux activés)
+ *  - Dropdown modèles : alimenté dynamiquement par le ping (si ping a réussi),
+ *    sinon liste statique des modèles recommandés du type, sinon free-text
+ *  - Bouton 🔄 Discover pour ping manuel et rafraîchir la liste de modèles
+ *  - Bascule "free-text" pour modèles custom non détectés
+ */
+function ProviderModelSelect({
+  providerId, model, providers, pings,
+  onProviderChange, onModelChange, onPing
+}: {
+  providerId: string;
+  model: string;
+  providers: ProviderConfig[];
+  pings: Record<string, PingResult>;
+  onProviderChange: (id: string) => void;
+  onModelChange: (model: string) => void;
+  onPing: (id: string) => Promise<void>;
+}) {
+  const [discovering, setDiscovering] = useState(false);
+  const [freeText, setFreeText] = useState(false);
+
+  const provider = providers.find(p => p.id === providerId);
+  const ping = pings[providerId];
+  const detectedModels = ping?.models || [];
+  const recoModels = provider ? (PROVIDER_TYPE_RECO[provider.type] || []) : [];
+
+  // Liste de modèles à afficher : détectés en priorité, sinon recommandés
+  const availableModels = detectedModels.length > 0 ? detectedModels : recoModels;
+  const modelInList = availableModels.includes(model);
+
+  async function discover() {
+    setDiscovering(true);
+    await onPing(providerId);
+    setDiscovering(false);
+  }
+
+  return (
+    <div className="space-y-1.5 mt-1">
+      {/* Provider selector */}
+      <div className="flex gap-1">
+        <select
+          value={providerId}
+          onChange={(e) => onProviderChange(e.target.value)}
+          className="flex-1 bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs"
+        >
+          {providers.filter(p => p.enabled).map(p => {
+            const pp = pings[p.id];
+            const indicator = pp?.ok ? '🟢' : pp?.error ? '🔴' : '⚪';
+            return <option key={p.id} value={p.id}>{indicator} {p.label}</option>;
+          })}
+        </select>
+        <button
+          type="button"
+          onClick={discover}
+          disabled={discovering}
+          title="Découvrir les modèles disponibles (ping)"
+          className="bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-zinc-300 px-2 py-1.5 rounded-lg text-[11px] flex items-center gap-1"
+        >
+          {discovering ? <Loader2 size={10} className="animate-spin" /> : <RefreshCw size={10} />}
+        </button>
+      </div>
+
+      {/* Model selector — dropdown OU input free-text */}
+      {freeText || (model && !modelInList && availableModels.length > 0) ? (
+        <div className="flex gap-1">
+          <input
+            value={model}
+            onChange={(e) => onModelChange(e.target.value)}
+            placeholder="modèle (ex: qwen2.5:7b-instruct-q5_K_M)"
+            className="flex-1 bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs font-mono"
+          />
+          {availableModels.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setFreeText(false)}
+              className="text-[10px] bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-2 rounded-lg"
+              title="Retour à la liste"
+            >
+              ↩ Liste
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="flex gap-1">
+          <select
+            value={modelInList ? model : ''}
+            onChange={(e) => onModelChange(e.target.value)}
+            className="flex-1 bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-xs font-mono"
+          >
+            <option value="">— Choisir un modèle —</option>
+            {detectedModels.length > 0 && (
+              <optgroup label="🟢 Détectés (live)">
+                {detectedModels.map(m => <option key={m} value={m}>{m}</option>)}
+              </optgroup>
+            )}
+            {detectedModels.length === 0 && recoModels.length > 0 && (
+              <optgroup label="💡 Recommandés (par défaut)">
+                {recoModels.map(m => <option key={m} value={m}>{m}</option>)}
+              </optgroup>
+            )}
+          </select>
+          <button
+            type="button"
+            onClick={() => setFreeText(true)}
+            className="text-[10px] bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-2 rounded-lg"
+            title="Saisir un modèle custom (non détecté)"
+          >
+            ✎ Custom
+          </button>
+        </div>
+      )}
+
+      {/* Status hint */}
+      <div className="text-[10px] text-zinc-500 flex items-center gap-2">
+        {ping?.ok ? (
+          <span className="text-emerald-400">
+            🟢 {ping.latencyMs}ms · {detectedModels.length} modèles détectés
+          </span>
+        ) : ping?.error ? (
+          <span className="text-rose-400">🔴 {ping.error}</span>
+        ) : (
+          <span>⚪ Cliquer 🔄 pour découvrir les modèles</span>
+        )}
+      </div>
     </div>
   );
 }

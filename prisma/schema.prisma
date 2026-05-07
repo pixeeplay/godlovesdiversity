@@ -490,14 +490,19 @@ enum PostStatus {
 // ───────────────────────────────────────────────
 
 model ForumCategory {
-  id          String        @id @default(cuid())
-  slug        String        @unique
-  name        String
-  description String?
-  color       String?       // hex pour badge
-  order       Int           @default(0)
-  threads     ForumThread[]
-  createdAt   DateTime      @default(now())
+  id                    String        @id @default(cuid())
+  slug                  String        @unique
+  name                  String
+  description           String?
+  color                 String?       // hex pour badge
+  order                 Int           @default(0)
+  /// Si true, les nouveaux threads dans cette catégorie sont en `pending`
+  /// jusqu'à validation admin via bouton inline Telegram (ou /admin/forum).
+  requireAdminApproval  Boolean       @default(false)
+  /// Notifie un canal Telegram spécifique pour cette catégorie (si requireAdminApproval).
+  telegramAlertEnabled  Boolean       @default(true)
+  threads               ForumThread[]
+  createdAt             DateTime      @default(now())
 }
 
 model ForumThread {
