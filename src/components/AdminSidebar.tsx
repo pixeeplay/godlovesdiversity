@@ -28,6 +28,7 @@ const NAV: Entry[] = [
   { href: '/admin/time-machine', label: '🕰 Time Machine', icon: Settings, badge: 'NEW' },
   { href: '/admin/invitations', label: '🔑 Invitations admin', icon: Users, badge: 'NEW' },
   { href: '/admin/security-settings', label: '🛡 Sécurité (super-admin)', icon: ShieldCheck, badge: 'NEW' },
+  { href: '/admin/security-2fa', label: '🔐 Mon 2FA TOTP', icon: ShieldAlert, badge: 'NEW' },
   {
     id: 'pro',
     label: 'Espace Pro 🏪',

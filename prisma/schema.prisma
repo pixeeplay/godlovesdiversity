@@ -1845,3 +1845,50 @@ model AvatarGeneration {
   @@index([avatarId, status])
   @@index([status, createdAt])
 }
+
+// ───────────────────────────────────────────────
+// SÉCURITÉ — 2FA TOTP + SMS codes
+// ───────────────────────────────────────────────
+
+/// 2FA TOTP par utilisateur (lib otplib).
+model UserMfa {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  totpSecret    String   @db.Text   // chiffré idéalement (base32)
+  backupCodes   String[] @default([])  // hashes bcrypt des 10 codes de récupération
+  enabledAt     DateTime?
+  verifiedAt    DateTime?
+  smsPhone      String?              // E.164 ex: +33612345678
+  smsEnabled    Boolean  @default(false)
+  recoveryEmail String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+/// Codes SMS one-time (Twilio) pour actions critiques.
+model SmsCode {
+  id          String   @id @default(cuid())
+  userId      String
+  phoneE164   String
+  code        String              // 6 chiffres
+  purpose     String              // "login-2fa" | "delete-admin" | "role-change"
+  consumedAt  DateTime?
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+
+  @@index([userId, purpose, consumedAt])
+}
+
+/// Tracker des échecs de login pour lockout.
+model LoginAttempt {
+  id          String   @id @default(cuid())
+  email       String
+  ip          String?
+  ua          String?
+  succeeded   Boolean  @default(false)
+  reason      String?              // "invalid-password" | "user-not-found" | "lockout" | "ok"
+  createdAt   DateTime @default(now())
+
+  @@index([email, createdAt])
+  @@index([ip, createdAt])
+}

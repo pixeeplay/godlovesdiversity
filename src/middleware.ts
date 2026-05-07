@@ -19,6 +19,23 @@ export default async function middleware(req: NextRequest) {
 
   // 1) Routes admin protégées
   if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
+    // 1.a) Tailscale ACL — bloque l'accès admin depuis Internet public si flag activé
+    if (process.env.ADMIN_TAILSCALE_ONLY === 'true' || process.env.ADMIN_TAILSCALE_ONLY === '1') {
+      const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                 req.headers.get('x-real-ip') ||
+                 (req as any).ip || '';
+      // Tailscale CGNAT range 100.64.0.0/10 (100.64.0.0 - 100.127.255.255)
+      const isTailscaleIp = /^100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./.test(ip);
+      // Allowlist localhost dev + IP serveur Coolify (auto-loopback)
+      const isLocalhost = ip === '127.0.0.1' || ip === '::1' || ip.startsWith('10.') || ip.startsWith('172.') || ip.startsWith('192.168.');
+      if (!isTailscaleIp && !isLocalhost && ip !== '') {
+        return new NextResponse('🔒 Accès admin restreint au réseau Tailscale.', {
+          status: 403,
+          headers: { 'content-type': 'text/plain; charset=utf-8' }
+        });
+      }
+    }
+
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET }).catch(() => null);
 
     if (!token) {
