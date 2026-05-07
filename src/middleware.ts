@@ -76,6 +76,11 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // 2.a) /admin2access → page de secours, pas de i18n
+  if (pathname.startsWith('/admin2access')) {
+    return NextResponse.next();
+  }
+
   // 2.b) /rapport et autres pages globales sans locale → on laisse passer
   if (pathname === '/rapport' || pathname.startsWith('/rapport/')) {
     return NextResponse.next();
