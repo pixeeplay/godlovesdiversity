@@ -26,6 +26,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Maximum 500 URLs par job' }, { status: 400 });
   }
 
+  const validCleaners = ['off', 'standard', 'aggressive', 'gemini'] as const;
+  const cleaner = validCleaners.includes(body.cleaner) ? body.cleaner : 'aggressive';
+
   const opts: ScrapeJobOptions = {
     urls: body.urls.filter((u: any) => typeof u === 'string'),
     summarize: !!body.summarize,
@@ -34,6 +37,8 @@ export async function POST(req: NextRequest) {
     concurrency: body.concurrency,
     polite: body.polite !== false,
     hostDelayMs: typeof body.hostDelayMs === 'number' ? body.hostDelayMs : undefined,
+    cleaner,
+    cleanerHint: typeof body.cleanerHint === 'string' ? body.cleanerHint : undefined,
     tags: Array.isArray(body.tags) ? body.tags : undefined,
     locale: typeof body.locale === 'string' ? body.locale : undefined,
   };

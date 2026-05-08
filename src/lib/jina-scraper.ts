@@ -18,6 +18,7 @@
  */
 import { getSettings } from './settings';
 import { politeFetch } from './polite-fetch';
+import { cleanMarkdown, extractWithGemini, type CleanerMode } from './markdown-cleaner';
 
 export type ScrapeResult = {
   title: string;
@@ -29,6 +30,8 @@ export type ScrapeResult = {
   summary?: string;           // Résumé court si summarize=true
   bytes: number;              // Taille du markdown final
   warning?: string;           // Avertissement non-bloquant (ex: "Jina KO, fallback")
+  /** Stats du nettoyage si cleaner appliqué */
+  cleaning?: { mode: string; removedPct: number; bytesBeforeClean: number };
 };
 
 const JINA_BASE = 'https://r.jina.ai/';
@@ -244,6 +247,15 @@ export type ScrapeOptions = {
   skipJina?: boolean;
   /** Mode discret anti-blacklist (UA rotation, throttle, backoff). Défaut true. */
   polite?: boolean;
+  /** Niveau de nettoyage du markdown avant chunking. Défaut 'standard'.
+   *  - 'off' : aucun nettoyage (Jina brut)
+   *  - 'standard' : vire menus évidents, images-icônes, breadcrumbs (recommandé)
+   *  - 'aggressive' : vire tout ce qui ressemble à du chrome web (recommandé pour RAG)
+   *  - 'gemini' : appel Gemini Flash Lite pour extraction sémantique (max qualité, ~0.0003$/page)
+   */
+  cleaner?: CleanerMode | 'gemini';
+  /** Hint contextuel pour le cleaner Gemini (ex: "site e-commerce photo"). */
+  cleanerHint?: string;
 };
 
 /**
@@ -287,10 +299,48 @@ export async function scrapeUrlForRag(rawUrl: string, opts: ScrapeOptions = {}):
     throw new Error(`Impossible de récupérer ${url} (Jina + fetch direct ont échoué)`);
   }
 
-  // Normalise et borne la taille
-  const content = result.content.length > MAX_CONTENT_CHARS
+  // Normalise et borne la taille AVANT cleaning (le cleaner réduit encore)
+  let rawContent = result.content.length > MAX_CONTENT_CHARS
     ? result.content.slice(0, MAX_CONTENT_CHARS) + '\n\n[…contenu tronqué…]'
     : result.content;
+
+  // Nettoyage du markdown : vire le boilerplate web pour avoir des chunks RAG propres
+  const cleanerMode: CleanerMode | 'gemini' = opts.cleaner ?? 'standard';
+  let cleaning: ScrapeResult['cleaning'] | undefined;
+
+  if (cleanerMode === 'gemini') {
+    const key = await getGeminiKey();
+    if (key) {
+      const ext = await extractWithGemini(rawContent, { apiKey: key, hint: opts.cleanerHint });
+      if (ext && ext.cleaned.length > 100) {
+        cleaning = {
+          mode: 'gemini',
+          removedPct: Math.round((1 - ext.cleaned.length / Math.max(1, rawContent.length)) * 100),
+          bytesBeforeClean: rawContent.length,
+        };
+        rawContent = ext.cleaned;
+      } else {
+        // Fallback sur cleaner aggressif si Gemini échoue
+        const std = cleanMarkdown(rawContent, 'aggressive');
+        rawContent = std.cleaned;
+        cleaning = { mode: 'aggressive (fallback Gemini KO)', removedPct: std.stats.removedPct, bytesBeforeClean: std.stats.originalChars };
+      }
+    } else {
+      const std = cleanMarkdown(rawContent, 'aggressive');
+      rawContent = std.cleaned;
+      cleaning = { mode: 'aggressive (no GEMINI_API_KEY)', removedPct: std.stats.removedPct, bytesBeforeClean: std.stats.originalChars };
+    }
+  } else if (cleanerMode !== 'off') {
+    const cleaned = cleanMarkdown(rawContent, cleanerMode);
+    cleaning = {
+      mode: cleanerMode,
+      removedPct: cleaned.stats.removedPct,
+      bytesBeforeClean: cleaned.stats.originalChars,
+    };
+    rawContent = cleaned.cleaned;
+  }
+
+  const content = rawContent;
 
   const out: ScrapeResult = {
     title: result.title || extractFallbackTitle(content) || url,
@@ -299,6 +349,7 @@ export async function scrapeUrlForRag(rawUrl: string, opts: ScrapeOptions = {}):
     source,
     bytes: content.length,
     warning,
+    cleaning,
   };
 
   if (opts.summarize) {

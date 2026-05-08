@@ -109,6 +109,8 @@ export function ScraperWorkbench() {
   const [ingest, setIngest] = useState(true);
   const [politeMode, setPoliteMode] = useState(true);
   const [hostDelayMs, setHostDelayMs] = useState(2500);
+  const [cleaner, setCleaner] = useState<'off' | 'standard' | 'aggressive' | 'gemini'>('aggressive');
+  const [cleanerHint, setCleanerHint] = useState('');
   const [tagsInput, setTagsInput] = useState('');
 
   // Étape 2 — exploration
@@ -177,6 +179,8 @@ export function ScraperWorkbench() {
           concurrency: politeMode ? 1 : 3,
           polite: politeMode,
           hostDelayMs,
+          cleaner,
+          cleanerHint: cleanerHint.trim() || undefined,
           tags: tagsInput.split(',').map((t) => t.trim()).filter(Boolean),
         }),
       });
@@ -348,6 +352,57 @@ export function ScraperWorkbench() {
               hint="Si désactivé : scrape seulement (test sans pollution DB)."
               value={ingest} onChange={setIngest}
             />
+          </div>
+
+          {/* CLEANER : qualité du contenu ingéré */}
+          <div className="mt-3 rounded-xl bg-violet-950/40 p-4 ring-1 ring-violet-800/60">
+            <Label>🧹 Nettoyage du contenu (CRITIQUE pour la qualité RAG)</Label>
+            <div className="mt-2 grid gap-2 md:grid-cols-4">
+              {([
+                { val: 'off',        emoji: '🚫', label: 'Aucun',        hint: 'Markdown Jina brut (avec menus)' },
+                { val: 'standard',   emoji: '🧽', label: 'Standard',     hint: 'Vire menus & images-icônes' },
+                { val: 'aggressive', emoji: '🧹', label: 'Aggressive',   hint: 'Vire tout le chrome web' },
+                { val: 'gemini',     emoji: '✨', label: 'Gemini',       hint: 'Extraction sémantique IA (~0.0003$/page)' },
+              ] as const).map((c) => (
+                <button
+                  key={c.val}
+                  type="button"
+                  onClick={() => setCleaner(c.val)}
+                  className={`rounded-lg p-2 text-left text-xs transition ring-1 ${
+                    cleaner === c.val
+                      ? 'bg-violet-700 ring-violet-400 text-white shadow-lg shadow-violet-500/30'
+                      : 'bg-zinc-900 ring-zinc-700 text-zinc-300 hover:ring-violet-500'
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5 font-bold">
+                    <span>{c.emoji}</span>
+                    <span>{c.label}</span>
+                  </div>
+                  <div className={`mt-1 text-[10px] leading-tight ${cleaner === c.val ? 'text-violet-100' : 'text-zinc-400'}`}>
+                    {c.hint}
+                  </div>
+                </button>
+              ))}
+            </div>
+            {cleaner === 'gemini' && (
+              <div className="mt-3">
+                <Label>💡 Contexte (hint pour Gemini)</Label>
+                <input
+                  type="text"
+                  value={cleanerHint}
+                  onChange={(e) => setCleanerHint(e.target.value)}
+                  placeholder="ex: site e-commerce de matériel photo / blog spirituel / témoignages LGBT+"
+                  className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+                />
+                <Hint>Le hint aide Gemini à savoir quoi préserver vs virer (optionnel mais améliore la qualité).</Hint>
+              </div>
+            )}
+            <p className="mt-2 text-xs text-violet-200">
+              {cleaner === 'off' && '⚠️ Pas de nettoyage : tu vas avoir des chunks polluants (menus, breadcrumbs, listes de filtres) qui dégradent le RAG.'}
+              {cleaner === 'standard' && 'Cleaner standard : vire les images-icônes, breadcrumbs courts et lignes répétées.'}
+              {cleaner === 'aggressive' && '✓ Recommandé : vire tout ce qui ressemble à du chrome web (navigation, listes de liens, etc.). Garde le contenu narratif et les blocs produit/prix.'}
+              {cleaner === 'gemini' && '✨ Max qualité : Gemini Flash Lite extrait sémantiquement le contenu utile (descriptions, prix, infos clés) en virant 100 % du boilerplate. Coût ~0.0003$/page (~0.30$/1000 pages).'}
+            </p>
           </div>
 
           {politeMode && (

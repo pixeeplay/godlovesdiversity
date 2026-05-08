@@ -63,6 +63,10 @@ export type ScrapeJobOptions = {
   polite?: boolean;
   /** Override du delay min entre 2 requêtes au même hostname. */
   hostDelayMs?: number;
+  /** Niveau de nettoyage du markdown ('off' | 'standard' | 'aggressive' | 'gemini'). Défaut 'aggressive'. */
+  cleaner?: 'off' | 'standard' | 'aggressive' | 'gemini';
+  /** Hint contextuel pour le cleaner Gemini. */
+  cleanerHint?: string;
   /** Tags appliqués à tous les docs ingérés. */
   tags?: string[];
   /** Locale forcée pour l'ingestion. Défaut 'fr'. */
@@ -184,6 +188,8 @@ async function runJob(id: string): Promise<void> {
           summarize: job.options.summarize,
           skipJina: job.options.skipJina,
           polite: job.options.polite,
+          cleaner: job.options.cleaner,
+          cleanerHint: job.options.cleanerHint,
         });
         result.title = scraped.title;
         result.bytes = scraped.bytes;
@@ -191,6 +197,9 @@ async function runJob(id: string): Promise<void> {
         result.ok = true;
 
         if (scraped.warning) pushLog(job, 'warn', `${url} : ${scraped.warning}`);
+        if (scraped.cleaning) {
+          pushLog(job, 'info', `[cleaner ${scraped.cleaning.mode}] ${scraped.cleaning.bytesBeforeClean}→${scraped.bytes}o (-${scraped.cleaning.removedPct}%)`);
+        }
 
         if (ingest && scraped.content && scraped.content.length > 100) {
           try {
