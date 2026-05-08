@@ -313,6 +313,20 @@ function BrainSvg({ pulseHz, activityLevel, glow }: {
   const pulseDuration = (1 / pulseHz).toFixed(2) + 's';
   const intensityOpacity = 0.3 + (activityLevel / 100) * 0.6;
 
+  // Génère des positions stables pour neurones et synapses (useMemo serait mieux mais OK ici)
+  const neurons = Array.from({ length: 24 }, (_, i) => ({
+    x: 110 + (i * 47) % 180 + ((i * 31) % 7),
+    y: 95 + (i * 23) % 115 + ((i * 17) % 5),
+    delay: (i / 24) * 2.5,
+  }));
+  const synapses = Array.from({ length: 10 }, (_, i) => ({
+    x1: 130 + (i * 53) % 140,
+    y1: 110 + (i * 31) % 80,
+    x2: 130 + (i * 53) % 140 + ((i * 11) % 60 - 30),
+    y2: 110 + (i * 31) % 80 + ((i * 13) % 50 - 25),
+    delay: (i * 0.3) % 2.5,
+  }));
+
   return (
     <div className="relative h-72 w-full">
       <svg viewBox="0 0 400 280" className="h-full w-full">
@@ -322,68 +336,141 @@ function BrainSvg({ pulseHz, activityLevel, glow }: {
             <stop offset="55%" stopColor={glow} stopOpacity="0.18" />
             <stop offset="100%" stopColor={glow} stopOpacity="0" />
           </radialGradient>
-          <filter id="brainBlur" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="3" />
+          <radialGradient id="leftHemi" cx="40%" cy="35%" r="70%">
+            <stop offset="0%" stopColor="#fda4af" />
+            <stop offset="50%" stopColor="#e879f9" />
+            <stop offset="100%" stopColor="#7c3aed" />
+          </radialGradient>
+          <radialGradient id="rightHemi" cx="60%" cy="35%" r="70%">
+            <stop offset="0%" stopColor="#fda4af" />
+            <stop offset="50%" stopColor="#c084fc" />
+            <stop offset="100%" stopColor="#a855f7" />
+          </radialGradient>
+          <filter id="brainShade" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="0.6" />
+          </filter>
+          <filter id="brainGlowFilter" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
           </filter>
         </defs>
 
-        {/* Halo pulsant */}
-        <circle cx="200" cy="140" r="120" fill="url(#brainGlow)" opacity={intensityOpacity}>
-          <animate attributeName="r" values="115;135;115" dur={pulseDuration} repeatCount="indefinite" />
-          <animate attributeName="opacity" values={`${intensityOpacity};${Math.min(1, intensityOpacity + 0.15)};${intensityOpacity}`} dur={pulseDuration} repeatCount="indefinite" />
+        {/* Halo pulsant arrière */}
+        <circle cx="200" cy="135" r="120" fill="url(#brainGlow)" opacity={intensityOpacity}>
+          <animate attributeName="r" values="115;138;115" dur={pulseDuration} repeatCount="indefinite" />
+          <animate attributeName="opacity" values={`${intensityOpacity};${Math.min(1, intensityOpacity + 0.18)};${intensityOpacity}`} dur={pulseDuration} repeatCount="indefinite" />
         </circle>
 
-        {/* Hémisphères */}
-        <g filter="url(#brainBlur)" opacity="0.4">
-          <ellipse cx="155" cy="140" rx="65" ry="72" fill="#7c3aed" />
-          <ellipse cx="245" cy="140" rx="65" ry="72" fill="#ec4899" />
+        {/* CERVEAU ANATOMIQUE — vue de face légèrement plongeante */}
+        <g filter="url(#brainShade)">
+          {/* Hémisphère GAUCHE — silhouette organique avec lobes */}
+          <path
+            d="M 200 60
+               C 165 58, 130 70, 110 95
+               C 92 118, 88 142, 95 165
+               C 100 185, 110 200, 130 212
+               C 145 220, 165 222, 180 218
+               C 190 215, 198 212, 200 210
+               L 200 60 Z"
+            fill="url(#leftHemi)"
+            opacity="0.92"
+          />
+          {/* Hémisphère DROIT */}
+          <path
+            d="M 200 60
+               C 235 58, 270 70, 290 95
+               C 308 118, 312 142, 305 165
+               C 300 185, 290 200, 270 212
+               C 255 220, 235 222, 220 218
+               C 210 215, 202 212, 200 210
+               L 200 60 Z"
+            fill="url(#rightHemi)"
+            opacity="0.92"
+          />
         </g>
 
-        {/* Lignes des hémisphères */}
-        <g fill="none" stroke="#fda4af" strokeWidth="1.5" opacity="0.85">
-          <path d="M 155 80 Q 110 105 110 145 Q 110 195 155 215" />
-          <path d="M 145 95 Q 100 130 115 175 Q 135 200 165 205" />
-          <path d="M 165 110 Q 130 130 130 160 Q 140 180 170 185" />
-          <path d="M 175 115 Q 155 135 160 165 Q 175 185 195 195" />
+        {/* CIRCONVOLUTIONS (gyrus) — courbes blanches/translucides qui suivent le crâne */}
+        <g fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="1.4" strokeLinecap="round">
+          {/* Hémisphère gauche : 6 sillons concentriques */}
+          <path d="M 195 70 C 165 73, 138 88, 122 108 C 110 128, 108 148, 115 168" />
+          <path d="M 195 84 C 168 88, 145 102, 132 122 C 122 140, 122 158, 130 175" />
+          <path d="M 195 100 C 172 105, 152 118, 142 138 C 134 155, 138 172, 148 185" />
+          <path d="M 195 118 C 178 122, 162 134, 154 152 C 148 168, 154 182, 165 192" />
+          <path d="M 195 140 C 184 145, 174 158, 170 172 C 168 184, 174 195, 184 200" />
+          <path d="M 188 165 C 182 175, 180 188, 184 198" />
+          {/* Sillons transversaux gauche */}
+          <path d="M 122 110 C 130 122, 138 132, 148 138" opacity="0.4" />
+          <path d="M 110 145 C 124 148, 138 152, 152 156" opacity="0.4" />
+          <path d="M 118 175 C 130 175, 144 175, 158 175" opacity="0.4" />
         </g>
-        <g fill="none" stroke="#a78bfa" strokeWidth="1.5" opacity="0.85">
-          <path d="M 245 80 Q 290 105 290 145 Q 290 195 245 215" />
-          <path d="M 255 95 Q 300 130 285 175 Q 265 200 235 205" />
-          <path d="M 235 110 Q 270 130 270 160 Q 260 180 230 185" />
-          <path d="M 225 115 Q 245 135 240 165 Q 225 185 205 195" />
+        <g fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="1.4" strokeLinecap="round">
+          {/* Hémisphère droit : symétrique */}
+          <path d="M 205 70 C 235 73, 262 88, 278 108 C 290 128, 292 148, 285 168" />
+          <path d="M 205 84 C 232 88, 255 102, 268 122 C 278 140, 278 158, 270 175" />
+          <path d="M 205 100 C 228 105, 248 118, 258 138 C 266 155, 262 172, 252 185" />
+          <path d="M 205 118 C 222 122, 238 134, 246 152 C 252 168, 246 182, 235 192" />
+          <path d="M 205 140 C 216 145, 226 158, 230 172 C 232 184, 226 195, 216 200" />
+          <path d="M 212 165 C 218 175, 220 188, 216 198" />
+          {/* Sillons transversaux droit */}
+          <path d="M 278 110 C 270 122, 262 132, 252 138" opacity="0.4" />
+          <path d="M 290 145 C 276 148, 262 152, 248 156" opacity="0.4" />
+          <path d="M 282 175 C 270 175, 256 175, 242 175" opacity="0.4" />
         </g>
-        <line x1="200" y1="80" x2="200" y2="215" stroke="#fff" strokeWidth="1" strokeDasharray="2 3" opacity="0.4" />
 
-        {/* Neurones qui s'allument */}
-        {Array.from({ length: 18 }).map((_, i) => {
-          const cx = 100 + Math.random() * 200;
-          const cy = 90 + Math.random() * 110;
-          const delay = (i / 18) * 2;
-          return (
-            <circle key={i} cx={cx} cy={cy} r="2" fill="#fff">
-              <animate attributeName="opacity" values="0;1;0" dur={pulseDuration} begin={`${delay}s`} repeatCount="indefinite" />
-              <animate attributeName="r" values="1;3.5;1" dur={pulseDuration} begin={`${delay}s`} repeatCount="indefinite" />
-            </circle>
-          );
-        })}
+        {/* Scissure interhémisphérique (longitudinale médiane) */}
+        <path
+          d="M 200 60 C 198 95, 200 130, 199 165 C 198 190, 200 205, 200 215"
+          fill="none" stroke="rgba(15,23,42,0.55)" strokeWidth="2.5" strokeLinecap="round"
+        />
 
-        {/* Étincelles (synapses) */}
-        {Array.from({ length: 8 }).map((_, i) => {
-          const startX = 130 + Math.random() * 140;
-          const startY = 100 + Math.random() * 80;
-          const endX = startX + (Math.random() - 0.5) * 80;
-          const endY = startY + (Math.random() - 0.5) * 60;
-          const delay = Math.random() * 3;
-          return (
-            <line key={`s${i}`} x1={startX} y1={startY} x2={endX} y2={endY}
-              stroke="#fff" strokeWidth="1" opacity="0">
-              <animate attributeName="opacity" values="0;0.85;0" dur="1.4s" begin={`${delay}s`} repeatCount="indefinite" />
-            </line>
-          );
-        })}
+        {/* CERVELET — dessous, lobes striés caractéristiques */}
+        <g>
+          <path
+            d="M 175 213
+               C 170 220, 168 230, 175 238
+               C 185 244, 200 245, 215 244
+               C 228 243, 235 235, 232 222
+               C 228 215, 220 211, 210 211
+               L 175 213 Z"
+            fill="#9333ea" opacity="0.7"
+          />
+          {/* Stries du cervelet */}
+          <g fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8">
+            <path d="M 178 218 L 230 220" />
+            <path d="M 176 224 L 232 226" />
+            <path d="M 178 230 L 230 232" />
+            <path d="M 184 236 L 224 238" />
+          </g>
+        </g>
 
-        {/* Cervelet stylisé en bas */}
-        <ellipse cx="200" cy="225" rx="40" ry="14" fill="#9333ea" opacity="0.4" />
+        {/* TRONC CÉRÉBRAL */}
+        <path
+          d="M 192 240 C 192 250, 195 258, 200 263 C 205 258, 208 250, 208 240 Z"
+          fill="#7c3aed" opacity="0.65"
+        />
+
+        {/* NEURONES qui s'allument — répartis dans le cortex */}
+        {neurons.map((n, i) => (
+          <circle key={i} cx={n.x} cy={n.y} r="1.5" fill="#fff" filter="url(#brainGlowFilter)">
+            <animate attributeName="opacity" values="0;1;0" dur={pulseDuration} begin={`${n.delay}s`} repeatCount="indefinite" />
+            <animate attributeName="r" values="0.8;3;0.8" dur={pulseDuration} begin={`${n.delay}s`} repeatCount="indefinite" />
+          </circle>
+        ))}
+
+        {/* SYNAPSES — étincelles entre régions */}
+        {synapses.map((s, i) => (
+          <line key={`syn${i}`} x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2}
+            stroke="#fbbf24" strokeWidth="1.2" opacity="0">
+            <animate attributeName="opacity" values="0;0.95;0" dur="1.6s" begin={`${s.delay}s`} repeatCount="indefinite" />
+          </line>
+        ))}
+
+        {/* Reflet de surface (donne du volume) */}
+        <ellipse cx="170" cy="85" rx="30" ry="12" fill="rgba(255,255,255,0.18)" opacity="0.7" />
+        <ellipse cx="230" cy="85" rx="30" ry="12" fill="rgba(255,255,255,0.18)" opacity="0.7" />
       </svg>
     </div>
   );

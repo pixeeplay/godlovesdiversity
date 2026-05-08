@@ -84,29 +84,64 @@ export function Playground() {
           </div>
         </header>
 
-        {/* Toggle garde-fous */}
-        <div className={`mb-4 rounded-2xl p-4 ring-1 transition ${
+        {/* GUIDE D'UTILISATION */}
+        <div className="mb-4 rounded-2xl bg-violet-950/30 p-4 text-xs text-violet-200 ring-1 ring-violet-800/50">
+          <p className="mb-2 font-semibold text-violet-100">🎯 Comment utiliser :</p>
+          <ol className="ml-4 list-decimal space-y-1">
+            <li>
+              <strong>Garde-fous activés</strong> (par défaut) → le RAG répond comme en prod, avec le verrou foi/inclusion. Si tu poses une question hors-sujet, il va refuser.
+            </li>
+            <li>
+              <strong>Coche la case 🔓 ci-dessous</strong> pour désactiver les garde-fous : tu peux alors tester n'importe quelle question (météo, code, etc.) et voir comment le RAG répond brut.
+            </li>
+            <li>
+              Pour chaque réponse, ouvre les onglets <code className="rounded bg-violet-900/50 px-1 font-mono text-violet-100">🧩 Sources</code> et <code className="rounded bg-violet-900/50 px-1 font-mono text-violet-100">📜 Prompt envoyé</code> pour voir les chunks matchés et le prompt complet envoyé à Gemini.
+            </li>
+          </ol>
+        </div>
+
+        {/* Toggle garde-fous — version améliorée */}
+        <div className={`mb-4 overflow-hidden rounded-2xl ring-2 transition ${
           bypassGuardrails
-            ? 'bg-rose-950/40 ring-rose-700/50'
-            : 'bg-emerald-950/30 ring-emerald-800/50'
+            ? 'ring-rose-500 bg-gradient-to-br from-rose-950 to-zinc-900'
+            : 'ring-emerald-700 bg-gradient-to-br from-emerald-950 to-zinc-900'
         }`}>
-          <label className="flex cursor-pointer items-center gap-4">
-            <input
-              type="checkbox"
-              checked={bypassGuardrails}
-              onChange={(e) => setBypassGuardrails(e.target.checked)}
-              className="h-5 w-5 accent-rose-500"
-            />
+          <label className="flex cursor-pointer items-center gap-4 p-5">
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={bypassGuardrails}
+                onChange={(e) => setBypassGuardrails(e.target.checked)}
+                className="peer sr-only"
+              />
+              <div className={`h-7 w-12 rounded-full p-0.5 transition ${
+                bypassGuardrails ? 'bg-rose-500' : 'bg-emerald-700'
+              }`}>
+                <div className={`h-6 w-6 rounded-full bg-white shadow-md transition ${
+                  bypassGuardrails ? 'translate-x-5' : 'translate-x-0'
+                }`} />
+              </div>
+            </div>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold">
-                  {bypassGuardrails ? '🔓 Garde-fous DÉSACTIVÉS' : '🛡️ Garde-fous activés (mode prod)'}
+                <span className="text-base font-bold">
+                  {bypassGuardrails ? '🔓 Garde-fous DÉSACTIVÉS' : '🛡️ Garde-fous activés'}
+                </span>
+                <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+                  bypassGuardrails
+                    ? 'bg-rose-500 text-white'
+                    : 'bg-emerald-600 text-white'
+                }`}>
+                  {bypassGuardrails ? 'MODE TEST' : 'MODE PROD'}
                 </span>
               </div>
-              <p className="mt-1 text-xs text-zinc-400">
+              <p className="mt-1.5 text-sm text-zinc-300">
                 {bypassGuardrails
-                  ? 'Le RAG répond à TOUT (météo, code, politique, etc.) sans verrou foi/inclusion. System prompt minimal. Détection "hors-sujet" désactivée.'
-                  : 'System prompt GLD complet appliqué. Questions hors thème foi/inclusion → réponse de redirection. Score < 0.55 → marquée hors-sujet.'}
+                  ? '🔓 Le RAG répond à TOUTE question (météo, code, politique, n\'importe quoi). System prompt minimal sans verrou foi/inclusion. Détection « hors-sujet » désactivée. Idéal pour tester ce que la base RAG sait vraiment.'
+                  : '🛡️ Comportement identique à la prod : system prompt GLD complet (verrou foi/inclusion/diversité). Question hors thème → réponse de redirection. Score < 0.55 → marquée comme zone aveugle.'}
+              </p>
+              <p className="mt-1.5 text-xs text-zinc-400">
+                👆 Clique sur le toggle pour basculer
               </p>
             </div>
           </label>

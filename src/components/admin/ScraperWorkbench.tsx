@@ -230,16 +230,16 @@ export function ScraperWorkbench() {
   /* ─── RENDER ─────────────────────────────────────────── */
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-rose-50 px-4 py-6">
+    <div className="min-h-screen bg-zinc-950 px-4 py-6 text-zinc-100">
       <div className="mx-auto max-w-7xl">
         <header className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">🕸️ Scraper RAG didactique</h1>
-            <p className="text-sm text-slate-600">
+            <h1 className="text-2xl font-bold text-white">🕸️ Scraper RAG didactique</h1>
+            <p className="text-sm text-zinc-400">
               Explore un site, choisis visuellement les pages, ingère dans la bibliothèque GLD.
             </p>
           </div>
-          <a href="/admin/ai/knowledge" className="text-sm text-rose-600 hover:underline">
+          <a href="/admin/ai/knowledge" className="text-sm text-rose-400 hover:underline">
             ← Bibliothèque
           </a>
         </header>
@@ -258,7 +258,6 @@ export function ScraperWorkbench() {
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 onPaste={(e) => {
-                  // Auto-normalise au paste pour éviter les doubles protocoles
                   const pasted = e.clipboardData.getData('text');
                   if (pasted) {
                     e.preventDefault();
@@ -266,10 +265,10 @@ export function ScraperWorkbench() {
                   }
                 }}
                 placeholder="exemple.com ou https://exemple.com"
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-mono text-sm focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-200"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 font-mono text-sm text-zinc-100 placeholder-zinc-500 focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500/30"
               />
               {url && url !== normalizeClientUrl(url) && (
-                <div className="mt-1 rounded bg-amber-50 px-2 py-1 text-xs text-amber-800 ring-1 ring-amber-200">
+                <div className="mt-1 rounded bg-amber-950/50 px-2 py-1 text-xs text-amber-300 ring-1 ring-amber-800">
                   → URL nettoyée : <code className="font-mono">{normalizeClientUrl(url)}</code>
                 </div>
               )}
@@ -278,26 +277,26 @@ export function ScraperWorkbench() {
 
             <div>
               <Label>
-                Profondeur max : <span className="font-mono text-rose-600">{maxDepth}</span>
+                Profondeur max : <span className="font-mono text-rose-400">{maxDepth}</span>
               </Label>
               <input
                 type="range" min={1} max={5} step={1}
                 value={maxDepth} onChange={(e) => setMaxDepth(Number(e.target.value))}
-                className="w-full accent-rose-600"
+                className="w-full accent-rose-500"
               />
-              <div className="flex justify-between text-xs text-slate-500">
+              <div className="flex justify-between text-xs text-zinc-400">
                 <span>1 (racine)</span><span>3 (recommandé)</span><span>5 (lourd)</span>
               </div>
             </div>
 
             <div>
               <Label>
-                Pages max : <span className="font-mono text-rose-600">{maxPages}</span>
+                Pages max : <span className="font-mono text-rose-400">{maxPages}</span>
               </Label>
               <input
                 type="range" min={5} max={500} step={5}
                 value={maxPages} onChange={(e) => setMaxPages(Number(e.target.value))}
-                className="w-full accent-rose-600"
+                className="w-full accent-rose-500"
               />
               <Hint>Plafond dur pour éviter de partir en vrille sur un gros site.</Hint>
             </div>
@@ -307,13 +306,13 @@ export function ScraperWorkbench() {
               <input
                 type="text" value={tagsInput} onChange={(e) => setTagsInput(e.target.value)}
                 placeholder="religion, lgbt, témoignage"
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-200"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500/30"
               />
               <Hint>Séparés par des virgules. Visibles dans la bibliothèque RAG.</Hint>
             </div>
           </div>
 
-          <div className="mt-5 grid gap-3 rounded-xl bg-slate-50 p-4 md:grid-cols-2">
+          <div className="mt-5 grid gap-3 rounded-xl bg-zinc-900 p-4 ring-1 ring-zinc-800 md:grid-cols-2">
             <Toggle
               label="🛡️ Respecter robots.txt"
               hint="Bloque les pages interdites par le site (recommandé pour rester poli)."
@@ -352,25 +351,25 @@ export function ScraperWorkbench() {
           </div>
 
           {politeMode && (
-            <div className="mt-3 rounded-xl bg-emerald-50 p-4 ring-1 ring-emerald-200">
+            <div className="mt-3 rounded-xl bg-emerald-950/40 p-4 ring-1 ring-emerald-800/60">
               <Label>
                 ⏱️ Délai entre requêtes au même domaine :{' '}
-                <span className="font-mono text-emerald-700">{hostDelayMs} ms</span>
+                <span className="font-mono text-emerald-300">{hostDelayMs} ms</span>
                 {' '}({(hostDelayMs / 1000).toFixed(1)}s)
               </Label>
               <input
                 type="range" min={500} max={10000} step={250}
                 value={hostDelayMs} onChange={(e) => setHostDelayMs(Number(e.target.value))}
-                className="w-full accent-emerald-600"
+                className="w-full accent-emerald-500"
               />
-              <div className="flex justify-between text-xs text-slate-500">
+              <div className="flex justify-between text-xs text-zinc-400">
                 <span>500 ms (rapide)</span>
                 <span>2 500 ms (équilibré)</span>
                 <span>10 s (très discret)</span>
               </div>
-              <p className="mt-2 text-xs text-emerald-800">
+              <p className="mt-2 text-xs text-emerald-300">
                 Mode discret actif : 1 worker max par domaine, jitter aléatoire ±20 %, backoff exponentiel sur 429/503,
-                respect du <code>Crawl-delay</code> du robots.txt s'il est plus long.
+                respect du <code className="rounded bg-emerald-900/50 px-1 py-0.5 font-mono text-emerald-200">Crawl-delay</code> du robots.txt s'il est plus long.
               </p>
             </div>
           )}
@@ -405,26 +404,26 @@ export function ScraperWorkbench() {
             <div className="mb-3 flex flex-wrap gap-2 text-xs">
               <button
                 onClick={() => setSelected(new Set(allUrls))}
-                className="rounded-md bg-slate-200 px-3 py-1 text-slate-700 hover:bg-slate-300"
+                className="rounded-md bg-zinc-800 px-3 py-1 font-medium text-zinc-200 hover:bg-zinc-700"
               >Tout cocher ({allUrls.length})</button>
               <button
                 onClick={() => setSelected(new Set())}
-                className="rounded-md bg-slate-200 px-3 py-1 text-slate-700 hover:bg-slate-300"
+                className="rounded-md bg-zinc-800 px-3 py-1 font-medium text-zinc-200 hover:bg-zinc-700"
               >Tout décocher</button>
               <button
                 onClick={() => setCollapsed(new Set(flatten(tree.root).filter((n) => n.children.length).map((n) => n.url)))}
-                className="rounded-md bg-slate-200 px-3 py-1 text-slate-700 hover:bg-slate-300"
+                className="rounded-md bg-zinc-800 px-3 py-1 font-medium text-zinc-200 hover:bg-zinc-700"
               >Replier tout</button>
               <button
                 onClick={() => setCollapsed(new Set())}
-                className="rounded-md bg-slate-200 px-3 py-1 text-slate-700 hover:bg-slate-300"
+                className="rounded-md bg-zinc-800 px-3 py-1 font-medium text-zinc-200 hover:bg-zinc-700"
               >Déplier tout</button>
-              <span className="ml-auto self-center text-slate-600">
-                <strong className="text-rose-600">{selected.size}</strong> / {allUrls.length} sélectionnées
+              <span className="ml-auto self-center text-zinc-300">
+                <strong className="text-rose-400">{selected.size}</strong> / {allUrls.length} sélectionnées
               </span>
             </div>
 
-            <div className="max-h-[400px] overflow-auto rounded-lg border border-slate-200 bg-white p-3 font-mono text-xs">
+            <div className="max-h-[400px] overflow-auto rounded-lg border border-zinc-800 bg-zinc-950 p-3 font-mono text-xs">
               <TreeView
                 node={tree.root}
                 selected={selected} collapsed={collapsed}
@@ -434,12 +433,12 @@ export function ScraperWorkbench() {
             </div>
 
             {tree.warnings.length > 0 && (
-              <details className="mt-3 text-xs text-slate-600">
-                <summary className="cursor-pointer hover:text-slate-900">
+              <details className="mt-3 text-xs text-zinc-400">
+                <summary className="cursor-pointer text-zinc-300 hover:text-white">
                   💬 {tree.warnings.length} avertissement(s) du crawler
                 </summary>
                 <ul className="mt-2 space-y-1 pl-4">
-                  {tree.warnings.map((w, i) => <li key={i} className="text-slate-500">• {w}</li>)}
+                  {tree.warnings.map((w, i) => <li key={i} className="text-zinc-400">• {w}</li>)}
                 </ul>
               </details>
             )}
@@ -448,11 +447,11 @@ export function ScraperWorkbench() {
               <button
                 onClick={handleScrape}
                 disabled={selected.size === 0 || job?.status === 'running'}
-                className="rounded-lg bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700 disabled:opacity-50"
+                className="rounded-lg bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-500 disabled:opacity-40"
               >
                 ⚡ Lancer le scraping ({selected.size} pages)
               </button>
-              {scrapeError && <span className="text-sm text-rose-600">⚠ {scrapeError}</span>}
+              {scrapeError && <span className="text-sm text-rose-400">⚠ {scrapeError}</span>}
             </div>
           </Section>
         )}
@@ -464,7 +463,7 @@ export function ScraperWorkbench() {
             title="Progression en direct"
             subtitle={
               <>
-                Job <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs">{job.id}</code>
+                Job <code className="rounded bg-zinc-800 px-1.5 py-0.5 font-mono text-xs text-zinc-200">{job.id}</code>
                 {' · '}
                 <Badge color={
                   job.status === 'done' ? 'green'
@@ -478,13 +477,13 @@ export function ScraperWorkbench() {
             {/* Barre de progression */}
             <div className="mb-4">
               <div className="mb-1 flex justify-between text-sm">
-                <span className="font-medium text-slate-700">
+                <span className="font-medium text-zinc-200">
                   {job.done} / {job.total} pages
-                  {job.errors > 0 && <span className="ml-2 text-rose-600">({job.errors} erreurs)</span>}
+                  {job.errors > 0 && <span className="ml-2 text-rose-400">({job.errors} erreurs)</span>}
                 </span>
-                <span className="font-mono text-slate-600">{job.progress}%</span>
+                <span className="font-mono text-zinc-300">{job.progress}%</span>
               </div>
-              <div className="h-3 overflow-hidden rounded-full bg-slate-200">
+              <div className="h-3 overflow-hidden rounded-full bg-zinc-800">
                 <div
                   className={`h-full transition-all duration-500 ${
                     job.status === 'done' ? 'bg-emerald-500'
@@ -496,7 +495,7 @@ export function ScraperWorkbench() {
                 />
               </div>
               {job.currentUrl && (
-                <div className="mt-2 truncate font-mono text-xs text-slate-500">
+                <div className="mt-2 truncate font-mono text-xs text-zinc-400">
                   ↓ {job.currentUrl}
                 </div>
               )}
@@ -506,19 +505,19 @@ export function ScraperWorkbench() {
               {/* Logs streaming */}
               <div>
                 <Label>📜 Logs live</Label>
-                <div className="h-64 overflow-auto rounded-lg border border-slate-200 bg-slate-900 p-3 font-mono text-xs leading-relaxed text-slate-100">
+                <div className="h-64 overflow-auto rounded-lg border border-zinc-800 bg-black p-3 font-mono text-xs leading-relaxed text-zinc-100">
                   {job.logs.length === 0 ? (
-                    <div className="text-slate-500">En attente…</div>
+                    <div className="text-zinc-500">En attente…</div>
                   ) : job.logs.slice(-200).map((l, i) => (
                     <div
                       key={`${l.ts}-${i}`}
                       className={
                         l.level === 'error' ? 'text-rose-400'
                           : l.level === 'warn' ? 'text-amber-300'
-                          : 'text-slate-300'
+                          : 'text-zinc-200'
                       }
                     >
-                      <span className="text-slate-500">{new Date(l.ts).toLocaleTimeString()}</span>{' '}
+                      <span className="text-zinc-500">{new Date(l.ts).toLocaleTimeString()}</span>{' '}
                       {l.msg}
                     </div>
                   ))}
@@ -528,29 +527,29 @@ export function ScraperWorkbench() {
               {/* Résultats */}
               <div>
                 <Label>✅ Résultats récents</Label>
-                <div className="h-64 overflow-auto rounded-lg border border-slate-200 bg-white">
+                <div className="h-64 overflow-auto rounded-lg border border-zinc-800 bg-zinc-950">
                   <table className="w-full text-xs">
-                    <thead className="sticky top-0 bg-slate-100 text-slate-700">
+                    <thead className="sticky top-0 bg-zinc-900 text-zinc-300">
                       <tr>
-                        <th className="px-2 py-1.5 text-left">URL</th>
-                        <th className="px-2 py-1.5 text-right">Taille</th>
-                        <th className="px-2 py-1.5 text-right">Chunks</th>
+                        <th className="px-2 py-1.5 text-left font-semibold">URL</th>
+                        <th className="px-2 py-1.5 text-right font-semibold">Taille</th>
+                        <th className="px-2 py-1.5 text-right font-semibold">Chunks</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-zinc-800">
                       {job.results.length === 0 ? (
-                        <tr><td colSpan={3} className="p-4 text-center text-slate-500">Aucun résultat encore</td></tr>
+                        <tr><td colSpan={3} className="p-4 text-center text-zinc-500">Aucun résultat encore</td></tr>
                       ) : job.results.slice().reverse().map((r) => (
-                        <tr key={r.url} className={r.ok ? '' : 'bg-rose-50'}>
+                        <tr key={r.url} className={r.ok ? '' : 'bg-rose-950/30'}>
                           <td className="px-2 py-1 font-mono">
-                            <span className={r.ok ? 'text-emerald-600' : 'text-rose-600'}>
+                            <span className={r.ok ? 'text-emerald-400' : 'text-rose-400'}>
                               {r.ok ? '✓' : '✗'}
                             </span>{' '}
-                            <span title={r.url}>{shortPath(r.url)}</span>
-                            {r.error && <div className="text-[10px] text-rose-500">{r.error}</div>}
+                            <span className="text-zinc-200" title={r.url}>{shortPath(r.url)}</span>
+                            {r.error && <div className="text-[10px] text-rose-300">{r.error}</div>}
                           </td>
-                          <td className="px-2 py-1 text-right text-slate-600">{fmtBytes(r.bytes)}</td>
-                          <td className="px-2 py-1 text-right font-mono text-slate-600">
+                          <td className="px-2 py-1 text-right text-zinc-300">{fmtBytes(r.bytes)}</td>
+                          <td className="px-2 py-1 text-right font-mono text-zinc-300">
                             {r.chunkCount ?? (r.ingested === false ? '—' : '·')}
                           </td>
                         </tr>
@@ -565,7 +564,7 @@ export function ScraperWorkbench() {
               <div className="mt-4">
                 <button
                   onClick={handleCancel}
-                  className="rounded-lg bg-amber-500 px-4 py-1.5 text-xs font-semibold text-white hover:bg-amber-600"
+                  className="rounded-lg bg-amber-500 px-4 py-1.5 text-xs font-semibold text-white hover:bg-amber-400"
                 >
                   ⏸ Annuler le job
                 </button>
@@ -573,9 +572,9 @@ export function ScraperWorkbench() {
             )}
 
             {job.status === 'done' && (
-              <div className="mt-4 rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800">
+              <div className="mt-4 rounded-lg bg-emerald-950/40 p-4 text-sm text-emerald-200 ring-1 ring-emerald-800/60">
                 ✓ Terminé. {job.results.filter((r) => r.ingested).length} document(s) ingéré(s) dans le RAG.{' '}
-                <a href="/admin/ai/knowledge" className="font-semibold underline">Voir la bibliothèque →</a>
+                <a href="/admin/ai/knowledge" className="font-semibold text-emerald-100 underline hover:text-white">Voir la bibliothèque →</a>
               </div>
             )}
           </Section>
@@ -591,14 +590,14 @@ function Section({ step, title, subtitle, children }: {
   step: number; title: string; subtitle?: React.ReactNode; children: React.ReactNode;
 }) {
   return (
-    <section className="mb-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+    <section className="mb-6 rounded-2xl bg-zinc-900 p-6 shadow-lg ring-1 ring-zinc-800">
       <header className="mb-4 flex items-start gap-3">
-        <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-rose-600 text-sm font-bold text-white">
+        <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-rose-600 text-sm font-bold text-white shadow-lg shadow-rose-600/30">
           {step}
         </span>
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
-          {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
+          <h2 className="text-lg font-semibold text-white">{title}</h2>
+          {subtitle && <p className="text-sm text-zinc-400">{subtitle}</p>}
         </div>
       </header>
       {children}
@@ -607,25 +606,31 @@ function Section({ step, title, subtitle, children }: {
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-700">{children}</label>;
+  return <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-zinc-200">{children}</label>;
 }
 
 function Hint({ children }: { children: React.ReactNode }) {
-  return <p className="mt-1 text-xs text-slate-500">{children}</p>;
+  return <p className="mt-1 text-xs text-zinc-400">{children}</p>;
 }
 
 function Toggle({ label, hint, value, onChange }: {
   label: string; hint?: string; value: boolean; onChange: (v: boolean) => void;
 }) {
   return (
-    <label className="flex cursor-pointer items-start gap-3 rounded-lg bg-white p-3 ring-1 ring-slate-200 hover:ring-rose-300">
+    <label
+      className={`flex cursor-pointer items-start gap-3 rounded-lg p-3 ring-1 transition ${
+        value
+          ? 'bg-rose-950/30 ring-rose-700/50 hover:ring-rose-500'
+          : 'bg-zinc-950 ring-zinc-700 hover:ring-zinc-500'
+      }`}
+    >
       <input
         type="checkbox" checked={value} onChange={(e) => onChange(e.target.checked)}
-        className="mt-0.5 h-4 w-4 accent-rose-600"
+        className="mt-0.5 h-4 w-4 accent-rose-500"
       />
       <div className="flex-1">
-        <div className="text-sm font-medium text-slate-800">{label}</div>
-        {hint && <div className="text-xs text-slate-500">{hint}</div>}
+        <div className="text-sm font-medium text-zinc-100">{label}</div>
+        {hint && <div className="text-xs text-zinc-400">{hint}</div>}
       </div>
     </label>
   );
@@ -633,10 +638,10 @@ function Toggle({ label, hint, value, onChange }: {
 
 function Badge({ color, children }: { color: 'green' | 'red' | 'amber' | 'blue'; children: React.ReactNode }) {
   const cls = {
-    green: 'bg-emerald-100 text-emerald-800',
-    red: 'bg-rose-100 text-rose-800',
-    amber: 'bg-amber-100 text-amber-800',
-    blue: 'bg-sky-100 text-sky-800',
+    green: 'bg-emerald-900/50 text-emerald-200 ring-1 ring-emerald-700/60',
+    red: 'bg-rose-900/50 text-rose-200 ring-1 ring-rose-700/60',
+    amber: 'bg-amber-900/50 text-amber-200 ring-1 ring-amber-700/60',
+    blue: 'bg-sky-900/50 text-sky-200 ring-1 ring-sky-700/60',
   }[color];
   return <span className={`inline-block rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${cls}`}>{children}</span>;
 }
@@ -655,35 +660,35 @@ function TreeView({ node, selected, collapsed, onToggleSelect, onToggleCollapse 
 
   return (
     <div>
-      <div className="flex items-center gap-1.5 py-0.5 hover:bg-slate-50">
+      <div className="flex items-center gap-1.5 py-0.5 hover:bg-zinc-900">
         {node.children.length > 0 ? (
           <button
             onClick={() => onToggleCollapse(node.url)}
-            className="flex h-4 w-4 items-center justify-center text-slate-400 hover:text-slate-700"
+            className="flex h-4 w-4 items-center justify-center text-zinc-400 hover:text-rose-400"
             aria-label={isCollapsed ? 'Déplier' : 'Replier'}
           >
             {isCollapsed ? '▶' : '▼'}
           </button>
         ) : (
-          <span className="w-4 text-center text-slate-300">·</span>
+          <span className="w-4 text-center text-zinc-600">·</span>
         )}
         <input
           type="checkbox"
           checked={isChecked}
           ref={(el) => { if (el) el.indeterminate = !isChecked && partial; }}
           onChange={(e) => onToggleSelect(node, e.target.checked || allChildrenSelected ? e.target.checked : true)}
-          className="h-3.5 w-3.5 accent-rose-600"
+          className="h-3.5 w-3.5 accent-rose-500"
         />
         <span className="truncate" title={node.url}>
-          <span className="text-slate-800">{shortPath(node.url)}</span>
-          {node.title && <span className="ml-2 text-slate-400">— {node.title}</span>}
+          <span className="text-zinc-100">{shortPath(node.url)}</span>
+          {node.title && <span className="ml-2 text-zinc-400">— {node.title}</span>}
         </span>
         {node.children.length > 0 && (
-          <span className="ml-auto text-[10px] text-slate-400">{node.children.length} enfants</span>
+          <span className="ml-auto text-[10px] text-zinc-500">{node.children.length} enfants</span>
         )}
       </div>
       {!isCollapsed && node.children.length > 0 && (
-        <div className="ml-5 border-l border-slate-200 pl-2">
+        <div className="ml-5 border-l border-zinc-800 pl-2">
           {node.children.map((c) => (
             <TreeView
               key={c.url} node={c}
