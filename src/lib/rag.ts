@@ -369,21 +369,17 @@ export async function ask(question: string, opts: AskOptions = {}): Promise<AskR
   }
 
   const key = await getGeminiKey();
-  const r = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.4, maxOutputTokens: 600 }
-      })
-    }
-  );
-  const j = await r.json();
-  const answer =
-    j?.candidates?.[0]?.content?.parts?.[0]?.text ||
-    'Je n\'ai pas pu formuler de réponse. Réessaie ?';
+  // Modèle le plus récent avec fallback auto (gemini-3-flash → gemini-2.5-flash)
+  const { callGeminiText, GEMINI_MODELS } = await import('./gemini-text');
+  const r = await callGeminiText({
+    apiKey: key,
+    prompt,
+    model: GEMINI_MODELS.CHAT,
+    temperature: 0.4,
+    maxOutputTokens: 600,
+    timeoutMs: 30_000,
+  });
+  const answer = r?.text || 'Je n\'ai pas pu formuler de réponse. Réessaie ?';
 
   return {
     answer: answer.trim(),

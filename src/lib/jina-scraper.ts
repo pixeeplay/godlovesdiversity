@@ -197,37 +197,28 @@ Schéma attendu :
   "tags": ["3 à 6 tags courts en minuscules pertinents pour un index RAG sur l'inclusion LGBT+ et les religions"]
 }`;
 
+  const { callGeminiText, GEMINI_MODELS } = await import('./gemini-text');
+  const r = await callGeminiText({
+    apiKey: key,
+    prompt,
+    model: GEMINI_MODELS.CLEANER,
+    temperature: 0.2,
+    maxOutputTokens: 400,
+    jsonSchema: {
+      type: 'OBJECT',
+      properties: {
+        lang: { type: 'STRING' },
+        summary: { type: 'STRING' },
+        tags: { type: 'ARRAY', items: { type: 'STRING' } },
+      },
+      required: ['lang', 'summary', 'tags'],
+    },
+    timeoutMs: FETCH_TIMEOUT_MS,
+  });
+
+  if (!r) return {};
   try {
-    const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${key}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.2,
-            maxOutputTokens: 400,
-            responseMimeType: 'application/json',
-            responseSchema: {
-              type: 'OBJECT',
-              properties: {
-                lang: { type: 'STRING' },
-                summary: { type: 'STRING' },
-                tags: { type: 'ARRAY', items: { type: 'STRING' } },
-              },
-              required: ['lang', 'summary', 'tags'],
-            },
-          },
-        }),
-        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-      }
-    );
-    if (!r.ok) return {};
-    const j = await r.json();
-    const raw = j?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
+    const parsed = JSON.parse(r.text);
     return {
       lang: typeof parsed.lang === 'string' ? parsed.lang.toLowerCase().slice(0, 5) : undefined,
       summary: typeof parsed.summary === 'string' ? parsed.summary.trim() : undefined,

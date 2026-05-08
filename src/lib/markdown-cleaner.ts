@@ -197,9 +197,11 @@ function stripImageMarkdown(line: string): string {
 
 /* ─── EXTRACTEUR GEMINI (mode max qualité) ────────────────────── */
 
+import { callGeminiText, GEMINI_MODELS } from './gemini-text';
+
 export type GeminiExtractOptions = {
   apiKey: string;
-  model?: string;     // Défaut gemini-2.5-flash-lite (le moins cher qui marche)
+  model?: string;     // Défaut GEMINI_MODELS.CLEANER (gemini-3-flash-lite avec fallback)
   hint?: string;      // Hint contextuel (ex: "site e-commerce photo")
 };
 
@@ -229,38 +231,25 @@ FORMAT DE SORTIE :
 export async function extractWithGemini(
   markdown: string,
   opts: GeminiExtractOptions
-): Promise<{ cleaned: string; tokensIn: number; tokensOut: number } | null> {
-  const model = opts.model || 'gemini-2.5-flash-lite';
+): Promise<{ cleaned: string; tokensIn: number; tokensOut: number; modelUsed: string } | null> {
   // Cap input à 60K chars pour ne pas exploser le contexte
   const input = markdown.slice(0, 60_000);
   const prompt = `${EXTRACT_PROMPT}${opts.hint ? `\n\nCONTEXTE : ${opts.hint}` : ''}\n\nMARKDOWN BRUT :\n\n${input}\n\n---\n\nRenvoie maintenant uniquement le markdown nettoyé :`;
 
-  try {
-    const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${opts.apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.1,
-            maxOutputTokens: 8000,
-          },
-        }),
-        signal: AbortSignal.timeout(20_000),
-      }
-    );
-    if (!r.ok) return null;
-    const j = await r.json();
-    const text = j?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text || typeof text !== 'string') return null;
-    return {
-      cleaned: text.trim(),
-      tokensIn: j?.usageMetadata?.promptTokenCount || 0,
-      tokensOut: j?.usageMetadata?.candidatesTokenCount || 0,
-    };
-  } catch {
-    return null;
-  }
+  const r = await callGeminiText({
+    apiKey: opts.apiKey,
+    prompt,
+    model: opts.model || GEMINI_MODELS.CLEANER,
+    temperature: 0.1,
+    maxOutputTokens: 8000,
+    timeoutMs: 25_000,
+  });
+
+  if (!r) return null;
+  return {
+    cleaned: r.text.trim(),
+    tokensIn: r.tokensIn || 0,
+    tokensOut: r.tokensOut || 0,
+    modelUsed: r.modelUsed,
+  };
 }
