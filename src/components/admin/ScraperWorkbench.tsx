@@ -72,6 +72,21 @@ function shortPath(url: string): string {
   }
 }
 
+/**
+ * Normalise l'URL côté client AVANT envoi pour montrer à l'utilisateur ce
+ * qui sera réellement scrapé. Mêmes règles que côté serveur (jina-scraper.ts).
+ */
+function normalizeClientUrl(raw: string): string {
+  let u = (raw || '').trim();
+  u = u.replace(/[​-‍﻿]/g, '');
+  u = u.replace(/^(https?:\/\/)+/i, 'https://');
+  u = u.replace(/^https?:\/\/(https?)(:?)\/\//i, () => 'https://');
+  u = u.replace(/^(https?)\/\/(?!\/)/i, '$1://');
+  if (u && !/^https?:\/\//i.test(u)) u = 'https://' + u;
+  u = u.replace(/:\/{2,}/g, '://');
+  return u;
+}
+
 function fmtBytes(n?: number): string {
   if (!n) return '—';
   if (n < 1024) return `${n} o`;
@@ -83,7 +98,7 @@ function fmtBytes(n?: number): string {
 
 export function ScraperWorkbench() {
   // Étape 1 — config source
-  const [url, setUrl] = useState('https://');
+  const [url, setUrl] = useState('');
   const [maxDepth, setMaxDepth] = useState(2);
   const [maxPages, setMaxPages] = useState(50);
   const [respectRobots, setRespectRobots] = useState(true);
@@ -109,6 +124,11 @@ export function ScraperWorkbench() {
   /* ─── Étape 1 → 2 : Explorer ────────────────────────── */
 
   const handleExplore = async () => {
+    const cleanUrl = normalizeClientUrl(url);
+    if (!cleanUrl || !/^https?:\/\/[^/]+\.[^/]+/.test(cleanUrl)) {
+      setExploreError('URL invalide. Exemple : exemple.com ou https://exemple.com');
+      return;
+    }
     setExploring(true);
     setExploreError(null);
     setTree(null);
@@ -118,7 +138,7 @@ export function ScraperWorkbench() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          url, maxDepth, maxPages, respectRobots, includeSubdomains, followExternal,
+          url: cleanUrl, maxDepth, maxPages, respectRobots, includeSubdomains, followExternal,
         }),
       });
       const j = await r.json();
@@ -229,12 +249,25 @@ export function ScraperWorkbench() {
             <div>
               <Label>URL racine</Label>
               <input
-                type="url"
+                type="text"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                placeholder="https://exemple.com"
+                onPaste={(e) => {
+                  // Auto-normalise au paste pour éviter les doubles protocoles
+                  const pasted = e.clipboardData.getData('text');
+                  if (pasted) {
+                    e.preventDefault();
+                    setUrl(normalizeClientUrl(pasted));
+                  }
+                }}
+                placeholder="exemple.com ou https://exemple.com"
                 className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-mono text-sm focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-200"
               />
+              {url && url !== normalizeClientUrl(url) && (
+                <div className="mt-1 rounded bg-amber-50 px-2 py-1 text-xs text-amber-800 ring-1 ring-amber-200">
+                  → URL nettoyée : <code className="font-mono">{normalizeClientUrl(url)}</code>
+                </div>
+              )}
               <Hint>Le scraper part de cette URL et explore les liens internes.</Hint>
             </div>
 
@@ -311,7 +344,7 @@ export function ScraperWorkbench() {
           <div className="mt-5 flex gap-3">
             <button
               onClick={handleExplore}
-              disabled={exploring || !url || url === 'https://'}
+              disabled={exploring || !url.trim()}
               className="rounded-lg bg-rose-600 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-rose-700 disabled:opacity-50"
             >
               {exploring ? '🔍 Exploration…' : '🔍 Explorer le site'}

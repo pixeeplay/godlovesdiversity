@@ -54,9 +54,29 @@ async function getGeminiKey(): Promise<string | null> {
   return process.env.GEMINI_API_KEY || null;
 }
 
+/**
+ * Normalise une URL en gérant les typos courants :
+ *   - "https://https://x.com"   → "https://x.com"  (double protocole)
+ *   - "https://https//x.com"    → "https://x.com"  (2e protocole sans ':')
+ *   - "https//x.com"            → "https://x.com"  (':' manquant)
+ *   - "x.com"                   → "https://x.com"  (pas de protocole)
+ *   - whitespace dans l'URL     → trimé proprement
+ */
 function normalizeUrl(raw: string): string {
   let u = raw.trim();
+  // Strip espaces invisibles parfois collés (zéro-width, etc.)
+  u = u.replace(/[​-‍﻿]/g, '');
+  // Cas pathologique : "https://https://" ou "https://https//" (collage user)
+  u = u.replace(/^(https?:\/\/)+/i, 'https://');
+  u = u.replace(/^https?:\/\/(https?)(:?)\/\//i, (_m, _proto, hasColon) =>
+    hasColon ? 'https://' : 'https://'
+  );
+  // "https//x" → "https://x" (':' manquant)
+  u = u.replace(/^(https?)\/\/(?!\/)/i, '$1://');
+  // Si toujours pas de protocole, ajoute https://
   if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  // Collapse les ':///' multiples résiduels en '://'
+  u = u.replace(/:\/{2,}/g, '://');
   try {
     const parsed = new URL(u);
     // Vire les params trackers courants

@@ -50,16 +50,26 @@ export type CrawlResult = {
 
 /* ─── HELPERS ──────────────────────────────────────────────────── */
 
+/**
+ * Normalise une URL en gérant les typos courants (doubles protocoles, ':' manquant).
+ * Voir aussi jina-scraper.ts:normalizeUrl pour la même logique.
+ */
 function normalizeUrl(raw: string): string {
   let u = raw.trim();
+  u = u.replace(/[​-‍﻿]/g, '');
+  u = u.replace(/^(https?:\/\/)+/i, 'https://');
+  u = u.replace(/^https?:\/\/(https?)(:?)\/\//i, (_m, _proto, hasColon) =>
+    hasColon ? 'https://' : 'https://'
+  );
+  u = u.replace(/^(https?)\/\/(?!\/)/i, '$1://');
   if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  u = u.replace(/:\/{2,}/g, '://');
   try {
     const p = new URL(u);
     p.hash = '';
     ['fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'ref'].forEach((k) =>
       p.searchParams.delete(k)
     );
-    // Vire trailing slash sauf racine
     let out = p.toString();
     if (out.endsWith('/') && p.pathname !== '/') out = out.slice(0, -1);
     return out;
