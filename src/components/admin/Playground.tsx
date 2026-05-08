@@ -89,62 +89,75 @@ export function Playground() {
           <p className="mb-2 font-semibold text-violet-100">🎯 Comment utiliser :</p>
           <ol className="ml-4 list-decimal space-y-1">
             <li>
-              <strong>Garde-fous activés</strong> (par défaut) → le RAG répond comme en prod, avec le verrou foi/inclusion. Si tu poses une question hors-sujet, il va refuser.
+              <strong>Choisis un mode ci-dessous</strong> en cliquant sur l'une des deux cards (la card sélectionnée s'illumine).
             </li>
             <li>
-              <strong>Coche la case 🔓 ci-dessous</strong> pour désactiver les garde-fous : tu peux alors tester n'importe quelle question (météo, code, etc.) et voir comment le RAG répond brut.
+              <strong>Mode prod</strong> = comportement réel du chat « Demandez à GLD ». <strong>Mode test admin</strong> = pas de verrou, le RAG répond à tout.
             </li>
             <li>
-              Pour chaque réponse, ouvre les onglets <code className="rounded bg-violet-900/50 px-1 font-mono text-violet-100">🧩 Sources</code> et <code className="rounded bg-violet-900/50 px-1 font-mono text-violet-100">📜 Prompt envoyé</code> pour voir les chunks matchés et le prompt complet envoyé à Gemini.
+              Le bouton <strong>⚡ Envoyer</strong> affiche en permanence le mode qui sera utilisé pour ta prochaine question.
+            </li>
+            <li>
+              Onglets <code className="rounded bg-violet-900/50 px-1 font-mono text-violet-100">🧩 Sources</code> et <code className="rounded bg-violet-900/50 px-1 font-mono text-violet-100">📜 Prompt</code> de chaque réponse → voir les chunks matchés et le prompt envoyé à Gemini.
             </li>
           </ol>
         </div>
 
-        {/* Toggle garde-fous — version améliorée */}
-        <div className={`mb-4 overflow-hidden rounded-2xl ring-2 transition ${
-          bypassGuardrails
-            ? 'ring-rose-500 bg-gradient-to-br from-rose-950 to-zinc-900'
-            : 'ring-emerald-700 bg-gradient-to-br from-emerald-950 to-zinc-900'
-        }`}>
-          <label className="flex cursor-pointer items-center gap-4 p-5">
-            <div className="relative">
-              <input
-                type="checkbox"
-                checked={bypassGuardrails}
-                onChange={(e) => setBypassGuardrails(e.target.checked)}
-                className="peer sr-only"
-              />
-              <div className={`h-7 w-12 rounded-full p-0.5 transition ${
-                bypassGuardrails ? 'bg-rose-500' : 'bg-emerald-700'
-              }`}>
-                <div className={`h-6 w-6 rounded-full bg-white shadow-md transition ${
-                  bypassGuardrails ? 'translate-x-5' : 'translate-x-0'
-                }`} />
+        {/* Toggle garde-fous : 2 cards radio géantes pour pas se louper */}
+        <div className="mb-4 grid gap-3 md:grid-cols-2">
+          {/* CARD MODE PROD */}
+          <button
+            type="button"
+            onClick={() => setBypassGuardrails(false)}
+            className={`group relative overflow-hidden rounded-2xl p-5 text-left transition-all ${
+              !bypassGuardrails
+                ? 'bg-gradient-to-br from-emerald-900 to-emerald-950 ring-4 ring-emerald-500 shadow-xl shadow-emerald-500/20 scale-[1.02]'
+                : 'bg-zinc-900 ring-2 ring-zinc-800 hover:ring-zinc-600 opacity-60 hover:opacity-100'
+            }`}
+          >
+            {!bypassGuardrails && (
+              <div className="absolute right-3 top-3 rounded-full bg-emerald-500 p-1 text-white shadow-lg">
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
               </div>
+            )}
+            <div className="text-3xl">🛡️</div>
+            <div className="mt-2 flex items-center gap-2">
+              <span className="text-lg font-bold text-white">Mode prod</span>
+              <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+                Garde-fous ON
+              </span>
             </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <span className="text-base font-bold">
-                  {bypassGuardrails ? '🔓 Garde-fous DÉSACTIVÉS' : '🛡️ Garde-fous activés'}
-                </span>
-                <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
-                  bypassGuardrails
-                    ? 'bg-rose-500 text-white'
-                    : 'bg-emerald-600 text-white'
-                }`}>
-                  {bypassGuardrails ? 'MODE TEST' : 'MODE PROD'}
-                </span>
+            <p className="mt-2 text-xs text-emerald-100">
+              Comportement <strong>identique au chat public</strong>. System prompt GLD complet (verrou foi/inclusion). Questions hors thème → redirigées. Score &lt; 0.55 → marquée zone aveugle.
+            </p>
+          </button>
+
+          {/* CARD MODE TEST */}
+          <button
+            type="button"
+            onClick={() => setBypassGuardrails(true)}
+            className={`group relative overflow-hidden rounded-2xl p-5 text-left transition-all ${
+              bypassGuardrails
+                ? 'bg-gradient-to-br from-rose-900 to-rose-950 ring-4 ring-rose-500 shadow-xl shadow-rose-500/30 scale-[1.02]'
+                : 'bg-zinc-900 ring-2 ring-zinc-800 hover:ring-zinc-600 opacity-60 hover:opacity-100'
+            }`}
+          >
+            {bypassGuardrails && (
+              <div className="absolute right-3 top-3 rounded-full bg-rose-500 p-1 text-white shadow-lg">
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
               </div>
-              <p className="mt-1.5 text-sm text-zinc-300">
-                {bypassGuardrails
-                  ? '🔓 Le RAG répond à TOUTE question (météo, code, politique, n\'importe quoi). System prompt minimal sans verrou foi/inclusion. Détection « hors-sujet » désactivée. Idéal pour tester ce que la base RAG sait vraiment.'
-                  : '🛡️ Comportement identique à la prod : system prompt GLD complet (verrou foi/inclusion/diversité). Question hors thème → réponse de redirection. Score < 0.55 → marquée comme zone aveugle.'}
-              </p>
-              <p className="mt-1.5 text-xs text-zinc-400">
-                👆 Clique sur le toggle pour basculer
-              </p>
+            )}
+            <div className="text-3xl">🔓</div>
+            <div className="mt-2 flex items-center gap-2">
+              <span className="text-lg font-bold text-white">Mode test admin</span>
+              <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+                Garde-fous OFF
+              </span>
             </div>
-          </label>
+            <p className="mt-2 text-xs text-rose-100">
+              Le RAG répond à <strong>TOUTE question</strong> (météo, code, politique, Sony, etc.). System prompt minimal sans verrou. Détection « hors-sujet » désactivée. Idéal pour tester la base.
+            </p>
+          </button>
         </div>
 
         {/* Input */}
@@ -159,7 +172,17 @@ export function Playground() {
             rows={3}
             className="w-full rounded-lg bg-zinc-950 px-3 py-2 text-sm text-zinc-100 ring-1 ring-zinc-800 focus:outline-none focus:ring-rose-500"
           />
-          <div className="mt-3 flex items-center justify-between">
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            {/* Badge mode persistant — montre TOUJOURS le mode qui sera envoyé */}
+            <div className={`flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-bold ring-1 ${
+              bypassGuardrails
+                ? 'bg-rose-950 text-rose-200 ring-rose-700'
+                : 'bg-emerald-950 text-emerald-200 ring-emerald-700'
+            }`}>
+              <span>{bypassGuardrails ? '🔓' : '🛡️'}</span>
+              <span>{bypassGuardrails ? 'Mode test (garde-fous OFF)' : 'Mode prod (garde-fous ON)'}</span>
+            </div>
+
             {error && <span className="text-xs text-rose-400">⚠ {error}</span>}
             <div className="ml-auto flex gap-2">
               {history.length > 0 && (
@@ -171,9 +194,13 @@ export function Playground() {
               <button
                 onClick={submit}
                 disabled={loading || !question.trim()}
-                className="rounded-lg bg-rose-600 px-5 py-1.5 text-sm font-semibold text-white hover:bg-rose-500 disabled:opacity-40"
+                className={`rounded-lg px-5 py-1.5 text-sm font-semibold text-white shadow-lg disabled:opacity-40 ${
+                  bypassGuardrails
+                    ? 'bg-rose-600 shadow-rose-600/30 hover:bg-rose-500'
+                    : 'bg-emerald-600 shadow-emerald-600/30 hover:bg-emerald-500'
+                }`}
               >
-                {loading ? '⏳' : '⚡ Envoyer'}
+                {loading ? '⏳' : `⚡ Envoyer ${bypassGuardrails ? '(test)' : '(prod)'}`}
               </button>
             </div>
           </div>
