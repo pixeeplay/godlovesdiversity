@@ -15,8 +15,9 @@
  * L'arbre est construit en regroupant les URLs par chemin (/, /a, /a/b, /a/b/c).
  */
 
+import { politeFetchText, rememberCrawlDelay, type PoliteFetchOptions } from './polite-fetch';
+
 const FETCH_TIMEOUT_MS = 8_000;
-const UA = 'GLD-Crawler/1.0 (+https://gld.pixeeplay.com)';
 
 export type CrawlNode = {
   url: string;
@@ -38,6 +39,10 @@ export type CrawlOptions = {
   includeSubdomains?: boolean;
   /** Suivre les liens externes (autres domaines). Défaut false. */
   followExternal?: boolean;
+  /** Mode discret anti-blacklist : delays plus longs, concurrence 1, headers réalistes. Défaut true. */
+  polite?: boolean;
+  /** Override du delay min entre 2 requêtes au même hostname (ms). */
+  hostDelayMs?: number;
 };
 
 export type CrawlResult = {
@@ -93,19 +98,8 @@ function sameHost(a: string, b: string, includeSubdomains: boolean): boolean {
   }
 }
 
-async function fetchText(url: string, accept = 'text/html,application/xhtml+xml,*/*'): Promise<string | null> {
-  try {
-    const r = await fetch(url, {
-      headers: { 'User-Agent': UA, Accept: accept, 'Accept-Language': 'fr,en;q=0.9' },
-      cache: 'no-store',
-      redirect: 'follow',
-      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-    });
-    if (!r.ok) return null;
-    return await r.text();
-  } catch {
-    return null;
-  }
+async function fetchText(url: string, accept = 'text/html,application/xhtml+xml,*/*', polite?: PoliteFetchOptions): Promise<string | null> {
+  return politeFetchText(url, { accept, timeoutMs: FETCH_TIMEOUT_MS, ...(polite || {}) });
 }
 
 /* ─── ROBOTS.TXT ───────────────────────────────────────────────── */
@@ -130,6 +124,11 @@ async function fetchRobots(rootUrl: string): Promise<RobotsRules | null> {
       } else if (scope !== 'other') {
         if (f === 'disallow' && value) rules.disallow.push(value);
         else if (f === 'allow' && value) rules.allow.push(value);
+        else if (f === 'crawl-delay') {
+          // Crawl-delay déclaré → on le mémorise pour throttle automatique
+          const sec = parseFloat(value);
+          if (!isNaN(sec) && sec > 0) rememberCrawlDelay(u.hostname.toLowerCase(), sec);
+        }
       }
     }
     return rules;
@@ -297,6 +296,10 @@ export async function exploreSite(rootUrl: string, opts: CrawlOptions = {}): Pro
   const maxDepth = Math.max(1, Math.min(opts.maxDepth ?? 2, 5));
   const maxPages = Math.max(1, Math.min(opts.maxPages ?? 100, 500));
   const respectRobots = opts.respectRobots !== false;
+  const polite: PoliteFetchOptions = {
+    polite: opts.polite !== false, // par défaut activé
+    hostDelayMs: opts.hostDelayMs,
+  };
   const warnings: string[] = [];
 
   // Robots
@@ -344,7 +347,7 @@ export async function exploreSite(rootUrl: string, opts: CrawlOptions = {}): Pro
       continue;
     }
 
-    const html = await fetchText(url);
+    const html = await fetchText(url, undefined, polite);
     pages++;
     const title = html ? extractTitle(html) : undefined;
     visited.set(url, { depth, title });

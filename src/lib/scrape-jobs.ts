@@ -59,6 +59,10 @@ export type ScrapeJobOptions = {
   skipJina?: boolean;
   /** Concurrence (workers parallèles). Défaut 3. */
   concurrency?: number;
+  /** Mode discret anti-blacklist (UA rotation, throttle, backoff). Défaut true. */
+  polite?: boolean;
+  /** Override du delay min entre 2 requêtes au même hostname. */
+  hostDelayMs?: number;
   /** Tags appliqués à tous les docs ingérés. */
   tags?: string[];
   /** Locale forcée pour l'ingestion. Défaut 'fr'. */
@@ -179,6 +183,7 @@ async function runJob(id: string): Promise<void> {
         const scraped: ScrapeResult = await scrapeUrlForRag(url, {
           summarize: job.options.summarize,
           skipJina: job.options.skipJina,
+          polite: job.options.polite,
         });
         result.title = scraped.title;
         result.bytes = scraped.bytes;

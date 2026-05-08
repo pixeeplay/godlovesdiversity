@@ -107,6 +107,8 @@ export function ScraperWorkbench() {
   const [skipJina, setSkipJina] = useState(false);
   const [summarize, setSummarize] = useState(false);
   const [ingest, setIngest] = useState(true);
+  const [politeMode, setPoliteMode] = useState(true);
+  const [hostDelayMs, setHostDelayMs] = useState(2500);
   const [tagsInput, setTagsInput] = useState('');
 
   // Étape 2 — exploration
@@ -139,6 +141,7 @@ export function ScraperWorkbench() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           url: cleanUrl, maxDepth, maxPages, respectRobots, includeSubdomains, followExternal,
+          polite: politeMode, hostDelayMs,
         }),
       });
       const j = await r.json();
@@ -171,7 +174,9 @@ export function ScraperWorkbench() {
           summarize,
           ingest,
           skipJina,
-          concurrency: 3,
+          concurrency: politeMode ? 1 : 3,
+          polite: politeMode,
+          hostDelayMs,
           tags: tagsInput.split(',').map((t) => t.trim()).filter(Boolean),
         }),
       });
@@ -315,6 +320,11 @@ export function ScraperWorkbench() {
               value={respectRobots} onChange={setRespectRobots}
             />
             <Toggle
+              label="🥷 Mode discret (anti-blacklist)"
+              hint="UA rotation + throttle par domaine + backoff sur 429/503 + fallback Jina si bloqué. Recommandé."
+              value={politeMode} onChange={setPoliteMode}
+            />
+            <Toggle
               label="🌐 Inclure sous-domaines"
               hint="Crawl aussi blog.site.com, m.site.com, etc."
               value={includeSubdomains} onChange={setIncludeSubdomains}
@@ -326,7 +336,7 @@ export function ScraperWorkbench() {
             />
             <Toggle
               label="🚫 Bypass Jina (fetch direct)"
-              hint="Désactive le rendu JS. Plus rapide mais perd les SPA."
+              hint="Désactive le rendu JS. Plus rapide mais perd les SPA et + de risque ban."
               value={skipJina} onChange={setSkipJina}
             />
             <Toggle
@@ -340,6 +350,30 @@ export function ScraperWorkbench() {
               value={ingest} onChange={setIngest}
             />
           </div>
+
+          {politeMode && (
+            <div className="mt-3 rounded-xl bg-emerald-50 p-4 ring-1 ring-emerald-200">
+              <Label>
+                ⏱️ Délai entre requêtes au même domaine :{' '}
+                <span className="font-mono text-emerald-700">{hostDelayMs} ms</span>
+                {' '}({(hostDelayMs / 1000).toFixed(1)}s)
+              </Label>
+              <input
+                type="range" min={500} max={10000} step={250}
+                value={hostDelayMs} onChange={(e) => setHostDelayMs(Number(e.target.value))}
+                className="w-full accent-emerald-600"
+              />
+              <div className="flex justify-between text-xs text-slate-500">
+                <span>500 ms (rapide)</span>
+                <span>2 500 ms (équilibré)</span>
+                <span>10 s (très discret)</span>
+              </div>
+              <p className="mt-2 text-xs text-emerald-800">
+                Mode discret actif : 1 worker max par domaine, jitter aléatoire ±20 %, backoff exponentiel sur 429/503,
+                respect du <code>Crawl-delay</code> du robots.txt s'il est plus long.
+              </p>
+            </div>
+          )}
 
           <div className="mt-5 flex gap-3">
             <button

@@ -17,6 +17,7 @@
  * extraire un résumé propre + langue détectée + tags suggérés.
  */
 import { getSettings } from './settings';
+import { politeFetch } from './polite-fetch';
 
 export type ScrapeResult = {
   title: string;
@@ -125,19 +126,20 @@ async function fetchViaJina(url: string): Promise<{ title: string; content: stri
 
 /* ─── FALLBACK : FETCH DIRECT ──────────────────────────────────── */
 
-async function fetchViaPlain(url: string): Promise<{ title: string; content: string } | null> {
+async function fetchViaPlain(url: string, polite = true): Promise<{ title: string; content: string; blockedByServer: boolean } | null> {
   try {
-    const r = await fetch(url, {
-      headers: {
-        'User-Agent': 'GLD-Bot/1.0 (+https://gld.pixeeplay.com)',
-        Accept: 'text/html,application/xhtml+xml',
-        'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',
-      },
-      cache: 'no-store',
-      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+    // Utilise politeFetch : UA rotation, throttle par hostname, backoff sur 429/503
+    const r = await politeFetch(url, {
+      polite,
+      timeoutMs: FETCH_TIMEOUT_MS,
+      accept: 'text/html,application/xhtml+xml',
     });
-    if (!r.ok) return null;
-    const html = await r.text();
+    if (!r.ok) {
+      return r.shouldFallbackJina
+        ? { title: '', content: '', blockedByServer: true }
+        : null;
+    }
+    const html = r.text;
     const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
     const title = titleMatch ? decodeHtmlEntities(titleMatch[1]).trim() : '';
     const content = html
@@ -156,7 +158,7 @@ async function fetchViaPlain(url: string): Promise<{ title: string; content: str
       .replace(/&#x27;/g, "'")
       .replace(/\s+/g, ' ')
       .trim();
-    return { title, content };
+    return { title, content, blockedByServer: false };
   } catch {
     return null;
   }
@@ -240,6 +242,8 @@ export type ScrapeOptions = {
   summarize?: boolean;
   /** Force le passage par fetch direct sans tenter Jina (debug). */
   skipJina?: boolean;
+  /** Mode discret anti-blacklist (UA rotation, throttle, backoff). Défaut true. */
+  polite?: boolean;
 };
 
 /**
@@ -256,6 +260,8 @@ export async function scrapeUrlForRag(rawUrl: string, opts: ScrapeOptions = {}):
   let result: { title: string; content: string } | null = null;
   let source: ScrapeResult['source'] = 'jina';
 
+  const polite = opts.polite !== false;
+
   if (!opts.skipJina) {
     result = await fetchViaJina(url);
   }
@@ -263,7 +269,18 @@ export async function scrapeUrlForRag(rawUrl: string, opts: ScrapeOptions = {}):
   if (!result) {
     source = 'fetch';
     if (!opts.skipJina) warning = 'Jina indisponible, fallback fetch direct';
-    result = await fetchViaPlain(url);
+    const plain = await fetchViaPlain(url, polite);
+    if (plain && plain.blockedByServer && !opts.skipJina) {
+      // Le serveur a bloqué (403/429/503) → on retente Jina (qui utilise sa propre IP)
+      warning = 'Bloqué par le serveur (403/429), bascule sur Jina Reader';
+      const retryJina = await fetchViaJina(url);
+      if (retryJina) {
+        result = retryJina;
+        source = 'jina';
+      }
+    } else if (plain && !plain.blockedByServer) {
+      result = { title: plain.title, content: plain.content };
+    }
   }
 
   if (!result) {

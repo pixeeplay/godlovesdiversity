@@ -32,6 +32,8 @@ export async function POST(req: NextRequest) {
     ingest: body.ingest !== false,
     skipJina: !!body.skipJina,
     concurrency: body.concurrency,
+    polite: body.polite !== false,
+    hostDelayMs: typeof body.hostDelayMs === 'number' ? body.hostDelayMs : undefined,
     tags: Array.isArray(body.tags) ? body.tags : undefined,
     locale: typeof body.locale === 'string' ? body.locale : undefined,
   };

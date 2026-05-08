@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
     respectRobots: body.respectRobots,
     includeSubdomains: body.includeSubdomains,
     followExternal: body.followExternal,
+    polite: body.polite !== false,
+    hostDelayMs: typeof body.hostDelayMs === 'number' ? body.hostDelayMs : undefined,
   };
 
   try {
