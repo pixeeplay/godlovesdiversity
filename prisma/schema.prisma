@@ -2083,3 +2083,74 @@ model PriceSnapshot {
   @@index([competitorId, capturedAt(sort: Desc)])
   @@index([capturedAt])
 }
+
+// ───────────────────────────────────────────────────────────────
+// PHASE 2 — INGESTION TARIFS FOURNISSEURS
+// ───────────────────────────────────────────────────────────────
+//
+// Permet d'importer des grilles de prix depuis :
+//   - mail (pièce jointe CSV/Excel via webhook Resend)
+//   - FTP / SFTP (pull périodique d'un fichier sur serveur distant)
+//   - upload manuel admin
+//   - URL HTTP (CSV/JSON publique)
+
+model TariffSource {
+  id           String  @id @default(cuid())
+  /// Nom interne (ex: "Sigma France", "Tamron EU")
+  name         String
+  /// Type de source : "mail" | "ftp" | "sftp" | "http" | "manual"
+  type         String
+  /// Config spécifique au type (JSON)
+  config       Json
+  /// Mapping des colonnes du fichier vers PriceWatch/CompetitorProduct
+  mapping      Json
+  /// Format attendu : "csv" | "xlsx" | "xml" | "json" | "auto"
+  format       String  @default("auto")
+  /// Délimiteur CSV (par défaut "," — FR utilise souvent ";")
+  csvDelimiter String  @default(",")
+  active       Boolean @default(true)
+  /// Domaine concurrent associé (pour créer auto les CompetitorProduct)
+  vendorDomain String?
+
+  lastImportAt     DateTime?
+  lastImportRows   Int?
+  lastImportErrors Int?
+  notes            String?
+
+  imports   TariffImport[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([active, type])
+}
+
+model TariffImport {
+  id       String       @id @default(cuid())
+  sourceId String
+  source   TariffSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  /// Statut : "pending" | "running" | "done" | "error"
+  status  String @default("pending")
+  /// Origine du déclenchement : "manual" | "webhook" | "cron" | "api"
+  trigger String
+
+  fileName            String?
+  fileBytes           Int?
+  fileSha256          String?
+  rowsParsed          Int     @default(0)
+  snapshotsCreated    Int     @default(0)
+  watchesCreated      Int     @default(0)
+  competitorsAffected Int     @default(0)
+  rowsSkipped         Int     @default(0)
+
+  /// Détails errors (premières 50)
+  errors Json?
+  /// Logs verbeux pour debug
+  logs   Json?
+
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+
+  @@index([sourceId, startedAt(sort: Desc)])
+  @@index([status])
+}
