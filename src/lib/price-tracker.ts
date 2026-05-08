@@ -117,6 +117,18 @@ export async function refreshWatch(watchId: string): Promise<RefreshResult> {
     data: { nextRefreshAt: nextRefresh, updatedAt: new Date() },
   });
 
+  // Sync auto dans le RAG (Phase 4) — fail silently pour ne pas casser le refresh
+  try {
+    const { syncWatchToRag } = await import('./price-rag-sync');
+    await syncWatchToRag(watchId);
+  } catch { /* RAG sync best-effort */ }
+
+  // Trigger alertes prix (Phase 5) — fail silently aussi
+  try {
+    const { checkPriceAlerts } = await import('./price-alerts');
+    await checkPriceAlerts(watchId, result);
+  } catch { /* alerts best-effort */ }
+
   return result;
 }
 

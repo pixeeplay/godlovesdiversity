@@ -2000,8 +2000,16 @@ model PriceWatch {
   tags                 String[]  @default([])
   /// Lien optionnel vers un Product GLD si on revend ce produit
   linkedProductId      String?
+  /// ID du produit dans productsmanager.app PIM (si sync activée)
+  pmProductId          String?   @unique
+  /// Date de la dernière sync depuis PM
+  pmSyncedAt           DateTime?
   /// Prix cible souhaité (en centimes) — alerte si un concurrent passe sous ce seuil
   targetPriceCents     Int?
+  /// Date de la dernière alerte envoyée pour ce watch (anti-spam, 24h min entre 2 alertes)
+  lastAlertAt          DateTime?
+  /// Seuil de variation % qui déclenche une alerte (ex: 5 = alerte si baisse >5%). Défaut 10.
+  alertThresholdPct    Int      @default(10)
   /// Devise par défaut (EUR/USD/GBP)
   currency             String    @default("EUR")
   /// Watch active = continue d'être rafraîchi par le cron
