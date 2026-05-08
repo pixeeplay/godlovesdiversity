@@ -37,6 +37,10 @@ type JobResult = {
   ok: boolean;
   title?: string;
   bytes?: number;
+  bytesRaw?: number;
+  cleanRemovedPct?: number;
+  cleanerMode?: string;
+  durationMs?: number;
   source?: string;
   ingested?: boolean;
   chunkCount?: number;
@@ -52,6 +56,7 @@ type Job = {
   currentUrl?: string;
   logs: JobLog[];
   results: JobResult[];
+  startedAt?: number;
   finishedAt?: number;
 };
 
@@ -92,6 +97,15 @@ function fmtBytes(n?: number): string {
   if (n < 1024) return `${n} o`;
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} ko`;
   return `${(n / 1024 / 1024).toFixed(2)} Mo`;
+}
+
+function fmtDuration(ms?: number): string {
+  if (!ms) return '—';
+  if (ms < 1000) return `${ms} ms`;
+  if (ms < 60_000) return `${(ms / 1000).toFixed(1)} s`;
+  const m = Math.floor(ms / 60_000);
+  const s = Math.floor((ms % 60_000) / 1000);
+  return `${m}m${s.toString().padStart(2, '0')}`;
 }
 
 /* ─── COMPOSANT PRINCIPAL ──────────────────────────────────────── */
@@ -529,32 +543,16 @@ export function ScraperWorkbench() {
               </>
             }
           >
-            {/* Barre de progression */}
-            <div className="mb-4">
-              <div className="mb-1 flex justify-between text-sm">
-                <span className="font-medium text-zinc-200">
-                  {job.done} / {job.total} pages
-                  {job.errors > 0 && <span className="ml-2 text-rose-400">({job.errors} erreurs)</span>}
-                </span>
-                <span className="font-mono text-zinc-300">{job.progress}%</span>
-              </div>
-              <div className="h-3 overflow-hidden rounded-full bg-zinc-800">
-                <div
-                  className={`h-full transition-all duration-500 ${
-                    job.status === 'done' ? 'bg-emerald-500'
-                      : job.status === 'error' ? 'bg-rose-500'
-                      : job.status === 'cancelled' ? 'bg-amber-500'
-                      : 'animate-pulse bg-rose-500'
-                  }`}
-                  style={{ width: `${job.progress}%` }}
-                />
-              </div>
-              {job.currentUrl && (
-                <div className="mt-2 truncate font-mono text-xs text-zinc-400">
-                  ↓ {job.currentUrl}
-                </div>
-              )}
-            </div>
+            {/* Barre de progression + ETA */}
+            <ProgressHero job={job} />
+
+            {/* Stats agrégées en cards */}
+            <ProgressStats job={job} />
+
+            {/* Sparkline de la réduction par page */}
+            {job.results.some((r) => r.cleanRemovedPct !== undefined) && (
+              <CleaningChart results={job.results} />
+            )}
 
             <div className="grid gap-4 md:grid-cols-2">
               {/* Logs streaming */}
@@ -579,33 +577,52 @@ export function ScraperWorkbench() {
                 </div>
               </div>
 
-              {/* Résultats */}
+              {/* Tableau résultats enrichi */}
               <div>
-                <Label>✅ Résultats récents</Label>
+                <Label>✅ Résultats récents (brut → nettoyé)</Label>
                 <div className="h-64 overflow-auto rounded-lg border border-zinc-800 bg-zinc-950">
                   <table className="w-full text-xs">
                     <thead className="sticky top-0 bg-zinc-900 text-zinc-300">
                       <tr>
                         <th className="px-2 py-1.5 text-left font-semibold">URL</th>
-                        <th className="px-2 py-1.5 text-right font-semibold">Taille</th>
+                        <th className="px-2 py-1.5 text-right font-semibold" title="Taille brute Jina">Brut</th>
+                        <th className="px-2 py-1.5 text-right font-semibold" title="Taille après cleaner">Net</th>
+                        <th className="px-2 py-1.5 text-right font-semibold" title="% retiré par le cleaner">−%</th>
                         <th className="px-2 py-1.5 text-right font-semibold">Chunks</th>
+                        <th className="px-2 py-1.5 text-right font-semibold">⏱</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-800">
                       {job.results.length === 0 ? (
-                        <tr><td colSpan={3} className="p-4 text-center text-zinc-500">Aucun résultat encore</td></tr>
+                        <tr><td colSpan={6} className="p-4 text-center text-zinc-500">Aucun résultat encore</td></tr>
                       ) : job.results.slice().reverse().map((r) => (
                         <tr key={r.url} className={r.ok ? '' : 'bg-rose-950/30'}>
-                          <td className="px-2 py-1 font-mono">
+                          <td className="px-2 py-1 font-mono max-w-[180px]">
                             <span className={r.ok ? 'text-emerald-400' : 'text-rose-400'}>
                               {r.ok ? '✓' : '✗'}
                             </span>{' '}
-                            <span className="text-zinc-200" title={r.url}>{shortPath(r.url)}</span>
+                            <span className="text-zinc-200 truncate inline-block max-w-[150px] align-bottom" title={r.url}>{shortPath(r.url)}</span>
                             {r.error && <div className="text-[10px] text-rose-300">{r.error}</div>}
                           </td>
-                          <td className="px-2 py-1 text-right text-zinc-300">{fmtBytes(r.bytes)}</td>
-                          <td className="px-2 py-1 text-right font-mono text-zinc-300">
+                          <td className="px-2 py-1 text-right text-zinc-500">{fmtBytes(r.bytesRaw)}</td>
+                          <td className="px-2 py-1 text-right text-zinc-100 font-mono">{fmtBytes(r.bytes)}</td>
+                          <td className="px-2 py-1 text-right">
+                            {r.cleanRemovedPct !== undefined ? (
+                              <span className={`font-mono ${
+                                r.cleanRemovedPct >= 90 ? 'text-emerald-400' :
+                                r.cleanRemovedPct >= 70 ? 'text-sky-400' :
+                                r.cleanRemovedPct >= 30 ? 'text-amber-400' :
+                                'text-zinc-500'
+                              }`}>
+                                {r.cleanRemovedPct}%
+                              </span>
+                            ) : <span className="text-zinc-600">—</span>}
+                          </td>
+                          <td className="px-2 py-1 text-right font-mono text-violet-300">
                             {r.chunkCount ?? (r.ingested === false ? '—' : '·')}
+                          </td>
+                          <td className="px-2 py-1 text-right text-zinc-500 font-mono text-[10px]">
+                            {fmtDuration(r.durationMs)}
                           </td>
                         </tr>
                       ))}
@@ -640,6 +657,171 @@ export function ScraperWorkbench() {
 }
 
 /* ─── COMPOSANTS PRIMITIVES ────────────────────────────────────── */
+
+/* ─── PROGRESS HERO : barre + ETA + URL en cours ──────────────── */
+
+function ProgressHero({ job }: { job: any }) {
+  const elapsed = job.startedAt ? (job.finishedAt || Date.now()) - job.startedAt : 0;
+  const ratePerSec = job.done > 0 && elapsed > 0 ? job.done / (elapsed / 1000) : 0;
+  const remaining = job.total - job.done;
+  const etaSec = ratePerSec > 0 ? remaining / ratePerSec : 0;
+
+  return (
+    <div className="mb-4 rounded-xl bg-zinc-950 p-4 ring-1 ring-zinc-800">
+      <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2 text-sm">
+        <span className="font-medium text-zinc-100">
+          <strong className="font-mono text-base text-rose-400">{job.done}</strong>
+          <span className="text-zinc-500"> / </span>
+          <span className="font-mono">{job.total}</span> pages
+          {job.errors > 0 && <span className="ml-2 rounded bg-rose-950/50 px-1.5 py-0.5 text-[10px] text-rose-300 ring-1 ring-rose-700/40">{job.errors} erreur(s)</span>}
+        </span>
+        <div className="flex items-center gap-3 text-xs">
+          {job.status === 'running' && etaSec > 0 && etaSec < 9_000 && (
+            <span className="text-zinc-400">
+              ETA <strong className="font-mono text-zinc-200">~{fmtDuration(etaSec * 1000)}</strong>
+            </span>
+          )}
+          <span className="font-mono text-2xl font-bold text-zinc-100">{job.progress}%</span>
+        </div>
+      </div>
+      <div className="relative h-3 overflow-hidden rounded-full bg-zinc-800">
+        <div
+          className={`h-full transition-all duration-500 ${
+            job.status === 'done' ? 'bg-gradient-to-r from-emerald-500 to-emerald-400'
+              : job.status === 'error' ? 'bg-rose-500'
+              : job.status === 'cancelled' ? 'bg-amber-500'
+              : 'animate-pulse bg-gradient-to-r from-rose-500 via-fuchsia-500 to-violet-500'
+          }`}
+          style={{ width: `${job.progress}%` }}
+        />
+      </div>
+      {job.currentUrl && (
+        <div className="mt-2 flex items-center gap-2 truncate text-xs">
+          <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-rose-400" />
+          <span className="font-mono text-zinc-400">↓</span>
+          <span className="truncate font-mono text-zinc-300" title={job.currentUrl}>{job.currentUrl}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── PROGRESS STATS : 4 cards d'agrégats temps réel ───────────── */
+
+function ProgressStats({ job }: { job: any }) {
+  const okResults = (job.results || []).filter((r: JobResult) => r.ok);
+  const totalRaw = okResults.reduce((s: number, r: JobResult) => s + (r.bytesRaw || 0), 0);
+  const totalNet = okResults.reduce((s: number, r: JobResult) => s + (r.bytes || 0), 0);
+  const totalChunks = okResults.reduce((s: number, r: JobResult) => s + (r.chunkCount || 0), 0);
+  const cleaningResults = okResults.filter((r: JobResult) => r.cleanRemovedPct !== undefined);
+  const avgRemoved = cleaningResults.length > 0
+    ? Math.round(cleaningResults.reduce((s: number, r: JobResult) => s + (r.cleanRemovedPct || 0), 0) / cleaningResults.length)
+    : 0;
+
+  const elapsed = job.startedAt ? (job.finishedAt || Date.now()) - job.startedAt : 0;
+  const pagesPerMin = elapsed > 0 ? Math.round((job.done / (elapsed / 60_000)) * 10) / 10 : 0;
+  const avgDuration = okResults.length > 0
+    ? Math.round(okResults.reduce((s: number, r: JobResult) => s + (r.durationMs || 0), 0) / okResults.length)
+    : 0;
+
+  return (
+    <div className="mb-4 grid gap-3 grid-cols-2 md:grid-cols-4">
+      <StatCard
+        icon="🌐"
+        label="Octets bruts"
+        value={fmtBytes(totalRaw)}
+        sub={`avant cleaner`}
+        color="zinc"
+      />
+      <StatCard
+        icon="✨"
+        label="Octets nettoyés"
+        value={fmtBytes(totalNet)}
+        sub={avgRemoved > 0 ? `−${avgRemoved}% en moyenne` : 'cleaner off'}
+        color={avgRemoved >= 80 ? 'emerald' : avgRemoved >= 50 ? 'sky' : 'amber'}
+      />
+      <StatCard
+        icon="🧩"
+        label="Chunks ingérés"
+        value={totalChunks}
+        sub={`${okResults.length} doc(s)`}
+        color="violet"
+      />
+      <StatCard
+        icon="⚡"
+        label="Vitesse"
+        value={pagesPerMin > 0 ? `${pagesPerMin}/min` : '—'}
+        sub={avgDuration > 0 ? `~${fmtDuration(avgDuration)}/page` : 'démarrage…'}
+        color="rose"
+      />
+    </div>
+  );
+}
+
+function StatCard({ icon, label, value, sub, color }: {
+  icon: string; label: string; value: React.ReactNode; sub?: string;
+  color: 'zinc' | 'emerald' | 'sky' | 'amber' | 'violet' | 'rose';
+}) {
+  const colorMap = {
+    zinc:    { bg: 'bg-zinc-900',          text: 'text-zinc-200',    border: 'ring-zinc-700' },
+    emerald: { bg: 'bg-emerald-950/60',    text: 'text-emerald-300', border: 'ring-emerald-700/50' },
+    sky:     { bg: 'bg-sky-950/60',        text: 'text-sky-300',     border: 'ring-sky-700/50' },
+    amber:   { bg: 'bg-amber-950/60',      text: 'text-amber-300',   border: 'ring-amber-700/50' },
+    violet:  { bg: 'bg-violet-950/60',     text: 'text-violet-300',  border: 'ring-violet-700/50' },
+    rose:    { bg: 'bg-rose-950/60',       text: 'text-rose-300',    border: 'ring-rose-700/50' },
+  }[color];
+  return (
+    <div className={`rounded-xl ${colorMap.bg} p-3 ring-1 ${colorMap.border}`}>
+      <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+        <span>{icon}</span>
+        <span>{label}</span>
+      </div>
+      <div className={`mt-1 font-mono text-lg font-bold ${colorMap.text}`}>{value}</div>
+      {sub && <div className="text-[10px] text-zinc-500">{sub}</div>}
+    </div>
+  );
+}
+
+/* ─── CLEANING CHART : barres horizontales par page ────────────── */
+
+function CleaningChart({ results }: { results: JobResult[] }) {
+  const slice = results.slice(-30); // Dernières 30 pages
+  const maxRaw = Math.max(...slice.map((r) => r.bytesRaw || 0), 1);
+
+  return (
+    <div className="mb-4 rounded-xl bg-zinc-950 p-4 ring-1 ring-zinc-800">
+      <div className="mb-2 flex items-center justify-between">
+        <Label>📊 Efficacité du cleaner (30 dernières pages)</Label>
+        <div className="flex items-center gap-3 text-[10px] text-zinc-500">
+          <span className="flex items-center gap-1"><span className="h-2 w-3 bg-zinc-600" />Brut</span>
+          <span className="flex items-center gap-1"><span className="h-2 w-3 bg-emerald-400" />Net</span>
+        </div>
+      </div>
+      <div className="space-y-1">
+        {slice.map((r, i) => {
+          const rawPct = ((r.bytesRaw || 0) / maxRaw) * 100;
+          const netPct = ((r.bytes || 0) / maxRaw) * 100;
+          return (
+            <div key={`${r.url}-${i}`} className="flex items-center gap-2 text-[10px]">
+              <span className="w-32 truncate font-mono text-zinc-500" title={r.url}>{shortPath(r.url)}</span>
+              <div className="relative h-3 flex-1 overflow-hidden rounded bg-zinc-900">
+                {/* Barre brute (fond gris) */}
+                <div className="absolute h-full bg-zinc-700/60" style={{ width: `${rawPct}%` }} />
+                {/* Barre nette (devant) */}
+                <div className="absolute h-full bg-gradient-to-r from-emerald-500 to-emerald-300" style={{ width: `${netPct}%` }} />
+              </div>
+              <span className={`w-12 text-right font-mono ${
+                (r.cleanRemovedPct || 0) >= 90 ? 'text-emerald-400' :
+                (r.cleanRemovedPct || 0) >= 70 ? 'text-sky-400' :
+                'text-amber-400'
+              }`}>−{r.cleanRemovedPct ?? 0}%</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function Section({ step, title, subtitle, children }: {
   step: number; title: string; subtitle?: React.ReactNode; children: React.ReactNode;

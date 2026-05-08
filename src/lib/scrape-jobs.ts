@@ -25,7 +25,11 @@ export type JobResult = {
   url: string;
   ok: boolean;
   title?: string;
-  bytes?: number;
+  bytes?: number;            // Taille finale après cleaning
+  bytesRaw?: number;          // Taille avant cleaning (pour mesurer l'efficacité)
+  cleanRemovedPct?: number;   // % de bruit retiré par le cleaner
+  cleanerMode?: string;       // Mode utilisé (off/standard/aggressive/gemini)
+  durationMs?: number;        // Temps de traitement de cette URL (ms)
   source?: 'jina' | 'fetch';
   ingested?: boolean;
   docId?: string;
@@ -179,6 +183,7 @@ async function runJob(id: string): Promise<void> {
       const url = queue.shift();
       if (!url) break;
       job.currentUrl = url;
+      const tStart = Date.now();
       pushLog(job, 'info', `[w${workerId}] ↓ ${url}`);
 
       const result: JobResult = { url, ok: false };
@@ -195,6 +200,12 @@ async function runJob(id: string): Promise<void> {
         result.bytes = scraped.bytes;
         result.source = scraped.source;
         result.ok = true;
+        if (scraped.cleaning) {
+          result.bytesRaw = scraped.cleaning.bytesBeforeClean;
+          result.cleanRemovedPct = scraped.cleaning.removedPct;
+          result.cleanerMode = scraped.cleaning.mode;
+        }
+        result.durationMs = Date.now() - tStart;
 
         if (scraped.warning) pushLog(job, 'warn', `${url} : ${scraped.warning}`);
         if (scraped.cleaning) {
