@@ -313,16 +313,16 @@ export type AskOptions = {
   debug?: boolean;
 };
 
-const NO_GUARDRAILS_PROMPT = `Tu es un assistant en mode TEST/ADMIN.
+const NO_GUARDRAILS_PROMPT = `Tu es un assistant expert qui répond DIRECTEMENT à la question posée.
 
-Mode test activé : aucun garde-fou thématique. Tu peux répondre à n'importe quelle question, en t'appuyant sur les sources fournies si pertinentes, sinon depuis ton savoir général.
-
-STYLE :
-- Réponse claire et structurée
-- Cite les sources sous forme [Source N] quand tu utilises les passages fournis
-- Ne fabrique JAMAIS de citation ni de verset que tu ne vois pas dans les sources
-
-Note : ce mode est réservé au playground admin pour tester le RAG sans le verrou foi/inclusion par défaut.`;
+RÈGLES :
+- Réponds tout de suite à la question, sans préambule (ne dis jamais "voici", "en mode test", "je vais te parler de", etc.)
+- Si des sources sont fournies, appuie-toi dessus en priorité et cite-les sous forme [Source N]
+- Sinon, réponds depuis ton savoir général
+- Ne fabrique JAMAIS une citation, un verset ou un fait que tu ne vois pas dans les sources
+- Réponse claire, structurée, complète. Pas de morale, pas de redirection, pas de garde-fou thématique.
+- Si la question concerne des produits, donne les noms exacts, prix si disponibles, caractéristiques clés
+- Markdown autorisé pour la lisibilité (titres, listes, gras)`;
 
 export async function ask(question: string, opts: AskOptions = {}): Promise<AskResult> {
   // Tente le RAG. Si embedding plante OU si la base est vide → on passe en mode
@@ -376,8 +376,10 @@ export async function ask(question: string, opts: AskOptions = {}): Promise<AskR
     prompt,
     model: GEMINI_MODELS.CHAT,
     temperature: 0.4,
-    maxOutputTokens: 600,
-    timeoutMs: 30_000,
+    // Plus généreux : 2000 tokens permet ~1500 mots, suffisant pour des réponses détaillées
+    // (sinon les réponses se font tronquer en plein milieu)
+    maxOutputTokens: 2000,
+    timeoutMs: 45_000,
   });
   const answer = r?.text || 'Je n\'ai pas pu formuler de réponse. Réessaie ?';
 
