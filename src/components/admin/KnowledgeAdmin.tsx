@@ -85,8 +85,15 @@ export function KnowledgeAdmin({
         <TabBtn active={tab === 'voice'}   onClick={() => setTab('voice')}   icon={Sparkles} label="Voix & Garde-fous" />
         <TabBtn active={tab === 'queue'}   onClick={() => setTab('queue')}   icon={MessageSquare} label={`File ${stats.pendingCount > 0 ? `(${stats.pendingCount})` : ''}`} />
         <a
+          href="/admin/ai/knowledge/playground"
+          className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition bg-gradient-to-r from-emerald-500 to-cyan-600 text-white shadow-lg hover:opacity-90"
+        >
+          <MessageSquare size={14} />
+          💬 Playground
+        </a>
+        <a
           href="/admin/ai/knowledge/brain"
-          className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition bg-gradient-to-r from-violet-500 to-fuchsia-600 text-white shadow-lg hover:opacity-90"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition bg-gradient-to-r from-violet-500 to-fuchsia-600 text-white shadow-lg hover:opacity-90"
         >
           <Bot size={14} />
           🧠 Cerveau
@@ -236,13 +243,22 @@ function LibraryTab({ docs, setDocs }: { docs: Doc[]; setDocs: (d: Doc[]) => voi
                     >
                       {d.enabled ? <><Eye size={11} /> Actif</> : <><EyeOff size={11} /> Inactif</>}
                     </button>
-                    <button
-                      onClick={() => deleteDoc(d)}
-                      className="text-zinc-500 hover:text-red-400 p-1"
-                      title="Supprimer"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <a
+                        href={`/admin/ai/knowledge/docs/${d.id}`}
+                        className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-violet-500/15 text-violet-300 border border-violet-500/30 hover:bg-violet-500/25"
+                        title="Voir chunks et embeddings"
+                      >
+                        🧬 Vectors
+                      </a>
+                      <button
+                        onClick={() => deleteDoc(d)}
+                        className="text-zinc-500 hover:text-red-400 p-1"
+                        title="Supprimer"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

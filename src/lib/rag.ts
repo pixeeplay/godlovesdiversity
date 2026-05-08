@@ -295,12 +295,36 @@ Réponds maintenant dans le style GLD défini plus haut.`;
 
 export type AskResult = {
   answer: string;
-  sources: { title: string; source: string | null; score: number }[];
+  sources: { title: string; source: string | null; score: number; chunkId?: string; text?: string }[];
   topScore: number;
   offTopic: boolean;
+  /** Mode test : prompt complet envoyé à Gemini (utile pour debug) */
+  debugPrompt?: string;
+  /** Mode test : confirme si le garde-fou a été bypassé */
+  guardrailsBypass?: boolean;
 };
 
-export async function ask(question: string, opts: { locale?: string } = {}): Promise<AskResult> {
+export type AskOptions = {
+  locale?: string;
+  /** Si true : désactive le garde-fou hors-sujet et utilise un system prompt minimal sans verrou
+   *  thématique foi/inclusion. Réservé aux outils admin (playground RAG). */
+  bypassGuardrails?: boolean;
+  /** Si true : inclut le prompt complet et le texte des chunks dans la réponse (debug). */
+  debug?: boolean;
+};
+
+const NO_GUARDRAILS_PROMPT = `Tu es un assistant en mode TEST/ADMIN.
+
+Mode test activé : aucun garde-fou thématique. Tu peux répondre à n'importe quelle question, en t'appuyant sur les sources fournies si pertinentes, sinon depuis ton savoir général.
+
+STYLE :
+- Réponse claire et structurée
+- Cite les sources sous forme [Source N] quand tu utilises les passages fournis
+- Ne fabrique JAMAIS de citation ni de verset que tu ne vois pas dans les sources
+
+Note : ce mode est réservé au playground admin pour tester le RAG sans le verrou foi/inclusion par défaut.`;
+
+export async function ask(question: string, opts: AskOptions = {}): Promise<AskResult> {
   // Tente le RAG. Si embedding plante OU si la base est vide → on passe en mode
   // "Gemini direct" avec juste le system prompt, sans sources.
   let chunks: RetrievedChunk[] = [];
@@ -314,7 +338,8 @@ export async function ask(question: string, opts: { locale?: string } = {}): Pro
 
   const topScore = chunks[0]?.score || 0;
   // Hors-sujet uniquement si on a des sources ET qu'aucune ne matche assez
-  const offTopic = ragWorked && chunks.length > 0 && topScore < MIN_SCORE;
+  // bypassGuardrails désactive complètement la détection hors-sujet
+  const offTopic = !opts.bypassGuardrails && ragWorked && chunks.length > 0 && topScore < MIN_SCORE;
 
   if (offTopic) {
     await prisma.unansweredQuery.create({
@@ -323,10 +348,25 @@ export async function ask(question: string, opts: { locale?: string } = {}): Pro
   }
 
   // Construit le prompt : avec sources si dispo, sans sinon
-  const sysPrompt = await getSystemPrompt();
-  const prompt = chunks.length > 0
-    ? await buildRagPrompt(question, chunks)
-    : `${sysPrompt}\n\nQUESTION DU VISITEUR :\n${question}\n\nRéponds dans le style GLD défini plus haut. (Note : la bibliothèque de connaissances RAG n'est pas encore alimentée, réponds depuis ton savoir général en restant fidèle au ton et aux principes GLD.)`;
+  // bypassGuardrails → utilise un system prompt minimal sans verrou thématique
+  const sysPrompt = opts.bypassGuardrails ? NO_GUARDRAILS_PROMPT : await getSystemPrompt();
+  let prompt: string;
+  if (chunks.length > 0) {
+    if (opts.bypassGuardrails) {
+      const sources = chunks
+        .map((c, i) => `[Source ${i + 1} : « ${c.docTitle} »${c.source ? ` — ${c.source}` : ''}]\n${c.text}`)
+        .join('\n\n---\n\n');
+      prompt = `${sysPrompt}\n\nSOURCES DISPONIBLES :\n\n${sources}\n\nQUESTION :\n${question}\n\nRéponds maintenant.`;
+    } else {
+      prompt = await buildRagPrompt(question, chunks);
+    }
+  } else {
+    prompt = `${sysPrompt}\n\nQUESTION :\n${question}\n\n${
+      opts.bypassGuardrails
+        ? 'Réponds depuis ton savoir général (mode test admin, pas de bibliothèque RAG matchée).'
+        : 'Réponds dans le style GLD défini plus haut. (Note : la bibliothèque de connaissances RAG n\'est pas encore alimentée, réponds depuis ton savoir général en restant fidèle au ton et aux principes GLD.)'
+    }`;
+  }
 
   const key = await getGeminiKey();
   const r = await fetch(
@@ -347,8 +387,14 @@ export async function ask(question: string, opts: { locale?: string } = {}): Pro
 
   return {
     answer: answer.trim(),
-    sources: chunks.map((c) => ({ title: c.docTitle, source: c.source, score: Number(c.score.toFixed(3)) })),
+    sources: chunks.map((c) => ({
+      title: c.docTitle,
+      source: c.source,
+      score: Number(c.score.toFixed(3)),
+      ...(opts.debug ? { chunkId: c.chunkId, text: c.text } : {}),
+    })),
     topScore: Number(topScore.toFixed(3)),
-    offTopic
+    offTopic,
+    ...(opts.debug ? { debugPrompt: prompt, guardrailsBypass: !!opts.bypassGuardrails } : {}),
   };
 }
