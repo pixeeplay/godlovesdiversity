@@ -90,6 +90,7 @@ export type ConstellationNode = {
   docTitle: string;
   x: number;          // -1 à 1
   y: number;          // -1 à 1
+  z: number;          // -1 à 1 (3e composante PCA pour viz 3D)
   weight: number;     // tokens normalisés 0-1, taille du point
   cluster: number;    // 0-7 (couleur)
   preview: string;    // 80 premiers chars du chunk
@@ -297,17 +298,25 @@ export async function computeBrainSnapshot(): Promise<BrainSnapshot> {
     avgEmbeddingNorm = vecs.reduce((s, v) => s + Math.sqrt(dot(v, v)), 0) / vecs.length;
 
     const v1 = powerIteration(centered, 25);
-    const deflated = deflate(centered, v1);
-    const v2 = powerIteration(deflated, 25);
+    const deflated1 = deflate(centered, v1);
+    const v2 = powerIteration(deflated1, 25);
+    const deflated2 = deflate(deflated1, v2);
+    const v3 = powerIteration(deflated2, 25);
 
-    const projected = centered.map((row) => ({ x: dot(row, v1), y: dot(row, v2) }));
+    const projected = centered.map((row) => ({
+      x: dot(row, v1),
+      y: dot(row, v2),
+      z: dot(row, v3),
+    }));
 
     // Normalise dans [-1, 1]
     const xs = projected.map((p) => p.x);
     const ys = projected.map((p) => p.y);
+    const zs = projected.map((p) => p.z);
     const xMax = Math.max(...xs.map(Math.abs)) || 1;
     const yMax = Math.max(...ys.map(Math.abs)) || 1;
-    const normProj = projected.map((p) => ({ x: p.x / xMax, y: p.y / yMax }));
+    const zMax = Math.max(...zs.map(Math.abs)) || 1;
+    const normProj = projected.map((p) => ({ x: p.x / xMax, y: p.y / yMax, z: p.z / zMax }));
 
     const labels = quickCluster(normProj, 8);
     const tokenMax = Math.max(...sample.map((s) => s.tokens), 1);
@@ -318,6 +327,7 @@ export async function computeBrainSnapshot(): Promise<BrainSnapshot> {
       docTitle: s.docTitle,
       x: normProj[i].x,
       y: normProj[i].y,
+      z: normProj[i].z,
       weight: 0.3 + 0.7 * (s.tokens / tokenMax),
       cluster: labels[i],
       preview: s.text.replace(/\s+/g, ' ').trim().slice(0, 80),

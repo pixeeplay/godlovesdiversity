@@ -11,6 +11,7 @@
  * 100 % SVG + Tailwind, zéro dépendance externe. Animations CSS.
  */
 import { useEffect, useMemo, useState } from 'react';
+import { BrainViz3D } from './BrainViz3D';
 
 /* ─── TYPES (alignés avec brain-stats.ts) ──────────────────────── */
 
@@ -20,7 +21,7 @@ type Dimensions = {
 
 type ConstellationNode = {
   id: string; docId: string; docTitle: string;
-  x: number; y: number; weight: number; cluster: number; preview: string;
+  x: number; y: number; z: number; weight: number; cluster: number; preview: string;
 };
 
 type Synapse = {
@@ -73,6 +74,7 @@ export function BrainViz() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [view3D, setView3D] = useState(true); // 3D par défaut, c'est plus fou
 
   useEffect(() => {
     let cancelled = false;
@@ -121,14 +123,35 @@ export function BrainViz() {
           <DimensionsRadar dim={snap.dimensions} pulseHz={snap.vitals.pulseHz} />
         </section>
 
-        {/* CONSTELLATION */}
+        {/* CONSTELLATION (toggle 2D/3D) */}
         <section className="mt-10">
-          <SectionTitle
-            icon="✨"
-            title="Constellation de la mémoire"
-            subtitle={`${snap.constellation.length} chunks projetés en 2D · ${snap.synapses.length} synapses fortes`}
-          />
-          <Constellation nodes={snap.constellation} synapses={snap.synapses} />
+          <div className="mb-4 flex items-center justify-between">
+            <SectionTitle
+              icon="✨"
+              title="Constellation de la mémoire"
+              subtitle={`${snap.constellation.length} chunks projetés · ${snap.synapses.length} synapses fortes`}
+            />
+            <div className="flex gap-1 rounded-lg bg-slate-900 p-1 ring-1 ring-slate-800">
+              <button
+                onClick={() => setView3D(false)}
+                className={`rounded px-3 py-1 text-xs font-bold ${!view3D ? 'bg-fuchsia-600 text-white shadow-lg shadow-fuchsia-500/30' : 'text-slate-400 hover:text-white'}`}
+              >📊 2D</button>
+              <button
+                onClick={() => setView3D(true)}
+                className={`rounded px-3 py-1 text-xs font-bold ${view3D ? 'bg-fuchsia-600 text-white shadow-lg shadow-fuchsia-500/30' : 'text-slate-400 hover:text-white'}`}
+              >🧊 3D interactif</button>
+            </div>
+          </div>
+          {view3D ? (
+            <BrainViz3D
+              nodes={snap.constellation}
+              synapses={snap.synapses.map((s) => ({ fromId: s.fromId, toId: s.toId, similarity: s.similarity }))}
+              pulseHz={snap.vitals.pulseHz}
+              glowColor={IQ_COLORS[snap.iqColor].ring}
+            />
+          ) : (
+            <Constellation nodes={snap.constellation} synapses={snap.synapses} />
+          )}
         </section>
 
         {/* TIMELINE + DISTRIBUTIONS */}
