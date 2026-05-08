@@ -84,6 +84,20 @@ export function KnowledgeAdmin({
         <TabBtn active={tab === 'add'}     onClick={() => setTab('add')}     icon={Plus}    label="Ajouter du contenu" />
         <TabBtn active={tab === 'voice'}   onClick={() => setTab('voice')}   icon={Sparkles} label="Voix & Garde-fous" />
         <TabBtn active={tab === 'queue'}   onClick={() => setTab('queue')}   icon={MessageSquare} label={`File ${stats.pendingCount > 0 ? `(${stats.pendingCount})` : ''}`} />
+        <a
+          href="/admin/ai/knowledge/brain"
+          className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition bg-gradient-to-r from-violet-500 to-fuchsia-600 text-white shadow-lg hover:opacity-90"
+        >
+          <Bot size={14} />
+          🧠 Cerveau
+        </a>
+        <a
+          href="/admin/ai/knowledge/scraper"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition bg-gradient-to-r from-rose-500 to-fuchsia-600 text-white shadow-lg hover:opacity-90"
+        >
+          <Zap size={14} />
+          Scraper un site →
+        </a>
       </nav>
 
       {/* CONTENU TAB */}

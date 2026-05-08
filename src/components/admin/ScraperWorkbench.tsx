@@ -1,0 +1,631 @@
+'use client';
+/**
+ * ScraperWorkbench — UI didactique pour piloter le scraper RAG.
+ *
+ * Étapes guidées :
+ *   1. SOURCE      : URL racine + profondeur + sécurité (robots.txt, subdomains, externes)
+ *   2. EXPLORATION : appel /api/admin/knowledge/explore → arbre TreeView avec checkbox
+ *   3. SCRAPING    : POST /api/admin/knowledge/scrape avec URLs sélectionnées
+ *   4. PROGRESSION : polling 1s sur GET /scrape/[id] → barre + logs streaming
+ *
+ * Design : 100 % Tailwind, zéro dépendance externe, tout dans 1 fichier pour clarté.
+ */
+import { useEffect, useMemo, useRef, useState } from 'react';
+
+/* ─── TYPES (alignés sur l'API) ────────────────────────────────── */
+
+type CrawlNode = {
+  url: string;
+  title?: string;
+  depth: number;
+  children: CrawlNode[];
+  status: 'ok' | 'error' | 'skipped';
+  reason?: string;
+};
+
+type ExploreResult = {
+  root: CrawlNode;
+  totalPages: number;
+  rootUrl: string;
+  source: 'sitemap' | 'bfs';
+  warnings: string[];
+};
+
+type JobLog = { ts: number; level: 'info' | 'warn' | 'error'; msg: string };
+type JobResult = {
+  url: string;
+  ok: boolean;
+  title?: string;
+  bytes?: number;
+  source?: string;
+  ingested?: boolean;
+  chunkCount?: number;
+  error?: string;
+};
+type Job = {
+  id: string;
+  status: 'queued' | 'running' | 'done' | 'error' | 'cancelled';
+  total: number;
+  done: number;
+  errors: number;
+  progress: number;
+  currentUrl?: string;
+  logs: JobLog[];
+  results: JobResult[];
+  finishedAt?: number;
+};
+
+/* ─── HELPERS UI ───────────────────────────────────────────────── */
+
+function flatten(node: CrawlNode): CrawlNode[] {
+  const out: CrawlNode[] = [node];
+  for (const c of node.children) out.push(...flatten(c));
+  return out;
+}
+
+function shortPath(url: string): string {
+  try {
+    const u = new URL(url);
+    return u.pathname === '/' ? '/' : u.pathname;
+  } catch {
+    return url;
+  }
+}
+
+function fmtBytes(n?: number): string {
+  if (!n) return '—';
+  if (n < 1024) return `${n} o`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} ko`;
+  return `${(n / 1024 / 1024).toFixed(2)} Mo`;
+}
+
+/* ─── COMPOSANT PRINCIPAL ──────────────────────────────────────── */
+
+export function ScraperWorkbench() {
+  // Étape 1 — config source
+  const [url, setUrl] = useState('https://');
+  const [maxDepth, setMaxDepth] = useState(2);
+  const [maxPages, setMaxPages] = useState(50);
+  const [respectRobots, setRespectRobots] = useState(true);
+  const [includeSubdomains, setIncludeSubdomains] = useState(false);
+  const [followExternal, setFollowExternal] = useState(false);
+  const [skipJina, setSkipJina] = useState(false);
+  const [summarize, setSummarize] = useState(false);
+  const [ingest, setIngest] = useState(true);
+  const [tagsInput, setTagsInput] = useState('');
+
+  // Étape 2 — exploration
+  const [exploring, setExploring] = useState(false);
+  const [tree, setTree] = useState<ExploreResult | null>(null);
+  const [exploreError, setExploreError] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+
+  // Étape 3 — job
+  const [job, setJob] = useState<Job | null>(null);
+  const [scrapeError, setScrapeError] = useState<string | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  /* ─── Étape 1 → 2 : Explorer ────────────────────────── */
+
+  const handleExplore = async () => {
+    setExploring(true);
+    setExploreError(null);
+    setTree(null);
+    setSelected(new Set());
+    try {
+      const r = await fetch('/api/admin/knowledge/explore', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url, maxDepth, maxPages, respectRobots, includeSubdomains, followExternal,
+        }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || 'Exploration KO');
+      setTree(j);
+      // Présélectionne toutes les pages
+      setSelected(new Set(flatten(j.root).map((n) => n.url)));
+    } catch (e: any) {
+      setExploreError(e?.message || 'Erreur inconnue');
+    } finally {
+      setExploring(false);
+    }
+  };
+
+  /* ─── Étape 2 → 3 : Lancer le scraping ──────────────── */
+
+  const handleScrape = async () => {
+    if (selected.size === 0) {
+      setScrapeError('Sélectionne au moins une page');
+      return;
+    }
+    setScrapeError(null);
+    setJob(null);
+    try {
+      const r = await fetch('/api/admin/knowledge/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          urls: [...selected],
+          summarize,
+          ingest,
+          skipJina,
+          concurrency: 3,
+          tags: tagsInput.split(',').map((t) => t.trim()).filter(Boolean),
+        }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || 'Démarrage KO');
+      // Démarre le polling
+      pollRef.current && clearInterval(pollRef.current);
+      const poll = async () => {
+        try {
+          const rr = await fetch(`/api/admin/knowledge/scrape/${j.id}`);
+          if (!rr.ok) return;
+          const jj = await rr.json();
+          setJob(jj);
+          if (['done', 'error', 'cancelled'].includes(jj.status)) {
+            if (pollRef.current) clearInterval(pollRef.current);
+          }
+        } catch { /* ignore network blip */ }
+      };
+      poll(); // immédiat
+      pollRef.current = setInterval(poll, 1000);
+    } catch (e: any) {
+      setScrapeError(e?.message || 'Erreur inconnue');
+    }
+  };
+
+  const handleCancel = async () => {
+    if (!job) return;
+    await fetch(`/api/admin/knowledge/scrape/${job.id}`, { method: 'DELETE' });
+  };
+
+  useEffect(() => () => {
+    if (pollRef.current) clearInterval(pollRef.current);
+  }, []);
+
+  /* ─── ARBRE : sélection récursive ────────────────────── */
+
+  const toggleNode = (node: CrawlNode, value: boolean) => {
+    const next = new Set(selected);
+    for (const n of flatten(node)) value ? next.add(n.url) : next.delete(n.url);
+    setSelected(next);
+  };
+
+  const toggleCollapsed = (url: string) => {
+    const next = new Set(collapsed);
+    next.has(url) ? next.delete(url) : next.add(url);
+    setCollapsed(next);
+  };
+
+  const allUrls = useMemo(() => (tree ? flatten(tree.root).map((n) => n.url) : []), [tree]);
+
+  /* ─── RENDER ─────────────────────────────────────────── */
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-rose-50 px-4 py-6">
+      <div className="mx-auto max-w-7xl">
+        <header className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">🕸️ Scraper RAG didactique</h1>
+            <p className="text-sm text-slate-600">
+              Explore un site, choisis visuellement les pages, ingère dans la bibliothèque GLD.
+            </p>
+          </div>
+          <a href="/admin/ai/knowledge" className="text-sm text-rose-600 hover:underline">
+            ← Bibliothèque
+          </a>
+        </header>
+
+        {/* ÉTAPE 1 — CONFIG */}
+        <Section
+          step={1}
+          title="Source à scraper"
+          subtitle="Quelle URL, jusqu'à quelle profondeur, et quels garde-fous appliquer."
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <Label>URL racine</Label>
+              <input
+                type="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="https://exemple.com"
+                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-mono text-sm focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-200"
+              />
+              <Hint>Le scraper part de cette URL et explore les liens internes.</Hint>
+            </div>
+
+            <div>
+              <Label>
+                Profondeur max : <span className="font-mono text-rose-600">{maxDepth}</span>
+              </Label>
+              <input
+                type="range" min={1} max={5} step={1}
+                value={maxDepth} onChange={(e) => setMaxDepth(Number(e.target.value))}
+                className="w-full accent-rose-600"
+              />
+              <div className="flex justify-between text-xs text-slate-500">
+                <span>1 (racine)</span><span>3 (recommandé)</span><span>5 (lourd)</span>
+              </div>
+            </div>
+
+            <div>
+              <Label>
+                Pages max : <span className="font-mono text-rose-600">{maxPages}</span>
+              </Label>
+              <input
+                type="range" min={5} max={500} step={5}
+                value={maxPages} onChange={(e) => setMaxPages(Number(e.target.value))}
+                className="w-full accent-rose-600"
+              />
+              <Hint>Plafond dur pour éviter de partir en vrille sur un gros site.</Hint>
+            </div>
+
+            <div>
+              <Label>Tags appliqués aux docs ingérés</Label>
+              <input
+                type="text" value={tagsInput} onChange={(e) => setTagsInput(e.target.value)}
+                placeholder="religion, lgbt, témoignage"
+                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-200"
+              />
+              <Hint>Séparés par des virgules. Visibles dans la bibliothèque RAG.</Hint>
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 rounded-xl bg-slate-50 p-4 md:grid-cols-2">
+            <Toggle
+              label="🛡️ Respecter robots.txt"
+              hint="Bloque les pages interdites par le site (recommandé pour rester poli)."
+              value={respectRobots} onChange={setRespectRobots}
+            />
+            <Toggle
+              label="🌐 Inclure sous-domaines"
+              hint="Crawl aussi blog.site.com, m.site.com, etc."
+              value={includeSubdomains} onChange={setIncludeSubdomains}
+            />
+            <Toggle
+              label="↗️ Suivre liens externes"
+              hint="⚠️ Peut exploser le scope. À éviter sauf besoin précis."
+              value={followExternal} onChange={setFollowExternal}
+            />
+            <Toggle
+              label="🚫 Bypass Jina (fetch direct)"
+              hint="Désactive le rendu JS. Plus rapide mais perd les SPA."
+              value={skipJina} onChange={setSkipJina}
+            />
+            <Toggle
+              label="✨ Enrichissement Gemini"
+              hint="Détecte langue + résumé + tags auto. ~0.0002$/page."
+              value={summarize} onChange={setSummarize}
+            />
+            <Toggle
+              label="📥 Ingérer dans le RAG"
+              hint="Si désactivé : scrape seulement (test sans pollution DB)."
+              value={ingest} onChange={setIngest}
+            />
+          </div>
+
+          <div className="mt-5 flex gap-3">
+            <button
+              onClick={handleExplore}
+              disabled={exploring || !url || url === 'https://'}
+              className="rounded-lg bg-rose-600 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-rose-700 disabled:opacity-50"
+            >
+              {exploring ? '🔍 Exploration…' : '🔍 Explorer le site'}
+            </button>
+            {exploreError && <span className="self-center text-sm text-rose-600">⚠ {exploreError}</span>}
+          </div>
+        </Section>
+
+        {/* ÉTAPE 2 — ARBORESCENCE */}
+        {tree && (
+          <Section
+            step={2}
+            title={`Arborescence découverte (${tree.totalPages} pages)`}
+            subtitle={
+              <>
+                Source :{' '}
+                <Badge color={tree.source === 'sitemap' ? 'green' : 'amber'}>
+                  {tree.source === 'sitemap' ? '✓ sitemap.xml' : '🔍 BFS interne'}
+                </Badge>
+                . Coche les pages à scraper (toutes pré-sélectionnées par défaut).
+              </>
+            }
+          >
+            <div className="mb-3 flex flex-wrap gap-2 text-xs">
+              <button
+                onClick={() => setSelected(new Set(allUrls))}
+                className="rounded-md bg-slate-200 px-3 py-1 text-slate-700 hover:bg-slate-300"
+              >Tout cocher ({allUrls.length})</button>
+              <button
+                onClick={() => setSelected(new Set())}
+                className="rounded-md bg-slate-200 px-3 py-1 text-slate-700 hover:bg-slate-300"
+              >Tout décocher</button>
+              <button
+                onClick={() => setCollapsed(new Set(flatten(tree.root).filter((n) => n.children.length).map((n) => n.url)))}
+                className="rounded-md bg-slate-200 px-3 py-1 text-slate-700 hover:bg-slate-300"
+              >Replier tout</button>
+              <button
+                onClick={() => setCollapsed(new Set())}
+                className="rounded-md bg-slate-200 px-3 py-1 text-slate-700 hover:bg-slate-300"
+              >Déplier tout</button>
+              <span className="ml-auto self-center text-slate-600">
+                <strong className="text-rose-600">{selected.size}</strong> / {allUrls.length} sélectionnées
+              </span>
+            </div>
+
+            <div className="max-h-[400px] overflow-auto rounded-lg border border-slate-200 bg-white p-3 font-mono text-xs">
+              <TreeView
+                node={tree.root}
+                selected={selected} collapsed={collapsed}
+                onToggleSelect={toggleNode}
+                onToggleCollapse={toggleCollapsed}
+              />
+            </div>
+
+            {tree.warnings.length > 0 && (
+              <details className="mt-3 text-xs text-slate-600">
+                <summary className="cursor-pointer hover:text-slate-900">
+                  💬 {tree.warnings.length} avertissement(s) du crawler
+                </summary>
+                <ul className="mt-2 space-y-1 pl-4">
+                  {tree.warnings.map((w, i) => <li key={i} className="text-slate-500">• {w}</li>)}
+                </ul>
+              </details>
+            )}
+
+            <div className="mt-5 flex items-center gap-3">
+              <button
+                onClick={handleScrape}
+                disabled={selected.size === 0 || job?.status === 'running'}
+                className="rounded-lg bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700 disabled:opacity-50"
+              >
+                ⚡ Lancer le scraping ({selected.size} pages)
+              </button>
+              {scrapeError && <span className="text-sm text-rose-600">⚠ {scrapeError}</span>}
+            </div>
+          </Section>
+        )}
+
+        {/* ÉTAPE 3 — PROGRESSION LIVE */}
+        {job && (
+          <Section
+            step={3}
+            title="Progression en direct"
+            subtitle={
+              <>
+                Job <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs">{job.id}</code>
+                {' · '}
+                <Badge color={
+                  job.status === 'done' ? 'green'
+                    : job.status === 'error' ? 'red'
+                    : job.status === 'cancelled' ? 'amber'
+                    : 'blue'
+                }>{job.status}</Badge>
+              </>
+            }
+          >
+            {/* Barre de progression */}
+            <div className="mb-4">
+              <div className="mb-1 flex justify-between text-sm">
+                <span className="font-medium text-slate-700">
+                  {job.done} / {job.total} pages
+                  {job.errors > 0 && <span className="ml-2 text-rose-600">({job.errors} erreurs)</span>}
+                </span>
+                <span className="font-mono text-slate-600">{job.progress}%</span>
+              </div>
+              <div className="h-3 overflow-hidden rounded-full bg-slate-200">
+                <div
+                  className={`h-full transition-all duration-500 ${
+                    job.status === 'done' ? 'bg-emerald-500'
+                      : job.status === 'error' ? 'bg-rose-500'
+                      : job.status === 'cancelled' ? 'bg-amber-500'
+                      : 'animate-pulse bg-rose-500'
+                  }`}
+                  style={{ width: `${job.progress}%` }}
+                />
+              </div>
+              {job.currentUrl && (
+                <div className="mt-2 truncate font-mono text-xs text-slate-500">
+                  ↓ {job.currentUrl}
+                </div>
+              )}
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              {/* Logs streaming */}
+              <div>
+                <Label>📜 Logs live</Label>
+                <div className="h-64 overflow-auto rounded-lg border border-slate-200 bg-slate-900 p-3 font-mono text-xs leading-relaxed text-slate-100">
+                  {job.logs.length === 0 ? (
+                    <div className="text-slate-500">En attente…</div>
+                  ) : job.logs.slice(-200).map((l, i) => (
+                    <div
+                      key={`${l.ts}-${i}`}
+                      className={
+                        l.level === 'error' ? 'text-rose-400'
+                          : l.level === 'warn' ? 'text-amber-300'
+                          : 'text-slate-300'
+                      }
+                    >
+                      <span className="text-slate-500">{new Date(l.ts).toLocaleTimeString()}</span>{' '}
+                      {l.msg}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Résultats */}
+              <div>
+                <Label>✅ Résultats récents</Label>
+                <div className="h-64 overflow-auto rounded-lg border border-slate-200 bg-white">
+                  <table className="w-full text-xs">
+                    <thead className="sticky top-0 bg-slate-100 text-slate-700">
+                      <tr>
+                        <th className="px-2 py-1.5 text-left">URL</th>
+                        <th className="px-2 py-1.5 text-right">Taille</th>
+                        <th className="px-2 py-1.5 text-right">Chunks</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {job.results.length === 0 ? (
+                        <tr><td colSpan={3} className="p-4 text-center text-slate-500">Aucun résultat encore</td></tr>
+                      ) : job.results.slice().reverse().map((r) => (
+                        <tr key={r.url} className={r.ok ? '' : 'bg-rose-50'}>
+                          <td className="px-2 py-1 font-mono">
+                            <span className={r.ok ? 'text-emerald-600' : 'text-rose-600'}>
+                              {r.ok ? '✓' : '✗'}
+                            </span>{' '}
+                            <span title={r.url}>{shortPath(r.url)}</span>
+                            {r.error && <div className="text-[10px] text-rose-500">{r.error}</div>}
+                          </td>
+                          <td className="px-2 py-1 text-right text-slate-600">{fmtBytes(r.bytes)}</td>
+                          <td className="px-2 py-1 text-right font-mono text-slate-600">
+                            {r.chunkCount ?? (r.ingested === false ? '—' : '·')}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {job.status === 'running' && (
+              <div className="mt-4">
+                <button
+                  onClick={handleCancel}
+                  className="rounded-lg bg-amber-500 px-4 py-1.5 text-xs font-semibold text-white hover:bg-amber-600"
+                >
+                  ⏸ Annuler le job
+                </button>
+              </div>
+            )}
+
+            {job.status === 'done' && (
+              <div className="mt-4 rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800">
+                ✓ Terminé. {job.results.filter((r) => r.ingested).length} document(s) ingéré(s) dans le RAG.{' '}
+                <a href="/admin/ai/knowledge" className="font-semibold underline">Voir la bibliothèque →</a>
+              </div>
+            )}
+          </Section>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─── COMPOSANTS PRIMITIVES ────────────────────────────────────── */
+
+function Section({ step, title, subtitle, children }: {
+  step: number; title: string; subtitle?: React.ReactNode; children: React.ReactNode;
+}) {
+  return (
+    <section className="mb-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+      <header className="mb-4 flex items-start gap-3">
+        <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-rose-600 text-sm font-bold text-white">
+          {step}
+        </span>
+        <div>
+          <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
+          {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
+        </div>
+      </header>
+      {children}
+    </section>
+  );
+}
+
+function Label({ children }: { children: React.ReactNode }) {
+  return <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-700">{children}</label>;
+}
+
+function Hint({ children }: { children: React.ReactNode }) {
+  return <p className="mt-1 text-xs text-slate-500">{children}</p>;
+}
+
+function Toggle({ label, hint, value, onChange }: {
+  label: string; hint?: string; value: boolean; onChange: (v: boolean) => void;
+}) {
+  return (
+    <label className="flex cursor-pointer items-start gap-3 rounded-lg bg-white p-3 ring-1 ring-slate-200 hover:ring-rose-300">
+      <input
+        type="checkbox" checked={value} onChange={(e) => onChange(e.target.checked)}
+        className="mt-0.5 h-4 w-4 accent-rose-600"
+      />
+      <div className="flex-1">
+        <div className="text-sm font-medium text-slate-800">{label}</div>
+        {hint && <div className="text-xs text-slate-500">{hint}</div>}
+      </div>
+    </label>
+  );
+}
+
+function Badge({ color, children }: { color: 'green' | 'red' | 'amber' | 'blue'; children: React.ReactNode }) {
+  const cls = {
+    green: 'bg-emerald-100 text-emerald-800',
+    red: 'bg-rose-100 text-rose-800',
+    amber: 'bg-amber-100 text-amber-800',
+    blue: 'bg-sky-100 text-sky-800',
+  }[color];
+  return <span className={`inline-block rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${cls}`}>{children}</span>;
+}
+
+function TreeView({ node, selected, collapsed, onToggleSelect, onToggleCollapse }: {
+  node: CrawlNode;
+  selected: Set<string>;
+  collapsed: Set<string>;
+  onToggleSelect: (n: CrawlNode, v: boolean) => void;
+  onToggleCollapse: (url: string) => void;
+}) {
+  const isChecked = selected.has(node.url);
+  const isCollapsed = collapsed.has(node.url);
+  const allChildrenSelected = node.children.length > 0 && node.children.every((c) => selected.has(c.url));
+  const partial = node.children.length > 0 && !isChecked && node.children.some((c) => selected.has(c.url));
+
+  return (
+    <div>
+      <div className="flex items-center gap-1.5 py-0.5 hover:bg-slate-50">
+        {node.children.length > 0 ? (
+          <button
+            onClick={() => onToggleCollapse(node.url)}
+            className="flex h-4 w-4 items-center justify-center text-slate-400 hover:text-slate-700"
+            aria-label={isCollapsed ? 'Déplier' : 'Replier'}
+          >
+            {isCollapsed ? '▶' : '▼'}
+          </button>
+        ) : (
+          <span className="w-4 text-center text-slate-300">·</span>
+        )}
+        <input
+          type="checkbox"
+          checked={isChecked}
+          ref={(el) => { if (el) el.indeterminate = !isChecked && partial; }}
+          onChange={(e) => onToggleSelect(node, e.target.checked || allChildrenSelected ? e.target.checked : true)}
+          className="h-3.5 w-3.5 accent-rose-600"
+        />
+        <span className="truncate" title={node.url}>
+          <span className="text-slate-800">{shortPath(node.url)}</span>
+          {node.title && <span className="ml-2 text-slate-400">— {node.title}</span>}
+        </span>
+        {node.children.length > 0 && (
+          <span className="ml-auto text-[10px] text-slate-400">{node.children.length} enfants</span>
+        )}
+      </div>
+      {!isCollapsed && node.children.length > 0 && (
+        <div className="ml-5 border-l border-slate-200 pl-2">
+          {node.children.map((c) => (
+            <TreeView
+              key={c.url} node={c}
+              selected={selected} collapsed={collapsed}
+              onToggleSelect={onToggleSelect} onToggleCollapse={onToggleCollapse}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
