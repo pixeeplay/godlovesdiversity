@@ -143,12 +143,15 @@ export function BrainViz() {
             </div>
           </div>
           {view3D ? (
-            <BrainViz3D
-              nodes={snap.constellation}
-              synapses={snap.synapses.map((s) => ({ fromId: s.fromId, toId: s.toId, similarity: s.similarity }))}
-              pulseHz={snap.vitals.pulseHz}
-              glowColor={IQ_COLORS[snap.iqColor].ring}
-            />
+            <>
+              <DidacticPanel snap={snap} />
+              <BrainViz3D
+                nodes={snap.constellation}
+                synapses={snap.synapses.map((s) => ({ fromId: s.fromId, toId: s.toId, similarity: s.similarity }))}
+                pulseHz={snap.vitals.pulseHz}
+                glowColor={IQ_COLORS[snap.iqColor].ring}
+              />
+            </>
           ) : (
             <Constellation nodes={snap.constellation} synapses={snap.synapses} />
           )}
@@ -839,6 +842,76 @@ function SectionTitle({ icon, title, subtitle }: { icon: string; title: string; 
 }
 
 /* ─── STARFIELD DE FOND ────────────────────────────────────────── */
+
+/* ─── DIDACTIC PANEL : 5 cards explicatives au-dessus du cerveau 3D ──── */
+
+function DidacticPanel({ snap }: { snap: BrainSnapshot }) {
+  const CLUSTER_COLORS = ['#f43f5e', '#ec4899', '#a855f7', '#6366f1', '#0ea5e9', '#06b6d4', '#10b981', '#f59e0b'];
+  const cards = [
+    {
+      icon: '🧠',
+      title: 'Le cerveau central pulse',
+      desc: <>Sa fréquence reflète l'<strong className="text-fuchsia-300">activité réelle du RAG</strong> ({snap.vitals.pulseHz} Hz, {snap.vitals.activityLevel}/100). Plus tu ingères de docs récents → plus il pulse vite.</>,
+    },
+    {
+      icon: '✨',
+      title: 'Chaque point = 1 chunk',
+      desc: <>{snap.constellation.length.toLocaleString()} passages indexés, projetés en 3D depuis leur <strong className="text-emerald-300">embedding 768D</strong> (PCA 3 composantes). Hover sur un point pour voir l'extrait.</>,
+    },
+    {
+      icon: '🌈',
+      title: 'Couleur = cluster sémantique',
+      desc: <>K-means automatique en <strong className="text-amber-300">8 groupes</strong> de chunks proches. Les zones colorées révèlent les <strong>thèmes dominants</strong> de ta mémoire.</>,
+    },
+    {
+      icon: '🕸️',
+      title: 'Lignes = synapses fortes',
+      desc: <>{snap.synapses.length} paires de chunks <strong className="text-violet-300">inter-documents</strong> avec similarité &gt; 55%. Ce sont les ponts entre tes savoirs.</>,
+    },
+    {
+      icon: '🎯',
+      title: 'Lecture spatiale',
+      desc: <>Les chunks <strong>proches dans l'espace 3D</strong> parlent de la même chose. Un cluster compact = un thème bien couvert. Un point isolé = unique en son genre.</>,
+    },
+  ];
+
+  return (
+    <div className="mb-4">
+      <details className="group rounded-xl bg-slate-900/60 ring-1 ring-slate-800">
+        <summary className="cursor-pointer list-none px-4 py-2.5 text-xs font-semibold text-slate-300 group-open:border-b group-open:border-slate-800 hover:text-white">
+          <span className="mr-2 inline-block transition-transform group-open:rotate-90">▸</span>
+          📖 Comment lire ce cerveau ? <span className="ml-1 text-slate-500">(5 clés de lecture)</span>
+        </summary>
+        <div className="grid gap-2.5 p-4 md:grid-cols-2 lg:grid-cols-5">
+          {cards.map((c, i) => (
+            <div key={i} className="rounded-lg bg-slate-950 p-3 ring-1 ring-slate-800">
+              <div className="text-2xl">{c.icon}</div>
+              <div className="mt-1.5 text-xs font-bold text-slate-200">{c.title}</div>
+              <div className="mt-1 text-[11px] leading-relaxed text-slate-400">{c.desc}</div>
+            </div>
+          ))}
+        </div>
+        <div className="border-t border-slate-800 px-4 py-3">
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">🎨 Légende des 8 clusters</div>
+          <div className="flex flex-wrap gap-2">
+            {CLUSTER_COLORS.map((c, i) => {
+              const count = snap.constellation.filter((n) => n.cluster === i).length;
+              return (
+                <div key={i} className="flex items-center gap-1.5 rounded bg-slate-800 px-2 py-1 text-[10px] text-slate-300">
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: c }} />
+                  Cluster {i + 1} <span className="font-mono text-slate-500">({count} chunks)</span>
+                </div>
+              );
+            })}
+          </div>
+          <div className="mt-3 text-[10px] text-slate-500">
+            💡 <strong>Astuce :</strong> drag pour orbiter autour, molette pour zoomer dans un cluster, hover sur un point pour voir le texte exact du chunk.
+          </div>
+        </div>
+      </details>
+    </div>
+  );
+}
 
 function Starfield() {
   const stars = useMemo(() => Array.from({ length: 80 }).map((_, i) => ({

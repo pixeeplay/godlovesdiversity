@@ -333,6 +333,53 @@ export function BrainViz3D({ nodes, synapses, pulseHz, glowColor }: {
       <div className="pointer-events-none absolute right-3 top-3 rounded-lg bg-slate-900/80 px-3 py-1.5 text-[10px] text-slate-400 backdrop-blur">
         {nodes.length} chunks · {synapses.length} synapses
       </div>
+
+      {/* Annotations didactiques flèches cliquables */}
+      <DidactArrows />
     </div>
+  );
+}
+
+/* ─── ANNOTATIONS FLÈCHES (overlay didactique) ─────────────────── */
+
+function DidactArrows() {
+  const [shown, setShown] = useState(true);
+  if (!shown) {
+    return (
+      <button
+        onClick={() => setShown(true)}
+        className="absolute bottom-3 right-3 rounded-lg bg-fuchsia-600 px-3 py-1.5 text-[10px] font-bold text-white hover:bg-fuchsia-500"
+      >📖 Annotations</button>
+    );
+  }
+  const annotations = [
+    { x: '50%', y: '50%', dx: 80, dy: -60, label: '🧠 Cerveau central — pulse au rythme du RAG' },
+    { x: '25%', y: '30%', dx: -40, dy: -30, label: '✨ Particules colorées = chunks (PCA 3D)' },
+    { x: '70%', y: '65%', dx: 30, dy: 40, label: '🕸️ Lignes = synapses (chunks similaires)' },
+  ];
+  return (
+    <>
+      {annotations.map((a, i) => (
+        <div key={i} className="pointer-events-none absolute" style={{ left: a.x, top: a.y }}>
+          <svg className="absolute" style={{ left: 0, top: 0, overflow: 'visible' }}>
+            <line
+              x1="0" y1="0" x2={a.dx} y2={a.dy}
+              stroke="#a855f7" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8"
+            />
+            <circle cx="0" cy="0" r="4" fill="none" stroke="#a855f7" strokeWidth="1.5" opacity="0.8" />
+          </svg>
+          <div
+            className="absolute whitespace-nowrap rounded bg-fuchsia-950/90 px-2 py-1 text-[10px] font-medium text-fuchsia-100 ring-1 ring-fuchsia-500/40"
+            style={{ left: a.dx + 6, top: a.dy - 10 }}
+          >
+            {a.label}
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => setShown(false)}
+        className="absolute right-3 bottom-3 rounded-lg bg-slate-900/80 px-2.5 py-1 text-[10px] text-slate-400 backdrop-blur hover:text-white"
+      >✕ Masquer annotations</button>
+    </>
   );
 }
