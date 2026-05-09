@@ -1,8 +1,9 @@
 'use client';
 import { useState } from 'react';
 import {
-  ShieldAlert, Eye, EyeOff, Users, Save, Loader2, CheckCircle2, Info
+  ShieldAlert, Eye, EyeOff, Users, Save, Loader2, CheckCircle2, Info, UserCog
 } from 'lucide-react';
+import { UserOverridesPanel } from './UserOverridesPanel';
 
 type MenuPermissions = { hidden: string[]; editorHidden: string[] };
 
@@ -111,6 +112,7 @@ export function MenuPermissionsEditor({ initial }: { initial: MenuPermissions })
   const [editorHidden, setEditorHidden] = useState<Set<string>>(new Set(initial.editorHidden));
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [tab, setTab] = useState<'roles' | 'users'>('roles');
 
   function toggle(set: Set<string>, setter: (s: Set<string>) => void, href: string) {
     const next = new Set(set);
@@ -165,6 +167,32 @@ export function MenuPermissionsEditor({ initial }: { initial: MenuPermissions })
         </p>
       </header>
 
+      {/* TABS */}
+      <div className="flex gap-2 border-b border-zinc-800">
+        <button
+          onClick={() => setTab('roles')}
+          className={`flex items-center gap-2 px-4 py-3 text-sm font-bold border-b-2 transition ${
+            tab === 'roles' ? 'border-fuchsia-500 text-fuchsia-300' : 'border-transparent text-zinc-500 hover:text-zinc-300'
+          }`}
+        >
+          <Users size={14} />
+          Par rôle (global)
+        </button>
+        <button
+          onClick={() => setTab('users')}
+          className={`flex items-center gap-2 px-4 py-3 text-sm font-bold border-b-2 transition ${
+            tab === 'users' ? 'border-violet-500 text-violet-300' : 'border-transparent text-zinc-500 hover:text-zinc-300'
+          }`}
+        >
+          <UserCog size={14} />
+          Par utilisateur (override fin)
+        </button>
+      </div>
+
+      {tab === 'users' ? (
+        <UserOverridesPanel ALL_ITEMS={ALL_ITEMS} GROUPS={GROUPS} />
+      ) : (
+      <>
       {/* INFO BOX */}
       <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4 flex gap-3">
         <Info size={18} className="text-blue-300 shrink-0 mt-0.5" />
@@ -172,6 +200,9 @@ export function MenuPermissionsEditor({ initial }: { initial: MenuPermissions })
           <p><strong>Masqué pour tous</strong> = la rubrique disparaît complètement de la sidebar (mais l'URL reste accessible si on la connaît).</p>
           <p><strong>Masqué éditeurs</strong> = visible uniquement pour les comptes ADMIN, invisible pour les EDITOR.</p>
           <p>Les changements s'appliquent à <strong>toi en premier</strong> dès la sauvegarde — pense à recharger l'admin pour voir l'effet.</p>
+          <p className="pt-1 border-t border-blue-500/20">
+            💡 Besoin d'overrides plus fins par utilisateur ? Va sur l'onglet <strong>Par utilisateur</strong>.
+          </p>
         </div>
       </div>
 
@@ -273,6 +304,8 @@ export function MenuPermissionsEditor({ initial }: { initial: MenuPermissions })
           Enregistrer la visibilité du menu
         </button>
       </div>
+      </>
+      )}
     </div>
   );
 }

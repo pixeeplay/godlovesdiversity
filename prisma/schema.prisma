@@ -91,6 +91,9 @@ model User {
   vocalPrayers           VocalPrayer[]
   vocalPrayerConsent     Boolean       @default(false) // RGPD : consentement explicite traitement audio
   vocalPrayerConsentedAt DateTime?
+
+  // V7 — Override fin du menu admin par utilisateur (au-dessus des règles de rôle)
+  menuOverride           UserMenuOverride?
 }
 
 /// Bookmark générique (témoignages, lieux, posts, produits, events).
@@ -1901,6 +1904,26 @@ model LoginAttempt {
 
   @@index([email, createdAt])
   @@index([ip, createdAt])
+}
+
+/// Override fin de la visibilité du menu admin pour UN utilisateur spécifique.
+/// S'applique au-dessus des règles de rôle (ADMIN/EDITOR) et des règles globales (Settings menu.*).
+/// Logique de résolution :
+///   1. Si href ∈ visible → toujours visible pour ce user (override forçage on)
+///   2. Si href ∈ hidden  → toujours caché pour ce user (override forçage off)
+///   3. Sinon → règle globale (perms.hidden / editorHidden) + rôle
+model UserMenuOverride {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hidden    String[] @default([])  // hrefs explicitement cachés pour ce user
+  visible   String[] @default([])  // hrefs explicitement montrés pour ce user (override règle de rôle)
+  notes     String?
+  updatedBy String?                // email du super-admin qui a édité
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 /// Prière vocale enregistrée par l'utilisateur. Audio sur MinIO (privé), texte transcrit par IA.

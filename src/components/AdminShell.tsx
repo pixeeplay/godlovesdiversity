@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { AdminSidebar } from './AdminSidebar';
-import type { MenuPermissions } from '@/lib/menu-permissions';
+import type { MenuPermissions, UserOverride } from '@/lib/menu-permissions';
 import { Menu as MenuIcon, X, Heart } from 'lucide-react';
 import { MegaSearch } from './MegaSearch';
 
@@ -19,11 +19,13 @@ import { MegaSearch } from './MegaSearch';
 export function AdminShell({
   children,
   role = 'EDITOR',
-  perms = { hidden: [], editorHidden: [] }
+  perms = { hidden: [], editorHidden: [] },
+  userOverride = null
 }: {
   children: React.ReactNode;
   role?: string;
   perms?: MenuPermissions;
+  userOverride?: UserOverride | null;
 }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -68,7 +70,7 @@ export function AdminShell({
         `}
         style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}
       >
-        <AdminSidebar role={role} perms={perms} />
+        <AdminSidebar role={role} perms={perms} userOverride={userOverride} />
       </div>
 
       {/* Backdrop mobile (fade-in/out pour iOS smoothness) */}

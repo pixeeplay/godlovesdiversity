@@ -12,7 +12,7 @@ import {
   Tv, Gavel, MessageSquare, Globe, DollarSign, TrendingDown, FileSpreadsheet,
   Clock, Key, Lock, Cpu, Star, type LucideIcon
 } from 'lucide-react';
-import type { MenuPermissions } from '@/lib/menu-permissions';
+import type { MenuPermissions, UserOverride } from '@/lib/menu-permissions';
 import { isItemVisible } from '@/lib/menu-permissions';
 
 type Item = { href: string; label: string; icon: LucideIcon; badge?: string };
@@ -170,24 +170,27 @@ const GROUP_COLORS: Record<string, { bg: string; ring: string; text: string }> =
 
 export function AdminSidebar({
   role = 'EDITOR',
-  perms = { hidden: [], editorHidden: [] }
+  perms = { hidden: [], editorHidden: [] },
+  userOverride = null
 }: {
   role?: string;
   perms?: MenuPermissions;
+  userOverride?: UserOverride | null;
 } = {}) {
   const path = usePathname();
   const { data } = useSession();
   const isAdmin = role === 'ADMIN';
 
   // Filtre la nav : retire les items cachés (sauf l'item de gestion lui-même pour l'ADMIN)
+  // Tient compte des overrides par user (UserMenuOverride) en plus des règles de rôle.
   const filteredNav: Entry[] = NAV.map((entry) => {
     if (!isGroup(entry)) {
-      return isItemVisible(entry.href, role, perms) ? entry : null;
+      return isItemVisible(entry.href, role, perms, userOverride) ? entry : null;
     }
     const visibleChildren = entry.children.filter((c) => {
       // L'item "menu-permissions" reste toujours visible pour l'ADMIN
       if (c.href === '/admin/menu-permissions') return isAdmin;
-      return isItemVisible(c.href, role, perms);
+      return isItemVisible(c.href, role, perms, userOverride);
     });
     return visibleChildren.length === 0 ? null : { ...entry, children: visibleChildren };
   }).filter((x): x is Entry => x !== null);
