@@ -6,47 +6,104 @@ import {
 
 type MenuPermissions = { hidden: string[]; editorHidden: string[] };
 
-// Liste complète des items du menu admin (synchronisée avec AdminSidebar)
-const ALL_ITEMS: { href: string; label: string; group: string; alwaysVisible?: boolean }[] = [
+// Liste complète des items du menu admin — synchronisée avec AdminSidebar.NAV.
+// Si tu ajoutes une entrée à AdminSidebar, ajoute-la ici aussi pour qu'elle soit gérable.
+const ALL_ITEMS: { href: string; label: string; group: string; alwaysVisible?: boolean; isNew?: boolean }[] = [
+  // Tableau de bord
   { href: '/admin', label: 'Tableau de bord', group: 'Tableau de bord', alwaysVisible: true },
 
-  { href: '/admin/shop', label: 'Produits', group: 'Boutique' },
-  { href: '/admin/shop/orders', label: 'Commandes', group: 'Boutique' },
-  { href: '/admin/shop/dropshipping', label: 'Dropshipping', group: 'Boutique' },
+  // 🆕 Nouveau
+  { href: '/admin/sitemap',           label: 'Site map (front + back)',     group: 'Nouveau', isNew: true },
+  { href: '/admin/feature-chat',      label: '💡 Feature Chat IA',           group: 'Nouveau', isNew: true },
+  { href: '/admin/time-machine',      label: '🕰 Time Machine',              group: 'Nouveau', isNew: true },
+  { href: '/admin/invitations',       label: '🔑 Invitations admin',          group: 'Nouveau', isNew: true },
+  { href: '/admin/security-settings', label: '🛡 Sécurité (super-admin)',     group: 'Nouveau', isNew: true },
+  { href: '/admin/security-2fa',      label: '🔐 Mon 2FA TOTP',              group: 'Nouveau', isNew: true },
 
-  { href: '/admin/moderation', label: 'Modération', group: 'Contenu' },
-  { href: '/admin/import', label: 'Import en masse', group: 'Contenu' },
-  { href: '/admin/map', label: 'Carte mondiale', group: 'Contenu' },
-  { href: '/admin/posters', label: 'Affiches', group: 'Contenu' },
-  { href: '/admin/news', label: 'Actualités', group: 'Contenu' },
-  { href: '/admin/videos', label: 'Vidéos YouTube', group: 'Contenu' },
-  { href: '/admin/banners', label: 'Bannières (hero)', group: 'Contenu' },
+  // Espace Pro
+  { href: '/admin/pro',               label: 'Dashboard Pro',                 group: 'Espace Pro' },
+  { href: '/admin/pro/events',        label: 'Mes événements',                group: 'Espace Pro' },
+  { href: '/admin/pro/import-events', label: 'Importer events Facebook',      group: 'Espace Pro' },
+  { href: '/admin/pro/ai-studio',     label: 'Studio IA Pro',                 group: 'Espace Pro' },
+  { href: '/admin/pro/venues',        label: 'Mes lieux (Pro)',               group: 'Espace Pro' },
 
-  { href: '/admin/newsletter', label: 'Newsletter', group: 'Communication' },
-  { href: '/admin/calendar', label: 'Calendrier social', group: 'Communication' },
-  { href: '/admin/pages', label: 'Pages riches', group: 'Communication' },
-  { href: '/admin/content', label: 'Pages & blog', group: 'Communication' },
-  { href: '/admin/partners', label: 'Partenaires', group: 'Communication' },
-  { href: '/admin/donate', label: 'Dons & ticker', group: 'Communication' },
+  // 💰 Prix & Tarifs
+  { href: '/admin/prices',            label: 'Comparateur prix multi-site',   group: 'Prix & Tarifs', isNew: true },
+  { href: '/admin/tariffs',           label: 'Ingestion tarifs fournisseurs', group: 'Prix & Tarifs', isNew: true },
 
-  { href: '/admin/ai', label: 'Studio IA', group: 'IA & Outils' },
-  { href: '/admin/integrations', label: 'Intégrations', group: 'IA & Outils' },
-  { href: '/admin/setup', label: 'Assistant configuration', group: 'IA & Outils' },
+  // Boutique
+  { href: '/admin/shop',              label: 'Produits',                      group: 'Boutique' },
+  { href: '/admin/shop/orders',       label: 'Commandes',                     group: 'Boutique' },
+  { href: '/admin/shop/dropshipping', label: 'Dropshipping',                  group: 'Boutique' },
 
-  { href: '/admin/menu', label: 'Menu nav', group: 'Système' },
-  { href: '/admin/home', label: 'Page d\'accueil', group: 'Système' },
-  { href: '/admin/menu-permissions', label: 'Visibilité menu (admin)', group: 'Système', alwaysVisible: true },
-  { href: '/admin/users', label: 'Utilisateurs', group: 'Système' },
-  { href: '/admin/settings', label: 'Paramètres', group: 'Système' }
+  // Contenu
+  { href: '/admin/moderation',        label: 'Modération',                    group: 'Contenu' },
+  { href: '/admin/import',            label: 'Import en masse',               group: 'Contenu' },
+  { href: '/admin/map',               label: 'Carte mondiale',                group: 'Contenu' },
+  { href: '/admin/posters',           label: 'Affiches',                      group: 'Contenu' },
+  { href: '/admin/news',              label: 'Actualités',                    group: 'Contenu' },
+  { href: '/admin/events',            label: 'Événements (agenda)',           group: 'Contenu' },
+  { href: '/admin/venues',            label: 'Lieux LGBT-friendly',           group: 'Contenu' },
+  { href: '/admin/forum',             label: 'Forum (modération)',            group: 'Contenu' },
+  { href: '/admin/temoignages',       label: 'Témoignages vidéo',             group: 'Contenu' },
+  { href: '/admin/coupons',           label: 'Coupons & promos',              group: 'Contenu' },
+  { href: '/admin/videos',            label: 'Vidéos YouTube',                group: 'Contenu' },
+  { href: '/admin/banners',           label: 'Bannières (hero)',              group: 'Contenu' },
+
+  // Communication
+  { href: '/admin/newsletter',        label: 'Newsletter',                    group: 'Communication' },
+  { href: '/admin/newsletter/plan',   label: 'Plan newsletter annuel',        group: 'Communication' },
+  { href: '/admin/calendar',          label: 'Calendrier social',             group: 'Communication' },
+  { href: '/admin/pages',             label: 'Pages riches',                  group: 'Communication' },
+  { href: '/admin/content',           label: 'Pages & blog',                  group: 'Communication' },
+  { href: '/admin/partners',          label: 'Partenaires',                   group: 'Communication' },
+  { href: '/admin/donate',            label: 'Dons & ticker',                 group: 'Communication' },
+
+  // GLD Connect
+  { href: '/admin/connect',                label: 'Dashboard Connect',           group: 'GLD Connect' },
+  { href: '/admin/connect/moderation',     label: 'Modération posts/messages',   group: 'GLD Connect' },
+  { href: '/admin/establishments',         label: 'Établissements (annuaire)',   group: 'GLD Connect' },
+
+  // IA & Outils
+  { href: '/admin/ai',                      label: 'Studio IA',                          group: 'IA & Outils' },
+  { href: '/admin/ai-settings',             label: 'AI Settings (multi-providers)',      group: 'IA & Outils', isNew: true },
+  { href: '/admin/ai-autopilot',            label: 'AI Autopilot',                       group: 'IA & Outils' },
+  { href: '/admin/manuals',                 label: 'Manuels auto IA',                    group: 'IA & Outils' },
+  { href: '/admin/ai/knowledge',            label: '🧠 Cerveau RAG (knowledge base)',    group: 'IA & Outils' },
+  { href: '/admin/ai/knowledge/brain',      label: '🧠 Brain 3D (visualisation JARVIS)', group: 'IA & Outils', isNew: true },
+  { href: '/admin/ai/knowledge/playground', label: '💬 Playground RAG (ADMIN-only)',     group: 'IA & Outils', isNew: true },
+  { href: '/admin/ai/knowledge/scraper',    label: '🕷 Scraper polite-fetch',            group: 'IA & Outils', isNew: true },
+  { href: '/admin/ai/legal',                label: '⚖️ Assistant juridique FR',          group: 'IA & Outils', isNew: true },
+  { href: '/admin/ai/avatar',               label: 'GLD Live (avatar vidéo)',            group: 'IA & Outils' },
+  { href: '/admin/avatar-studio',           label: '🎬 Avatar Studio (Avatar V)',        group: 'IA & Outils', isNew: true },
+  { href: '/admin/i18n',                    label: 'Traductions IA (FR/EN/ES/PT)',       group: 'IA & Outils' },
+  { href: '/admin/integrations/telegram',   label: 'Bot Telegram',                       group: 'IA & Outils' },
+  { href: '/admin/integrations',            label: 'Intégrations',                       group: 'IA & Outils' },
+  { href: '/admin/mail-setup',              label: 'Setup mail (Gmail / DNS)',           group: 'IA & Outils' },
+  { href: '/admin/themes',                  label: 'Thèmes saisonniers',                 group: 'IA & Outils' },
+  { href: '/admin/features',                label: 'Feature flags',                      group: 'IA & Outils' },
+  { href: '/admin/setup',                   label: 'Assistant configuration',            group: 'IA & Outils' },
+
+  // Système
+  { href: '/admin/menu',                label: 'Menu nav',                  group: 'Système' },
+  { href: '/admin/home',                label: 'Page d\'accueil',           group: 'Système' },
+  { href: '/admin/menu-permissions',    label: 'Visibilité menu (admin)',   group: 'Système', alwaysVisible: true },
+  { href: '/admin/users',               label: 'Utilisateurs',              group: 'Système' },
+  { href: '/admin/backup',              label: 'Sauvegardes (backup)',      group: 'Système' },
+  { href: '/admin/settings',            label: 'Paramètres',                group: 'Système' }
 ];
 
 const GROUPS = [
-  { name: 'Tableau de bord', gradient: 'from-pink-500 to-rose-500' },
-  { name: 'Boutique', gradient: 'from-emerald-500 to-green-600' },
-  { name: 'Contenu', gradient: 'from-violet-500 to-purple-600' },
-  { name: 'Communication', gradient: 'from-cyan-500 to-blue-500' },
-  { name: 'IA & Outils', gradient: 'from-amber-500 to-orange-500' },
-  { name: 'Système', gradient: 'from-zinc-500 to-zinc-700' }
+  { name: 'Tableau de bord',  gradient: 'from-pink-500 to-rose-500' },
+  { name: 'Nouveau',          gradient: 'from-yellow-400 to-amber-500' },
+  { name: 'Espace Pro',       gradient: 'from-emerald-500 to-cyan-500' },
+  { name: 'Prix & Tarifs',    gradient: 'from-lime-500 to-emerald-500' },
+  { name: 'Boutique',         gradient: 'from-amber-500 to-orange-500' },
+  { name: 'Contenu',          gradient: 'from-fuchsia-500 to-pink-500' },
+  { name: 'Communication',    gradient: 'from-cyan-500 to-blue-500' },
+  { name: 'GLD Connect',      gradient: 'from-rose-500 to-violet-500' },
+  { name: 'IA & Outils',      gradient: 'from-violet-500 to-purple-600' },
+  { name: 'Système',          gradient: 'from-zinc-500 to-zinc-700' }
 ];
 
 export function MenuPermissionsEditor({ initial }: { initial: MenuPermissions }) {
@@ -159,6 +216,11 @@ export function MenuPermissionsEditor({ initial }: { initial: MenuPermissions })
                     <div>
                       <div className="font-semibold text-sm text-white flex items-center gap-2">
                         {item.label}
+                        {item.isNew && (
+                          <span className="bg-fuchsia-500/20 text-fuchsia-300 text-[9px] uppercase font-bold px-1.5 py-0.5 rounded">
+                            new
+                          </span>
+                        )}
                         {locked && (
                           <span className="bg-zinc-800 text-zinc-500 text-[9px] uppercase font-bold px-1.5 py-0.5 rounded" title="Toujours visible — non masquable">
                             verrouillé
