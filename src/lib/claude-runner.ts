@@ -73,10 +73,11 @@ export async function* runClaude(opts: RunOptions): AsyncGenerator<RunMessage> {
   let errorMessage: string | null = null;
 
   try {
-    // Dynamic import : si le SDK n'est pas installé, on a un fallback clair
+    // Dynamic import : si le SDK n'est pas installé, on a un fallback clair.
+    // webpackIgnore: true → empêche Next/webpack de tenter de résoudre le module au build.
     let query: any;
     try {
-      const sdk = await import('@anthropic-ai/claude-agent-sdk' as any);
+      const sdk = await import(/* webpackIgnore: true */ '@anthropic-ai/claude-agent-sdk' as any);
       query = sdk.query;
     } catch (e: any) {
       yield {
