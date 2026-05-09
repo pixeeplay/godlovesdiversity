@@ -30,6 +30,8 @@ export type RefreshResult = {
     priceCents?: number;
     delta?: number;        // Variation vs dernier snapshot (centimes)
     deltaPct?: number;     // Variation %
+    inStock?: boolean | null;       // Disponibilité courante (pour alerte restock)
+    prevInStock?: boolean | null;   // Disponibilité au refresh précédent
     error?: string;
   }[];
 };
@@ -106,6 +108,9 @@ export async function refreshWatch(watchId: string): Promise<RefreshResult> {
       priceCents: extracted.priceCents,
       delta,
       deltaPct,
+      // Pour l'alerte "retour en stock" (transition prevInStock=false → inStock=true)
+      inStock: extracted.inStock ?? null,
+      prevInStock: c.lastInStock ?? null,
       error: extracted.error,
     });
   }

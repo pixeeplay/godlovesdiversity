@@ -549,7 +549,7 @@ export function ScraperWorkbench() {
             {/* Stats agrégées en cards */}
             <ProgressStats job={job} />
 
-            {/* Sparkline de la réduction par page */}
+            {/* Histogramme de la réduction par page (barres horizontales) */}
             {job.results.some((r) => r.cleanRemovedPct !== undefined) && (
               <CleaningChart results={job.results} />
             )}
@@ -706,26 +706,38 @@ function ProgressHero({ job }: { job: any }) {
   );
 }
 
-/* ─── PROGRESS STATS : 4 cards d'agrégats temps réel ───────────── */
+/* ─── PROGRESS STATS : 5 cards d'agrégats temps réel ───────────── */
 
 function ProgressStats({ job }: { job: any }) {
-  const okResults = (job.results || []).filter((r: JobResult) => r.ok);
-  const totalRaw = okResults.reduce((s: number, r: JobResult) => s + (r.bytesRaw || 0), 0);
-  const totalNet = okResults.reduce((s: number, r: JobResult) => s + (r.bytes || 0), 0);
-  const totalChunks = okResults.reduce((s: number, r: JobResult) => s + (r.chunkCount || 0), 0);
-  const cleaningResults = okResults.filter((r: JobResult) => r.cleanRemovedPct !== undefined);
+  const allResults = (job.results || []) as JobResult[];
+  const okResults = allResults.filter((r) => r.ok);
+  const koResults = allResults.filter((r) => !r.ok);
+  const totalRaw = okResults.reduce((s, r) => s + (r.bytesRaw || 0), 0);
+  const totalNet = okResults.reduce((s, r) => s + (r.bytes || 0), 0);
+  const totalChunks = okResults.reduce((s, r) => s + (r.chunkCount || 0), 0);
+  const cleaningResults = okResults.filter((r) => r.cleanRemovedPct !== undefined);
   const avgRemoved = cleaningResults.length > 0
-    ? Math.round(cleaningResults.reduce((s: number, r: JobResult) => s + (r.cleanRemovedPct || 0), 0) / cleaningResults.length)
+    ? Math.round(cleaningResults.reduce((s, r) => s + (r.cleanRemovedPct || 0), 0) / cleaningResults.length)
     : 0;
 
   const elapsed = job.startedAt ? (job.finishedAt || Date.now()) - job.startedAt : 0;
   const pagesPerMin = elapsed > 0 ? Math.round((job.done / (elapsed / 60_000)) * 10) / 10 : 0;
   const avgDuration = okResults.length > 0
-    ? Math.round(okResults.reduce((s: number, r: JobResult) => s + (r.durationMs || 0), 0) / okResults.length)
+    ? Math.round(okResults.reduce((s, r) => s + (r.durationMs || 0), 0) / okResults.length)
     : 0;
 
+  const total = allResults.length;
+  const okPct = total > 0 ? Math.round((okResults.length / total) * 100) : 0;
+
   return (
-    <div className="mb-4 grid gap-3 grid-cols-2 md:grid-cols-4">
+    <div className="mb-4 grid gap-3 grid-cols-2 md:grid-cols-5">
+      <StatCard
+        icon="✅"
+        label="OK / KO"
+        value={`${okResults.length} / ${koResults.length}`}
+        sub={total > 0 ? `${okPct}% succès` : 'aucune page'}
+        color={koResults.length === 0 ? 'emerald' : okPct >= 80 ? 'sky' : 'amber'}
+      />
       <StatCard
         icon="🌐"
         label="Octets bruts"
@@ -782,7 +794,9 @@ function StatCard({ icon, label, value, sub, color }: {
   );
 }
 
-/* ─── CLEANING CHART : barres horizontales par page ────────────── */
+/* ─── CLEANING CHART : histogramme à barres horizontales (réduction par page) ───
+   Note : appelé "Sparkline" dans le commit message d'origine, mais il s'agit en
+   réalité d'un histogramme à barres horizontales. Renommé pour clarté visuelle. */
 
 function CleaningChart({ results }: { results: JobResult[] }) {
   const slice = results.slice(-30); // Dernières 30 pages

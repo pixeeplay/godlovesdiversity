@@ -14,6 +14,10 @@ export const maxDuration = 30;
 export async function POST(req: NextRequest) {
   const s = await getServerSession(authOptions);
   if (!s) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  // bypassGuardrails est exposé ici → ADMIN-only.
+  if ((s.user as any)?.role !== 'ADMIN') {
+    return NextResponse.json({ error: 'forbidden', message: 'Réservé aux ADMIN.' }, { status: 403 });
+  }
 
   let body: any;
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'JSON invalide' }, { status: 400 }); }

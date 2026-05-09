@@ -4,7 +4,7 @@
  * Déclencheurs :
  *   1. Un concurrent passe SOUS le `targetPriceCents` du watch
  *   2. Une baisse de prix > `alertThresholdPct` (par défaut 10%) chez un concurrent
- *   3. Un produit revient en stock après rupture
+ *   3. Un produit revient en stock après rupture (transition lastInStock=false → inStock=true)
  *
  * Anti-spam : 1 alerte max par watch par 24h (cf. lastAlertAt).
  *
@@ -27,6 +27,8 @@ type RefreshDetail = {
   priceCents?: number;
   delta?: number;
   deltaPct?: number;
+  inStock?: boolean | null;       // disponibilité observée au snapshot courant
+  prevInStock?: boolean | null;   // disponibilité observée au snapshot précédent (pour restock)
   error?: string;
 };
 
@@ -73,6 +75,21 @@ export async function checkPriceAlerts(watchId: string, refreshResult: RefreshRe
     });
   }
 
+  // 3. Retour en stock (transition false → true)
+  const restocks = refreshResult.details
+    .filter((d) => d.ok && d.inStock === true && d.prevInStock === false)
+    .map((d) =>
+      d.priceCents != null
+        ? `${d.domain} : ${(d.priceCents / 100).toFixed(2)} €`
+        : d.domain
+    );
+  if (restocks.length > 0) {
+    triggers.push({
+      type: 'restock',
+      details: `Retour en stock après rupture :\n  • ` + restocks.join('\n  • '),
+    });
+  }
+
   if (triggers.length === 0) return;
 
   // Envoie alertes
@@ -98,11 +115,11 @@ async function sendAlert(watch: any, triggers: { type: string; details: string }
     `Voir le détail : https://gld.pixeeplay.com/admin/prices/${watch.id}`,
   ].join('\n');
 
-  // EMAIL via Resend
+  // EMAIL via Resend — log les échecs au lieu de swallow
   const resendKey = process.env.RESEND_API_KEY;
   if (email && resendKey) {
     try {
-      await fetch('https://api.resend.com/emails', {
+      const resp = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -113,13 +130,21 @@ async function sendAlert(watch: any, triggers: { type: string; details: string }
         }),
         signal: AbortSignal.timeout(10_000),
       });
-    } catch { /* swallow */ }
+      if (!resp.ok) {
+        const detail = await resp.text().catch(() => '');
+        console.warn(`[price-alerts] Resend HTTP ${resp.status} for watch=${watch.id}: ${detail.slice(0, 200)}`);
+      }
+    } catch (e: any) {
+      console.warn(`[price-alerts] Resend network error for watch=${watch.id}:`, e?.message || e);
+    }
+  } else if (!resendKey) {
+    console.info(`[price-alerts] RESEND_API_KEY absent — email skipped for watch=${watch.id}`);
   }
 
-  // SLACK
+  // SLACK — log les échecs
   if (slack) {
     try {
-      await fetch(slack, {
+      const resp = await fetch(slack, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -127,13 +152,21 @@ async function sendAlert(watch: any, triggers: { type: string; details: string }
           blocks: [
             { type: 'header', text: { type: 'plain_text', text: subject } },
             { type: 'section', text: { type: 'mrkdwn', text: '```' + body + '```' } },
-            { type: 'actions', elements: [
-              { type: 'button', text: { type: 'plain_text', text: 'Voir le détail' }, url: `https://gld.pixeeplay.com/admin/prices/${watch.id}` },
-            ]},
+            {
+              type: 'actions', elements: [
+                { type: 'button', text: { type: 'plain_text', text: 'Voir le détail' }, url: `https://gld.pixeeplay.com/admin/prices/${watch.id}` },
+              ]
+            },
           ],
         }),
         signal: AbortSignal.timeout(10_000),
       });
-    } catch { /* swallow */ }
+      if (!resp.ok) {
+        const detail = await resp.text().catch(() => '');
+        console.warn(`[price-alerts] Slack HTTP ${resp.status} for watch=${watch.id}: ${detail.slice(0, 200)}`);
+      }
+    } catch (e: any) {
+      console.warn(`[price-alerts] Slack network error for watch=${watch.id}:`, e?.message || e);
+    }
   }
 }

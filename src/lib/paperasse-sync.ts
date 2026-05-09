@@ -22,8 +22,9 @@
 import { prisma } from './prisma';
 import { ingestDocument } from './rag';
 
-const REPO = 'romainsimon/paperasse';
-const BRANCH = 'master';
+// Configurable via env (utile si upstream renomme master → main, ou pour pointer un fork).
+const REPO = process.env.PAPERASSE_REPO || 'romainsimon/paperasse';
+const BRANCH = process.env.PAPERASSE_BRANCH || 'master';
 const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
 const TREES_API = `https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`;
 

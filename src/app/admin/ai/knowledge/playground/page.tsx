@@ -9,5 +9,7 @@ export const metadata = { title: '💬 Playground RAG · GLD Admin' };
 export default async function Page() {
   const s = await getServerSession(authOptions);
   if (!s) redirect('/admin/login');
+  // Le playground expose un toggle no-guardrails — réservé aux ADMIN.
+  if ((s.user as any)?.role !== 'ADMIN') redirect('/admin');
   return <Playground />;
 }
