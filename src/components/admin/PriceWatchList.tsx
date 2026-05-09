@@ -56,6 +56,16 @@ export function PriceWatchList() {
   const [addError, setAddError] = useState<string | null>(null);
   const [addSuccess, setAddSuccess] = useState<string | null>(null);
 
+  // PIM productsmanager.app sync (Phase 3)
+  const [pmShow, setPmShow] = useState(false);
+  const [pmTestStatus, setPmTestStatus] = useState<'idle' | 'testing' | 'ok' | 'ko'>('idle');
+  const [pmTestMsg, setPmTestMsg] = useState<string>('');
+  const [pmMaxItems, setPmMaxItems] = useState(500);
+  const [pmCreateSnapshots, setPmCreateSnapshots] = useState(false);
+  const [pmSyncing, setPmSyncing] = useState(false);
+  const [pmResult, setPmResult] = useState<null | { pulled: number; created: number; updated: number; skipped: number; errors: { pmId: string; message: string }[] }>(null);
+  const [pmError, setPmError] = useState<string | null>(null);
+
   const reload = async () => {
     setLoading(true);
     try {
@@ -98,6 +108,53 @@ export function PriceWatchList() {
       setAddError(e?.message || 'erreur');
     } finally {
       setAdding(false);
+    }
+  };
+
+  /** Test de connexion à productsmanager.app — GET sur la même route. */
+  const handlePmTest = async () => {
+    setPmTestStatus('testing');
+    setPmTestMsg('');
+    try {
+      const r = await fetch('/api/admin/prices/sync-pm', { cache: 'no-store' });
+      const j = await r.json();
+      if (j?.ok) {
+        setPmTestStatus('ok');
+        const sample = j.sampleProduct;
+        setPmTestMsg(sample
+          ? `✓ Connecté · exemple : « ${sample.name || sample.id} »${sample.brand ? ` (${sample.brand})` : ''}`
+          : '✓ Connecté (aucun produit retourné — catalogue vide ?)');
+      } else {
+        setPmTestStatus('ko');
+        setPmTestMsg(`✗ ${j?.error || 'connexion KO'}${j?.status ? ` (HTTP ${j.status})` : ''}`);
+      }
+    } catch (e: any) {
+      setPmTestStatus('ko');
+      setPmTestMsg(`✗ ${e?.message || 'erreur réseau'}`);
+    }
+  };
+
+  /** Pull complet du catalogue PM → upsert PriceWatch. */
+  const handlePmSync = async () => {
+    if (!confirm(`Lancer un sync de ${pmMaxItems} produits depuis productsmanager.app ?\n\nLes produits déjà liés seront mis à jour, les nouveaux seront créés en tant que watches.`)) return;
+    setPmSyncing(true);
+    setPmError(null);
+    setPmResult(null);
+    try {
+      const r = await fetch('/api/admin/prices/sync-pm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ maxItems: pmMaxItems, createSnapshots: pmCreateSnapshots }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || 'sync KO');
+      setPmResult(j);
+      // Reload watches pour voir les nouveaux apparaître
+      await reload();
+    } catch (e: any) {
+      setPmError(e?.message || 'erreur');
+    } finally {
+      setPmSyncing(false);
     }
   };
 
@@ -146,6 +203,136 @@ export function PriceWatchList() {
           <p className="mt-2 text-[11px] text-zinc-500">
             On extrait automatiquement le nom, la marque, l'EAN et le prix de la page (JSON-LD &gt; microdata &gt; regex). Ensuite tu pourras ajouter d'autres URLs concurrents pour comparer.
           </p>
+        </section>
+
+        {/* PIM — productsmanager.app sync (Phase 3) */}
+        <section className="mb-6 rounded-2xl bg-gradient-to-br from-violet-950/50 to-zinc-900 ring-1 ring-violet-800/50">
+          <button
+            onClick={() => setPmShow(!pmShow)}
+            className="flex w-full items-center justify-between px-5 py-4 text-left"
+            type="button"
+          >
+            <div className="flex items-center gap-3">
+              <div className="rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 p-2 text-lg">🏷️</div>
+              <div>
+                <h2 className="text-sm font-bold text-violet-200">PIM productsmanager.app</h2>
+                <p className="text-[11px] text-violet-300/70">
+                  Sync auto de ton catalogue PIM vers les watches GLD (Phase 3)
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              {pmTestStatus === 'ok' && <span className="text-[10px] font-bold text-emerald-300">🟢 connecté</span>}
+              {pmTestStatus === 'ko' && <span className="text-[10px] font-bold text-rose-300">🔴 KO</span>}
+              {pmTestStatus === 'testing' && <span className="text-[10px] font-bold text-amber-300">⏳</span>}
+              <span className="text-[10px] text-zinc-400">{pmShow ? '▲ Replier' : '▼ Déplier'}</span>
+            </div>
+          </button>
+
+          {pmShow && (
+            <div className="border-t border-violet-800/50 px-5 py-4 space-y-4">
+              {/* Test connexion */}
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={handlePmTest}
+                  disabled={pmTestStatus === 'testing' || pmSyncing}
+                  className="rounded-lg bg-violet-700 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-violet-500/20 hover:bg-violet-600 disabled:opacity-40"
+                >
+                  {pmTestStatus === 'testing' ? '⏳ Test…' : '🔌 Tester la connexion'}
+                </button>
+                {pmTestMsg && (
+                  <span className={`text-xs ${pmTestStatus === 'ok' ? 'text-emerald-300' : pmTestStatus === 'ko' ? 'text-rose-300' : 'text-zinc-400'}`}>
+                    {pmTestMsg}
+                  </span>
+                )}
+              </div>
+
+              {/* Configuration sync */}
+              <div className="grid gap-3 md:grid-cols-[140px_1fr_auto] items-end">
+                <div>
+                  <label className="block text-[10px] uppercase tracking-wider text-violet-300 mb-1">Max items</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={5000}
+                    value={pmMaxItems}
+                    onChange={(e) => setPmMaxItems(Math.max(1, Math.min(5000, Number(e.target.value) || 500)))}
+                    className="w-full rounded-lg border border-violet-800 bg-zinc-950 px-3 py-2 font-mono text-sm text-violet-100 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+                  />
+                </div>
+                <label className="flex items-center gap-2 text-xs text-violet-200 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={pmCreateSnapshots}
+                    onChange={(e) => setPmCreateSnapshots(e.target.checked)}
+                    className="accent-violet-500 h-4 w-4"
+                  />
+                  <span>
+                    Créer aussi les snapshots prix PM (CompetitorProduct synthétique{' '}
+                    <code className="font-mono text-violet-300">pm:internal</code>)
+                  </span>
+                </label>
+                <button
+                  onClick={handlePmSync}
+                  disabled={pmSyncing || pmTestStatus === 'ko'}
+                  className="rounded-lg bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-2 text-sm font-bold text-white shadow-lg shadow-violet-500/30 hover:opacity-90 disabled:opacity-40"
+                >
+                  {pmSyncing ? '⏳ Sync en cours…' : '🚀 Sync catalogue PM'}
+                </button>
+              </div>
+
+              {/* Résultat */}
+              {pmError && (
+                <div className="rounded-lg bg-rose-950/40 ring-1 ring-rose-700/50 p-3 text-xs text-rose-200">
+                  ⚠ {pmError}
+                </div>
+              )}
+              {pmResult && (
+                <div className="rounded-lg bg-zinc-950 ring-1 ring-violet-800/40 p-3 space-y-2">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+                    <div>
+                      <div className="text-[9px] uppercase tracking-wider text-zinc-500">Pulled</div>
+                      <div className="font-mono text-lg font-bold text-violet-300">{pmResult.pulled}</div>
+                    </div>
+                    <div>
+                      <div className="text-[9px] uppercase tracking-wider text-zinc-500">Créés</div>
+                      <div className="font-mono text-lg font-bold text-emerald-300">{pmResult.created}</div>
+                    </div>
+                    <div>
+                      <div className="text-[9px] uppercase tracking-wider text-zinc-500">Mis à jour</div>
+                      <div className="font-mono text-lg font-bold text-sky-300">{pmResult.updated}</div>
+                    </div>
+                    <div>
+                      <div className="text-[9px] uppercase tracking-wider text-zinc-500">Erreurs</div>
+                      <div className={`font-mono text-lg font-bold ${pmResult.errors.length > 0 ? 'text-rose-300' : 'text-zinc-500'}`}>
+                        {pmResult.errors.length}
+                      </div>
+                    </div>
+                  </div>
+                  {pmResult.errors.length > 0 && (
+                    <details className="text-xs">
+                      <summary className="cursor-pointer text-rose-300 hover:text-rose-200">
+                        Voir les {pmResult.errors.length} erreur(s)
+                      </summary>
+                      <ul className="mt-2 space-y-1 max-h-40 overflow-y-auto pl-4">
+                        {pmResult.errors.slice(0, 50).map((err, i) => (
+                          <li key={i} className="text-rose-300/80">
+                            <code className="font-mono text-[10px] text-rose-400">{err.pmId}</code>{' '}: {err.message}
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
+                </div>
+              )}
+
+              <p className="text-[11px] text-violet-300/60 leading-relaxed">
+                Le sync cherche d'abord les watches existants par <code className="font-mono">pmProductId</code>, puis SKU, puis EAN. Si trouvé →
+                update méta uniquement. Sinon → crée un nouveau watch avec tag <code className="font-mono">from-pm</code>. Variables requises :
+                {' '}<code className="font-mono">PM_API_URL</code> + <code className="font-mono">PM_API_KEY</code>.
+              </p>
+            </div>
+          )}
         </section>
 
         {/* STATS GLOBALES */}
