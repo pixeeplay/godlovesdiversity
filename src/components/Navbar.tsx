@@ -70,7 +70,8 @@ export function Navbar() {
         { id: 'textes',    label: '📖 Textes sacrés inclusifs',  href: '/textes-sacres',      external: false, children: [] },
         { id: 'officiants',label: '🤝 Officiants LGBT-friendly', href: '/officiants',         external: false, children: [] },
         { id: 'calrel',    label: '🌍 Calendrier religieux',     href: '/calendrier-religieux', external: false, children: [] },
-        { id: 'webcams',   label: '📺 Webcams live lieux saints', href: '/webcams-live',         external: false, children: [] }
+        { id: 'webcams',   label: '📺 Webcams live lieux saints', href: '/webcams-live',         external: false, children: [] },
+        { id: 'journal',   label: '🎙 Journal de prières vocales', href: '/journal',              external: false, children: [] }
       ]
     },
     {

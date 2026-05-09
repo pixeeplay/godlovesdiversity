@@ -46,7 +46,9 @@ const PUBLIC_GROUPS: RouteGroup[] = [
       { href: '/camino',             label: 'Camino virtuel collectif', desc: 'Pèlerinage gamifié — 5 chemins (Compostelle, Jérusalem, Bénarès, Shikoku, Hajj)', isNew: true },
       { href: '/textes-sacres',      label: 'Textes sacrés inclusifs', desc: 'Genius — annotations communautaires sur Bible/Coran/Talmud/Suttas/Vedas/GGS', isNew: true },
       { href: '/officiants',         label: 'Officiants LGBT-friendly', desc: 'Annuaire mariages/baptêmes/funérailles inclusifs', isNew: true },
-      { href: '/calendrier-religieux', label: 'Calendrier religieux mondial', desc: '70+ fêtes 9 confessions 2026/2027', isNew: true }
+      { href: '/calendrier-religieux', label: 'Calendrier religieux mondial', desc: '70+ fêtes 9 confessions 2026/2027', isNew: true },
+      { href: '/webcams-live',       label: 'Webcams live des lieux saints', desc: 'YouTube live 14 sanctuaires (Vatican, Lourdes, Mecque, Kotel, Bodh Gaya, Mahabodhi…) + agent IA découverte', isNew: true },
+      { href: '/journal',            label: 'Journal de prières vocales', desc: 'Enregistre · transcription IA Gemini · privé · RGPD', isNew: true }
     ]
   },
   {
@@ -147,12 +149,37 @@ const ADMIN_GROUPS: RouteGroup[] = [
   {
     id: 'ia', label: 'IA & Outils', emoji: '✨', color: '#7c3aed',
     routes: [
-      { href: '/admin/ai-studio',     label: 'Studio IA', isAdmin: true },
-      { href: '/admin/ai-autopilot',  label: 'AI Autopilot', isAdmin: true },
-      { href: '/admin/ai/knowledge',  label: 'Knowledge base RAG', isAdmin: true },
-      { href: '/admin/manuals',       label: 'Manuels auto IA', isAdmin: true, isNew: true, desc: '3 audiences · 5499 mots · email auto' },
-      { href: '/admin/avatar',        label: 'Avatar IA', isAdmin: true },
-      { href: '/admin/telegram',      label: 'Bot Telegram', isAdmin: true }
+      { href: '/admin/ai',                      label: 'Studio IA', isAdmin: true },
+      { href: '/admin/ai-settings',             label: 'AI Settings (multi-providers)', isAdmin: true, isNew: true, desc: 'Gemini · OpenRouter · Ollama · LM Studio' },
+      { href: '/admin/ai-autopilot',            label: 'AI Autopilot', isAdmin: true },
+      { href: '/admin/ai/knowledge',            label: 'Knowledge base RAG', isAdmin: true },
+      { href: '/admin/ai/knowledge/brain',      label: 'Brain 3D (visualisation JARVIS)', isAdmin: true, isNew: true, desc: 'Three.js · PCA 3 composantes · 8 clusters' },
+      { href: '/admin/ai/knowledge/playground', label: 'Playground RAG', isAdmin: true, isNew: true, desc: 'Toggle garde-fous · ADMIN-only' },
+      { href: '/admin/ai/knowledge/scraper',    label: 'Scraper polite-fetch', isAdmin: true, isNew: true, desc: 'UA rotation · throttle · fallback Jina' },
+      { href: '/admin/ai/legal',                label: 'Assistant juridique FR (paperasse)', isAdmin: true, isNew: true, desc: '6 skills MIT · sync GitHub · guardrails strictes' },
+      { href: '/admin/manuals',                 label: 'Manuels auto IA', isAdmin: true, isNew: true, desc: '3 audiences · 5499 mots · email auto' },
+      { href: '/admin/ai/avatar',               label: 'Avatar IA (GLD Live)', isAdmin: true },
+      { href: '/admin/avatar-studio',           label: 'Avatar Studio (Avatar V)', isAdmin: true, isNew: true, desc: 'HeyGen v5 · upper-body · cross-outfits' },
+      { href: '/admin/integrations/telegram',   label: 'Bot Telegram', isAdmin: true },
+      { href: '/admin/i18n',                    label: 'Traductions IA (FR/EN/ES/PT)', isAdmin: true }
+    ]
+  },
+  {
+    id: 'prices', label: 'Prix & Tarifs', emoji: '💰', color: '#84cc16',
+    routes: [
+      { href: '/admin/prices',  label: 'Comparateur prix multi-site', isAdmin: true, isNew: true, desc: 'JSON-LD/microdata · alertes · graph · RAG produit' },
+      { href: '/admin/tariffs', label: 'Ingestion tarifs fournisseurs', isAdmin: true, isNew: true, desc: 'CSV/XML/JSON · mail Resend · cron HTTP' }
+    ]
+  },
+  {
+    id: 'recent', label: 'Récentes nouveautés', emoji: '🆕', color: '#facc15',
+    routes: [
+      { href: '/admin/sitemap',           label: 'Site map (cette page)', isAdmin: true, isNew: true },
+      { href: '/admin/feature-chat',      label: 'Feature Chat IA', isAdmin: true, isNew: true, desc: 'Brainstorm features avec IA + Cowork copy' },
+      { href: '/admin/time-machine',      label: 'Time Machine (rollback git)', isAdmin: true, isNew: true, desc: 'Visuel des build GitHub' },
+      { href: '/admin/invitations',       label: 'Invitations admin', isAdmin: true, isNew: true, desc: 'Codes invitation pour iPad/EDITOR' },
+      { href: '/admin/security-settings', label: 'Sécurité (super-admin)', isAdmin: true, isNew: true, desc: 'Toggle méthodes login · signup · MFA · Tailscale' },
+      { href: '/admin/security-2fa',      label: 'Mon 2FA TOTP', isAdmin: true, isNew: true, desc: 'QR code Google/Microsoft Authenticator + 10 backup codes' }
     ]
   },
   {
@@ -163,7 +190,9 @@ const ADMIN_GROUPS: RouteGroup[] = [
       { href: '/admin/integrations',  label: 'Intégrations', isAdmin: true },
       { href: '/admin/themes',        label: 'Thèmes saisonniers', isAdmin: true },
       { href: '/admin/menu-permissions', label: 'Permissions menu', isAdmin: true },
-      { href: '/admin/mail-setup',    label: 'Configuration mail', isAdmin: true }
+      { href: '/admin/mail-setup',    label: 'Configuration mail', isAdmin: true },
+      { href: '/admin/backup',        label: 'Sauvegardes (backup)', isAdmin: true },
+      { href: '/admin/features',      label: 'Feature flags', isAdmin: true }
     ]
   }
 ];

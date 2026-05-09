@@ -8,7 +8,9 @@ import {
   Sparkles, Users, Settings, LogOut, Heart, UploadCloud, MapPin, Home,
   Image as ImageIcon, Video, Layers, GalleryHorizontalEnd, Menu as MenuIcon,
   Youtube, HandHeart, Handshake, ShoppingBag, ChevronDown, ChevronRight,
-  Package, Truck, ShieldAlert, Building2, Megaphone, BarChart3, Tag, Facebook, type LucideIcon
+  Package, Truck, ShieldAlert, Building2, Megaphone, BarChart3, Tag, Facebook,
+  Tv, Gavel, MessageSquare, Globe, DollarSign, TrendingDown, FileSpreadsheet,
+  Clock, Key, Lock, Cpu, Star, type LucideIcon
 } from 'lucide-react';
 import type { MenuPermissions } from '@/lib/menu-permissions';
 import { isItemVisible } from '@/lib/menu-permissions';
@@ -23,12 +25,19 @@ function isGroup(e: Entry): e is Group {
 
 const NAV: Entry[] = [
   { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
-  { href: '/admin/sitemap', label: 'Site map (front + back)', icon: MapPin, badge: 'NEW' },
-  { href: '/admin/feature-chat', label: '💡 Feature Chat IA', icon: Sparkles, badge: 'NEW' },
-  { href: '/admin/time-machine', label: '🕰 Time Machine', icon: Settings, badge: 'NEW' },
-  { href: '/admin/invitations', label: '🔑 Invitations admin', icon: Users, badge: 'NEW' },
-  { href: '/admin/security-settings', label: '🛡 Sécurité (super-admin)', icon: ShieldCheck, badge: 'NEW' },
-  { href: '/admin/security-2fa', label: '🔐 Mon 2FA TOTP', icon: ShieldAlert, badge: 'NEW' },
+  {
+    id: 'new',
+    label: '🆕 Nouveau',
+    icon: Star,
+    children: [
+      { href: '/admin/sitemap',           label: 'Site map (front + back)',  icon: MapPin,      badge: 'NEW' },
+      { href: '/admin/feature-chat',      label: '💡 Feature Chat IA',       icon: MessageSquare, badge: 'NEW' },
+      { href: '/admin/time-machine',      label: '🕰 Time Machine',          icon: Clock,       badge: 'NEW' },
+      { href: '/admin/invitations',       label: '🔑 Invitations admin',     icon: Key,         badge: 'NEW' },
+      { href: '/admin/security-settings', label: '🛡 Sécurité (super-admin)', icon: ShieldCheck, badge: 'NEW' },
+      { href: '/admin/security-2fa',      label: '🔐 Mon 2FA TOTP',          icon: Lock,        badge: 'NEW' }
+    ]
+  },
   {
     id: 'pro',
     label: 'Espace Pro 🏪',
@@ -39,6 +48,15 @@ const NAV: Entry[] = [
       { href: '/admin/pro/import-events',  label: 'Importer events FB',     icon: Facebook },
       { href: '/admin/pro/ai-studio',      label: 'Studio IA Pro ✨',       icon: Sparkles },
       { href: '/admin/venues',             label: 'Mes lieux',              icon: HandHeart }
+    ]
+  },
+  {
+    id: 'prices',
+    label: '💰 Prix & Tarifs',
+    icon: DollarSign,
+    children: [
+      { href: '/admin/prices',  label: 'Comparateur prix multi-site',  icon: TrendingDown,    badge: 'NEW' },
+      { href: '/admin/tariffs', label: 'Ingestion tarifs fournisseurs', icon: FileSpreadsheet, badge: 'NEW' }
     ]
   },
   {
@@ -100,20 +118,24 @@ const NAV: Entry[] = [
     label: 'IA & Outils',
     icon: Sparkles,
     children: [
-      { href: '/admin/ai', label: 'Studio IA', icon: Sparkles },
-      { href: '/admin/ai-settings', label: 'AI Settings (multi-providers) 🧠', icon: Sparkles, badge: 'NEW' },
-      { href: '/admin/ai-autopilot', label: 'AI Autopilot 🎛', icon: Sparkles },
-      { href: '/admin/manuals', label: 'Manuels auto IA 📚', icon: FileText },
-      { href: '/admin/ai/knowledge', label: 'Cerveau de GLD (RAG)', icon: Sparkles },
-      { href: '/admin/ai/avatar', label: 'GLD Live (avatar vidéo)', icon: Video },
-      { href: '/admin/avatar-studio', label: '🎬 Avatar Studio (Avatar V)', icon: Video, badge: 'NEW' },
-      { href: '/admin/i18n', label: 'Traductions IA (FR/EN/ES/PT)', icon: Sparkles },
-      { href: '/admin/integrations/telegram', label: 'Bot Telegram (notifs + commandes)', icon: MenuIcon },
-      { href: '/admin/integrations', label: 'Intégrations', icon: Layers },
-      { href: '/admin/mail-setup', label: 'Setup mail (Gmail / DNS)', icon: Mail },
-      { href: '/admin/themes', label: 'Thèmes saisonniers 🎨', icon: Sparkles },
-      { href: '/admin/features', label: 'Feature flags 🚦', icon: Sparkles },
-      { href: '/admin/setup', label: 'Assistant configuration', icon: Sparkles }
+      { href: '/admin/ai',                      label: 'Studio IA',                              icon: Sparkles },
+      { href: '/admin/ai-settings',             label: 'AI Settings (multi-providers) 🧠',      icon: Sparkles, badge: 'NEW' },
+      { href: '/admin/ai-autopilot',            label: 'AI Autopilot 🎛',                       icon: Sparkles },
+      { href: '/admin/manuals',                 label: 'Manuels auto IA 📚',                    icon: FileText },
+      { href: '/admin/ai/knowledge',            label: '🧠 Cerveau RAG (knowledge base)',       icon: Cpu },
+      { href: '/admin/ai/knowledge/brain',      label: '🧠 Brain 3D (visualisation JARVIS)',    icon: Cpu,           badge: 'NEW' },
+      { href: '/admin/ai/knowledge/playground', label: '💬 Playground RAG (ADMIN-only)',         icon: MessageSquare, badge: 'NEW' },
+      { href: '/admin/ai/knowledge/scraper',    label: '🕷 Scraper polite-fetch',                icon: Globe,         badge: 'NEW' },
+      { href: '/admin/ai/legal',                label: '⚖️ Assistant juridique FR (paperasse)', icon: Gavel,         badge: 'NEW' },
+      { href: '/admin/ai/avatar',               label: 'GLD Live (avatar vidéo)',                icon: Video },
+      { href: '/admin/avatar-studio',           label: '🎬 Avatar Studio (Avatar V)',           icon: Video,         badge: 'NEW' },
+      { href: '/admin/i18n',                    label: 'Traductions IA (FR/EN/ES/PT)',           icon: Sparkles },
+      { href: '/admin/integrations/telegram',   label: 'Bot Telegram (notifs + commandes)',      icon: MenuIcon },
+      { href: '/admin/integrations',            label: 'Intégrations',                            icon: Layers },
+      { href: '/admin/mail-setup',              label: 'Setup mail (Gmail / DNS)',                icon: Mail },
+      { href: '/admin/themes',                  label: 'Thèmes saisonniers 🎨',                  icon: Sparkles },
+      { href: '/admin/features',                label: 'Feature flags 🚦',                       icon: Sparkles },
+      { href: '/admin/setup',                   label: 'Assistant configuration',                 icon: Sparkles }
     ]
   },
   {
@@ -135,6 +157,8 @@ const STORAGE_KEY = 'gld-admin-sidebar-open';
 
 // Couleurs par catégorie (gradient + accent) pour rendre la sidebar plus visuelle
 const GROUP_COLORS: Record<string, { bg: string; ring: string; text: string }> = {
+  new:     { bg: 'from-yellow-400/20 to-amber-500/10',   ring: 'border-yellow-400/40', text: 'text-yellow-300' },
+  prices:  { bg: 'from-lime-500/15 to-emerald-500/10',   ring: 'border-lime-400/30',   text: 'text-lime-300' },
   pro:     { bg: 'from-emerald-500/15 to-cyan-500/10',   ring: 'border-emerald-400/30', text: 'text-emerald-300' },
   shop:    { bg: 'from-amber-500/15 to-orange-500/10',   ring: 'border-amber-400/30',   text: 'text-amber-300' },
   content: { bg: 'from-fuchsia-500/15 to-pink-500/10',   ring: 'border-fuchsia-400/30', text: 'text-fuchsia-300' },
