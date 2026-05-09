@@ -234,3 +234,111 @@ export async function pullHttpSource(sourceId: string): Promise<IngestResult> {
     trigger: 'cron',
   });
 }
+
+/**
+ * Pull FTP : se connecte en FTP/FTPS et télécharge le fichier configuré.
+ * Nécessite le package `basic-ftp` (dynamic import).
+ */
+export async function pullFtpSource(sourceId: string): Promise<IngestResult> {
+  const source = await prisma.tariffSource.findUnique({ where: { id: sourceId } });
+  if (!source) throw new Error('source introuvable');
+  if (source.type !== 'ftp') throw new Error('source n\'est pas de type ftp');
+  const config = source.config as {
+    host: string; port?: number; user: string; password: string;
+    path: string; secure?: boolean;
+  };
+  if (!config.host || !config.user || !config.path) throw new Error('config FTP incomplète (host, user, path requis)');
+
+  let ftpModule: any;
+  try {
+    ftpModule = await import(/* webpackIgnore: true */ 'basic-ftp' as any);
+  } catch {
+    throw new Error('Package `basic-ftp` non installé. Lance : npm i basic-ftp');
+  }
+
+  const client = new ftpModule.Client();
+  client.ftp.verbose = false;
+  let content = '';
+
+  try {
+    await client.access({
+      host: config.host,
+      port: config.port || 21,
+      user: config.user,
+      password: config.password,
+      secure: config.secure || false
+    });
+
+    // Download to a Writable stream → Buffer
+    const { Writable } = await import('stream');
+    const chunks: Buffer[] = [];
+    const writable = new Writable({
+      write(chunk, _enc, cb) { chunks.push(chunk); cb(); }
+    });
+    await client.downloadTo(writable, config.path);
+    content = Buffer.concat(chunks).toString('utf-8');
+  } finally {
+    client.close();
+  }
+
+  const fileName = config.path.split('/').pop() || 'tariff.csv';
+  return ingestTariffFile({ sourceId, fileName, fileContent: content, trigger: 'cron' });
+}
+
+/**
+ * Pull SFTP : SSH2 + SFTP. Auth password OU clé privée.
+ * Nécessite le package `ssh2-sftp-client` (dynamic import).
+ */
+export async function pullSftpSource(sourceId: string): Promise<IngestResult> {
+  const source = await prisma.tariffSource.findUnique({ where: { id: sourceId } });
+  if (!source) throw new Error('source introuvable');
+  if (source.type !== 'sftp') throw new Error('source n\'est pas de type sftp');
+  const config = source.config as {
+    host: string; port?: number; user: string;
+    password?: string; privateKey?: string; passphrase?: string;
+    path: string;
+  };
+  if (!config.host || !config.user || !config.path) throw new Error('config SFTP incomplète (host, user, path requis)');
+  if (!config.password && !config.privateKey) throw new Error('config SFTP : password OU privateKey requis');
+
+  let SftpClient: any;
+  try {
+    const mod = await import(/* webpackIgnore: true */ 'ssh2-sftp-client' as any);
+    SftpClient = mod.default || mod;
+  } catch {
+    throw new Error('Package `ssh2-sftp-client` non installé. Lance : npm i ssh2-sftp-client');
+  }
+
+  const client = new SftpClient();
+  let content = '';
+  try {
+    await client.connect({
+      host: config.host,
+      port: config.port || 22,
+      username: config.user,
+      ...(config.password ? { password: config.password } : {}),
+      ...(config.privateKey ? { privateKey: config.privateKey } : {}),
+      ...(config.passphrase ? { passphrase: config.passphrase } : {}),
+      readyTimeout: 20_000
+    });
+    const buffer = await client.get(config.path);
+    content = (buffer as Buffer).toString('utf-8');
+  } finally {
+    await client.end().catch(() => null);
+  }
+
+  const fileName = config.path.split('/').pop() || 'tariff.csv';
+  return ingestTariffFile({ sourceId, fileName, fileContent: content, trigger: 'cron' });
+}
+
+/** Dispatch pull selon le type de source. */
+export async function pullSource(sourceId: string): Promise<IngestResult> {
+  const source = await prisma.tariffSource.findUnique({ where: { id: sourceId }, select: { type: true } });
+  if (!source) throw new Error('source introuvable');
+  switch (source.type) {
+    case 'http': return pullHttpSource(sourceId);
+    case 'ftp':  return pullFtpSource(sourceId);
+    case 'sftp': return pullSftpSource(sourceId);
+    default: throw new Error(`Type "${source.type}" ne supporte pas le pull automatique. Utilise upload manuel ou webhook mail.`);
+  }
+}

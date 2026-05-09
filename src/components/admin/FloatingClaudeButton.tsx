@@ -29,7 +29,7 @@ export function FloatingClaudeButton() {
     if (streamRef.current) streamRef.current.scrollTop = streamRef.current.scrollHeight;
   }, [messages]);
 
-  // Esc pour fermer
+  // Esc pour fermer + Cmd+Shift+K pour toggle
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape' && open && !running) setOpen(false);
@@ -38,8 +38,18 @@ export function FloatingClaudeButton() {
         setOpen((o) => !o);
       }
     }
+    function onOpenEvent(e: Event) {
+      const detail = (e as CustomEvent).detail || {};
+      if (detail.prompt) setPrompt(detail.prompt);
+      if (typeof detail.autopilot === 'boolean') setAutopilot(detail.autopilot);
+      setOpen(true);
+    }
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.addEventListener('claude:open', onOpenEvent as any);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('claude:open', onOpenEvent as any);
+    };
   }, [open, running]);
 
   async function run() {

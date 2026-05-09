@@ -31,6 +31,7 @@ const NAV: Entry[] = [
     icon: Star,
     children: [
       { href: '/admin/sitemap',           label: 'Site map (front + back)',  icon: MapPin,      badge: 'NEW' },
+      { href: '/admin/claude-workspace',  label: '🤖 Claude Workspace',       icon: Cpu,         badge: 'NEW' },
       { href: '/admin/claude-cli',        label: '🤖 Claude CLI online',      icon: Cpu,         badge: 'NEW' },
       { href: '/admin/vscode-online',     label: '💻 VS Code online',        icon: Globe,       badge: 'NEW' },
       { href: '/admin/feature-chat',      label: '💡 Feature Chat IA',       icon: MessageSquare, badge: 'NEW' },
