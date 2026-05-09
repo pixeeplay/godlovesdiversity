@@ -1906,6 +1906,42 @@ model LoginAttempt {
   @@index([ip, createdAt])
 }
 
+/// Session Claude Code autonome lancée depuis /admin/claude-cli.
+/// Stocke le prompt initial + tous les messages du stream (assistant text,
+/// tool uses, tool results). Permet de relire/audite r ce que l'IA a fait.
+model ClaudeSession {
+  id           String           @id @default(cuid())
+  userId       String?
+  prompt       String           @db.Text
+  model        String           @default("claude-sonnet-4-5")
+  workingDir   String?                                       // cwd côté serveur
+  permissionMode String         @default("bypassPermissions") // "default" | "acceptEdits" | "bypassPermissions"
+  status       String           @default("running")          // "running" | "completed" | "error" | "cancelled"
+  durationMs   Int?
+  totalInputTokens  Int?
+  totalOutputTokens Int?
+  errorMessage String?          @db.Text
+  messages     ClaudeMessage[]
+  createdAt    DateTime         @default(now())
+  finishedAt   DateTime?
+
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+/// Un message dans une session Claude (du SDK).
+model ClaudeMessage {
+  id         String        @id @default(cuid())
+  sessionId  String
+  session    ClaudeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  type       String                                          // "assistant" | "user" | "tool_use" | "tool_result" | "system" | "result"
+  payload    Json                                            // contenu brut du message (raw SDK message)
+  index      Int           @default(0)
+  createdAt  DateTime      @default(now())
+
+  @@index([sessionId, index])
+}
+
 /// Override fin de la visibilité du menu admin pour UN utilisateur spécifique.
 /// S'applique au-dessus des règles de rôle (ADMIN/EDITOR) et des règles globales (Settings menu.*).
 /// Logique de résolution :

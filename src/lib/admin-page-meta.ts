@@ -37,6 +37,14 @@ const RULES: MetaRule[] = [
     title: 'Site map (front + back)', desc: 'Toutes les pages publiques + admin avec tags ✨ NEW',
     emoji: '🗺️', gradient: 'from-yellow-400 via-amber-500 to-orange-500', pattern: 'grid', badge: 'NEW', color: '#fbbf24'
   }},
+  { match: '/admin/claude-cli', meta: {
+    title: 'Claude CLI online', desc: 'Lance Claude Code en autonome — code, vidéos MCP, refactor, debug',
+    emoji: '🤖', gradient: 'from-violet-500 via-fuchsia-500 to-rose-500', pattern: 'circuit', badge: 'NEW', color: '#a855f7'
+  }},
+  { match: '/admin/vscode-online', meta: {
+    title: 'VS Code online', desc: 'github.dev · vscode.dev · Codespaces · code-server self-hosted · quick editor',
+    emoji: '💻', gradient: 'from-blue-500 via-cyan-500 to-emerald-500', pattern: 'circuit', badge: 'NEW', color: '#06b6d4'
+  }},
   { match: '/admin/feature-chat', meta: {
     title: 'Feature Chat IA', desc: 'Brainstorm tes prochaines features avec une IA — copy from Cowork',
     emoji: '💡', gradient: 'from-yellow-400 via-amber-500 to-rose-500', pattern: 'spark', badge: 'NEW', color: '#fbbf24'

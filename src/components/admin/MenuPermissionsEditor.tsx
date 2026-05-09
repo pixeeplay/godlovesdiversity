@@ -15,6 +15,8 @@ const ALL_ITEMS: { href: string; label: string; group: string; alwaysVisible?: b
 
   // 🆕 Nouveau
   { href: '/admin/sitemap',           label: 'Site map (front + back)',     group: 'Nouveau', isNew: true },
+  { href: '/admin/claude-cli',        label: '🤖 Claude CLI online',         group: 'Nouveau', isNew: true },
+  { href: '/admin/vscode-online',     label: '💻 VS Code online',            group: 'Nouveau', isNew: true },
   { href: '/admin/feature-chat',      label: '💡 Feature Chat IA',           group: 'Nouveau', isNew: true },
   { href: '/admin/time-machine',      label: '🕰 Time Machine',              group: 'Nouveau', isNew: true },
   { href: '/admin/invitations',       label: '🔑 Invitations admin',          group: 'Nouveau', isNew: true },
