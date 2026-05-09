@@ -5,6 +5,7 @@ import { AdminSidebar } from './AdminSidebar';
 import type { MenuPermissions, UserOverride } from '@/lib/menu-permissions';
 import { Menu as MenuIcon, X, Heart } from 'lucide-react';
 import { MegaSearch } from './MegaSearch';
+import { AdminPageBanner } from './admin/AdminPageBanner';
 
 /**
  * AdminShell — coquille du back-office.
@@ -109,6 +110,10 @@ export function AdminShell({
 
         {/* Wrap children dans une zone explicite pour éviter le black screen */}
         <main className="flex-1 min-w-0 bg-zinc-950 text-white">
+          {/* Banner thématique animé — auto-résolu depuis le pathname */}
+          <div className="px-3 lg:px-4 pt-3 lg:pt-4">
+            <AdminPageBanner />
+          </div>
           {children}
         </main>
 
