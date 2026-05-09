@@ -300,8 +300,11 @@ model Article {
   title       String
   excerpt     String?
   content     Json
+  bodyHtml    String?   @db.Text   // HTML pré-rendu (généré par IA ou manuel) pour aperçu instant
   coverImage  String?
   coverVideo  String?
+  images      String[]  @default([])  // URLs galerie multi-images (en plus du cover)
+  videoPrompt String?   @db.Text   // Prompt à passer à un générateur vidéo (Seedance/Veo/Runway)
   tags        String[]
   published   Boolean   @default(false)
   publishedAt DateTime?
