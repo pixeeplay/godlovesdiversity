@@ -1909,6 +1909,25 @@ model LoginAttempt {
   @@index([ip, createdAt])
 }
 
+/// Demande d'approbation envoyée à Telegram pour valider une action autopilot
+/// (commit, push, deploy, suppression, etc.). L'utilisateur répond via /approve <id> ou /reject <id>.
+model ClaudeApproval {
+  id          String    @id @default(cuid())
+  sessionId   String?
+  action      String                                          // ex: "git push", "delete-user", "deploy"
+  description String    @db.Text
+  context     Json?                                           // détail technique
+  status      String    @default("pending")                   // pending | approved | rejected | timeout
+  telegramMessageId String?
+  decidedBy   String?
+  decidedAt   DateTime?
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+
+  @@index([status, expiresAt])
+  @@index([sessionId])
+}
+
 /// Session Claude Code autonome lancée depuis /admin/claude-cli.
 /// Stocke le prompt initial + tous les messages du stream (assistant text,
 /// tool uses, tool results). Permet de relire/audite r ce que l'IA a fait.

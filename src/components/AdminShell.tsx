@@ -6,6 +6,7 @@ import type { MenuPermissions, UserOverride } from '@/lib/menu-permissions';
 import { Menu as MenuIcon, X, Heart } from 'lucide-react';
 import { MegaSearch } from './MegaSearch';
 import { AdminPageBanner } from './admin/AdminPageBanner';
+import { FloatingClaudeButton } from './admin/FloatingClaudeButton';
 
 /**
  * AdminShell — coquille du back-office.
@@ -116,6 +117,9 @@ export function AdminShell({
           </div>
           {children}
         </main>
+
+        {/* Bouton flottant Claude AI — accessible partout */}
+        <FloatingClaudeButton />
 
         {/* Diagnostic : si pas hydraté après 5s, indique un problème */}
         {!hydrated && <NoJsFallback />}
