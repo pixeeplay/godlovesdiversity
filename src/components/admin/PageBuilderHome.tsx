@@ -39,9 +39,9 @@ export function PageBuilderHome() {
   }
   useEffect(() => { load(); }, []);
 
-  async function importAll(onlyCodeOnly: boolean) {
+  async function importAll(onlyCodeOnly: boolean, intensity: 'none' | 'subtle' | 'medium' | 'wow' = 'subtle') {
     const message = onlyCodeOnly
-      ? `Importer le contenu actuel de TOUTES les pages "Code only" (${counts.codeOnly} pages) en blocs éditables ?\n\nCela va peut-être prendre 1-2 minutes.`
+      ? `Importer le contenu actuel de TOUTES les pages "Code only" (${counts.codeOnly} pages) avec effets ${intensity} ?`
       : `⚠️ DANGER : Importer le contenu de TOUTES les pages (${pages.length}), y compris celles déjà éditées (${counts.edited}). Les blocs existants seront REMPLACÉS.\n\nContinuer ?`;
     if (!confirm(message)) return;
     setImporting(true);
@@ -50,7 +50,13 @@ export function PageBuilderHome() {
       const r = await fetch('/api/admin/page-builder/import-all', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ onlyCodeOnly, mode: 'replace', locale: 'fr', concurrency: 3 })
+        body: JSON.stringify({
+          onlyCodeOnly,
+          mode: 'replace',
+          locale: 'fr',
+          concurrency: 3,
+          effectIntensity: intensity
+        })
       });
       const j = await r.json();
       setImportResult(j);
@@ -93,15 +99,12 @@ export function PageBuilderHome() {
           >
             <Sparkles size={11} /> Générer avec IA
           </button>
-          <button
-            onClick={() => importAll(true)}
-            disabled={importing || loading}
-            className="bg-white text-fuchsia-600 hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold px-3 py-2 rounded-full flex items-center gap-1.5 shadow-xl"
-            title="Importe le contenu live de toutes les pages 'Code only' en blocs éditables"
-          >
-            {importing ? <Loader2 size={11} className="animate-spin" /> : <Download size={11} />}
-            {importing ? 'Import en cours…' : `Tout importer (${counts.codeOnly})`}
-          </button>
+          <BulkImportDropdown
+            counts={counts}
+            importing={importing}
+            disabled={loading}
+            onImport={importAll}
+          />
           <button onClick={load} disabled={importing} className="bg-white/15 hover:bg-white/25 disabled:opacity-50 text-white text-xs px-3 py-2 rounded-full flex items-center gap-1.5">
             <RefreshCw size={11} className={loading ? 'animate-spin' : ''} /> Scanner
           </button>
@@ -492,6 +495,85 @@ function AiPageGenerator({ onClose, onGenerated }: { onClose: () => void; onGene
           </button>
         </footer>
       </div>
+    </div>
+  );
+}
+
+/* ─── Bulk Import Dropdown ─────────────────────────────── */
+function BulkImportDropdown({ counts, importing, disabled, onImport }: {
+  counts: { all: number; edited: number; codeOnly: number; orphan: number };
+  importing: boolean;
+  disabled: boolean;
+  onImport: (onlyCodeOnly: boolean, intensity: 'none' | 'subtle' | 'medium' | 'wow') => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  const INTENSITIES: { v: 'none' | 'subtle' | 'medium' | 'wow'; label: string; emoji: string }[] = [
+    { v: 'none',   label: 'Aucun',  emoji: '⚪' },
+    { v: 'subtle', label: 'Sobre',  emoji: '🌱' },
+    { v: 'medium', label: 'Moyen',  emoji: '✨' },
+    { v: 'wow',    label: 'Wow',    emoji: '🎆' }
+  ];
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        disabled={importing || disabled}
+        className="bg-white text-fuchsia-600 hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold px-3 py-2 rounded-full flex items-center gap-1.5 shadow-xl"
+      >
+        {importing ? <Loader2 size={11} className="animate-spin" /> : <Download size={11} />}
+        {importing ? 'Import…' : `Tout importer (${counts.codeOnly})`}
+        <ChevronRight size={10} className={`transition-transform ${open ? 'rotate-90' : ''}`} />
+      </button>
+      {open && !importing && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <div className="absolute right-0 top-full mt-2 w-80 bg-zinc-950 border border-fuchsia-500/30 rounded-2xl shadow-2xl z-50 overflow-hidden">
+            <header className="bg-zinc-900 border-b border-zinc-800 p-3">
+              <p className="text-xs font-bold text-white">Importer toutes les pages</p>
+              <p className="text-[10px] text-zinc-500">Avec les effets que tu choisis</p>
+            </header>
+            <div className="p-3 space-y-3">
+              {/* Intensity choice */}
+              <div>
+                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1.5">Intensité des effets</label>
+                <div className="grid grid-cols-4 gap-1">
+                  {INTENSITIES.map((i) => (
+                    <button
+                      key={i.v}
+                      onClick={() => { setOpen(false); onImport(true, i.v); }}
+                      className="bg-zinc-900 hover:bg-fuchsia-500/15 ring-1 ring-zinc-800 hover:ring-fuchsia-500/40 rounded-lg p-2 text-center transition"
+                      title={`Importer ${counts.codeOnly} pages 'Code only' avec effets ${i.label}`}
+                    >
+                      <div className="text-lg">{i.emoji}</div>
+                      <p className="text-[10px] font-bold text-white">{i.label}</p>
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[10px] text-zinc-500 mt-1.5">
+                  Mode <strong>safe</strong> : seules les <strong>{counts.codeOnly} pages "Code only"</strong> sont touchées.
+                </p>
+              </div>
+
+              {counts.edited > 0 && (
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-rose-300 font-bold mb-1.5">⚠ Mode danger</label>
+                  <button
+                    onClick={() => { setOpen(false); onImport(false, 'subtle'); }}
+                    className="w-full bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 hover:text-rose-200 text-xs font-bold px-3 py-2 rounded-lg ring-1 ring-rose-500/40 flex items-center justify-center gap-1.5"
+                  >
+                    <AlertTriangle size={10} /> Réimporter TOUT ({counts.all}) avec effets sobre
+                  </button>
+                  <p className="text-[10px] text-rose-300/70 mt-1">
+                    Écrase les <strong>{counts.edited}</strong> pages déjà éditées + les {counts.codeOnly} "Code only".
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
