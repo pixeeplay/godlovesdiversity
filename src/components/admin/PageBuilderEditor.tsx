@@ -64,6 +64,9 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
   const [editingIdx, setEditingIdx] = useState<number | null>(null);
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [importing, setImporting] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [verifyResult, setVerifyResult] = useState<any>(null);
   const [iframeKey, setIframeKey] = useState(0);
   const [showAi, setShowAi] = useState(false);
   const [aiPrompt, setAiPrompt] = useState('');
@@ -116,20 +119,18 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
   }
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [slug]);
 
-  async function importLivePage() {
-    if (!confirm(blocks.length > 0
-      ? `La page a déjà ${blocks.length} bloc(s). L'import va REMPLACER ces blocs par le contenu de la page actuelle. Continuer ?`
-      : `Importer le contenu actuel de /${slug} ? Cela va créer des blocs éditables à partir du HTML rendu.`)) return;
+  async function importLivePage(mode: 'replace' | 'append', intensity: 'none' | 'subtle' | 'medium' | 'wow' = 'subtle') {
     setImporting(true);
     try {
       const r = await fetch(`/api/admin/page-builder/${slug}/import`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ locale: 'fr', mode: 'replace' })
+        body: JSON.stringify({ locale: 'fr', mode, effectIntensity: intensity })
       });
       const j = await r.json();
       if (j.ok) {
-        alert(`✓ ${j.blocksCount} bloc(s) importés depuis ${j.sourceUrl}`);
+        alert(`✓ ${j.blocksCount} bloc(s) ${mode === 'replace' ? 'remplacés' : 'ajoutés'} depuis ${j.sourceUrl}`);
+        setShowImportModal(false);
         load();
       } else {
         alert('Erreur import : ' + (j.error || 'unknown'));
@@ -138,6 +139,18 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
       alert('Erreur : ' + e.message);
     }
     setImporting(false);
+  }
+
+  async function verifyImport() {
+    setVerifying(true);
+    try {
+      const r = await fetch(`/api/admin/page-builder/verify?slug=${slug}`);
+      const j = await r.json();
+      setVerifyResult(j);
+    } catch (e: any) {
+      alert('Erreur verify : ' + e.message);
+    }
+    setVerifying(false);
   }
 
   function reloadIframe() {
@@ -231,7 +244,7 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
         <code className="text-xs text-zinc-300 bg-zinc-950 px-2 py-1 rounded">/{slug}</code>
         <span className="text-xs text-zinc-500">{blocks.length} bloc{blocks.length > 1 ? 's' : ''}</span>
         <button
-          onClick={importLivePage}
+          onClick={() => setShowImportModal(true)}
           disabled={importing}
           className="bg-cyan-500/15 hover:bg-cyan-500/25 disabled:opacity-50 text-cyan-300 hover:text-cyan-200 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 ring-1 ring-cyan-500/30"
           title="Convertit le contenu actuel de la page Next.js en blocs éditables"
@@ -289,7 +302,7 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
                 Importe-le pour pouvoir l'éditer, ou ajoute des blocs manuellement.
               </p>
               <div className="flex flex-wrap justify-center gap-2">
-                <button onClick={importLivePage} disabled={importing} className="bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-white text-xs font-bold px-4 py-2 rounded-full inline-flex items-center gap-1.5">
+                <button onClick={() => setShowImportModal(true)} disabled={importing} className="bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-white text-xs font-bold px-4 py-2 rounded-full inline-flex items-center gap-1.5">
                   {importing ? <Loader2 size={11} className="animate-spin" /> : <Download size={11} />}
                   Importer la page actuelle
                 </button>
@@ -366,7 +379,7 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
                 {blocks.length === 0 ? (
                   <div className="text-center py-8">
                     <p className="text-xs text-zinc-500 mb-3">Aucun bloc dans le builder pour cette page.</p>
-                    <button onClick={importLivePage} disabled={importing} className="bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-white text-xs font-bold px-4 py-2 rounded-full inline-flex items-center gap-1.5">
+                    <button onClick={() => setShowImportModal(true)} disabled={importing} className="bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-white text-xs font-bold px-4 py-2 rounded-full inline-flex items-center gap-1.5">
                       {importing ? <Loader2 size={11} className="animate-spin" /> : <Download size={11} />}
                       Importer la page actuelle
                     </button>
@@ -387,6 +400,20 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
           onChange={(patch) => updateBlock(editingIdx, patch)}
           onChangeData={(patch) => updateBlockData(editingIdx, patch)}
           onClose={() => setEditingIdx(null)}
+        />
+      )}
+
+      {/* Modal Import live page */}
+      {showImportModal && (
+        <ImportPageModal
+          slug={slug}
+          existingBlocks={blocks.length}
+          importing={importing}
+          verifying={verifying}
+          verifyResult={verifyResult}
+          onVerify={verifyImport}
+          onImport={importLivePage}
+          onClose={() => { setShowImportModal(false); setVerifyResult(null); }}
         />
       )}
 
@@ -725,6 +752,145 @@ function EffectPicker({ value, onChange }: { value: string | null; onChange: (v:
 }
 
 /* ─── Editor pour Parallax Slider ─────────────────── */
+/* ─── Modale Import live page (Replace / Append + Intensity) ────── */
+function ImportPageModal({ slug, existingBlocks, importing, verifying, verifyResult, onVerify, onImport, onClose }: {
+  slug: string;
+  existingBlocks: number;
+  importing: boolean;
+  verifying: boolean;
+  verifyResult: any;
+  onVerify: () => void;
+  onImport: (mode: 'replace' | 'append', intensity: 'none' | 'subtle' | 'medium' | 'wow') => void;
+  onClose: () => void;
+}) {
+  const [mode, setMode] = useState<'replace' | 'append'>(existingBlocks > 0 ? 'append' : 'replace');
+  const [intensity, setIntensity] = useState<'none' | 'subtle' | 'medium' | 'wow'>('subtle');
+
+  const INTENSITIES = [
+    { v: 'none',   label: 'Aucun',  emoji: '⚪', desc: 'Pas d\'animation, perf max' },
+    { v: 'subtle', label: 'Sobre',  emoji: '🌱', desc: 'Fade-up doux, recommandé' },
+    { v: 'medium', label: 'Moyen',  emoji: '✨', desc: 'Zoom, bounce sur CTA' },
+    { v: 'wow',    label: 'Wow',    emoji: '🎆', desc: 'Effets spectaculaires' }
+  ];
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur flex items-center justify-center p-4" onClick={onClose}>
+      <div onClick={(e) => e.stopPropagation()} className="bg-zinc-950 border border-cyan-500/40 rounded-2xl shadow-2xl w-full max-w-xl overflow-hidden">
+        <header className="bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20 border-b border-cyan-500/30 p-4 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-xl">📥</div>
+          <div>
+            <h3 className="text-base font-bold text-white">Importer /{slug}</h3>
+            <p className="text-[11px] text-zinc-300">Convertit le HTML rendu en blocs éditables</p>
+          </div>
+          <button onClick={onClose} className="ml-auto text-zinc-400 hover:text-white"><X size={16} /></button>
+        </header>
+
+        <div className="p-4 space-y-4">
+          {existingBlocks > 0 && (
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-xs text-amber-200">
+              ⚠️ Cette page a <strong>{existingBlocks} bloc(s)</strong> déjà créés. Choisis le mode adapté ci-dessous.
+            </div>
+          )}
+
+          {/* Mode */}
+          <div>
+            <label className="block text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-2">Mode d'import</label>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => setMode('append')}
+                className={`p-3 rounded-xl border text-left transition ${
+                  mode === 'append' ? 'border-emerald-500 bg-emerald-500/10' : 'border-zinc-800 bg-zinc-900 hover:border-emerald-500/40'
+                }`}
+              >
+                <p className="text-xs font-bold text-white">➕ Ajouter</p>
+                <p className="text-[10px] text-zinc-500">Conserve les {existingBlocks} blocs et ajoute le nouveau contenu à la fin</p>
+              </button>
+              <button
+                onClick={() => setMode('replace')}
+                className={`p-3 rounded-xl border text-left transition ${
+                  mode === 'replace' ? 'border-rose-500 bg-rose-500/10' : 'border-zinc-800 bg-zinc-900 hover:border-rose-500/40'
+                }`}
+              >
+                <p className="text-xs font-bold text-white">↻ Remplacer</p>
+                <p className="text-[10px] text-zinc-500">{existingBlocks > 0 ? `Supprime les ${existingBlocks} blocs et` : 'Recrée tout'} le contenu depuis zéro</p>
+              </button>
+            </div>
+          </div>
+
+          {/* Intensité effets */}
+          <div>
+            <label className="block text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-2">Intensité des effets</label>
+            <div className="grid grid-cols-4 gap-1.5">
+              {INTENSITIES.map((i) => (
+                <button
+                  key={i.v}
+                  onClick={() => setIntensity(i.v as any)}
+                  className={`p-2 rounded-lg border text-left transition ${
+                    intensity === i.v ? 'border-fuchsia-500 bg-fuchsia-500/10' : 'border-zinc-800 bg-zinc-900 hover:border-fuchsia-500/40'
+                  }`}
+                >
+                  <div className="text-base">{i.emoji}</div>
+                  <p className="text-[10px] font-bold text-white">{i.label}</p>
+                  <p className="text-[9px] text-zinc-500 leading-tight">{i.desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Verify */}
+          <div className="bg-zinc-900 ring-1 ring-zinc-800 rounded-xl p-3">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[11px] text-zinc-300 font-bold">🔍 Vérification (recommandé avant import)</p>
+              <button onClick={onVerify} disabled={verifying} className="text-[10px] bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 px-2 py-1 rounded disabled:opacity-50 flex items-center gap-1">
+                {verifying ? <Loader2 size={9} className="animate-spin" /> : <RefreshCw size={9} />}
+                {verifying ? 'Vérification…' : 'Vérifier'}
+              </button>
+            </div>
+            {verifyResult ? (
+              <div className="space-y-1.5">
+                <p className={`text-[11px] font-bold ${verifyResult.ok ? 'text-emerald-400' : 'text-rose-400'}`}>
+                  {verifyResult.diagnostic}
+                </p>
+                <ul className="space-y-0.5">
+                  {(verifyResult.checks || []).map((c: any, i: number) => (
+                    <li key={i} className={`text-[10px] flex items-start gap-1 ${c.ok ? 'text-emerald-300' : 'text-rose-300'}`}>
+                      <span>{c.ok ? '✓' : '✗'}</span>
+                      <span>{c.message}</span>
+                    </li>
+                  ))}
+                </ul>
+                {verifyResult.blocksPreview && (
+                  <p className="text-[10px] text-zinc-500 mt-2">
+                    Blocs détectés (preview) : {verifyResult.blocksPreview.map((b: any) => b.type).join(' → ')}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p className="text-[10px] text-zinc-500">Clique 'Vérifier' pour tester fetch + parsing + écriture DB sans rien modifier.</p>
+            )}
+          </div>
+        </div>
+
+        <footer className="bg-zinc-900 border-t border-zinc-800 p-3 flex items-center gap-2">
+          <button onClick={onClose} className="text-xs text-zinc-400 hover:text-white px-3 py-2">Annuler</button>
+          <button
+            onClick={() => onImport(mode, intensity)}
+            disabled={importing}
+            className={`ml-auto text-white text-xs font-bold px-5 py-2 rounded-full flex items-center gap-1.5 shadow-lg ${
+              mode === 'replace'
+                ? 'bg-rose-500 hover:bg-rose-400'
+                : 'bg-gradient-to-r from-cyan-500 to-emerald-500 hover:opacity-90'
+            } disabled:opacity-50`}
+          >
+            {importing ? <Loader2 size={11} className="animate-spin" /> : <Download size={11} />}
+            {importing ? 'Import…' : `${mode === 'replace' ? '↻ Remplacer' : '➕ Ajouter'} avec effets ${intensity}`}
+          </button>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
 function ParallaxSliderEditor({ data, onChange }: { data: any; onChange: (d: any) => void }) {
   const slides: any[] = data.slides || [];
 
