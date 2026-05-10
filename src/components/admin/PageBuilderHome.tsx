@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Layout, ChevronRight, Loader2, Search, RefreshCw, FileCode, Edit3, AlertCircle } from 'lucide-react';
+import { Layout, ChevronRight, Loader2, Search, RefreshCw, FileCode, Edit3, AlertCircle, Download, CheckCircle2, X as XIcon, AlertTriangle } from 'lucide-react';
 
 interface PageInfo {
   slug: string;
@@ -24,6 +24,8 @@ export function PageBuilderHome() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'edited' | 'codeOnly' | 'orphan'>('all');
   const [search, setSearch] = useState('');
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<any>(null);
 
   async function load() {
     setLoading(true);
@@ -33,6 +35,28 @@ export function PageBuilderHome() {
     setLoading(false);
   }
   useEffect(() => { load(); }, []);
+
+  async function importAll(onlyCodeOnly: boolean) {
+    const message = onlyCodeOnly
+      ? `Importer le contenu actuel de TOUTES les pages "Code only" (${counts.codeOnly} pages) en blocs éditables ?\n\nCela va peut-être prendre 1-2 minutes.`
+      : `⚠️ DANGER : Importer le contenu de TOUTES les pages (${pages.length}), y compris celles déjà éditées (${counts.edited}). Les blocs existants seront REMPLACÉS.\n\nContinuer ?`;
+    if (!confirm(message)) return;
+    setImporting(true);
+    setImportResult(null);
+    try {
+      const r = await fetch('/api/admin/page-builder/import-all', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ onlyCodeOnly, mode: 'replace', locale: 'fr', concurrency: 3 })
+      });
+      const j = await r.json();
+      setImportResult(j);
+      if (j.ok) load();
+    } catch (e: any) {
+      alert('Erreur : ' + e.message);
+    }
+    setImporting(false);
+  }
 
   const filtered = pages.filter((p) => {
     if (filter !== 'all' && p.status !== filter) return false;
@@ -59,11 +83,70 @@ export function PageBuilderHome() {
               Édite visuellement les pages du site — preview live + import contenu existant
             </p>
           </div>
-          <button onClick={load} className="bg-white/15 hover:bg-white/25 text-white text-xs px-3 py-2 rounded-full flex items-center gap-1.5">
+          <button
+            onClick={() => importAll(true)}
+            disabled={importing || loading}
+            className="bg-white text-fuchsia-600 hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold px-3 py-2 rounded-full flex items-center gap-1.5 shadow-xl"
+            title="Importe le contenu live de toutes les pages 'Code only' en blocs éditables"
+          >
+            {importing ? <Loader2 size={11} className="animate-spin" /> : <Download size={11} />}
+            {importing ? 'Import en cours…' : `Tout importer (${counts.codeOnly})`}
+          </button>
+          <button onClick={load} disabled={importing} className="bg-white/15 hover:bg-white/25 disabled:opacity-50 text-white text-xs px-3 py-2 rounded-full flex items-center gap-1.5">
             <RefreshCw size={11} className={loading ? 'animate-spin' : ''} /> Scanner
           </button>
         </div>
       </div>
+
+      {/* Result modal après import-all */}
+      {importResult && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur flex items-center justify-center p-4" onClick={() => setImportResult(null)}>
+          <div onClick={(e) => e.stopPropagation()} className="bg-zinc-950 border border-fuchsia-500/30 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col overflow-hidden">
+            <header className="bg-zinc-900 border-b border-zinc-800 p-3 flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-emerald-400" />
+              <h3 className="text-sm font-bold">Résultat de l'import</h3>
+              <button onClick={() => setImportResult(null)} className="ml-auto text-zinc-400 hover:text-white"><XIcon size={14} /></button>
+            </header>
+            <div className="p-4 space-y-3 overflow-y-auto">
+              <div className="grid grid-cols-3 gap-2">
+                <div className="bg-emerald-500/10 ring-1 ring-emerald-500/30 rounded-xl p-3 text-center">
+                  <div className="text-2xl font-bold text-emerald-400">{importResult.summary?.success || 0}</div>
+                  <div className="text-[10px] uppercase tracking-widest text-emerald-300">Succès</div>
+                </div>
+                <div className="bg-rose-500/10 ring-1 ring-rose-500/30 rounded-xl p-3 text-center">
+                  <div className="text-2xl font-bold text-rose-400">{importResult.summary?.failed || 0}</div>
+                  <div className="text-[10px] uppercase tracking-widest text-rose-300">Échecs</div>
+                </div>
+                <div className="bg-fuchsia-500/10 ring-1 ring-fuchsia-500/30 rounded-xl p-3 text-center">
+                  <div className="text-2xl font-bold text-fuchsia-400">{importResult.summary?.totalBlocks || 0}</div>
+                  <div className="text-[10px] uppercase tracking-widest text-fuchsia-300">Blocs créés</div>
+                </div>
+              </div>
+              {Array.isArray(importResult.results) && (
+                <ul className="space-y-1 max-h-[40vh] overflow-y-auto bg-zinc-900 rounded-xl p-2">
+                  {importResult.results.map((r: any) => (
+                    <li key={r.slug} className="flex items-center gap-2 text-xs px-2 py-1 rounded hover:bg-zinc-800">
+                      {r.ok ? <CheckCircle2 size={11} className="text-emerald-400" /> : <AlertTriangle size={11} className="text-rose-400" />}
+                      <code className="text-zinc-300 flex-1">/{r.slug}</code>
+                      {r.ok ? (
+                        <span className="text-fuchsia-400 font-bold">{r.blocks} bloc{r.blocks > 1 ? 's' : ''}</span>
+                      ) : (
+                        <span className="text-rose-400 text-[10px]">{r.error}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <footer className="bg-zinc-900 border-t border-zinc-800 p-3 flex justify-end gap-2">
+              <button onClick={() => setImportResult(null)} className="text-xs text-zinc-400 hover:text-white px-3 py-1.5">Fermer</button>
+              <button onClick={() => importAll(false)} disabled={importing} className="text-xs bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 hover:text-rose-200 px-3 py-1.5 rounded-full ring-1 ring-rose-500/40 flex items-center gap-1">
+                <AlertTriangle size={10} /> Re-importer TOUT (incl. déjà édité)
+              </button>
+            </footer>
+          </div>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl p-3 mb-3 flex flex-wrap items-center gap-2">
