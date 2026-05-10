@@ -1,0 +1,31 @@
+{
+  "name": "@pixeesite/database",
+  "version": "0.1.0",
+  "private": true,
+  "license": "BUSL-1.1",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./platform": "./src/platform.ts",
+    "./tenant": "./src/tenant.ts"
+  },
+  "scripts": {
+    "db:platform:generate": "prisma generate --schema prisma/platform.prisma",
+    "db:platform:push":     "prisma db push --schema prisma/platform.prisma",
+    "db:platform:migrate":  "prisma migrate dev --schema prisma/platform.prisma",
+    "db:platform:studio":   "prisma studio --schema prisma/platform.prisma",
+    "db:tenant:generate":   "prisma generate --schema prisma/tenant.prisma",
+    "db:tenant:push":       "prisma db push --schema prisma/tenant.prisma --skip-generate",
+    "build": "pnpm db:platform:generate && pnpm db:tenant:generate",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0",
+    "typescript": "^5.6.3",
+    "@types/node": "^22.9.0"
+  }
+}

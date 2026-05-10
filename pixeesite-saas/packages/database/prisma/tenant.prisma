@@ -1,0 +1,246 @@
+// Pixeesite — Tenant DB schema
+// Ce schéma est appliqué sur chaque DB tenant (1 DB = 1 client).
+// L'orgId n'apparaît PAS dans les tables car la DB elle-même est l'isolation.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/tenant-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("TENANT_DATABASE_URL") // remplacé à runtime par tenant URL
+}
+
+// ─── PAGE BUILDER ──────────────────────────────────────────────
+
+model SitePage {
+  id        String   @id @default(cuid())
+  siteId    String   // ref Site dans platform DB (string libre côté tenant)
+  slug      String   // "/" "/about" "/p/foo"
+  title     String
+  meta      Json?    // { description, ogImage, robots, ... }
+  blocks    Json     // [ { type, width, data, effect, effectDelay, ... } ]
+  visible   Boolean  @default(true)
+  isHome    Boolean  @default(false)
+  // SEO
+  noIndex   Boolean  @default(false)
+  canonical String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([siteId, slug])
+  @@index([siteId, visible])
+}
+
+// ─── LEADS / CRM ───────────────────────────────────────────────
+
+model Lead {
+  id            String   @id @default(cuid())
+  email         String?  @unique
+  firstName     String?
+  lastName      String?
+  phone         String?
+  company       String?
+  jobTitle      String?
+  city          String?
+  country       String?
+  source        String   @default("manual")
+  sourceDetail  String?
+  status        String   @default("new")
+  score         Int      @default(0)
+  tags          String[] @default([])
+  segments      String[] @default([])
+  notes         String?  @db.Text
+  customFields  Json?
+  // Activity
+  interactions  LeadInteraction[]
+  lastContactedAt DateTime?
+  contactCount  Int      @default(0)
+  // Newsletter
+  newsletterOptIn Boolean @default(false)
+  optInAt       DateTime?
+  unsubscribedAt DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  @@index([status, score])
+  @@index([newsletterOptIn])
+}
+
+model LeadInteraction {
+  id         String   @id @default(cuid())
+  leadId     String
+  lead       Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type       String   // email-sent | email-opened | call | meeting | note
+  subject    String?
+  content    String?  @db.Text
+  externalId String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  @@index([leadId, createdAt])
+}
+
+// ─── FORMS ─────────────────────────────────────────────────────
+
+model FormConfig {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  name       String
+  fields     Json     // [{ name, label, type, required, ... }]
+  notifyEmails String[] @default([])
+  webhookUrl String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model FormSubmission {
+  id        String   @id @default(cuid())
+  formSlug  String
+  data      Json
+  ip        String?
+  userAgent String?
+  spam      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  @@index([formSlug, createdAt])
+}
+
+// ─── ARTICLES / BLOG ────────────────────────────────────────────
+
+model Article {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  excerpt     String?
+  content     Json?
+  bodyHtml    String?   @db.Text
+  coverImage  String?
+  images      String[]  @default([])
+  videoPrompt String?   @db.Text
+  status      String    @default("draft") // draft | published | scheduled
+  authorName  String?
+  publishedAt DateTime?
+  scheduledFor DateTime?
+  tags        String[]  @default([])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  @@index([status, publishedAt])
+}
+
+// ─── NEWSLETTER & EMAIL ─────────────────────────────────────────
+
+model Newsletter {
+  id          String   @id @default(cuid())
+  subject     String
+  bodyHtml    String?  @db.Text
+  bodyText    String?  @db.Text
+  status      String   @default("draft") // draft | scheduled | sending | sent
+  scheduledFor DateTime?
+  sentAt      DateTime?
+  segments    String[] @default([])
+  recipients  Int      @default(0)
+  opens       Int      @default(0)
+  clicks      Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  type      String   // welcome | newsletter | reset | custom
+  subject   String?
+  body      String   @db.Text
+  variables String[] @default([])
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MailAccount {
+  id           String   @id @default(cuid())
+  label        String
+  email        String   @unique
+  imapHost     String
+  imapPort     Int      @default(993)
+  imapSecure   Boolean  @default(true)
+  imapUser     String
+  imapPassword String
+  smtpHost     String
+  smtpPort     Int      @default(465)
+  smtpSecure   Boolean  @default(true)
+  smtpUser     String
+  smtpPassword String
+  signature    String?  @db.Text
+  isDefault    Boolean  @default(false)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ─── E-COMMERCE (optionnel — disponible à l'activation) ─────────
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?  @db.Text
+  priceCents  Int
+  currency    String   @default("EUR")
+  images      String[] @default([])
+  inventory   Int      @default(0)
+  category    String?
+  variants    Json?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id              String   @id @default(cuid())
+  customerEmail   String
+  customerName    String?
+  status          String   @default("pending") // pending | paid | shipped | delivered | refunded
+  amountCents     Int
+  currency        String   @default("EUR")
+  stripeSessionId String?  @unique
+  shippingAddress Json?
+  billingAddress  Json?
+  items           OrderItem[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  productId   String
+  quantity    Int
+  priceCents  Int
+  variant     Json?
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id])
+}
+
+// ─── ASSETS (images uploadées dans MinIO bucket du tenant) ──────
+
+model Asset {
+  id         String   @id @default(cuid())
+  bucket     String   // "tenant-arnaud"
+  key        String   // "uploads/2026/05/photo.jpg"
+  url        String?  // CDN URL
+  filename   String
+  mimeType   String
+  sizeBytes  Int
+  width      Int?
+  height     Int?
+  alt        String?
+  // Tags & organization
+  tags       String[] @default([])
+  folder     String?
+  // AI metadata
+  aiGenerated Boolean @default(false)
+  aiPrompt   String?  @db.Text
+  createdAt  DateTime @default(now())
+  @@index([folder])
+  @@index([tags])
+}

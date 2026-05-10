@@ -1,0 +1,43 @@
+# ─── Pixeesite Caddyfile ─────────────────────────────────────────
+# Reverse-proxy + auto-SSL Let's Encrypt + custom domains via Caddy admin API
+#
+# Routing :
+#   app.pixeesite.com         → admin Next.js (port 3000)
+#   *.pixeesite.app            → render Next.js (port 3001) with subdomain wildcard
+#   pixeesite.com / .app       → admin (page d'accueil marketing)
+#   <custom-domain.com>        → render (auto-discovered via API admin)
+#
+# Custom domains :
+#   Le worker admin appelle PUT /config/apps/http/servers/srv0/routes/...
+#   pour ajouter un domaine validé. Caddy provisionne le cert auto.
+
+{
+  email admin@pixeesite.com
+  admin :2019
+  # Expose admin API en interne uniquement (firewall Coolify)
+}
+
+# ─── Admin SaaS ──────────────────────────────────────────────────
+app.pixeesite.com, app.pixeesite.app {
+  reverse_proxy admin:3000
+  encode gzip zstd
+}
+
+# ─── Render multi-tenant (subdomains *.pixeesite.app) ────────────
+*.pixeesite.app {
+  tls {
+    on_demand
+  }
+  reverse_proxy render:3001
+  encode gzip zstd
+}
+
+# ─── Marketing landing (apex) ────────────────────────────────────
+pixeesite.com, pixeesite.app {
+  reverse_proxy admin:3000
+  encode gzip zstd
+}
+
+# ─── Custom domains (ajoutés dynamiquement via admin API) ────────
+# Les routes pour les custom domains sont injectées au runtime par
+# le service admin via l'API /config/apps/http/servers/srv0/routes

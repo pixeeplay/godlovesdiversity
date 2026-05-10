@@ -1,0 +1,35 @@
+{
+  "name": "pixeesite",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pixeesite — AI-first multi-tenant site builder SaaS (BUSL 1.1, EU-hosted, RGPD)",
+  "license": "BUSL-1.1",
+  "homepage": "https://pixeesite.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pixeeplay/pixeesite.git"
+  },
+  "author": "Arnaud Gredai <arnaud@gredai.com>",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "db:platform:push": "pnpm --filter @pixeesite/database db:platform:push",
+    "db:tenant:create": "pnpm --filter @pixeesite/cli tenant:create",
+    "db:tenant:migrate": "pnpm --filter @pixeesite/cli tenant:migrate",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\""
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "prettier": "^3.4.0",
+    "typescript": "^5.6.3"
+  }
+}

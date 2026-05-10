@@ -1,0 +1,299 @@
+// Pixeesite — Platform DB (partagée entre tous les tenants)
+// Prisma schema généré pour la DB master qui orchestre les tenants.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/platform-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PLATFORM_DATABASE_URL")
+}
+
+// ─── USERS & ORGS ──────────────────────────────────────────────
+
+model User {
+  id            String      @id @default(cuid())
+  email         String      @unique
+  emailVerified DateTime?
+  name          String?
+  avatarUrl     String?
+  passwordHash  String?
+  // 2FA
+  totpSecret    String?
+  twoFactorEnabled Boolean  @default(false)
+  // Status
+  banned        Boolean     @default(false)
+  // Owned orgs + memberships
+  ownedOrgs     Org[]       @relation("OrgOwner")
+  memberships   OrgMember[]
+  invitations   OrgInvite[] @relation("InviteRecipient")
+  // Audit
+  lastLoginAt   DateTime?
+  lastLoginIp   String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  @@index([email])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  @@index([userId])
+}
+
+model Org {
+  id            String      @id @default(cuid())
+  slug          String      @unique
+  name          String
+  ownerId       String
+  owner         User        @relation("OrgOwner", fields: [ownerId], references: [id])
+  // Plan
+  plan          String      @default("free") // free | solo | pro | agency | enterprise
+  planStatus    String      @default("trial") // trial | active | past_due | canceled
+  trialEndsAt   DateTime?
+  // Tenant DB
+  tenantDbName  String?     @unique
+  tenantDbReady Boolean     @default(false)
+  tenantBucket  String?     @unique
+  // Branding (pour le SaaS lui-même + les sites du tenant)
+  logoUrl       String?
+  primaryColor  String      @default("#d946ef")
+  font          String      @default("Inter")
+  // Default subdomain
+  defaultDomain String?     @unique // ex: "arnaud.pixeesite.app"
+  // Limits (cached depuis le plan)
+  maxSites      Int         @default(1)
+  maxStorageMb  Int         @default(100)
+  maxAiCredits  Int         @default(50)
+  usedAiCredits Int         @default(0)
+  // Relations
+  members       OrgMember[]
+  invitations   OrgInvite[]
+  sites         Site[]
+  domains       CustomDomain[]
+  subscription  Subscription?
+  invoices      Invoice[]
+  apiKeys       ApiKey[]
+  // Audit
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  @@index([slug])
+  @@index([plan, planStatus])
+}
+
+model OrgMember {
+  id         String   @id @default(cuid())
+  orgId      String
+  userId     String
+  role       String   @default("editor") // owner | admin | editor | viewer
+  org        Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invitedAt  DateTime @default(now())
+  acceptedAt DateTime?
+  @@unique([orgId, userId])
+}
+
+model OrgInvite {
+  id          String   @id @default(cuid())
+  orgId       String
+  email       String
+  role        String   @default("editor")
+  token       String   @unique
+  invitedById String
+  recipientId String?
+  org         Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  recipient   User?    @relation("InviteRecipient", fields: [recipientId], references: [id])
+  acceptedAt  DateTime?
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  @@index([token])
+  @@index([email])
+}
+
+// ─── SITES & DOMAINS ──────────────────────────────────────────
+
+model Site {
+  id            String   @id @default(cuid())
+  orgId         String
+  slug          String   // unique par org
+  name          String
+  description   String?
+  status        String   @default("draft") // draft | published | archived
+  templateId    String?
+  template      Template? @relation(fields: [templateId], references: [id])
+  // Theme override pour ce site (sinon hérite de Org)
+  theme         Json?
+  seo           Json?
+  settings      Json?
+  // Stats cache
+  pageCount     Int      @default(0)
+  storageMb     Float    @default(0)
+  // Deployment
+  deployStatus  String?
+  deployedAt    DateTime?
+  // Relations
+  org           Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  domains       CustomDomain[]
+  versions      SiteVersion[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  @@unique([orgId, slug])
+}
+
+model SiteVersion {
+  id        String   @id @default(cuid())
+  siteId    String
+  version   Int
+  // Snapshot blob de toutes les pages + theme + settings
+  snapshot  Json
+  reason    String?  // 'auto-save' | 'manual' | 'before-publish' | 'before-import'
+  authorId  String?
+  site      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  @@unique([siteId, version])
+  @@index([siteId, createdAt])
+}
+
+model CustomDomain {
+  id          String   @id @default(cuid())
+  orgId       String
+  siteId      String?
+  domain      String   @unique
+  verified    Boolean  @default(false)
+  certIssued  Boolean  @default(false)
+  primary     Boolean  @default(false)
+  verifyToken String?
+  // Last DNS check
+  lastCheckAt DateTime?
+  lastError   String?
+  org         Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  site        Site?    @relation(fields: [siteId], references: [id])
+  createdAt   DateTime @default(now())
+  @@index([verified, certIssued])
+}
+
+// ─── TEMPLATES MARKETPLACE ──────────────────────────────────
+
+model Template {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  description  String?
+  category     String   // photo | restaurant | sass | ecommerce | asso | podcast | course | link-in-bio | real-estate | blog
+  thumbnailUrl String?
+  previewUrl   String?
+  // Snapshot complet d'un site qui sera cloné
+  blocksSeed   Json
+  // Pricing
+  free         Boolean  @default(false)
+  priceCents   Int      @default(0)
+  authorId     String?
+  // Stats
+  popularity   Int      @default(0)
+  installCount Int      @default(0)
+  rating       Float    @default(0)
+  // Status
+  approved     Boolean  @default(false)
+  approvedAt   DateTime?
+  // Relations
+  sites        Site[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@index([category, approved])
+  @@index([popularity])
+}
+
+// ─── BILLING ──────────────────────────────────────────────────
+
+model Subscription {
+  id               String   @id @default(cuid())
+  orgId            String   @unique
+  stripeCustomerId String?  @unique
+  stripeSubId      String?  @unique
+  plan             String   @default("free")
+  amountCents      Int      @default(0)
+  currency         String   @default("EUR")
+  currentPeriodEnd DateTime?
+  cancelAtPeriodEnd Boolean @default(false)
+  org              Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Invoice {
+  id              String   @id @default(cuid())
+  orgId           String
+  amountCents     Int
+  currency        String   @default("EUR")
+  status          String   // open | paid | void | uncollectible
+  pdfUrl          String?
+  stripeInvoiceId String?  @unique
+  paidAt          DateTime?
+  org             Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  @@index([orgId, status])
+}
+
+// ─── API KEYS pour intégrations dev ──────────────────────────
+
+model ApiKey {
+  id         String   @id @default(cuid())
+  orgId      String
+  name       String
+  keyHash    String   @unique // bcrypt
+  keyPrefix  String   // ex "pxs_live_a1b2..." pour identification
+  scopes     String[] @default([])
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  org        Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  @@index([keyPrefix])
+}
+
+// ─── AUDIT LOG ─────────────────────────────────────────────────
+
+model PlatformAuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  orgId     String?
+  action    String   // "site.publish" | "domain.add" | "user.login" | "ai.generate" | ...
+  resource  String?  // "site:abc123" | "user:xyz"
+  metadata  Json?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  @@index([orgId, action, createdAt])
+  @@index([userId, createdAt])
+}
+
+// ─── AI USAGE METER ────────────────────────────────────────────
+
+model AiUsage {
+  id          String   @id @default(cuid())
+  orgId       String
+  userId      String?
+  provider    String   // gemini | openai | anthropic | imagen | elevenlabs | fal
+  model       String
+  operation   String   // text | image | video | audio | embed
+  // Token / unit count
+  promptTokens   Int   @default(0)
+  outputTokens   Int   @default(0)
+  imagesCount    Int   @default(0)
+  audioSeconds   Int   @default(0)
+  videoSeconds   Int   @default(0)
+  // Cost
+  costCents      Int   @default(0)
+  durationMs     Int?
+  success        Boolean @default(true)
+  errorMessage   String?
+  createdAt      DateTime @default(now())
+  @@index([orgId, createdAt])
+  @@index([provider, model])
+}

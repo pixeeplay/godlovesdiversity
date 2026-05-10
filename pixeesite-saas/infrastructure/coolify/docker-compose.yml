@@ -1,0 +1,96 @@
+version: '3.8'
+
+# ─── Pixeesite Coolify stack ─────────────────────────────────────
+# Déployé sur Coolify avec 1 service par bloc.
+# Pour usage local : `docker compose up -d`
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: pixeesite
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: pixeesite_platform
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  minio:
+    image: minio/minio:latest
+    restart: always
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-pixeesite}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-changeme}
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "2019:2019"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy-data:/data
+      - caddy-config:/config
+
+  admin:
+    build: ../../apps/admin
+    restart: always
+    environment:
+      PLATFORM_DATABASE_URL: postgres://pixeesite:${POSTGRES_PASSWORD:-changeme}@postgres:5432/pixeesite_platform
+      TENANT_DATABASE_URL_TEMPLATE: postgres://pixeesite:${POSTGRES_PASSWORD:-changeme}@postgres:5432/{dbName}
+      POSTGRES_ADMIN_URL: postgres://pixeesite:${POSTGRES_PASSWORD:-changeme}@postgres:5432/postgres
+      REDIS_URL: redis://redis:6379
+      NEXTAUTH_URL: ${ADMIN_URL:-http://localhost:3000}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: "9000"
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-pixeesite}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-changeme}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      CADDY_ADMIN_URL: http://caddy:2019
+    depends_on:
+      - postgres
+      - redis
+      - minio
+    ports:
+      - "3000:3000"
+
+  render:
+    build: ../../apps/render
+    restart: always
+    environment:
+      PLATFORM_DATABASE_URL: postgres://pixeesite:${POSTGRES_PASSWORD:-changeme}@postgres:5432/pixeesite_platform
+      TENANT_DATABASE_URL_TEMPLATE: postgres://pixeesite:${POSTGRES_PASSWORD:-changeme}@postgres:5432/{dbName}
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "3001:3001"
+
+volumes:
+  pg-data:
+  redis-data:
+  minio-data:
+  caddy-data:
+  caddy-config:
