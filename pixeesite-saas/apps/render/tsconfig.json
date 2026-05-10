@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@pixeesite/database": ["../../packages/database/src"],
+      "@pixeesite/blocks": ["../../packages/blocks/src"]
+    }
+  },
+  "include": ["next-env.d.ts", "src/**/*", ".next/types/**/*.ts", "middleware.ts"],
+  "exclude": ["node_modules"]
+}
