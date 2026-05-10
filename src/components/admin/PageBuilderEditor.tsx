@@ -6,6 +6,7 @@ import {
   Mountain, Layers, Sparkles, Search, Globe, Download, RefreshCw
 } from 'lucide-react';
 import { EFFECTS, EFFECT_CATEGORIES, type Effect, type EffectCategory } from '@/lib/effects-library';
+import { AiMediaButton } from './AiMediaButton';
 
 /**
  * Page Builder visuel avec drag&drop minimaliste.
@@ -587,13 +588,28 @@ function BlockEditDrawer({ block, onChange, onChangeData, onClose }: {
 
         {block.type === 'image' && (
           <>
-            <input value={block.data?.src || ''} onChange={(e) => onChangeData({ src: e.target.value })} placeholder="URL image" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+            <div className="flex items-center gap-1">
+              <input value={block.data?.src || ''} onChange={(e) => onChangeData({ src: e.target.value })} placeholder="URL image" className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+              <AiMediaButton kind="image" onGenerated={(url) => onChangeData({ src: url })} label="IA 🖼" />
+            </div>
+            {block.data?.src && <img src={block.data.src} alt="" className="w-full max-h-32 object-cover rounded-lg ring-1 ring-zinc-800" />}
             <input value={block.data?.alt || ''} onChange={(e) => onChangeData({ alt: e.target.value })} placeholder="Alt text" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs" />
           </>
         )}
 
         {block.type === 'video' && (
-          <input value={block.data?.src || ''} onChange={(e) => onChangeData({ src: e.target.value })} placeholder="URL vidéo (mp4 ou YouTube embed)" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+          <>
+            <div className="flex items-center gap-1">
+              <input value={block.data?.src || ''} onChange={(e) => onChangeData({ src: e.target.value })} placeholder="URL vidéo (mp4 ou YouTube embed)" className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+              <AiMediaButton kind="video" onGenerated={(url) => onChangeData({ src: url })} label="IA 🎬" />
+              <AiMediaButton kind="video-prompt" onGenerated={(prompt) => { navigator.clipboard.writeText(prompt); alert('Prompt copié dans le presse-papier — colle-le dans Veo/Runway/Sora'); }} label="📝 prompt" />
+            </div>
+            {block.data?.src && (
+              block.data.src.includes('youtube.com') || block.data.src.includes('youtu.be')
+                ? <p className="text-[10px] text-zinc-500">YouTube embed configuré</p>
+                : <video src={block.data.src} controls className="w-full max-h-32 rounded-lg ring-1 ring-zinc-800" />
+            )}
+          </>
         )}
 
         {block.type === 'cta' && (
@@ -607,7 +623,11 @@ function BlockEditDrawer({ block, onChange, onChangeData, onClose }: {
           <>
             <input value={block.data?.title || ''} onChange={(e) => onChangeData({ title: e.target.value })} placeholder="Titre" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm font-bold" />
             <input value={block.data?.subtitle || ''} onChange={(e) => onChangeData({ subtitle: e.target.value })} placeholder="Sous-titre" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs" />
-            <input value={block.data?.bgImage || ''} onChange={(e) => onChangeData({ bgImage: e.target.value })} placeholder="URL image de fond (optionnel)" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+            <div className="flex items-center gap-1">
+              <input value={block.data?.bgImage || ''} onChange={(e) => onChangeData({ bgImage: e.target.value })} placeholder="URL image de fond (optionnel)" className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+              <AiMediaButton kind="image" onGenerated={(url) => onChangeData({ bgImage: url })} label="IA 🖼" />
+            </div>
+            {block.data?.bgImage && <img src={block.data.bgImage} alt="" className="w-full h-20 object-cover rounded-lg ring-1 ring-zinc-800" />}
           </>
         )}
 
@@ -621,9 +641,21 @@ function BlockEditDrawer({ block, onChange, onChangeData, onClose }: {
               <input value={block.data?.ctaLabel || ''} onChange={(e) => onChangeData({ ctaLabel: e.target.value })} placeholder="CTA label" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs" />
               <input value={block.data?.ctaHref || ''} onChange={(e) => onChangeData({ ctaHref: e.target.value })} placeholder="CTA href" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
             </div>
-            <input value={block.data?.bgImage || ''} onChange={(e) => onChangeData({ bgImage: e.target.value })} placeholder="🏞️ Layer 1 — Image fond (sky, montagnes, lointain)" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
-            <input value={block.data?.midImage || ''} onChange={(e) => onChangeData({ midImage: e.target.value })} placeholder="⛰️ Layer 2 — Image milieu (collines, nuages)" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
-            <input value={block.data?.fgImage || ''} onChange={(e) => onChangeData({ fgImage: e.target.value })} placeholder="🌳 Layer 3 — Image foreground (silhouettes, herbes)" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+            <div className="flex items-center gap-1">
+              <input value={block.data?.bgImage || ''} onChange={(e) => onChangeData({ bgImage: e.target.value })} placeholder="🏞️ Layer 1 — Image fond (sky, montagnes, lointain)" className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+              <AiMediaButton kind="parallax-bg" onGenerated={(url) => onChangeData({ bgImage: url })} label="IA 🏔" />
+            </div>
+            {block.data?.bgImage && <img src={block.data.bgImage} alt="" className="w-full h-16 object-cover rounded-lg ring-1 ring-zinc-800" />}
+            <div className="flex items-center gap-1">
+              <input value={block.data?.midImage || ''} onChange={(e) => onChangeData({ midImage: e.target.value })} placeholder="⛰️ Layer 2 — Image milieu (PNG transparent)" className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+              <AiMediaButton kind="parallax-mid" onGenerated={(url) => onChangeData({ midImage: url })} label="IA ⛰" />
+            </div>
+            {block.data?.midImage && <img src={block.data.midImage} alt="" className="w-full h-16 object-contain rounded-lg ring-1 ring-zinc-800" style={{ backgroundImage: 'linear-gradient(45deg, #1f1f23 25%, transparent 25%, transparent 75%, #1f1f23 75%), linear-gradient(45deg, #1f1f23 25%, transparent 25%, transparent 75%, #1f1f23 75%)', backgroundSize: '8px 8px', backgroundPosition: '0 0, 4px 4px' }} />}
+            <div className="flex items-center gap-1">
+              <input value={block.data?.fgImage || ''} onChange={(e) => onChangeData({ fgImage: e.target.value })} placeholder="🌳 Layer 3 — Image foreground (PNG transparent)" className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+              <AiMediaButton kind="parallax-fg" onGenerated={(url) => onChangeData({ fgImage: url })} label="IA 🌳" />
+            </div>
+            {block.data?.fgImage && <img src={block.data.fgImage} alt="" className="w-full h-16 object-contain rounded-lg ring-1 ring-zinc-800" style={{ backgroundImage: 'linear-gradient(45deg, #1f1f23 25%, transparent 25%, transparent 75%, #1f1f23 75%), linear-gradient(45deg, #1f1f23 25%, transparent 25%, transparent 75%, #1f1f23 75%)', backgroundSize: '8px 8px', backgroundPosition: '0 0, 4px 4px' }} />}
             <div className="grid grid-cols-2 gap-2">
               <input value={block.data?.height || '90vh'} onChange={(e) => onChangeData({ height: e.target.value })} placeholder="Hauteur (90vh)" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
               <input value={block.data?.overlayColor || ''} onChange={(e) => onChangeData({ overlayColor: e.target.value })} placeholder="Overlay (rgba(0,0,0,0.25))" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
@@ -944,7 +976,11 @@ function ParallaxSliderEditor({ data, onChange }: { data: any; onChange: (d: any
             <input value={s.subtitle || ''} onChange={(e) => updateSlide(i, { subtitle: e.target.value })} placeholder="Sous-titre" className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs" />
             <input value={s.tagline || ''} onChange={(e) => updateSlide(i, { tagline: e.target.value })} placeholder="Tagline (01/03)" className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
           </div>
-          <input value={s.image || ''} onChange={(e) => updateSlide(i, { image: e.target.value })} placeholder="URL image" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
+          <div className="flex items-center gap-1">
+            <input value={s.image || ''} onChange={(e) => updateSlide(i, { image: e.target.value })} placeholder="URL image" className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
+            <AiMediaButton kind="image" onGenerated={(url) => updateSlide(i, { image: url })} label="IA 🖼" />
+          </div>
+          {s.image && <img src={s.image} alt="" className="w-full h-12 object-cover rounded ring-1 ring-zinc-800" />}
           <div className="grid grid-cols-3 gap-1.5">
             <input value={s.ctaLabel || ''} onChange={(e) => updateSlide(i, { ctaLabel: e.target.value })} placeholder="CTA" className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs" />
             <input value={s.ctaHref || ''} onChange={(e) => updateSlide(i, { ctaHref: e.target.value })} placeholder="Lien" className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
