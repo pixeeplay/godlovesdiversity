@@ -10,7 +10,7 @@ import {
   Youtube, HandHeart, Handshake, ShoppingBag, ChevronDown, ChevronRight,
   Package, Truck, ShieldAlert, Building2, Megaphone, BarChart3, Tag, Facebook,
   Tv, Gavel, MessageSquare, Globe, DollarSign, TrendingDown, FileSpreadsheet,
-  Clock, Key, Lock, Cpu, Star, type LucideIcon
+  Clock, Key, Lock, Cpu, Star, PanelLeftClose, PanelLeftOpen, type LucideIcon
 } from 'lucide-react';
 import type { MenuPermissions, UserOverride } from '@/lib/menu-permissions';
 import { isItemVisible } from '@/lib/menu-permissions';
@@ -164,6 +164,7 @@ const NAV: Entry[] = [
 ];
 
 const STORAGE_KEY = 'gld-admin-sidebar-open';
+const COLLAPSED_KEY = 'gld-admin-sidebar-collapsed';
 
 // Couleurs par catégorie (gradient + accent) pour rendre la sidebar plus visuelle
 const GROUP_COLORS: Record<string, { bg: string; ring: string; text: string }> = {
@@ -216,6 +217,8 @@ export function AdminSidebar({
   };
 
   const [open, setOpen] = useState<Set<string>>(new Set());
+  const [collapsed, setCollapsed] = useState(false);
+  const [hovering, setHovering] = useState(false);
 
   // Au montage, restaure depuis localStorage et ouvre le groupe actif
   useEffect(() => {
@@ -229,8 +232,23 @@ export function AdminSidebar({
     const active = findActiveGroupId();
     if (active) initial.add(active);
     setOpen(initial);
+    try {
+      const c = localStorage.getItem(COLLAPSED_KEY);
+      if (c === '1') setCollapsed(true);
+    } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
+
+  function toggleCollapse() {
+    setCollapsed((c) => {
+      const next = !c;
+      try { localStorage.setItem(COLLAPSED_KEY, next ? '1' : '0'); } catch {}
+      return next;
+    });
+  }
+
+  // Mode "expanded virtuel" = collapsé mais hover → on affiche le sidebar étendu en overlay
+  const isVisuallyCollapsed = collapsed && !hovering;
 
   const toggle = (id: string) => {
     setOpen((prev) => {
@@ -244,26 +262,50 @@ export function AdminSidebar({
     });
   };
 
+  // Largeur effective : 64px en mode collapsed visuel, 256-288px sinon
+  const widthClass = isVisuallyCollapsed ? 'w-16' : 'w-72 sm:w-64';
+  // En mode collapsed + hover, on overlay pour pas pousser le contenu
+  const positionClass = collapsed && hovering
+    ? 'fixed left-0 top-0 z-40 shadow-2xl shadow-black/50'
+    : 'relative';
+
   return (
-    <aside className="w-72 sm:w-64 h-screen lg:h-auto shrink-0 bg-zinc-900 border-r border-zinc-800 flex flex-col">
-      <div className="p-5 border-b border-zinc-800 flex items-center justify-between gap-2">
-        <Link href="/admin" className="flex items-center gap-2 group hover:text-brand-pink transition" title="Retour au tableau de bord">
-          <Heart className="text-brand-pink group-hover:scale-110 transition" />
-          <span className="font-display font-bold">GLD Admin</span>
-        </Link>
+    <aside
+      onMouseEnter={() => collapsed && setHovering(true)}
+      onMouseLeave={() => collapsed && setHovering(false)}
+      className={`${widthClass} ${positionClass} h-screen lg:h-auto shrink-0 bg-zinc-900 border-r border-zinc-800 flex flex-col transition-[width] duration-200`}
+    >
+      <div className={`p-3 border-b border-zinc-800 flex items-center gap-2 ${isVisuallyCollapsed ? 'flex-col py-3' : 'justify-between p-5'}`}>
         <Link
-          href="/"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Voir le site front (nouvel onglet)"
-          className="bg-zinc-800 hover:bg-fuchsia-500/30 hover:text-fuchsia-300 text-zinc-400 p-1.5 rounded-lg transition flex items-center gap-1"
+          href="/admin"
+          className={`flex items-center gap-2 group hover:text-brand-pink transition ${isVisuallyCollapsed ? 'justify-center' : ''}`}
+          title="Retour au tableau de bord"
         >
-          <Home size={14} />
-          <span className="text-[10px] font-bold uppercase">Front</span>
+          <Heart className="text-brand-pink group-hover:scale-110 transition" />
+          {!isVisuallyCollapsed && <span className="font-display font-bold">GLD Admin</span>}
         </Link>
+        {!isVisuallyCollapsed && (
+          <Link
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Voir le site front (nouvel onglet)"
+            className="bg-zinc-800 hover:bg-fuchsia-500/30 hover:text-fuchsia-300 text-zinc-400 p-1.5 rounded-lg transition flex items-center gap-1"
+          >
+            <Home size={14} />
+            <span className="text-[10px] font-bold uppercase">Front</span>
+          </Link>
+        )}
+        <button
+          onClick={toggleCollapse}
+          className={`bg-zinc-800 hover:bg-fuchsia-500/20 hover:text-fuchsia-300 text-zinc-400 p-1.5 rounded-lg transition ${isVisuallyCollapsed ? 'mt-1' : ''}`}
+          title={collapsed ? 'Étendre le menu (M)' : 'Réduire le menu en icônes (M)'}
+        >
+          {collapsed ? <PanelLeftOpen size={14} /> : <PanelLeftClose size={14} />}
+        </button>
       </div>
 
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+      <nav className={`flex-1 ${isVisuallyCollapsed ? 'p-2' : 'p-3'} space-y-1 overflow-y-auto`}>
         {filteredNav.map((entry) => {
           // Item simple (Tableau de bord)
           if (!isGroup(entry)) {
@@ -273,13 +315,18 @@ export function AdminSidebar({
               <Link
                 key={entry.href}
                 href={entry.href}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                title={isVisuallyCollapsed ? entry.label : undefined}
+                className={`flex items-center ${isVisuallyCollapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3 py-2'} rounded-lg text-sm transition
                   ${active ? 'bg-brand-pink/15 text-brand-pink font-semibold' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
               >
-                <Icon size={18} />
-                <span className="flex-1">{entry.label}</span>
-                {entry.badge && (
-                  <span className="bg-fuchsia-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{entry.badge}</span>
+                <Icon size={isVisuallyCollapsed ? 20 : 18} />
+                {!isVisuallyCollapsed && (
+                  <>
+                    <span className="flex-1">{entry.label}</span>
+                    {entry.badge && (
+                      <span className="bg-fuchsia-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{entry.badge}</span>
+                    )}
+                  </>
                 )}
               </Link>
             );
@@ -292,6 +339,30 @@ export function AdminSidebar({
             (c) => path === c.href || path.startsWith(c.href + '/')
           );
           const colors = GROUP_COLORS[entry.id] || GROUP_COLORS.system;
+
+          // En mode collapsed : juste l'icône avec hover popout
+          if (isVisuallyCollapsed) {
+            return (
+              <div key={entry.id} className="relative group">
+                <Link
+                  href={entry.children[0]?.href || '#'}
+                  title={entry.label}
+                  className={`flex items-center justify-center px-2 py-2.5 rounded-lg text-sm transition relative
+                    ${hasActiveChild
+                      ? `bg-gradient-to-r ${colors.bg} ${colors.text}`
+                      : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
+                >
+                  <Icon size={20} className={hasActiveChild ? colors.text : ''} />
+                  {hasActiveChild && (
+                    <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-brand-pink" />
+                  )}
+                  {entry.children.some((c) => c.badge) && (
+                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-fuchsia-500 ring-2 ring-zinc-900" />
+                  )}
+                </Link>
+              </div>
+            );
+          }
 
           return (
             <div key={entry.id}>
@@ -340,13 +411,17 @@ export function AdminSidebar({
         })}
       </nav>
 
-      <div className="p-3 border-t border-zinc-800">
-        <div className="text-xs text-zinc-500 px-3 mb-2 truncate">{data?.user?.email}</div>
+      <div className={`${isVisuallyCollapsed ? 'p-2' : 'p-3'} border-t border-zinc-800`}>
+        {!isVisuallyCollapsed && (
+          <div className="text-xs text-zinc-500 px-3 mb-2 truncate">{data?.user?.email}</div>
+        )}
         <button
           onClick={() => signOut({ callbackUrl: '/admin/login' })}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-zinc-400 hover:bg-zinc-800"
+          title={isVisuallyCollapsed ? `Déconnexion (${data?.user?.email})` : undefined}
+          className={`w-full flex items-center ${isVisuallyCollapsed ? 'justify-center px-2 py-2' : 'gap-2 px-3 py-2'} rounded-lg text-sm text-zinc-400 hover:bg-zinc-800`}
         >
-          <LogOut size={16} /> Déconnexion
+          <LogOut size={isVisuallyCollapsed ? 18 : 16} />
+          {!isVisuallyCollapsed && <span>Déconnexion</span>}
         </button>
       </div>
     </aside>
