@@ -42,6 +42,9 @@ const NAV: Entry[] = [
       { href: '/admin/secrets',           label: '🔑 Secrets manager',         icon: Key,         badge: 'NEW' },
       { href: '/admin/tasks',             label: '✅ Tasks board',             icon: ShieldCheck, badge: 'NEW' },
       { href: '/admin/leads',             label: '🎯 Leads CRM',                icon: Users,       badge: 'NEW' },
+      { href: '/admin/leads/scraper',     label: '🕷️ Scraper Leads',           icon: Users,       badge: 'NEW' },
+      { href: '/admin/leads/templates',   label: '📧 Templates emails',         icon: Users,       badge: 'NEW' },
+      { href: '/admin/mail',              label: '✉️ Webmail',                  icon: Users,       badge: 'NEW' },
       { href: '/admin/page-builder',      label: '🎨 Page Builder',             icon: Layers,      badge: 'NEW' }
     ]
   },
