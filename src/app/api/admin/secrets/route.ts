@@ -39,7 +39,14 @@ const KNOWN_SECRETS = [
   { key: 'GITHUB_TOKEN',              label: 'GitHub Token',                      desc: 'Pour Time Machine + paperasse sync' },
   { key: 'FAL_KEY',                   label: 'fal.ai Key',                        desc: 'Génération vidéo Seedance' },
   { key: 'HEYGEN_API_KEY',            label: 'HeyGen API Key',                    desc: 'Avatar V upper-body' },
-  { key: 'CODE_SERVER_URL',           label: 'code-server URL (Tailscale)',      desc: 'VS Code self-hosted' }
+  { key: 'CODE_SERVER_URL',           label: 'code-server URL (Tailscale)',      desc: 'VS Code self-hosted' },
+  { key: 'ELEVENLABS_API_KEY',        label: 'ElevenLabs API Key',                desc: 'Génération musique IA + voix off podcasts/vidéos', tip: 'elevenlabs.io/api' },
+  { key: 'ELEVENLABS_VOICE_ID',       label: 'ElevenLabs Voice ID (défaut)',     desc: 'ID de voix par défaut pour les générations TTS' },
+  { key: 'GEMINI_TEXT_MODEL',         label: 'Modèle Gemini texte',               desc: 'ex: gemini-2.5-flash, gemini-2.5-pro, gemini-3-flash' },
+  { key: 'GEMINI_IMAGE_MODEL',        label: 'Modèle Gemini image',               desc: 'ex: imagen-3.0-generate-002, gemini-2.5-flash-image' },
+  { key: 'TELEGRAM_ADMIN_CHAT_ID',    label: 'Telegram Admin Chat ID',            desc: 'ID du chat où envoyer les notifs admin + approvals Claude' },
+  { key: 'TELEGRAM_WEBHOOK_SECRET',   label: 'Telegram Webhook Secret',           desc: 'Secret du webhook Telegram (header X-Telegram-Bot-Api-Secret-Token)' },
+  { key: 'CLAUDE_AUTOPILOT_SECRET',   label: 'Claude Autopilot Secret',           desc: 'Secret pour appels API depuis Claude SDK (header x-claude-secret)' }
 ] as const;
 
 async function requireAdmin() {

@@ -67,17 +67,21 @@ export function ForumCategoriesAdmin({ initial }: { initial: Category[] }) {
     if (!confirm(`Créer ${DEFAULT_CATEGORIES.length} catégories par défaut adaptées à GLD ?`)) return;
     setBusy('seed');
     try {
-      const existingSlugs = new Set(items.map(i => i.slug));
-      for (const cat of DEFAULT_CATEGORIES) {
-        if (existingSlugs.has(cat.slug)) continue;
-        const r = await fetch('/api/admin/forum/categories', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(cat)
-        });
-        const j = await r.json();
-        if (r.ok && j.category) setItems((cur) => [...cur, { ...j.category, _count: { threads: 0 } }]);
+      const r = await fetch('/api/admin/forum/seed', { method: 'POST' });
+      const j = await r.json();
+      if (!r.ok) {
+        alert(`Erreur seed : ${j.error || 'KO'}`);
+        return;
       }
+      // Met à jour la liste avec ce que renvoie le serveur
+      if (Array.isArray(j.categories)) setItems(j.categories);
       setShowForm(false);
+      const created = j.summary?.created ?? 0;
+      const skipped = j.summary?.skipped ?? 0;
+      const errs = j.summary?.errors ?? 0;
+      alert(`✓ ${created} catégorie(s) créée(s)${skipped ? `, ${skipped} déjà existante(s)` : ''}${errs ? ` (${errs} erreur)` : ''}.`);
+    } catch (e: any) {
+      alert(`Erreur seed : ${e?.message || 'KO'}`);
     } finally { setBusy(null); }
   }
 

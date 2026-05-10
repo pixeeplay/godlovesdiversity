@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Eye, EyeOff, Save, Trash2, Loader2, CheckCircle2, AlertTriangle, KeyRound, Lock, Info } from 'lucide-react';
+import { AIModelsPicker } from './AIModelsPicker';
 
 interface Secret {
   key: string;
@@ -109,6 +110,9 @@ export function SecretsManagerClient() {
 
   return (
     <div className="px-3 lg:px-4 pb-6 max-w-5xl mx-auto">
+      {/* Picker rapide modèles Gemini + ElevenLabs */}
+      <AIModelsPicker />
+
       {/* Info */}
       <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4 mb-4 flex gap-3">
         <Info size={18} className="text-blue-300 shrink-0 mt-0.5" />
