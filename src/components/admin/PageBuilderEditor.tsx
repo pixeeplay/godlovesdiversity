@@ -65,7 +65,47 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [importing, setImporting] = useState(false);
   const [iframeKey, setIframeKey] = useState(0);
+  const [showAi, setShowAi] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState('');
+  const [aiImages, setAiImages] = useState('');
+  const [aiVideo, setAiVideo] = useState('');
+  const [aiGenerating, setAiGenerating] = useState(false);
+  const [aiMode, setAiMode] = useState<'replace' | 'append'>('append');
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  async function generateAi() {
+    if (!aiPrompt.trim()) { alert('Décris ce que tu veux générer'); return; }
+    setAiGenerating(true);
+    try {
+      const r = await fetch('/api/admin/page-builder/generate-ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slug,
+          prompt: aiPrompt.trim(),
+          theme: 'custom',
+          wantParallaxHero: true,
+          wantSlider: aiImages.split(/[,\n]/).filter(Boolean).length >= 3,
+          wantVideo: !!aiVideo,
+          imageUrls: aiImages.split(/[,\n]/).map((s) => s.trim()).filter(Boolean),
+          videoUrl: aiVideo,
+          mode: aiMode
+        })
+      });
+      const j = await r.json();
+      if (j.ok) {
+        alert(`✓ ${j.blocksCount} blocs générés et ${aiMode === 'replace' ? 'remplacés' : 'ajoutés'} !`);
+        setShowAi(false);
+        setAiPrompt('');
+        load();
+      } else {
+        alert('Erreur Gemini : ' + (j.error || 'unknown'));
+      }
+    } catch (e: any) {
+      alert('Erreur : ' + e.message);
+    }
+    setAiGenerating(false);
+  }
 
   async function load() {
     setLoading(true);
@@ -198,6 +238,13 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
         >
           {importing ? <Loader2 size={12} className="animate-spin" /> : <Download size={12} />}
           {importing ? 'Import…' : 'Importer la page actuelle'}
+        </button>
+        <button
+          onClick={() => setShowAi(true)}
+          className="bg-gradient-to-r from-amber-400/20 to-fuchsia-500/20 hover:from-amber-400/30 hover:to-fuchsia-500/30 text-amber-300 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 ring-1 ring-amber-500/30"
+          title="Génère ou complète la page avec Gemini IA"
+        >
+          <Sparkles size={12} /> IA
         </button>
         <div className="ml-auto flex items-center gap-2">
           <a href={`/fr/${slug}`} target="_blank" rel="noopener noreferrer" className="text-xs text-cyan-300 hover:text-cyan-200">↗ Voir page</a>
@@ -341,6 +388,70 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
           onChangeData={(patch) => updateBlockData(editingIdx, patch)}
           onClose={() => setEditingIdx(null)}
         />
+      )}
+
+      {/* Modal AI generator */}
+      {showAi && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur flex items-center justify-center p-4" onClick={() => setShowAi(false)}>
+          <div onClick={(e) => e.stopPropagation()} className="bg-zinc-950 border border-amber-500/40 rounded-2xl shadow-2xl w-full max-w-xl flex flex-col overflow-hidden">
+            <header className="bg-gradient-to-r from-amber-500/20 to-fuchsia-500/20 border-b border-amber-500/30 p-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-fuchsia-500 flex items-center justify-center text-xl">✨</div>
+              <div>
+                <h3 className="text-base font-bold text-white">IA pour /{slug}</h3>
+                <p className="text-[11px] text-zinc-300">Gemini génère / complète tes blocs</p>
+              </div>
+              <button onClick={() => setShowAi(false)} className="ml-auto text-zinc-400 hover:text-white"><X size={16} /></button>
+            </header>
+            <div className="p-4 space-y-3">
+              <label className="block text-xs">
+                <span className="block text-[10px] text-zinc-500 uppercase font-bold mb-1">Demande</span>
+                <textarea
+                  value={aiPrompt}
+                  onChange={(e) => setAiPrompt(e.target.value)}
+                  rows={5}
+                  placeholder='Ex: "Ajoute un bloc parallax-hero spectaculaire + 3 sections texte sur ma vision + un slider de 4 photos + un CTA"'
+                  className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs"
+                />
+              </label>
+              <label className="block text-xs">
+                <span className="block text-[10px] text-zinc-500 uppercase font-bold mb-1">URLs images (séparées par virgule ou retour ligne)</span>
+                <textarea
+                  value={aiImages}
+                  onChange={(e) => setAiImages(e.target.value)}
+                  rows={2}
+                  placeholder="https://... , https://... , https://..."
+                  className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono"
+                />
+              </label>
+              <label className="block text-xs">
+                <span className="block text-[10px] text-zinc-500 uppercase font-bold mb-1">URL vidéo (YouTube embed ou .mp4)</span>
+                <input
+                  value={aiVideo}
+                  onChange={(e) => setAiVideo(e.target.value)}
+                  placeholder="https://youtube.com/embed/..."
+                  className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono"
+                />
+              </label>
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-[10px] text-zinc-500 uppercase font-bold">Mode</span>
+                <button onClick={() => setAiMode('append')} className={`px-3 py-1 rounded-full text-xs ${aiMode === 'append' ? 'bg-emerald-500 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}>+ Ajouter</button>
+                <button onClick={() => setAiMode('replace')} className={`px-3 py-1 rounded-full text-xs ${aiMode === 'replace' ? 'bg-rose-500 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}>↻ Remplacer</button>
+                {blocks.length > 0 && aiMode === 'replace' && <span className="text-rose-400 text-[10px]">⚠ écrase les {blocks.length} blocs actuels</span>}
+              </div>
+            </div>
+            <footer className="bg-zinc-900 border-t border-zinc-800 p-3 flex justify-end gap-2">
+              <button onClick={() => setShowAi(false)} className="text-xs text-zinc-400 hover:text-white px-3 py-2">Annuler</button>
+              <button
+                onClick={generateAi}
+                disabled={aiGenerating || !aiPrompt.trim()}
+                className="bg-gradient-to-r from-amber-400 to-fuchsia-500 hover:opacity-90 disabled:opacity-50 text-white text-xs font-bold px-5 py-2 rounded-full flex items-center gap-1.5 shadow-lg"
+              >
+                {aiGenerating ? <Loader2 size={11} className="animate-spin" /> : <Sparkles size={11} />}
+                {aiGenerating ? 'Génération…' : 'Générer'}
+              </button>
+            </footer>
+          </div>
+        </div>
       )}
     </div>
   );
