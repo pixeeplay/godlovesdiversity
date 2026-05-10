@@ -49,6 +49,18 @@ const RULES: MetaRule[] = [
     title: 'Secrets manager', desc: 'Configure les clés API (Anthropic, Gemini, Telegram…) sans toucher Coolify',
     emoji: '🔑', gradient: 'from-zinc-600 via-violet-700 to-fuchsia-700', pattern: 'circuit', badge: 'ADMIN', color: '#a855f7'
   }},
+  { match: '/admin/tasks', meta: {
+    title: 'Tasks board', desc: 'Kanban drag & drop — todo / doing / review / done / archive',
+    emoji: '✅', gradient: 'from-sky-500 via-emerald-500 to-amber-500', pattern: 'grid', badge: 'NEW', color: '#10b981'
+  }},
+  { match: '/admin/leads', meta: {
+    title: 'Leads CRM', desc: 'Import CSV · scrape · segments · tags · pipeline · newsletter',
+    emoji: '🎯', gradient: 'from-emerald-500 via-cyan-500 to-violet-500', pattern: 'orbits', badge: 'NEW', color: '#10b981'
+  }},
+  { match: '/admin/page-builder', meta: {
+    title: 'Page Builder', desc: 'Édite les pages publiques en drag & drop — text/image/video/hero/cta',
+    emoji: '🎨', gradient: 'from-fuchsia-500 via-rose-500 to-amber-500', pattern: 'aurora', badge: 'NEW', color: '#d946ef'
+  }},
   { match: '/admin/vscode-online', meta: {
     title: 'VS Code online', desc: 'github.dev · vscode.dev · Codespaces · code-server self-hosted · quick editor',
     emoji: '💻', gradient: 'from-blue-500 via-cyan-500 to-emerald-500', pattern: 'circuit', badge: 'NEW', color: '#06b6d4'

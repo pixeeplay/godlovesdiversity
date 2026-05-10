@@ -39,7 +39,10 @@ const NAV: Entry[] = [
       { href: '/admin/invitations',       label: '🔑 Invitations admin',     icon: Key,         badge: 'NEW' },
       { href: '/admin/security-settings', label: '🛡 Sécurité (super-admin)', icon: ShieldCheck, badge: 'NEW' },
       { href: '/admin/security-2fa',      label: '🔐 Mon 2FA TOTP',          icon: Lock,        badge: 'NEW' },
-      { href: '/admin/secrets',           label: '🔑 Secrets manager',         icon: Key,         badge: 'NEW' }
+      { href: '/admin/secrets',           label: '🔑 Secrets manager',         icon: Key,         badge: 'NEW' },
+      { href: '/admin/tasks',             label: '✅ Tasks board',             icon: ShieldCheck, badge: 'NEW' },
+      { href: '/admin/leads',             label: '🎯 Leads CRM',                icon: Users,       badge: 'NEW' },
+      { href: '/admin/page-builder',      label: '🎨 Page Builder',             icon: Layers,      badge: 'NEW' }
     ]
   },
   {

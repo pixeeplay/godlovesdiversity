@@ -94,6 +94,11 @@ model User {
 
   // V7 — Override fin du menu admin par utilisateur (au-dessus des règles de rôle)
   menuOverride           UserMenuOverride?
+
+  // V8 — Tasks board + Leads CRM
+  tasksAssigned          Task[]   @relation("taskAssignee")
+  tasksCreated           Task[]   @relation("taskCreator")
+  leadProfile            Lead?
 }
 
 /// Bookmark générique (témoignages, lieux, posts, produits, events).
@@ -1907,6 +1912,140 @@ model LoginAttempt {
 
   @@index([email, createdAt])
   @@index([ip, createdAt])
+}
+
+// ───────────────────────────────────────────────────────────────
+// V8 — TASKS BOARD (Kanban admin)
+// ───────────────────────────────────────────────────────────────
+
+model Task {
+  id          String     @id @default(cuid())
+  title       String
+  description String?    @db.Text
+  status      String     @default("todo")     // todo | doing | review | done | archive
+  priority    String     @default("normal")   // low | normal | high | urgent
+  position    Int        @default(0)          // ordre dans la colonne
+  dueAt       DateTime?
+  tags        String[]   @default([])
+  assignedTo  String?
+  assignee    User?      @relation("taskAssignee", fields: [assignedTo], references: [id])
+  createdById String?
+  createdBy   User?      @relation("taskCreator", fields: [createdById], references: [id])
+  // Lien optionnel : la tâche peut concerner un Lead, un Article, une Newsletter, etc.
+  resourceType String?                          // "lead" | "article" | "newsletter" | "venue" | …
+  resourceId   String?
+  notes        Json?                            // historique commentaires + checklist
+  completedAt  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([status, position])
+  @@index([assignedTo, status])
+  @@index([resourceType, resourceId])
+}
+
+// ───────────────────────────────────────────────────────────────
+// V8 — LEADS & CONTACTS CRM
+// ───────────────────────────────────────────────────────────────
+
+model Lead {
+  id            String     @id @default(cuid())
+  email         String?
+  firstName     String?
+  lastName      String?
+  phone         String?
+  company       String?
+  jobTitle      String?
+  city          String?
+  country       String?
+  // Réseaux sociaux découverts
+  linkedinUrl   String?
+  twitterUrl    String?
+  instagramUrl  String?
+  facebookUrl   String?
+  websiteUrl    String?
+  // Source de découverte
+  source        String     @default("manual")    // manual | csv-import | scrape-linkedin | scrape-instagram | …
+  sourceDetail  String?                          // URL d'origine ou nom du fichier CSV
+  scrapedFromUrl String?
+  // Status pipeline
+  status        String     @default("new")       // new | qualified | contacted | engaged | customer | unsubscribed | bounced
+  score         Int        @default(0)           // 0-100 (qualification)
+  tags          String[]   @default([])
+  segments      String[]   @default([])          // newsletter segments
+  notes         String?    @db.Text
+  // Subscription newsletter
+  newsletterOptIn Boolean  @default(false)
+  optInAt       DateTime?
+  unsubscribedAt DateTime?
+  // Lien optionnel à un User existant si cette personne crée un compte
+  userId        String?    @unique
+  user          User?      @relation(fields: [userId], references: [id])
+  // Activité
+  interactions  LeadInteraction[]
+  lastContactedAt DateTime?
+  contactCount  Int        @default(0)
+  // Métadonnées flexibles
+  customFields  Json?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@unique([email])
+  @@index([status, score])
+  @@index([source, createdAt])
+  @@index([newsletterOptIn])
+}
+
+/// Trace des interactions avec un lead (email envoyé, ouvert, cliqué, appelé, etc.)
+model LeadInteraction {
+  id          String   @id @default(cuid())
+  leadId      String
+  lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type        String                              // email-sent | email-opened | email-clicked | email-bounced | sms | call | meeting | note
+  subject     String?
+  content     String?  @db.Text
+  externalId  String?                            // ex: Resend message ID
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([leadId, createdAt])
+}
+
+/// Liste de scrape configurée — l'admin lance un scrape périodique via une URL ou des keywords
+model LeadScrapeJob {
+  id            String     @id @default(cuid())
+  name          String
+  source        String                              // linkedin | instagram | twitter | google-maps | website
+  config        Json                                // ex: { keywords: ["LGBT pastor"], location: "Paris" }
+  active        Boolean    @default(true)
+  lastRunAt     DateTime?
+  lastRunCount  Int?
+  totalLeads    Int        @default(0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+// ───────────────────────────────────────────────────────────────
+// V8 — PAGE BUILDER (drag & drop)
+// ───────────────────────────────────────────────────────────────
+
+/// Bloc visuel d'une page éditée via Page Builder.
+model PageBlock {
+  id        String   @id @default(cuid())
+  pageSlug  String                                 // ex: "home", "membre-plus", "argumentaire"
+  position  Int      @default(0)                   // ordre vertical
+  width     String   @default("full")              // "1/3" | "1/2" | "2/3" | "full" | "1/4" | "3/4"
+  height    String   @default("auto")              // "auto" | "square" | "wide" | "tall"
+  type      String                                 // "text" | "image" | "video" | "cta" | "hero" | "columns" | "embed" | "spacer" | "html"
+  data      Json                                   // { text, html, src, prompt, … }
+  effect    String?                                // "fade" | "slide-up" | "slide-left" | "scale" | "parallax"
+  effectDelay Int?                                 // ms before triggering
+  visible   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([pageSlug, position])
+  @@index([visible])
 }
 
 /// Demande d'approbation envoyée à Telegram pour valider une action autopilot
