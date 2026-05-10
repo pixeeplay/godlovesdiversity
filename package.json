@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
+    "libphonenumber-js": "^1.11.17",
     "@prisma/client": "^5.22.0",
     "@tiptap/react": "^2.9.1",
     "@tiptap/starter-kit": "^2.9.1",
