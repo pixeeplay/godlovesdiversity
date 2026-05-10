@@ -1,18 +1,21 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Layout, ChevronRight, Loader2, Search, RefreshCw, FileCode, Edit3, AlertCircle, Download, CheckCircle2, X as XIcon, AlertTriangle, Sparkles, Plus, Image as ImageIcon, Video } from 'lucide-react';
+import { Layout, ChevronRight, Loader2, Search, RefreshCw, FileCode, Edit3, AlertCircle, Download, CheckCircle2, X as XIcon, AlertTriangle, Sparkles, Plus, Image as ImageIcon, Video, FolderOpen, FilePlus2 } from 'lucide-react';
 
 interface PageInfo {
   slug: string;
   label: string;
   desc: string;
   emoji: string;
+  category?: string;
   blockCount: number;
   hasCode: boolean;
   status: 'edited' | 'codeOnly' | 'orphan';
 }
+
+interface CategoryInfo { id: string; label: string; emoji: string; color: string; }
 
 const STATUS_META: Record<string, { color: string; label: string; icon: any }> = {
   edited:   { color: 'fuchsia', label: 'Édité dans builder',   icon: Edit3 },
@@ -29,12 +32,15 @@ export function PageBuilderHome() {
   const [importing, setImporting] = useState(false);
   const [importResult, setImportResult] = useState<any>(null);
   const [showAiModal, setShowAiModal] = useState(false);
+  const [showNewPageModal, setShowNewPageModal] = useState(false);
+  const [categories, setCategories] = useState<CategoryInfo[]>([]);
 
   async function load() {
     setLoading(true);
     const r = await fetch('/api/admin/page-builder/discover', { cache: 'no-store' });
     const j = await r.json();
     setPages(j.pages || []);
+    setCategories(j.categories || []);
     setLoading(false);
   }
   useEffect(() => { load(); }, []);
@@ -81,17 +87,24 @@ export function PageBuilderHome() {
   };
 
   return (
-    <div className="px-3 lg:px-4 pb-6 max-w-6xl mx-auto">
+    <div className="px-3 lg:px-4 pb-6 max-w-[1800px] mx-auto">
       <div className="bg-gradient-to-br from-fuchsia-600 via-violet-600 to-cyan-600 rounded-2xl p-5 mb-4 ring-1 ring-white/10 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,.2),transparent)]" />
-        <div className="relative flex items-start gap-4">
+        <div className="relative flex items-start gap-4 flex-wrap">
           <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center text-2xl">🎨</div>
-          <div className="flex-1">
+          <div className="flex-1 min-w-[200px]">
             <h1 className="text-2xl font-display font-black text-white tracking-tight">Page Builder</h1>
             <p className="text-white/85 text-sm mt-0.5">
-              Édite visuellement les pages du site — preview live + import contenu existant
+              Édite visuellement les {pages.length} pages du site — arbo à gauche
             </p>
           </div>
+          <button
+            onClick={() => setShowNewPageModal(true)}
+            className="bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-bold px-3 py-2 rounded-full flex items-center gap-1.5 shadow-xl"
+            title="Créer une nouvelle page DB-only via le builder"
+          >
+            <FilePlus2 size={11} /> Nouvelle page
+          </button>
           <button
             onClick={() => setShowAiModal(true)}
             className="bg-gradient-to-r from-amber-400 to-fuchsia-500 hover:opacity-90 text-white text-xs font-bold px-3 py-2 rounded-full flex items-center gap-1.5 shadow-xl ring-2 ring-white/30"
@@ -161,6 +174,16 @@ export function PageBuilderHome() {
         </div>
       )}
 
+      <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-3">
+        {/* Sidebar arbo */}
+        <SidebarTree
+          pages={pages}
+          categories={categories}
+          loading={loading}
+          onNewPage={() => setShowNewPageModal(true)}
+        />
+
+        <div>
       {/* Filters */}
       <div className="bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl p-3 mb-3 flex flex-wrap items-center gap-2">
         <div className="relative flex-1 min-w-[180px] max-w-xs">
@@ -250,12 +273,26 @@ export function PageBuilderHome() {
         </div>
       )}
 
+        </div>
+      </div>
+
       {/* AI generator modal */}
       {showAiModal && (
         <AiPageGenerator
           onClose={() => setShowAiModal(false)}
           onGenerated={(slug) => {
             setShowAiModal(false);
+            router.push(`/admin/page-builder/${slug}`);
+          }}
+        />
+      )}
+
+      {/* New page modal */}
+      {showNewPageModal && (
+        <NewPageModal
+          onClose={() => setShowNewPageModal(false)}
+          onCreated={(slug) => {
+            setShowNewPageModal(false);
             router.push(`/admin/page-builder/${slug}`);
           }}
         />
@@ -492,6 +529,211 @@ function AiPageGenerator({ onClose, onGenerated }: { onClose: () => void; onGene
           >
             {generating ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
             {generating ? 'Génération…' : 'Générer la page'}
+          </button>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Sidebar arborescence ──────────────────────────────── */
+function SidebarTree({ pages, categories, loading, onNewPage }: {
+  pages: PageInfo[];
+  categories: CategoryInfo[];
+  loading: boolean;
+  onNewPage: () => void;
+}) {
+  const [search, setSearch] = useState('');
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+
+  const filtered = useMemo(() => {
+    if (!search) return pages;
+    return pages.filter((p) =>
+      p.label.toLowerCase().includes(search.toLowerCase()) ||
+      p.slug.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [pages, search]);
+
+  const grouped = useMemo(() => {
+    const map: Record<string, PageInfo[]> = {};
+    for (const p of filtered) {
+      const cat = p.category || 'utility';
+      if (!map[cat]) map[cat] = [];
+      map[cat].push(p);
+    }
+    return map;
+  }, [filtered]);
+
+  return (
+    <aside className="bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl p-3 self-start sticky top-3" style={{ maxHeight: 'calc(100vh - 90px)' }}>
+      <header className="flex items-center gap-2 mb-2">
+        <FolderOpen size={13} className="text-fuchsia-400" />
+        <h3 className="text-xs font-bold text-white">Arborescence</h3>
+        <span className="ml-auto text-[10px] text-zinc-500">{pages.length}</span>
+      </header>
+      <div className="relative mb-2">
+        <Search size={11} className="absolute left-2 top-1/2 -translate-y-1/2 text-zinc-500" />
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Filtrer…"
+          className="w-full bg-zinc-950 border border-zinc-800 rounded-lg pl-7 pr-2 py-1.5 text-xs"
+        />
+      </div>
+
+      <button
+        onClick={onNewPage}
+        className="w-full bg-emerald-500/10 hover:bg-emerald-500/20 ring-1 ring-emerald-500/30 hover:ring-emerald-500 text-emerald-300 hover:text-emerald-200 rounded-lg px-2 py-2 text-xs flex items-center gap-1.5 mb-3 transition"
+      >
+        <FilePlus2 size={11} /> Nouvelle page
+      </button>
+
+      <div className="overflow-y-auto pr-1" style={{ maxHeight: 'calc(100vh - 230px)' }}>
+        {loading && pages.length === 0 ? (
+          <p className="text-[10px] text-zinc-500 text-center py-4 flex items-center justify-center gap-1">
+            <Loader2 size={10} className="animate-spin" /> Scan…
+          </p>
+        ) : (
+          categories.filter((c) => grouped[c.id]?.length).map((cat) => {
+            const items = grouped[cat.id] || [];
+            const isCollapsed = collapsed[cat.id];
+            return (
+              <div key={cat.id} className="mb-2">
+                <button
+                  onClick={() => setCollapsed((p) => ({ ...p, [cat.id]: !p[cat.id] }))}
+                  className="w-full flex items-center gap-1.5 px-1 py-1 text-[10px] uppercase tracking-widest font-bold text-zinc-500 hover:text-zinc-300"
+                >
+                  <span>{cat.emoji}</span>
+                  <span className="flex-1 text-left">{cat.label}</span>
+                  <span className="text-[9px] opacity-60">{items.length}</span>
+                  <ChevronRight size={10} className={`transition ${isCollapsed ? '' : 'rotate-90'}`} />
+                </button>
+                {!isCollapsed && (
+                  <ul className="pl-1">
+                    {items.map((p) => (
+                      <li key={p.slug}>
+                        <Link
+                          href={`/admin/page-builder/${p.slug}`}
+                          className={`flex items-center gap-1.5 px-2 py-1 rounded text-[11px] transition group ${
+                            p.status === 'edited'
+                              ? 'text-fuchsia-300 hover:bg-fuchsia-500/10'
+                              : p.status === 'orphan'
+                              ? 'text-amber-300 hover:bg-amber-500/10'
+                              : 'text-zinc-300 hover:bg-zinc-800'
+                          }`}
+                        >
+                          <span>{p.emoji}</span>
+                          <span className="truncate flex-1">{p.label}</span>
+                          {p.blockCount > 0 && (
+                            <span className="text-[9px] font-bold opacity-70">{p.blockCount}</span>
+                          )}
+                          {p.status === 'codeOnly' && (
+                            <span className="text-[8px] uppercase font-bold text-cyan-400/70">code</span>
+                          )}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            );
+          })
+        )}
+      </div>
+    </aside>
+  );
+}
+
+/* ─── New Page Modal ────────────────────────────────────── */
+function NewPageModal({ onClose, onCreated }: { onClose: () => void; onCreated: (slug: string) => void }) {
+  const [slug, setSlug] = useState('');
+  const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [emoji, setEmoji] = useState('✨');
+  const [creating, setCreating] = useState(false);
+
+  async function create() {
+    const cleanSlug = slug.trim().toLowerCase().replace(/[^a-z0-9-/]/g, '-').replace(/-+/g, '-');
+    if (!cleanSlug) { alert('Slug requis'); return; }
+    setCreating(true);
+    try {
+      const r = await fetch('/api/admin/page-builder/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: cleanSlug, title: title.trim() || undefined, subtitle: subtitle.trim() || undefined, emoji })
+      });
+      const j = await r.json();
+      if (j.ok) {
+        onCreated(j.slug);
+      } else if (j.error === 'slug-already-exists') {
+        if (confirm(`Le slug "${cleanSlug}" a déjà ${j.existing} blocs. Ouvrir cette page pour l'éditer ?`)) {
+          onCreated(cleanSlug);
+        }
+      } else {
+        alert('Erreur : ' + (j.error || 'unknown'));
+      }
+    } catch (e: any) {
+      alert('Erreur : ' + e.message);
+    }
+    setCreating(false);
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur flex items-center justify-center p-4" onClick={onClose}>
+      <div onClick={(e) => e.stopPropagation()} className="bg-zinc-950 border border-emerald-500/40 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+        <header className="bg-gradient-to-r from-emerald-500/20 to-fuchsia-500/20 border-b border-emerald-500/30 p-4 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-xl">📄</div>
+          <div>
+            <h3 className="text-base font-bold text-white">Nouvelle page</h3>
+            <p className="text-[11px] text-zinc-300">DB-only via Page Builder</p>
+          </div>
+          <button onClick={onClose} className="ml-auto text-zinc-400 hover:text-white"><XIcon size={16} /></button>
+        </header>
+        <div className="p-4 space-y-3">
+          <label className="block">
+            <span className="block text-[10px] text-zinc-500 uppercase font-bold mb-1">Slug (URL)</span>
+            <div className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2">
+              <code className="text-[10px] text-zinc-500">/p/</code>
+              <input
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+                placeholder="ma-nouvelle-page"
+                className="flex-1 bg-transparent text-xs font-mono outline-none"
+                autoFocus
+              />
+            </div>
+            <p className="text-[10px] text-zinc-500 mt-1">URL finale : <code>https://gld.pixeeplay.com/fr/p/{slug.toLowerCase().replace(/[^a-z0-9-/]/g, '-') || '...'}</code></p>
+          </label>
+
+          <div className="grid grid-cols-[60px_1fr] gap-2">
+            <label className="block">
+              <span className="block text-[10px] text-zinc-500 uppercase font-bold mb-1">Emoji</span>
+              <input value={emoji} onChange={(e) => setEmoji(e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-2 text-base text-center" maxLength={2} />
+            </label>
+            <label className="block">
+              <span className="block text-[10px] text-zinc-500 uppercase font-bold mb-1">Titre (du Hero)</span>
+              <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Auto depuis le slug" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs" />
+            </label>
+          </div>
+
+          <label className="block">
+            <span className="block text-[10px] text-zinc-500 uppercase font-bold mb-1">Sous-titre (optionnel)</span>
+            <input value={subtitle} onChange={(e) => setSubtitle(e.target.value)} placeholder="Une phrase d'accroche" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs" />
+          </label>
+
+          <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-2.5 text-[11px] text-emerald-200">
+            ✨ La page démarre avec 3 blocs : <strong>Parallax Hero</strong> + <strong>texte d'accueil</strong> + <strong>CTA</strong>. Tu peux ensuite ajouter texte / image / vidéo / parallax-slider, ou utiliser le bouton IA pour faire générer le contenu par Gemini.
+          </div>
+        </div>
+        <footer className="bg-zinc-900 border-t border-zinc-800 p-3 flex justify-end gap-2">
+          <button onClick={onClose} className="text-xs text-zinc-400 hover:text-white px-3 py-2">Annuler</button>
+          <button
+            onClick={create}
+            disabled={creating || !slug.trim()}
+            className="bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-white text-xs font-bold px-5 py-2 rounded-full flex items-center gap-1.5 shadow-lg"
+          >
+            {creating ? <Loader2 size={11} className="animate-spin" /> : <FilePlus2 size={11} />}
+            {creating ? 'Création…' : 'Créer la page'}
           </button>
         </footer>
       </div>

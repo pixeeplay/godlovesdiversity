@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { importPageFromLive, type EffectIntensity, type ImportMode } from '@/lib/page-import-service';
+import { PAGE_CATALOG } from '@/lib/page-catalog';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -40,15 +41,15 @@ export async function POST(req: NextRequest) {
   const locale = (body.locale as string) || 'fr';
   const concurrency = Math.min(5, Math.max(1, body.concurrency || 3));
 
-  // 1. Discover pages
+  // 1. Catalog hardcoded (prod-safe) + scan fs en bonus (dev)
+  const foundSet = new Set<string>(PAGE_CATALOG.map((p) => p.slug).filter(Boolean));
   const cwd = process.cwd();
   const root = path.join(cwd, 'src', 'app', '[locale]');
-  const found: string[] = [];
   async function walk(dir: string, prefix: string, depth: number) {
     if (depth > 3) return;
     let entries: any[] = [];
     try { entries = await fs.readdir(dir, { withFileTypes: true }); } catch { return; }
-    if (entries.some((e) => e.isFile() && e.name === 'page.tsx') && prefix) found.push(prefix);
+    if (entries.some((e) => e.isFile() && e.name === 'page.tsx') && prefix) foundSet.add(prefix);
     for (const e of entries) {
       if (e.isDirectory() && !e.name.startsWith('[') && !e.name.startsWith('_')) {
         await walk(path.join(dir, e.name), prefix ? `${prefix}/${e.name}` : e.name, depth + 1);
@@ -56,6 +57,7 @@ export async function POST(req: NextRequest) {
     }
   }
   await walk(root, '', 0).catch(() => {});
+  const found = Array.from(foundSet);
 
   // 2. Filtre
   let slugs = found.filter((s) => !EXCLUDED_PREFIXES.some((p) => s === p || s.startsWith(`${p}/`)));
