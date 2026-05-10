@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Type, Image as ImageIcon, Video as VideoIcon, Layout, Square, Columns, Code as CodeIcon,
   Loader2, Save, Trash2, GripVertical, Plus, ArrowUp, ArrowDown, X, Eye, MousePointer,
-  Mountain, Layers, Sparkles, Search
+  Mountain, Layers, Sparkles, Search, Globe, Download, RefreshCw
 } from 'lucide-react';
 import { EFFECTS, EFFECT_CATEGORIES, type Effect, type EffectCategory } from '@/lib/effects-library';
 
@@ -59,9 +59,13 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
+  const [previewMode, setPreviewMode] = useState<'live' | 'blocks'>('live');
   const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
   const [editingIdx, setEditingIdx] = useState<number | null>(null);
   const [savedAt, setSavedAt] = useState<Date | null>(null);
+  const [importing, setImporting] = useState(false);
+  const [iframeKey, setIframeKey] = useState(0);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   async function load() {
     setLoading(true);
@@ -71,6 +75,34 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
     setLoading(false);
   }
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [slug]);
+
+  async function importLivePage() {
+    if (!confirm(blocks.length > 0
+      ? `La page a déjà ${blocks.length} bloc(s). L'import va REMPLACER ces blocs par le contenu de la page actuelle. Continuer ?`
+      : `Importer le contenu actuel de /${slug} ? Cela va créer des blocs éditables à partir du HTML rendu.`)) return;
+    setImporting(true);
+    try {
+      const r = await fetch(`/api/admin/page-builder/${slug}/import`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ locale: 'fr', mode: 'replace' })
+      });
+      const j = await r.json();
+      if (j.ok) {
+        alert(`✓ ${j.blocksCount} bloc(s) importés depuis ${j.sourceUrl}`);
+        load();
+      } else {
+        alert('Erreur import : ' + (j.error || 'unknown'));
+      }
+    } catch (e: any) {
+      alert('Erreur : ' + e.message);
+    }
+    setImporting(false);
+  }
+
+  function reloadIframe() {
+    setIframeKey((k) => k + 1);
+  }
 
   function addBlock(type: string) {
     const defaultData: any = {
@@ -154,12 +186,21 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
 
   return (
     <div className="px-3 lg:px-4 pb-6 max-w-[1800px] mx-auto">
-      <div className="bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl p-3 mb-3 flex items-center gap-3 sticky top-3 z-30 backdrop-blur">
+      <div className="bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl p-3 mb-3 flex items-center gap-3 sticky top-3 z-30 backdrop-blur flex-wrap">
         <a href="/admin/page-builder" className="text-xs text-zinc-400 hover:text-white">← Pages</a>
         <code className="text-xs text-zinc-300 bg-zinc-950 px-2 py-1 rounded">/{slug}</code>
         <span className="text-xs text-zinc-500">{blocks.length} bloc{blocks.length > 1 ? 's' : ''}</span>
+        <button
+          onClick={importLivePage}
+          disabled={importing}
+          className="bg-cyan-500/15 hover:bg-cyan-500/25 disabled:opacity-50 text-cyan-300 hover:text-cyan-200 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 ring-1 ring-cyan-500/30"
+          title="Convertit le contenu actuel de la page Next.js en blocs éditables"
+        >
+          {importing ? <Loader2 size={12} className="animate-spin" /> : <Download size={12} />}
+          {importing ? 'Import…' : 'Importer la page actuelle'}
+        </button>
         <div className="ml-auto flex items-center gap-2">
-          <a href={`/${slug}`} target="_blank" rel="noopener noreferrer" className="text-xs text-cyan-300 hover:text-cyan-200">↗ Voir page</a>
+          <a href={`/fr/${slug}`} target="_blank" rel="noopener noreferrer" className="text-xs text-cyan-300 hover:text-cyan-200">↗ Voir page</a>
           <label className="flex items-center gap-1 text-xs text-zinc-300 cursor-pointer"><input type="checkbox" checked={showPreview} onChange={(e) => setShowPreview(e.target.checked)} /> Preview</label>
           {savedAt && <span className="text-[10px] text-emerald-400">✓ {savedAt.toLocaleTimeString()}</span>}
           <button onClick={save} disabled={saving} className="bg-fuchsia-600 hover:bg-fuchsia-500 disabled:opacity-50 text-white font-bold text-sm px-4 py-2 rounded-lg flex items-center gap-1.5">
@@ -193,10 +234,22 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
           {loading ? (
             <p className="text-zinc-500 text-center py-8 flex items-center justify-center gap-2"><Loader2 size={14} className="animate-spin" /> Chargement…</p>
           ) : blocks.length === 0 ? (
-            <div className="bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl p-12 text-center">
+            <div className="bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl p-8 text-center">
               <Layout size={36} className="text-zinc-700 mx-auto mb-3" />
-              <p className="text-zinc-300 font-bold mb-1">Page vide</p>
-              <p className="text-xs text-zinc-500">Ajoute ton premier bloc en cliquant sur un type ci-dessus.</p>
+              <p className="text-zinc-300 font-bold mb-1">Aucun bloc enregistré</p>
+              <p className="text-xs text-zinc-500 mb-4">
+                Cette page a probablement déjà du contenu Next.js (visible dans <strong>Preview Live</strong> →).<br />
+                Importe-le pour pouvoir l'éditer, ou ajoute des blocs manuellement.
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                <button onClick={importLivePage} disabled={importing} className="bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-white text-xs font-bold px-4 py-2 rounded-full inline-flex items-center gap-1.5">
+                  {importing ? <Loader2 size={11} className="animate-spin" /> : <Download size={11} />}
+                  Importer la page actuelle
+                </button>
+                <button onClick={() => addBlock('hero')} className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold px-4 py-2 rounded-full inline-flex items-center gap-1.5">
+                  <Plus size={11} /> Bloc Hero
+                </button>
+              </div>
             </div>
           ) : (
             blocks.map((b, i) => (
@@ -226,13 +279,56 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
           )}
         </div>
 
-        {/* Preview live */}
+        {/* Preview */}
         {showPreview && (
           <div className="bg-zinc-950 ring-1 ring-zinc-800 rounded-2xl overflow-hidden sticky top-20 self-start" style={{ maxHeight: '80vh' }}>
-            <header className="bg-zinc-900 border-b border-zinc-800 px-3 py-2 text-[10px] uppercase tracking-widest text-zinc-500 font-bold flex items-center gap-1"><Eye size={11} /> Preview</header>
-            <div className="overflow-y-auto p-4 space-y-3" style={{ maxHeight: '74vh' }}>
-              {blocks.filter((b) => b.visible).map((b, i) => <PreviewBlock key={i} block={b} />)}
-            </div>
+            <header className="bg-zinc-900 border-b border-zinc-800 px-3 py-2 flex items-center gap-2">
+              <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold flex items-center gap-1"><Eye size={11} /> Preview</span>
+              <div className="flex items-center gap-0.5 bg-zinc-950 rounded p-0.5">
+                <button
+                  onClick={() => setPreviewMode('live')}
+                  className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 transition ${previewMode === 'live' ? 'bg-fuchsia-500 text-white' : 'text-zinc-400 hover:text-white'}`}
+                >
+                  <Globe size={9} /> Live
+                </button>
+                <button
+                  onClick={() => setPreviewMode('blocks')}
+                  className={`text-[10px] px-2 py-0.5 rounded flex items-center gap-1 transition ${previewMode === 'blocks' ? 'bg-fuchsia-500 text-white' : 'text-zinc-400 hover:text-white'}`}
+                >
+                  <Layout size={9} /> Blocs ({blocks.length})
+                </button>
+              </div>
+              {previewMode === 'live' && (
+                <button onClick={reloadIframe} className="ml-auto text-[10px] text-zinc-400 hover:text-white flex items-center gap-1">
+                  <RefreshCw size={9} /> Recharger
+                </button>
+              )}
+            </header>
+            {previewMode === 'live' ? (
+              <iframe
+                key={iframeKey}
+                ref={iframeRef}
+                src={`/fr/${slug}`}
+                className="w-full block bg-white"
+                style={{ height: '74vh', border: 0 }}
+                title={`Preview /${slug}`}
+                sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+              />
+            ) : (
+              <div className="overflow-y-auto p-4 space-y-3" style={{ maxHeight: '74vh' }}>
+                {blocks.length === 0 ? (
+                  <div className="text-center py-8">
+                    <p className="text-xs text-zinc-500 mb-3">Aucun bloc dans le builder pour cette page.</p>
+                    <button onClick={importLivePage} disabled={importing} className="bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-white text-xs font-bold px-4 py-2 rounded-full inline-flex items-center gap-1.5">
+                      {importing ? <Loader2 size={11} className="animate-spin" /> : <Download size={11} />}
+                      Importer la page actuelle
+                    </button>
+                  </div>
+                ) : (
+                  blocks.filter((b) => b.visible).map((b, i) => <PreviewBlock key={i} block={b} />)
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>
