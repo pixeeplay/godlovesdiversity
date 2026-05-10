@@ -1,0 +1,27 @@
+{
+  "name": "@pixeesite/cli",
+  "version": "0.1.0",
+  "private": true,
+  "license": "BUSL-1.1",
+  "bin": {
+    "pixeesite": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "tenant:create": "tsx src/index.ts tenant:create",
+    "tenant:migrate": "tsx src/index.ts tenant:migrate",
+    "tenant:drop": "tsx src/index.ts tenant:drop",
+    "tenant:list": "tsx src/index.ts tenant:list",
+    "templates:seed": "tsx src/index.ts templates:seed"
+  },
+  "dependencies": {
+    "@pixeesite/database": "workspace:*",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3",
+    "tsx": "^4.19.2"
+  }
+}
