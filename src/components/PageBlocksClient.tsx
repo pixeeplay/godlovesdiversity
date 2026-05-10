@@ -1,5 +1,7 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { EffectWrapper } from './effects/EffectWrapper';
+import { ParallaxHero } from './effects/ParallaxHero';
+import { ParallaxSlider } from './effects/ParallaxSlider';
 
 interface Block {
   id: string;
@@ -21,54 +23,47 @@ const WIDTH_CLASS: Record<string, string> = {
   full:  'w-full'
 };
 
+// Les blocs full-bleed sortent du container (parallax-hero, parallax-slider)
+const FULL_BLEED_TYPES = new Set(['parallax-hero', 'parallax-slider']);
+
 export function PageBlocksClient({ blocks }: { blocks: Block[] }) {
-  return (
-    <div className="container-wide py-8">
-      <div className="flex flex-wrap -mx-3">
-        {blocks.map((b) => (
-          <div key={b.id} className={`${WIDTH_CLASS[b.width] || 'w-full'} px-3 mb-6`}>
-            <AnimatedBlock block={b} />
-          </div>
-        ))}
+  // Sépare les blocs full-bleed (qui sortent du container) des blocs normaux
+  const elements: any[] = [];
+  let group: Block[] = [];
+
+  function flushGroup() {
+    if (group.length === 0) return;
+    elements.push(
+      <div key={`grp-${elements.length}`} className="container-wide py-8">
+        <div className="flex flex-wrap -mx-3">
+          {group.map((b) => (
+            <div key={b.id} className={`${WIDTH_CLASS[b.width] || 'w-full'} px-3 mb-6`}>
+              <EffectWrapper effect={b.effect} delay={b.effectDelay || 0}>
+                <BlockRenderer block={b} />
+              </EffectWrapper>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+    group = [];
+  }
 
-function AnimatedBlock({ block }: { block: Block }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(!block.effect);
+  blocks.forEach((b) => {
+    if (FULL_BLEED_TYPES.has(b.type)) {
+      flushGroup();
+      elements.push(
+        <EffectWrapper key={b.id} effect={b.effect} delay={b.effectDelay || 0} as="section">
+          <BlockRenderer block={b} />
+        </EffectWrapper>
+      );
+    } else {
+      group.push(b);
+    }
+  });
+  flushGroup();
 
-  useEffect(() => {
-    if (!block.effect || visible) return;
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          setTimeout(() => setVisible(true), block.effectDelay || 0);
-          obs.disconnect();
-        }
-      });
-    }, { threshold: 0.15 });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [block.effect, block.effectDelay, visible]);
-
-  const style: React.CSSProperties = {
-    transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-    opacity: visible ? 1 : 0,
-    transform:
-      !visible && block.effect === 'slide-up' ? 'translateY(40px)' :
-      !visible && block.effect === 'slide-left' ? 'translateX(-40px)' :
-      !visible && block.effect === 'scale' ? 'scale(0.92)' :
-      !visible && block.effect === 'fade' ? 'translateY(0)' :
-      'none'
-  };
-
-  return (
-    <div ref={ref} style={style}>
-      <BlockRenderer block={block} />
-    </div>
-  );
+  return <>{elements}</>;
 }
 
 function BlockRenderer({ block }: { block: Block }) {
@@ -110,6 +105,33 @@ function BlockRenderer({ block }: { block: Block }) {
           {d.cta?.label && <a href={d.cta?.href || '#'} className="inline-block bg-white hover:bg-zinc-100 text-zinc-900 font-bold px-6 py-3 rounded-full">{d.cta.label}</a>}
         </div>
       </div>
+    );
+  }
+  if (block.type === 'parallax-hero') {
+    return (
+      <ParallaxHero
+        title={d.title || ''}
+        subtitle={d.subtitle}
+        ctaLabel={d.ctaLabel}
+        ctaHref={d.ctaHref}
+        bgImage={d.bgImage}
+        bgGradient={d.bgGradient}
+        midImage={d.midImage}
+        fgImage={d.fgImage}
+        overlayColor={d.overlayColor}
+        floatingText={d.floatingText}
+        height={d.height || '90vh'}
+      />
+    );
+  }
+  if (block.type === 'parallax-slider' && Array.isArray(d.slides) && d.slides.length > 0) {
+    return (
+      <ParallaxSlider
+        slides={d.slides}
+        height={d.height || '85vh'}
+        autoplay={d.autoplay !== false}
+        autoplayDelay={d.autoplayDelay || 6500}
+      />
     );
   }
   if (block.type === 'columns' && Array.isArray(d.columns)) {

@@ -2,8 +2,10 @@
 import { useEffect, useState } from 'react';
 import {
   Type, Image as ImageIcon, Video as VideoIcon, Layout, Square, Columns, Code as CodeIcon,
-  Loader2, Save, Trash2, GripVertical, Plus, ArrowUp, ArrowDown, X, Eye, MousePointer
+  Loader2, Save, Trash2, GripVertical, Plus, ArrowUp, ArrowDown, X, Eye, MousePointer,
+  Mountain, Layers, Sparkles, Search
 } from 'lucide-react';
+import { EFFECTS, EFFECT_CATEGORIES, type Effect, type EffectCategory } from '@/lib/effects-library';
 
 /**
  * Page Builder visuel avec drag&drop minimaliste.
@@ -31,14 +33,16 @@ interface Block {
 }
 
 const BLOCK_TYPES = [
-  { type: 'text',    icon: Type,       label: 'Texte',     color: 'sky' },
-  { type: 'image',   icon: ImageIcon,  label: 'Image',     color: 'fuchsia' },
-  { type: 'video',   icon: VideoIcon,  label: 'Vidéo',     color: 'rose' },
-  { type: 'cta',     icon: MousePointer, label: 'CTA',     color: 'amber' },
-  { type: 'hero',    icon: Layout,     label: 'Hero',      color: 'violet' },
-  { type: 'columns', icon: Columns,    label: 'Colonnes',  color: 'emerald' },
-  { type: 'embed',   icon: CodeIcon,   label: 'Embed',     color: 'cyan' },
-  { type: 'spacer',  icon: Square,     label: 'Espace',    color: 'zinc' }
+  { type: 'text',           icon: Type,         label: 'Texte',           color: 'sky' },
+  { type: 'image',          icon: ImageIcon,    label: 'Image',           color: 'fuchsia' },
+  { type: 'video',          icon: VideoIcon,    label: 'Vidéo',           color: 'rose' },
+  { type: 'cta',            icon: MousePointer, label: 'CTA',             color: 'amber' },
+  { type: 'hero',           icon: Layout,       label: 'Hero',            color: 'violet' },
+  { type: 'parallax-hero',  icon: Mountain,     label: 'Parallax Hero',   color: 'fuchsia' },
+  { type: 'parallax-slider',icon: Layers,       label: 'Parallax Slider', color: 'cyan' },
+  { type: 'columns',        icon: Columns,      label: 'Colonnes',        color: 'emerald' },
+  { type: 'embed',          icon: CodeIcon,     label: 'Embed',           color: 'cyan' },
+  { type: 'spacer',         icon: Square,       label: 'Espace',          color: 'zinc' }
 ];
 
 const WIDTH_OPTIONS = [
@@ -48,15 +52,6 @@ const WIDTH_OPTIONS = [
   { v: '2/3',  label: '⅔' },
   { v: '3/4',  label: '¾' },
   { v: 'full', label: '100%' }
-];
-
-const EFFECT_OPTIONS = [
-  { v: '',           label: 'Aucun' },
-  { v: 'fade',       label: 'Fade in' },
-  { v: 'slide-up',   label: 'Slide ↑' },
-  { v: 'slide-left', label: 'Slide ←' },
-  { v: 'scale',      label: 'Scale' },
-  { v: 'parallax',   label: 'Parallax' }
 ];
 
 export function PageBuilderEditor({ slug }: { slug: string }) {
@@ -84,6 +79,29 @@ export function PageBuilderEditor({ slug }: { slug: string }) {
       video:   { src: '' },
       cta:     { label: 'Cliquer ici', href: '/' },
       hero:    { title: 'Titre Hero', subtitle: 'Sous-titre', cta: { label: 'CTA', href: '/' }, bgImage: '' },
+      'parallax-hero': {
+        title: 'God Loves Diversity',
+        subtitle: 'Une communauté inclusive où chacun trouve sa place',
+        ctaLabel: 'Découvrir',
+        ctaHref: '/about',
+        bgImage: '',
+        midImage: '',
+        fgImage: '',
+        floatingText: 'EXPLORE',
+        height: '90vh',
+        bgGradient: 'linear-gradient(180deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%)',
+        overlayColor: 'rgba(0,0,0,0.25)'
+      },
+      'parallax-slider': {
+        slides: [
+          { title: 'Foi', subtitle: 'Communauté inclusive', tagline: '01 / 03', image: '', accentColor: '#d946ef', ctaLabel: 'En savoir plus', ctaHref: '/foi' },
+          { title: 'Liberté', subtitle: 'Sans jugement', tagline: '02 / 03', image: '', accentColor: '#06b6d4', ctaLabel: 'Découvrir', ctaHref: '/liberte' },
+          { title: 'Amour', subtitle: 'Sans frontières', tagline: '03 / 03', image: '', accentColor: '#f59e0b', ctaLabel: 'Rejoindre', ctaHref: '/amour' }
+        ],
+        height: '85vh',
+        autoplay: true,
+        autoplayDelay: 6500
+      },
       columns: { columns: [{ html: '<p>Col 1</p>' }, { html: '<p>Col 2</p>' }] },
       embed:   { html: '<!-- iframe ou code custom -->' },
       spacer:  { height: 60 }
@@ -238,6 +256,8 @@ function BlockSummary({ block }: { block: Block }) {
   if (block.type === 'video') return block.data?.src ? <p className="text-[11px] text-zinc-500 truncate">🎬 {block.data.src}</p> : <p className="text-[11px] text-amber-400">⚠ Vidéo vide</p>;
   if (block.type === 'cta') return <p className="text-[11px] text-zinc-300">→ <strong>{block.data?.label}</strong> : {block.data?.href}</p>;
   if (block.type === 'hero') return <p className="text-[11px] text-zinc-300"><strong>{block.data?.title}</strong> — {block.data?.subtitle}</p>;
+  if (block.type === 'parallax-hero') return <p className="text-[11px] text-fuchsia-300">⛰ <strong>{block.data?.title}</strong> · {block.data?.height || '90vh'} · {block.data?.fgImage ? '✓' : '○'}fg / {block.data?.midImage ? '✓' : '○'}mid / {block.data?.bgImage ? '✓' : '○'}bg</p>;
+  if (block.type === 'parallax-slider') return <p className="text-[11px] text-cyan-300">📚 {block.data?.slides?.length || 0} slide(s) · {block.data?.autoplay ? 'autoplay' : 'manuel'}</p>;
   if (block.type === 'columns') return <p className="text-[11px] text-zinc-500">{block.data?.columns?.length || 0} colonne(s)</p>;
   if (block.type === 'spacer') return <p className="text-[11px] text-zinc-500">↕ {block.data?.height || 60}px</p>;
   return <p className="text-[11px] text-zinc-500 truncate">{JSON.stringify(block.data).slice(0, 100)}</p>;
@@ -259,6 +279,34 @@ function PreviewBlock({ block }: { block: Block }) {
       {block.data?.cta?.label && <a href={block.data.cta.href || '#'} className="inline-block bg-white text-zinc-900 font-bold px-5 py-2 rounded-full">{block.data.cta.label}</a>}
     </div>
   );
+  if (block.type === 'parallax-hero') return (
+    <div className={`${wrapper} relative rounded-xl overflow-hidden text-center flex items-center justify-center`}
+         style={{ minHeight: 220, background: block.data?.bgGradient || 'linear-gradient(180deg, #1e1b4b, #4c1d95)' }}>
+      {block.data?.bgImage && <div className="absolute inset-0 bg-center bg-cover opacity-40" style={{ backgroundImage: `url(${block.data.bgImage})` }} />}
+      {block.data?.floatingText && <span className="absolute font-display font-black text-white/10 select-none" style={{ fontSize: 90, lineHeight: 0.9 }}>{block.data.floatingText}</span>}
+      <div className="relative z-10 p-6">
+        <h1 className="font-display text-2xl md:text-3xl font-black text-white">{block.data?.title}</h1>
+        {block.data?.subtitle && <p className="text-white/85 text-sm mt-2">{block.data.subtitle}</p>}
+        {block.data?.ctaLabel && <span className="mt-3 inline-block bg-white text-zinc-900 font-bold px-4 py-1.5 rounded-full text-xs">{block.data.ctaLabel}</span>}
+      </div>
+      <span className="absolute top-2 right-2 text-[9px] uppercase tracking-widest font-bold bg-fuchsia-500/40 text-white px-1.5 py-0.5 rounded">Parallax</span>
+    </div>
+  );
+  if (block.type === 'parallax-slider') {
+    const slides = block.data?.slides || [];
+    const first = slides[0] || {};
+    return (
+      <div className={`${wrapper} relative rounded-xl overflow-hidden flex items-stretch`} style={{ minHeight: 200, background: first.bgColor || `linear-gradient(135deg, ${first.accentColor || '#d946ef'}, #0a0a0f 70%)` }}>
+        <div className="relative z-10 flex-1 p-6 flex flex-col justify-center">
+          {first.tagline && <span className="text-[10px] tracking-[0.4em] text-white/60 uppercase mb-2">{first.tagline}</span>}
+          {first.subtitle && <span className="text-xs uppercase tracking-widest font-bold mb-1" style={{ color: first.accentColor || '#d946ef' }}>{first.subtitle}</span>}
+          <h1 className="font-display text-2xl md:text-3xl font-black text-white">{first.title || 'Titre'}</h1>
+        </div>
+        {first.image && <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${first.image})`, clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 0% 100%)' }} />}
+        <span className="absolute top-2 right-2 text-[9px] uppercase tracking-widest font-bold bg-cyan-500/40 text-white px-1.5 py-0.5 rounded">Slider · {slides.length}</span>
+      </div>
+    );
+  }
   if (block.type === 'columns') return (
     <div className={`${wrapper} grid grid-cols-${block.data?.columns?.length || 2} gap-4`}>
       {(block.data?.columns || []).map((c: any, i: number) => <div key={i} className="prose prose-invert prose-sm" dangerouslySetInnerHTML={{ __html: c.html || '' }} />)}
@@ -287,11 +335,13 @@ function BlockEditDrawer({ block, onChange, onChangeData, onClose }: {
             </select>
           </div>
           <div>
-            <label className="block text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1">Effet</label>
-            <select value={block.effect || ''} onChange={(e) => onChange({ effect: e.target.value || null })} className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-2 text-xs">
-              {EFFECT_OPTIONS.map((e) => <option key={e.v} value={e.v}>{e.label}</option>)}
-            </select>
+            <label className="block text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1">Effet · 100 wahoo</label>
+            <EffectPicker value={block.effect} onChange={(v) => onChange({ effect: v })} />
           </div>
+        </div>
+        <div>
+          <label className="block text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1">Délai (ms)</label>
+          <input type="number" value={block.effectDelay || 0} onChange={(e) => onChange({ effectDelay: Number(e.target.value) })} className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs" />
         </div>
 
         {block.type === 'text' && (
@@ -327,6 +377,32 @@ function BlockEditDrawer({ block, onChange, onChangeData, onClose }: {
           </>
         )}
 
+        {block.type === 'parallax-hero' && (
+          <div className="space-y-2">
+            <p className="text-[10px] uppercase tracking-widest text-fuchsia-400 font-bold flex items-center gap-1"><Mountain size={11} /> Layers Parallax (Stepout)</p>
+            <input value={block.data?.title || ''} onChange={(e) => onChangeData({ title: e.target.value })} placeholder="Titre principal" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm font-bold" />
+            <input value={block.data?.subtitle || ''} onChange={(e) => onChangeData({ subtitle: e.target.value })} placeholder="Sous-titre" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs" />
+            <input value={block.data?.floatingText || ''} onChange={(e) => onChangeData({ floatingText: e.target.value })} placeholder='Texte flottant (ex: "EXPLORE")' className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs" />
+            <div className="grid grid-cols-2 gap-2">
+              <input value={block.data?.ctaLabel || ''} onChange={(e) => onChangeData({ ctaLabel: e.target.value })} placeholder="CTA label" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs" />
+              <input value={block.data?.ctaHref || ''} onChange={(e) => onChangeData({ ctaHref: e.target.value })} placeholder="CTA href" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+            </div>
+            <input value={block.data?.bgImage || ''} onChange={(e) => onChangeData({ bgImage: e.target.value })} placeholder="🏞️ Layer 1 — Image fond (sky, montagnes, lointain)" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+            <input value={block.data?.midImage || ''} onChange={(e) => onChangeData({ midImage: e.target.value })} placeholder="⛰️ Layer 2 — Image milieu (collines, nuages)" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+            <input value={block.data?.fgImage || ''} onChange={(e) => onChangeData({ fgImage: e.target.value })} placeholder="🌳 Layer 3 — Image foreground (silhouettes, herbes)" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+            <div className="grid grid-cols-2 gap-2">
+              <input value={block.data?.height || '90vh'} onChange={(e) => onChangeData({ height: e.target.value })} placeholder="Hauteur (90vh)" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+              <input value={block.data?.overlayColor || ''} onChange={(e) => onChangeData({ overlayColor: e.target.value })} placeholder="Overlay (rgba(0,0,0,0.25))" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+            </div>
+            <input value={block.data?.bgGradient || ''} onChange={(e) => onChangeData({ bgGradient: e.target.value })} placeholder="Gradient si pas de bgImage" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs font-mono" />
+            <p className="text-[10px] text-zinc-500 italic">💡 Astuce : utilise des PNG transparents pour midImage et fgImage. Ils glissent à des vitesses différentes au scroll.</p>
+          </div>
+        )}
+
+        {block.type === 'parallax-slider' && (
+          <ParallaxSliderEditor data={block.data || {}} onChange={(data) => onChangeData(data)} />
+        )}
+
         {block.type === 'spacer' && (
           <div>
             <label className="block text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1">Hauteur (px)</label>
@@ -339,6 +415,177 @@ function BlockEditDrawer({ block, onChange, onChangeData, onClose }: {
         )}
       </div>
       <style dangerouslySetInnerHTML={{ __html: `@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }` }} />
+    </div>
+  );
+}
+
+/* ─── Picker des 100 effets ────────────────────────── */
+function EffectPicker({ value, onChange }: { value: string | null; onChange: (v: string | null) => void }) {
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState<EffectCategory>('entry');
+  const [search, setSearch] = useState('');
+  const selected = value ? EFFECTS.find((e) => e.id === value) : null;
+  const filtered = search
+    ? EFFECTS.filter((e) => e.name.toLowerCase().includes(search.toLowerCase()) || e.id.includes(search.toLowerCase()))
+    : EFFECTS.filter((e) => e.category === tab);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="w-full bg-zinc-900 border border-zinc-800 hover:border-fuchsia-500 rounded-lg px-2 py-2 text-xs flex items-center justify-between gap-2"
+      >
+        {selected ? (
+          <span className="flex items-center gap-1.5 truncate">
+            <span>{selected.emoji || '✨'}</span>
+            <span className="truncate">{selected.name}</span>
+            {selected.intensity === 'wow' && <span className="text-[8px] px-1 py-0.5 rounded bg-fuchsia-500/30 text-fuchsia-300 font-bold">WOW</span>}
+          </span>
+        ) : (
+          <span className="text-zinc-500">Aucun effet</span>
+        )}
+        <Sparkles size={11} className="text-fuchsia-400" />
+      </button>
+      {open && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur flex items-center justify-center p-4" onClick={() => setOpen(false)}>
+          <div onClick={(e) => e.stopPropagation()} className="bg-zinc-950 border border-fuchsia-500/30 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden">
+            <header className="bg-zinc-900 border-b border-zinc-800 p-3 flex items-center gap-3">
+              <Sparkles size={16} className="text-fuchsia-400" />
+              <h3 className="font-bold text-sm">100 effets wahoo</h3>
+              <div className="ml-auto flex items-center gap-2">
+                <div className="relative">
+                  <Search size={11} className="absolute left-2 top-1/2 -translate-y-1/2 text-zinc-500" />
+                  <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Rechercher..." className="bg-zinc-950 border border-zinc-800 rounded-lg pl-7 pr-3 py-1.5 text-xs w-48" autoFocus />
+                </div>
+                <button onClick={() => { onChange(null); setOpen(false); }} className="text-xs text-zinc-400 hover:text-white px-2">Aucun</button>
+                <button onClick={() => setOpen(false)}><X size={16} className="text-zinc-400 hover:text-white" /></button>
+              </div>
+            </header>
+            {!search && (
+              <nav className="bg-zinc-900/50 border-b border-zinc-800 flex flex-wrap gap-1 p-2">
+                {EFFECT_CATEGORIES.map((cat) => {
+                  const count = EFFECTS.filter((e) => e.category === cat.id).length;
+                  if (count === 0) return null;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => setTab(cat.id)}
+                      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs transition ${
+                        tab === cat.id ? 'bg-fuchsia-600 text-white' : 'bg-zinc-950 text-zinc-400 hover:text-white'
+                      }`}
+                    >
+                      <span>{cat.emoji}</span>
+                      {cat.label}
+                      <span className="text-[10px] opacity-70">({count})</span>
+                    </button>
+                  );
+                })}
+              </nav>
+            )}
+            <div className="flex-1 overflow-y-auto p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+              {filtered.length === 0 ? (
+                <p className="col-span-full text-center text-xs text-zinc-500 py-8">Aucun effet trouvé.</p>
+              ) : filtered.map((fx) => (
+                <button
+                  key={fx.id}
+                  onClick={() => { onChange(fx.id); setOpen(false); setSearch(''); }}
+                  className={`flex flex-col items-start gap-1 p-2 rounded-lg border text-left transition ${
+                    value === fx.id
+                      ? 'bg-fuchsia-500/15 border-fuchsia-500 ring-1 ring-fuchsia-500'
+                      : 'bg-zinc-900 border-zinc-800 hover:border-fuchsia-500/60 hover:bg-zinc-800'
+                  }`}
+                >
+                  <div className="flex items-center gap-1 w-full">
+                    <span className="text-base">{fx.emoji || '✨'}</span>
+                    <span className="text-xs font-bold text-white truncate flex-1">{fx.name}</span>
+                    {fx.intensity === 'wow' && <span className="text-[8px] px-1 rounded bg-fuchsia-500/30 text-fuchsia-300 font-bold">WOW</span>}
+                  </div>
+                  <p className="text-[10px] text-zinc-500 line-clamp-2">{fx.desc}</p>
+                  <code className="text-[9px] text-zinc-600 truncate w-full">{fx.id}</code>
+                </button>
+              ))}
+            </div>
+            <footer className="bg-zinc-900 border-t border-zinc-800 px-3 py-2 text-[10px] text-zinc-500 flex items-center justify-between">
+              <span>{filtered.length} / 100 effets</span>
+              <span className="flex items-center gap-1"><Sparkles size={10} className="text-fuchsia-400" /> Bibliothèque GLD</span>
+            </footer>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ─── Editor pour Parallax Slider ─────────────────── */
+function ParallaxSliderEditor({ data, onChange }: { data: any; onChange: (d: any) => void }) {
+  const slides: any[] = data.slides || [];
+
+  function updateSlide(idx: number, patch: any) {
+    const next = slides.map((s, i) => (i === idx ? { ...s, ...patch } : s));
+    onChange({ ...data, slides: next });
+  }
+  function addSlide() {
+    onChange({
+      ...data,
+      slides: [
+        ...slides,
+        { title: 'Nouvelle slide', subtitle: '', tagline: `0${slides.length + 1} / 0${slides.length + 1}`, image: '', accentColor: '#d946ef' }
+      ]
+    });
+  }
+  function removeSlide(idx: number) {
+    onChange({ ...data, slides: slides.filter((_, i) => i !== idx) });
+  }
+  function moveSlide(from: number, to: number) {
+    const next = [...slides];
+    const [item] = next.splice(from, 1);
+    next.splice(to, 0, item);
+    onChange({ ...data, slides: next });
+  }
+
+  return (
+    <div className="space-y-2">
+      <p className="text-[10px] uppercase tracking-widest text-cyan-400 font-bold flex items-center gap-1"><Layers size={11} /> Slides ({slides.length})</p>
+
+      <div className="grid grid-cols-3 gap-2">
+        <input value={data.height || '85vh'} onChange={(e) => onChange({ ...data, height: e.target.value })} placeholder="Hauteur" className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
+        <label className="flex items-center gap-1 text-xs text-zinc-300 bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5">
+          <input type="checkbox" checked={data.autoplay !== false} onChange={(e) => onChange({ ...data, autoplay: e.target.checked })} /> autoplay
+        </label>
+        <input type="number" value={data.autoplayDelay || 6500} onChange={(e) => onChange({ ...data, autoplayDelay: Number(e.target.value) })} placeholder="Delay (ms)" className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
+      </div>
+
+      {slides.map((s, i) => (
+        <article key={i} className="bg-zinc-950 border border-zinc-800 rounded-xl p-2 space-y-1.5">
+          <header className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-bold text-cyan-400">Slide {i + 1}</span>
+            <div className="ml-auto flex items-center gap-0.5">
+              <button onClick={() => i > 0 && moveSlide(i, i - 1)} disabled={i === 0} className="p-1 text-zinc-500 hover:text-zinc-200 disabled:opacity-30"><ArrowUp size={10} /></button>
+              <button onClick={() => i < slides.length - 1 && moveSlide(i, i + 1)} disabled={i === slides.length - 1} className="p-1 text-zinc-500 hover:text-zinc-200 disabled:opacity-30"><ArrowDown size={10} /></button>
+              <button onClick={() => confirm('Supprimer cette slide ?') && removeSlide(i)} className="p-1 text-rose-400 hover:text-rose-300"><Trash2 size={10} /></button>
+            </div>
+          </header>
+          <input value={s.title || ''} onChange={(e) => updateSlide(i, { title: e.target.value })} placeholder="Titre" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-bold" />
+          <div className="grid grid-cols-2 gap-1.5">
+            <input value={s.subtitle || ''} onChange={(e) => updateSlide(i, { subtitle: e.target.value })} placeholder="Sous-titre" className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs" />
+            <input value={s.tagline || ''} onChange={(e) => updateSlide(i, { tagline: e.target.value })} placeholder="Tagline (01/03)" className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
+          </div>
+          <input value={s.image || ''} onChange={(e) => updateSlide(i, { image: e.target.value })} placeholder="URL image" className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
+          <div className="grid grid-cols-3 gap-1.5">
+            <input value={s.ctaLabel || ''} onChange={(e) => updateSlide(i, { ctaLabel: e.target.value })} placeholder="CTA" className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs" />
+            <input value={s.ctaHref || ''} onChange={(e) => updateSlide(i, { ctaHref: e.target.value })} placeholder="Lien" className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
+            <div className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1">
+              <input type="color" value={s.accentColor || '#d946ef'} onChange={(e) => updateSlide(i, { accentColor: e.target.value })} className="w-5 h-5 cursor-pointer bg-transparent border-0 rounded" />
+              <input value={s.accentColor || ''} onChange={(e) => updateSlide(i, { accentColor: e.target.value })} placeholder="Accent" className="flex-1 bg-transparent text-[10px] font-mono outline-none" />
+            </div>
+          </div>
+        </article>
+      ))}
+
+      <button onClick={addSlide} className="w-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-dashed border-cyan-500/40 hover:border-cyan-500 text-cyan-300 hover:text-cyan-200 rounded-xl px-3 py-2 text-xs flex items-center justify-center gap-1.5">
+        <Plus size={11} /> Ajouter une slide
+      </button>
     </div>
   );
 }

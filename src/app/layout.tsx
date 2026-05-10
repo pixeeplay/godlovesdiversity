@@ -1,5 +1,6 @@
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
+import { EffectsStyles } from '@/components/effects/EffectsStyles';
 
 // Script anti-flash inliné directement (évite import depuis fichier 'use client')
 const themeInitScript = `
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           WebkitTapHighlightColor: 'transparent'
         }}
       >
+        <EffectsStyles />
         {children}
       </body>
     </html>
