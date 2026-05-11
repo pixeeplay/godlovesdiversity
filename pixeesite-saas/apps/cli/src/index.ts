@@ -44,7 +44,7 @@ program
         name: opts.name || slug,
         ownerId: user.id,
         plan: opts.plan,
-        defaultDomain: `${slug}.pixeesite.app`,
+        defaultDomain: `${slug}.pixeeplay.com`,
         members: { create: { userId: user.id, role: 'owner', acceptedAt: new Date() } },
       },
     });
@@ -55,7 +55,7 @@ program
     console.log(`✓ DB ready : ${dbName}`);
 
     console.log(`\n🎉 Tenant "${slug}" ready !`);
-    console.log(`   Default domain : https://${slug}.pixeesite.app`);
+    console.log(`   Default domain : https://${slug}.pixeeplay.com`);
     console.log(`   Admin URL      : https://app.pixeesite.com/orgs/${slug}`);
   });
 

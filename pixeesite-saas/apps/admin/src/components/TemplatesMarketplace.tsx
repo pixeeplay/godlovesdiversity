@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { TemplateWizard } from './TemplateWizard';
 
 interface Template {
   id: string;
@@ -37,6 +38,7 @@ export function TemplatesMarketplace({ orgSlug }: { orgSlug: string }) {
   const [search, setSearch] = useState('');
   const [previewing, setPreviewing] = useState<Template | null>(null);
   const [installing, setInstalling] = useState<string | null>(null);
+  const [wizardTemplate, setWizardTemplate] = useState<Template | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -131,15 +133,24 @@ export function TemplatesMarketplace({ orgSlug }: { orgSlug: string }) {
                     style={{ flex: 1, background: '#27272a', border: 0, color: 'inherit', padding: '8px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 13 }}
                   >👁 Voir</button>
                   <button
-                    onClick={() => useTemplate(t)}
-                    disabled={installing === t.id}
-                    style={{ flex: 2, background: 'linear-gradient(135deg, #d946ef, #06b6d4)', border: 0, color: 'white', padding: '8px 12px', borderRadius: 6, cursor: installing === t.id ? 'wait' : 'pointer', fontSize: 13, fontWeight: 600, opacity: installing === t.id ? 0.5 : 1 }}
-                  >{installing === t.id ? 'Installation…' : '✨ Utiliser'}</button>
+                    onClick={() => setWizardTemplate(t)}
+                    style={{ flex: 2, background: 'linear-gradient(135deg, #d946ef, #06b6d4)', border: 0, color: 'white', padding: '8px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 13, fontWeight: 700 }}
+                  >🪄 Personnaliser & créer</button>
                 </div>
               </div>
             </article>
           ))}
         </div>
+      )}
+
+      {/* Template Wizard (questionnaire IA + génération auto + progression live) */}
+      {wizardTemplate && (
+        <TemplateWizard
+          orgSlug={orgSlug}
+          templateId={wizardTemplate.id}
+          templateName={wizardTemplate.name}
+          onClose={() => setWizardTemplate(null)}
+        />
       )}
 
       {/* Preview modal */}
@@ -152,7 +163,7 @@ export function TemplatesMarketplace({ orgSlug }: { orgSlug: string }) {
               <p style={{ opacity: 0.7 }}>{previewing.description}</p>
               <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
                 <button onClick={() => setPreviewing(null)} style={{ background: '#27272a', border: 0, color: 'inherit', padding: '12px 20px', borderRadius: 8, cursor: 'pointer' }}>Fermer</button>
-                <button onClick={() => { setPreviewing(null); useTemplate(previewing); }} style={{ flex: 1, background: 'linear-gradient(135deg, #d946ef, #06b6d4)', border: 0, color: 'white', padding: '12px 20px', borderRadius: 8, cursor: 'pointer', fontWeight: 600 }}>✨ Utiliser ce template</button>
+                <button onClick={() => { const t = previewing; setPreviewing(null); setWizardTemplate(t); }} style={{ flex: 1, background: 'linear-gradient(135deg, #d946ef, #06b6d4)', border: 0, color: 'white', padding: '12px 20px', borderRadius: 8, cursor: 'pointer', fontWeight: 700 }}>🪄 Personnaliser & créer</button>
               </div>
             </div>
           </div>

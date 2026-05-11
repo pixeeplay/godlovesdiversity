@@ -48,10 +48,26 @@ export async function provisionTenantDb(orgSlug: string): Promise<{ dbName: stri
   if (!tenantUrl) throw new Error('TENANT_DATABASE_URL_TEMPLATE missing');
 
   const schemaPath = path.resolve(__dirname, '../prisma/tenant.prisma');
-  execSync(`prisma db push --schema "${schemaPath}" --skip-generate --accept-data-loss`, {
-    env: { ...process.env, TENANT_DATABASE_URL: tenantUrl },
-    stdio: 'inherit',
-  });
+  // Try multiple ways to find prisma binary (handles standalone Next.js output, etc)
+  const prismaCmd = [
+    'pnpm exec prisma',
+    'npx prisma',
+    'node /app/node_modules/prisma/build/index.js',
+    'prisma',
+  ];
+  let lastErr: any;
+  for (const cmd of prismaCmd) {
+    try {
+      execSync(`${cmd} db push --schema "${schemaPath}" --skip-generate --accept-data-loss`, {
+        env: { ...process.env, TENANT_DATABASE_URL: tenantUrl },
+        stdio: 'inherit',
+        cwd: '/app',
+      });
+      lastErr = null;
+      break;
+    } catch (e) { lastErr = e; }
+  }
+  if (lastErr) throw lastErr;
 
   // 3. Update Org
   await platformDb.org.update({

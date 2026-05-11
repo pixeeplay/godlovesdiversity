@@ -33,7 +33,11 @@ export function SiteDetailClient({ orgSlug, orgName, orgDefaultDomain, site, pag
   const canEdit = ['owner', 'admin', 'editor'].includes(role);
   const [publishing, setPublishing] = useState(false);
   const [showNewPage, setShowNewPage] = useState(false);
-  const liveUrl = orgDefaultDomain ? `https://${orgDefaultDomain}` : `http://localhost:3001`;
+  // URL publique : <orgSlug>.pixeeplay.com/<siteSlug> (multi-sites par org via path)
+  // On ignore orgDefaultDomain s'il pointe vers l'ancien .pixeesite.app (DNS pas configuré)
+  const liveUrl = orgDefaultDomain && !orgDefaultDomain.endsWith('.pixeesite.app')
+    ? `https://${orgDefaultDomain}/${site.slug}`
+    : `https://${orgSlug}.pixeeplay.com/${site.slug}`;
 
   async function publish() {
     if (!confirm(`Publier "${site.name}" ? Les visiteurs verront le site immédiatement.`)) return;

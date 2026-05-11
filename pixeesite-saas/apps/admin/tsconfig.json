@@ -1,15 +1,25 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "plugins": [{ "name": "next" }],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@pixeesite/database": ["../../packages/database/src"],
-      "@pixeesite/ai": ["../../packages/ai/src"],
-      "@pixeesite/blocks": ["../../packages/blocks/src"],
-      "@pixeesite/ui": ["../../packages/ui/src"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "src/**/*", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

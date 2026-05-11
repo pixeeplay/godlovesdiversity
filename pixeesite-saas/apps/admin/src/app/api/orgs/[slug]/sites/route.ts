@@ -47,15 +47,21 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
     return NextResponse.json({ error: 'name-and-slug-required' }, { status: 400 });
   }
 
-  // Check plan limits
+  // Check plan limits (bypassable par super-admin)
+  const userIsSuperAdmin = await platformDb.user.findUnique({ where: { id: auth.userId }, select: { isSuperAdmin: true } }).then((u) => !!u?.isSuperAdmin).catch(() => false);
   const sitesCount = await platformDb.site.count({ where: { orgId: auth.membership.org.id } });
-  if (sitesCount >= auth.membership.org.maxSites) {
+  if (!userIsSuperAdmin && sitesCount >= auth.membership.org.maxSites) {
     return NextResponse.json({ error: 'plan-limit-reached', limit: auth.membership.org.maxSites, current: sitesCount }, { status: 402 });
   }
 
-  // Check slug unique within org
-  const existing = await platformDb.site.findUnique({ where: { orgId_slug: { orgId: auth.membership.org.id, slug: siteSlug } } }).catch(() => null);
-  if (existing) return NextResponse.json({ error: 'slug-taken' }, { status: 409 });
+  // Auto-uniquify slug if taken (append -2, -3, etc.)
+  let finalSlug = siteSlug;
+  let counter = 2;
+  while (await platformDb.site.findUnique({ where: { orgId_slug: { orgId: auth.membership.org.id, slug: finalSlug } } }).catch(() => null)) {
+    finalSlug = `${siteSlug}-${counter}`;
+    counter++;
+    if (counter > 100) return NextResponse.json({ error: 'slug-collision-too-many', tried: siteSlug }, { status: 409 });
+  }
 
   // Récupère le template si fourni
   let templateBlocks: any = null;
@@ -71,75 +77,81 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
   const site = await platformDb.site.create({
     data: {
       orgId: auth.membership.org.id,
-      slug: siteSlug,
+      slug: finalSlug,
       name,
       status: 'draft',
       templateId,
     },
   });
 
-  // Crée les pages dans tenant DB
-  const tenantDb = await getTenantPrisma(orgSlug);
-  if (templateBlocks?.pages && Array.isArray(templateBlocks.pages)) {
-    // Depuis template
-    for (const p of templateBlocks.pages) {
+  // Crée les pages dans tenant DB (avec try/catch pour fallback safe)
+  try {
+    const tenantDb = await getTenantPrisma(orgSlug);
+    if (templateBlocks?.pages && Array.isArray(templateBlocks.pages)) {
+      for (const p of templateBlocks.pages) {
+        await tenantDb.sitePage.create({
+          data: {
+            siteId: site.id,
+            slug: p.slug || '/',
+            title: p.title || 'Page',
+            blocks: p.blocks || [],
+            isHome: p.isHome || p.slug === '/',
+            visible: true,
+            meta: p.meta || null,
+          },
+        });
+      }
+    } else {
       await tenantDb.sitePage.create({
         data: {
           siteId: site.id,
-          slug: p.slug || '/',
-          title: p.title || 'Page',
-          blocks: p.blocks || [],
-          isHome: p.isHome || p.slug === '/',
+          slug: '/',
+          title: name,
+          isHome: true,
           visible: true,
-          meta: p.meta || null,
+          blocks: [
+            {
+              type: 'parallax-hero', width: 'full', effect: 'fade-up', effectDelay: 0,
+              data: {
+                title: name,
+                subtitle: 'À toi de jouer ✨',
+                ctaLabel: 'Découvrir',
+                ctaHref: '#contenu',
+                bgGradient: 'linear-gradient(180deg, #1e1b4b, #4c1d95, #d946ef)',
+                floatingText: name.toUpperCase().slice(0, 12),
+                height: '70vh',
+              },
+            },
+            {
+              type: 'text', width: 'full', effect: 'fade-up', effectDelay: 100,
+              data: { html: '<h2 id="contenu">Bienvenue sur ton nouveau site</h2><p>Édite cette page dans le builder pour la personnaliser. Ajoute des blocs, génère des images IA, choisis un thème.</p>' },
+            },
+          ],
         },
       });
     }
-  } else {
-    // Page d'accueil par défaut
-    await tenantDb.sitePage.create({
-      data: {
-        siteId: site.id,
-        slug: '/',
-        title: name,
-        isHome: true,
-        visible: true,
-        blocks: [
-          {
-            type: 'parallax-hero', width: 'full', effect: 'fade-up', effectDelay: 0,
-            data: {
-              title: name,
-              subtitle: 'À toi de jouer ✨',
-              ctaLabel: 'Découvrir',
-              ctaHref: '#contenu',
-              bgGradient: 'linear-gradient(180deg, #1e1b4b, #4c1d95, #d946ef)',
-              floatingText: name.toUpperCase().slice(0, 12),
-              height: '70vh',
-            },
-          },
-          {
-            type: 'text', width: 'full', effect: 'fade-up', effectDelay: 100,
-            data: { html: '<h2 id="contenu">Bienvenue sur ton nouveau site</h2><p>Édite cette page dans le builder pour la personnaliser. Ajoute des blocs, génère des images IA, choisis un thème.</p>' },
-          },
-        ],
-      },
-    });
+    const pageCount = await tenantDb.sitePage.count({ where: { siteId: site.id } });
+    await platformDb.site.update({ where: { id: site.id }, data: { pageCount } }).catch(() => {});
+  } catch (e: any) {
+    // Pages tenant DB ont échoué (probablement table SitePage manquante)
+    // Le site existe en platform DB, on le garde — le user pourra ajouter des pages via Page Builder
+    console.error('[sites POST] tenant DB pages failed:', e?.message);
+    await platformDb.site.update({
+      where: { id: site.id },
+      data: { deployStatus: `tenant-pages-failed: ${(e?.message || 'unknown').slice(0, 100)}` },
+    }).catch(() => {});
   }
 
-  // Update pageCount
-  const pageCount = await tenantDb.sitePage.count({ where: { siteId: site.id } });
-  await platformDb.site.update({ where: { id: site.id }, data: { pageCount } });
-
-  // Audit
+  // Audit (best effort)
   await platformDb.platformAuditLog.create({
     data: {
       userId: auth.userId,
       orgId: auth.membership.org.id,
       action: templateId ? 'site.create-from-template' : 'site.create',
       resource: `site:${site.id}`,
-      metadata: { templateId, siteSlug },
+      metadata: { templateId, siteSlug: finalSlug },
     },
-  });
+  }).catch(() => {});
 
-  return NextResponse.json({ ok: true, site }, { status: 201 });
+  return NextResponse.json({ ok: true, site, slug: finalSlug }, { status: 201 });
 }

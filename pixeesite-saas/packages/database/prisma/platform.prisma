@@ -25,6 +25,8 @@ model User {
   twoFactorEnabled Boolean  @default(false)
   // Status
   banned        Boolean     @default(false)
+  // Super-admin (plateforme niveau)
+  isSuperAdmin  Boolean     @default(false)
   // Owned orgs + memberships
   ownedOrgs     Org[]       @relation("OrgOwner")
   memberships   OrgMember[]
@@ -81,6 +83,8 @@ model Org {
   subscription  Subscription?
   invoices      Invoice[]
   apiKeys       ApiKey[]
+  secrets       OrgSecret[]
+  aiConfigs     OrgAiConfig[]
   // Audit
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
@@ -296,4 +300,56 @@ model AiUsage {
   createdAt      DateTime @default(now())
   @@index([orgId, createdAt])
   @@index([provider, model])
+}
+
+// ─── SECRETS MANAGER ───────────────────────────────────────────
+
+// Secrets niveau plateforme (configurés par super-admin, partagés tous tenants)
+model PlatformSecret {
+  id          String   @id @default(cuid())
+  key         String   @unique  // STRIPE_SECRET_KEY, GOOGLE_OAUTH_CLIENT_ID, etc.
+  value       String   @db.Text // encrypted AES-256-GCM
+  description String?
+  category    String   @default("general") // billing | oauth | mail | infra | general
+  active      Boolean  @default(true)
+  updatedBy   String?  // userId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Secrets niveau organisation (configurés par owner/admin de l'org)
+model OrgSecret {
+  id          String   @id @default(cuid())
+  orgId       String
+  org         Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  key         String   // GEMINI_API_KEY, OPENAI_API_KEY, FAL_API_KEY, etc.
+  value       String   @db.Text // encrypted AES-256-GCM
+  category    String   @default("general") // ai | media | mail | storage | analytics | general
+  description String?
+  active      Boolean  @default(true)
+  updatedBy   String?  // userId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@unique([orgId, key])
+  @@index([orgId, category])
+}
+
+// Configuration AI multi-provider par feature
+model OrgAiConfig {
+  id          String   @id @default(cuid())
+  orgId       String
+  org         Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  feature     String   // text | image | video | audio | embed | moderation | classification
+  provider    String   // gemini | openai | anthropic | openrouter | groq | ollama | lmstudio
+  model       String
+  // Tuning
+  temperature Float?   @default(0.7)
+  maxTokens   Int?     @default(2048)
+  systemPrompt String? @db.Text
+  // Custom URL (pour Ollama/LM Studio)
+  baseUrl     String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@unique([orgId, feature])
 }

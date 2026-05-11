@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
  * GET /api/orgs/[slug]/domains : liste les custom domains
  * POST /api/orgs/[slug]/domains : ajoute un custom domain { domain }
  *
- * Le user doit pointer un CNAME `mon-domaine.com → render.pixeesite.app`.
+ * Le user doit pointer un CNAME `mon-domaine.com → render.pixeeplay.com`.
  * L'API génère un verifyToken qu'il doit aussi mettre en TXT record
  * `_pixeesite.mon-domaine.com`. Une cron tente la résolution toutes les 5min.
  */
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
     ok: true,
     domain: cd,
     instructions: {
-      cname: { name: domain, value: 'render.pixeesite.app' },
+      cname: { name: domain, value: 'render.pixeeplay.com' },
       txt: { name: `_pixeesite.${domain}`, value: `pixeesite-verify=${verifyToken}` },
     },
   }, { status: 201 });
@@ -79,7 +79,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ sl
   let txtOk = false;
   try {
     const cname = await dns.resolveCname(cd.domain);
-    cnameOk = cname.some((r) => r.includes('pixeesite.app'));
+    cnameOk = cname.some((r) => r.includes('pixeeplay.com') || r.includes('pixeesite.app'));
   } catch {}
   try {
     const txt = await dns.resolveTxt(`_pixeesite.${cd.domain}`);

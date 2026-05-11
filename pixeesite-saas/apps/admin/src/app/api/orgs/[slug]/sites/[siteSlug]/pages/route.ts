@@ -26,40 +26,53 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
 
   if (!title) return NextResponse.json({ error: 'title-required' }, { status: 400 });
 
-  const site = await platformDb.site.findUnique({
-    where: { orgId_slug: { orgId: auth.membership.org.id, slug: siteSlug } },
-  });
-  if (!site) return NextResponse.json({ error: 'site-not-found' }, { status: 404 });
+  try {
+    const site = await platformDb.site.findUnique({
+      where: { orgId_slug: { orgId: auth.membership.org.id, slug: siteSlug } },
+    });
+    if (!site) return NextResponse.json({ error: 'site-not-found' }, { status: 404 });
 
-  const tenantDb = await getTenantPrisma(orgSlug);
-  const existing = await tenantDb.sitePage.findUnique({ where: { siteId_slug: { siteId: site.id, slug: pageSlug } } }).catch(() => null);
-  if (existing) return NextResponse.json({ error: 'slug-taken' }, { status: 409 });
+    const tenantDb = await getTenantPrisma(orgSlug);
+    // Auto-uniquify slug
+    let finalSlug = pageSlug;
+    let counter = 2;
+    while (await tenantDb.sitePage.findUnique({ where: { siteId_slug: { siteId: site.id, slug: finalSlug } } }).catch(() => null)) {
+      finalSlug = `${pageSlug}-${counter++}`;
+      if (counter > 100) break;
+    }
 
-  const page = await tenantDb.sitePage.create({
-    data: {
-      siteId: site.id,
-      slug: pageSlug,
-      title,
-      isHome: body.isHome === true,
-      visible: true,
-      blocks: body.blocks || [
-        {
-          type: 'parallax-hero', width: 'full', effect: 'fade-up', effectDelay: 0,
-          data: {
-            title: title,
-            subtitle: 'Édite cette page dans le builder',
-            ctaLabel: 'Découvrir', ctaHref: '#contenu',
-            bgGradient: 'linear-gradient(180deg, #1e1b4b, #4c1d95, #d946ef)',
-            floatingText: title.toUpperCase().slice(0, 12), height: '70vh',
+    const page = await tenantDb.sitePage.create({
+      data: {
+        siteId: site.id,
+        slug: finalSlug,
+        title,
+        isHome: body.isHome === true,
+        visible: true,
+        blocks: body.blocks || [
+          {
+            type: 'parallax-hero', width: 'full', effect: 'fade-up', effectDelay: 0,
+            data: {
+              title: title,
+              subtitle: 'Édite cette page dans le builder',
+              ctaLabel: 'Découvrir', ctaHref: '#contenu',
+              bgGradient: 'linear-gradient(180deg, #1e1b4b, #4c1d95, #d946ef)',
+              floatingText: title.toUpperCase().slice(0, 12), height: '70vh',
+            },
           },
-        },
-      ],
-    },
-  });
+        ],
+      },
+    });
 
-  // Update pageCount sur Site
-  const pageCount = await tenantDb.sitePage.count({ where: { siteId: site.id } });
-  await platformDb.site.update({ where: { id: site.id }, data: { pageCount } });
+    const pageCount = await tenantDb.sitePage.count({ where: { siteId: site.id } });
+    await platformDb.site.update({ where: { id: site.id }, data: { pageCount } }).catch(() => {});
 
-  return NextResponse.json({ ok: true, page }, { status: 201 });
+    return NextResponse.json({ ok: true, page }, { status: 201 });
+  } catch (e: any) {
+    console.error('[pages POST]', e?.message);
+    return NextResponse.json({
+      error: 'tenant-db-error',
+      detail: e?.message?.slice(0, 300) || 'Unknown',
+      hint: 'Va dans /admin/orgs et clique "Init tenant nono" pour créer la table SitePage manquante.',
+    }, { status: 500 });
+  }
 }

@@ -109,7 +109,7 @@ function NewSiteModal({ name, setName, slug, setSlug, creating, onClose, onCreat
       <div onClick={(e) => e.stopPropagation()} style={{ background: '#18181b', border: '1px solid #27272a', borderRadius: 16, padding: 24, width: '100%', maxWidth: 420 }}>
         <h3 style={{ marginTop: 0 }}>Nouveau site blanc</h3>
         <input value={name} onChange={(e) => { setName(e.target.value); if (!slug) setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')); }} placeholder="Nom du site" autoFocus style={{ width: '100%', padding: 10, background: '#0a0a0f', border: '1px solid #3f3f46', borderRadius: 8, color: 'inherit', marginBottom: 8 }} />
-        <input value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="slug-url" style={{ width: '100%', padding: 10, background: '#0a0a0f', border: '1px solid #3f3f46', borderRadius: 8, color: 'inherit', fontFamily: 'monospace', fontSize: 13 }} />
+        <input value={slug} onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40))} placeholder="slug-url" style={{ width: '100%', padding: 10, background: '#0a0a0f', border: '1px solid #3f3f46', borderRadius: 8, color: 'inherit', fontFamily: 'monospace', fontSize: 13 }} />
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
           <button onClick={onClose} style={{ background: 'transparent', border: 0, color: '#a1a1aa', padding: '8px 12px', cursor: 'pointer' }}>Annuler</button>
           <button onClick={onCreate} disabled={creating || !name.trim()} style={{ background: '#d946ef', color: 'white', border: 0, padding: '10px 16px', borderRadius: 8, fontWeight: 600, cursor: creating ? 'wait' : 'pointer', opacity: creating ? 0.5 : 1 }}>

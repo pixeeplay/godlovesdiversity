@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
       plan: 'free',
       planStatus: 'trial',
       trialEndsAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 jours
-      defaultDomain: `${orgSlug}.pixeesite.app`,
+      defaultDomain: `${orgSlug}.pixeeplay.com`,
       tenantBucket: `tenant-${orgSlug}`,
       members: { create: { userId: user.id, role: 'owner', acceptedAt: new Date() } },
     },
