@@ -9,6 +9,8 @@
  *   4. PROGRESSION : polling 1s sur GET /scraper-jobs/[id] → barre + logs streaming
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { SimpleOrgPage, card, input, btnPrimary, btnSecondary } from './SimpleOrgPage';
+import { colors, gradients, radii, shadows } from '@/lib/design-tokens';
 
 /* ─── TYPES ────────────────────────────────────────────────────── */
 
@@ -102,6 +104,53 @@ function fmtDuration(ms?: number): string {
   return `${m}m${s.toString().padStart(2, '0')}`;
 }
 
+/* ─── STYLES ───────────────────────────────────────────────────── */
+
+const sectionCard: React.CSSProperties = {
+  background: colors.bgCard,
+  border: `1px solid ${colors.border}`,
+  borderRadius: radii.lg,
+  padding: 20,
+  marginBottom: 16,
+  boxShadow: shadows.sm,
+};
+
+const labelStyle: React.CSSProperties = {
+  display: 'block',
+  fontSize: 11,
+  fontWeight: 700,
+  textTransform: 'uppercase',
+  letterSpacing: 1,
+  marginBottom: 6,
+  opacity: 0.85,
+};
+
+const hintStyle: React.CSSProperties = {
+  fontSize: 11,
+  opacity: 0.55,
+  marginTop: 4,
+};
+
+const inputMono: React.CSSProperties = {
+  ...input,
+  fontFamily: 'JetBrains Mono, Menlo, monospace',
+};
+
+const stepBadge = (n: number): React.CSSProperties => ({
+  width: 32,
+  height: 32,
+  background: gradients.brand,
+  color: 'white',
+  fontWeight: 800,
+  fontSize: 14,
+  borderRadius: '50%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+  boxShadow: '0 4px 12px rgba(217,70,239,0.4)',
+});
+
 /* ─── COMPOSANT PRINCIPAL ──────────────────────────────────────── */
 
 export function OrgScraperWorkbench({ orgSlug }: { orgSlug: string }) {
@@ -170,7 +219,6 @@ export function OrgScraperWorkbench({ orgSlug }: { orgSlug: string }) {
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || 'Exploration KO');
       setTree(j);
-      // Présélectionne toutes les pages
       setSelected(new Set(flatten(j.root).map((n) => n.url)));
     } catch (e: any) {
       setExploreError(e?.message || 'Erreur inconnue');
@@ -212,7 +260,6 @@ export function OrgScraperWorkbench({ orgSlug }: { orgSlug: string }) {
       });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || 'Démarrage KO');
-      // Polling
       if (pollRef.current) clearInterval(pollRef.current);
       const poll = async () => {
         try {
@@ -261,352 +308,370 @@ export function OrgScraperWorkbench({ orgSlug }: { orgSlug: string }) {
   /* ─── RENDER ─────────────────────────────────────────── */
 
   return (
-    <div className="min-h-screen bg-zinc-950 px-4 py-6 text-zinc-100">
-      <div className="mx-auto max-w-7xl">
-        <header className="mb-6 flex items-center justify-between">
+    <SimpleOrgPage
+      orgSlug={orgSlug}
+      emoji="🕸️"
+      title="Scraper leads & RAG"
+      desc="Explore un site, choisis visuellement les pages, extrait contacts (emails, téléphones, social) + ingère dans le RAG tenant."
+    >
+      {/* ÉTAPE 1 — CONFIG */}
+      <Section step={1} title="Source à scraper" subtitle="Quelle URL, jusqu'à quelle profondeur, et quels garde-fous appliquer.">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
           <div>
-            <h1 className="text-2xl font-bold text-white">🕸️ Scraper leads &amp; RAG</h1>
-            <p className="text-sm text-zinc-400">
-              Explore un site, choisis visuellement les pages, extrait les contacts (emails, téléphones, social) + ingère dans le RAG tenant.
-            </p>
-          </div>
-        </header>
-
-        {/* ÉTAPE 1 — CONFIG */}
-        <Section step={1} title="Source à scraper" subtitle="Quelle URL, jusqu&apos;à quelle profondeur, et quels garde-fous appliquer.">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <Label>URL racine</Label>
-              <input
-                type="text"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                onPaste={(e) => {
-                  const pasted = e.clipboardData.getData('text');
-                  if (pasted) { e.preventDefault(); setUrl(normalizeClientUrl(pasted)); }
-                }}
-                placeholder="exemple.com ou https://exemple.com"
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 font-mono text-sm text-zinc-100 placeholder-zinc-500 focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500/30"
-              />
-              {url && url !== normalizeClientUrl(url) && (
-                <div className="mt-1 rounded bg-amber-950/50 px-2 py-1 text-xs text-amber-300 ring-1 ring-amber-800">
-                  → URL nettoyée : <code className="font-mono">{normalizeClientUrl(url)}</code>
-                </div>
-              )}
-              <Hint>Le scraper part de cette URL et explore les liens internes.</Hint>
-            </div>
-
-            <div>
-              <Label>Profondeur max : <span className="font-mono text-rose-400">{maxDepth}</span></Label>
-              <input type="range" min={1} max={5} step={1} value={maxDepth} onChange={(e) => setMaxDepth(Number(e.target.value))} className="w-full accent-rose-500" />
-              <div className="flex justify-between text-xs text-zinc-400">
-                <span>1 (racine)</span><span>3 (recommandé)</span><span>5 (lourd)</span>
+            <label style={labelStyle}>URL racine</label>
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              onPaste={(e) => {
+                const pasted = e.clipboardData.getData('text');
+                if (pasted) { e.preventDefault(); setUrl(normalizeClientUrl(pasted)); }
+              }}
+              placeholder="exemple.com ou https://exemple.com"
+              style={inputMono}
+            />
+            {url && url !== normalizeClientUrl(url) && (
+              <div style={{ marginTop: 6, padding: '4px 8px', borderRadius: 6, background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.35)', fontSize: 11, color: '#fbbf24' }}>
+                → URL nettoyée : <code style={{ fontFamily: 'monospace' }}>{normalizeClientUrl(url)}</code>
               </div>
-            </div>
+            )}
+            <div style={hintStyle}>Le scraper part de cette URL et explore les liens internes.</div>
+          </div>
 
-            <div>
-              <Label>Pages max : <span className="font-mono text-rose-400">{maxPages}</span></Label>
-              <input type="range" min={5} max={500} step={5} value={maxPages} onChange={(e) => setMaxPages(Number(e.target.value))} className="w-full accent-rose-500" />
-              <Hint>Plafond dur pour éviter de partir en vrille sur un gros site.</Hint>
-            </div>
-
-            <div>
-              <Label>Tags appliqués aux leads &amp; docs ingérés</Label>
-              <input
-                type="text" value={tagsInput} onChange={(e) => setTagsInput(e.target.value)}
-                placeholder="prospect, salon-mariage, b2b"
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500/30"
-              />
-              <Hint>Séparés par des virgules.</Hint>
-            </div>
-
-            <div>
-              <Label>Pays par défaut (parsing téléphones)</Label>
-              <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100">
-                <option value="FR">France (FR)</option>
-                <option value="BE">Belgique (BE)</option>
-                <option value="CH">Suisse (CH)</option>
-                <option value="CA">Canada (CA)</option>
-                <option value="US">USA (US)</option>
-                <option value="GB">Royaume-Uni (GB)</option>
-                <option value="DE">Allemagne (DE)</option>
-                <option value="ES">Espagne (ES)</option>
-                <option value="IT">Italie (IT)</option>
-              </select>
-            </div>
-
-            <div>
-              <Label>Cible (target)</Label>
-              <select value={target} onChange={(e) => setTarget(e.target.value as any)} className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100">
-                <option value="b2b">B2B (entreprises, pros)</option>
-                <option value="b2c">B2C (particuliers)</option>
-              </select>
+          <div>
+            <label style={labelStyle}>Profondeur max : <span style={{ color: colors.primary, fontFamily: 'monospace' }}>{maxDepth}</span></label>
+            <input type="range" min={1} max={5} step={1} value={maxDepth} onChange={(e) => setMaxDepth(Number(e.target.value))} style={{ width: '100%', accentColor: colors.primary }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, opacity: 0.55, marginTop: 2 }}>
+              <span>1 (racine)</span><span>3 (recommandé)</span><span>5 (lourd)</span>
             </div>
           </div>
 
-          <div className="mt-5 grid gap-3 rounded-xl bg-zinc-900 p-4 ring-1 ring-zinc-800 md:grid-cols-2">
-            <Toggle label="🛡️ Respecter robots.txt" hint="Bloque les pages interdites par le site (recommandé)." value={respectRobots} onChange={setRespectRobots} />
-            <Toggle label="🥷 Mode discret (anti-blacklist)" hint="UA rotation + throttle + backoff sur 429/503 + fallback Jina si bloqué." value={politeMode} onChange={setPoliteMode} />
-            <Toggle label="🌐 Inclure sous-domaines" hint="Crawl aussi blog.site.com, m.site.com, etc." value={includeSubdomains} onChange={setIncludeSubdomains} />
-            <Toggle label="↗️ Suivre liens externes" hint="⚠️ Peut exploser le scope." value={followExternal} onChange={setFollowExternal} />
-            <Toggle label="🚫 Bypass Jina (fetch direct)" hint="Désactive le rendu JS. Plus rapide mais perd les SPA." value={skipJina} onChange={setSkipJina} />
-            <Toggle label="✨ Enrichissement Gemini" hint="Détecte langue + résumé + tags auto. ~0.0002$/page." value={summarize} onChange={setSummarize} />
-            <Toggle label="📥 Ingérer dans le RAG" hint="Si désactivé : scrape seulement (sans pollution DB)." value={ingest} onChange={setIngest} />
-            <Toggle label="🎯 Import contacts → Leads" hint="Upsert les emails/téléphones trouvés dans la table Lead." value={importToLeads} onChange={setImportToLeads} />
+          <div>
+            <label style={labelStyle}>Pages max : <span style={{ color: colors.primary, fontFamily: 'monospace' }}>{maxPages}</span></label>
+            <input type="range" min={5} max={500} step={5} value={maxPages} onChange={(e) => setMaxPages(Number(e.target.value))} style={{ width: '100%', accentColor: colors.primary }} />
+            <div style={hintStyle}>Plafond dur pour éviter de partir en vrille sur un gros site.</div>
           </div>
 
-          {/* CLEANER */}
-          <div className="mt-3 rounded-xl bg-violet-950/40 p-4 ring-1 ring-violet-800/60">
-            <Label>🧹 Nettoyage du contenu (CRITIQUE pour la qualité RAG)</Label>
-            <div className="mt-2 grid gap-2 md:grid-cols-4">
-              {([
-                { val: 'off',        emoji: '🚫', label: 'Aucun',        hint: 'Markdown Jina brut (avec menus)' },
-                { val: 'standard',   emoji: '🧽', label: 'Standard',     hint: 'Vire menus & images-icônes' },
-                { val: 'aggressive', emoji: '🧹', label: 'Aggressive',   hint: 'Vire tout le chrome web' },
-                { val: 'gemini',     emoji: '✨', label: 'Gemini',       hint: 'Extraction sémantique IA (~0.0003$/page)' },
-              ] as const).map((c) => (
+          <div>
+            <label style={labelStyle}>Tags appliqués aux leads &amp; docs</label>
+            <input
+              type="text" value={tagsInput} onChange={(e) => setTagsInput(e.target.value)}
+              placeholder="prospect, salon-mariage, b2b"
+              style={input}
+            />
+            <div style={hintStyle}>Séparés par des virgules.</div>
+          </div>
+
+          <div>
+            <label style={labelStyle}>Pays par défaut (téléphones)</label>
+            <select value={country} onChange={(e) => setCountry(e.target.value)} style={input}>
+              <option value="FR">France (FR)</option>
+              <option value="BE">Belgique (BE)</option>
+              <option value="CH">Suisse (CH)</option>
+              <option value="CA">Canada (CA)</option>
+              <option value="US">USA (US)</option>
+              <option value="GB">Royaume-Uni (GB)</option>
+              <option value="DE">Allemagne (DE)</option>
+              <option value="ES">Espagne (ES)</option>
+              <option value="IT">Italie (IT)</option>
+            </select>
+          </div>
+
+          <div>
+            <label style={labelStyle}>Cible (target)</label>
+            <select value={target} onChange={(e) => setTarget(e.target.value as any)} style={input}>
+              <option value="b2b">B2B (entreprises, pros)</option>
+              <option value="b2c">B2C (particuliers)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 18, padding: 14, background: '#0a0a0f', borderRadius: radii.md, border: `1px solid ${colors.border}`, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 10 }}>
+          <Toggle label="🛡️ Respecter robots.txt" hint="Bloque les pages interdites par le site (recommandé)." value={respectRobots} onChange={setRespectRobots} />
+          <Toggle label="🥷 Mode discret (anti-blacklist)" hint="UA rotation + throttle + backoff sur 429/503 + fallback Jina si bloqué." value={politeMode} onChange={setPoliteMode} />
+          <Toggle label="🌐 Inclure sous-domaines" hint="Crawl aussi blog.site.com, m.site.com, etc." value={includeSubdomains} onChange={setIncludeSubdomains} />
+          <Toggle label="↗️ Suivre liens externes" hint="⚠️ Peut exploser le scope." value={followExternal} onChange={setFollowExternal} />
+          <Toggle label="🚫 Bypass Jina (fetch direct)" hint="Désactive le rendu JS. Plus rapide mais perd les SPA." value={skipJina} onChange={setSkipJina} />
+          <Toggle label="✨ Enrichissement Gemini" hint="Détecte langue + résumé + tags auto. ~0.0002$/page." value={summarize} onChange={setSummarize} />
+          <Toggle label="📥 Ingérer dans le RAG" hint="Si désactivé : scrape seulement (sans pollution DB)." value={ingest} onChange={setIngest} />
+          <Toggle label="🎯 Import contacts → Leads" hint="Upsert les emails/téléphones trouvés dans la table Lead." value={importToLeads} onChange={setImportToLeads} />
+        </div>
+
+        {/* CLEANER */}
+        <div style={{ marginTop: 14, padding: 14, background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.3)', borderRadius: radii.md }}>
+          <label style={labelStyle}>🧹 Nettoyage du contenu (CRITIQUE pour la qualité RAG)</label>
+          <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 8 }}>
+            {([
+              { val: 'off',        emoji: '🚫', label: 'Aucun',        hint: 'Markdown Jina brut (avec menus)' },
+              { val: 'standard',   emoji: '🧽', label: 'Standard',     hint: 'Vire menus & images-icônes' },
+              { val: 'aggressive', emoji: '🧹', label: 'Aggressive',   hint: 'Vire tout le chrome web' },
+              { val: 'gemini',     emoji: '✨', label: 'Gemini',       hint: 'Extraction sémantique IA (~0.0003$/page)' },
+            ] as const).map((c) => {
+              const isActive = cleaner === c.val;
+              return (
                 <button
                   key={c.val}
                   type="button"
                   onClick={() => setCleaner(c.val)}
-                  className={`rounded-lg p-2 text-left text-xs transition ring-1 ${
-                    cleaner === c.val
-                      ? 'bg-violet-700 ring-violet-400 text-white shadow-lg shadow-violet-500/30'
-                      : 'bg-zinc-900 ring-zinc-700 text-zinc-300 hover:ring-violet-500'
-                  }`}
+                  style={{
+                    background: isActive ? gradients.purple : colors.bgCard,
+                    border: isActive ? '1px solid rgba(217,70,239,0.6)' : `1px solid ${colors.border}`,
+                    borderRadius: radii.md,
+                    padding: 10,
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    color: isActive ? 'white' : colors.text,
+                    boxShadow: isActive ? '0 4px 12px rgba(139,92,246,0.4)' : 'none',
+                    transition: 'transform .12s',
+                  }}
                 >
-                  <div className="flex items-center gap-1.5 font-bold">
-                    <span>{c.emoji}</span>
-                    <span>{c.label}</span>
+                  <div style={{ fontWeight: 700, fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span>{c.emoji}</span><span>{c.label}</span>
                   </div>
-                  <div className={`mt-1 text-[10px] leading-tight ${cleaner === c.val ? 'text-violet-100' : 'text-zinc-400'}`}>
-                    {c.hint}
-                  </div>
+                  <div style={{ marginTop: 4, fontSize: 10, lineHeight: 1.3, opacity: isActive ? 0.9 : 0.55 }}>{c.hint}</div>
                 </button>
-              ))}
+              );
+            })}
+          </div>
+          {cleaner === 'gemini' && (
+            <div style={{ marginTop: 12 }}>
+              <label style={labelStyle}>💡 Contexte (hint pour Gemini)</label>
+              <input
+                type="text"
+                value={cleanerHint}
+                onChange={(e) => setCleanerHint(e.target.value)}
+                placeholder="ex: site e-commerce / blog spirituel / témoignages LGBT+"
+                style={input}
+              />
+              <div style={hintStyle}>Le hint aide Gemini à savoir quoi préserver vs virer.</div>
             </div>
-            {cleaner === 'gemini' && (
-              <div className="mt-3">
-                <Label>💡 Contexte (hint pour Gemini)</Label>
-                <input
-                  type="text"
-                  value={cleanerHint}
-                  onChange={(e) => setCleanerHint(e.target.value)}
-                  placeholder="ex: site e-commerce de matériel photo / blog spirituel / témoignages LGBT+"
-                  className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
-                />
-                <Hint>Le hint aide Gemini à savoir quoi préserver vs virer.</Hint>
-              </div>
-            )}
-            <p className="mt-2 text-xs text-violet-200">
-              {cleaner === 'off' && '⚠️ Pas de nettoyage : chunks polluants (menus, breadcrumbs, filtres) qui dégradent le RAG.'}
-              {cleaner === 'standard' && 'Cleaner standard : vire images-icônes, breadcrumbs courts et lignes répétées.'}
-              {cleaner === 'aggressive' && '✓ Recommandé : vire tout ce qui ressemble à du chrome web. Garde le contenu narratif et les blocs produit/prix.'}
-              {cleaner === 'gemini' && '✨ Max qualité : Gemini Flash Lite extrait sémantiquement le contenu utile (descriptions, prix, infos clés). Coût ~0.0003$/page.'}
+          )}
+          <p style={{ marginTop: 10, fontSize: 11, color: '#c4b5fd' }}>
+            {cleaner === 'off' && '⚠️ Pas de nettoyage : chunks polluants (menus, breadcrumbs, filtres) qui dégradent le RAG.'}
+            {cleaner === 'standard' && 'Cleaner standard : vire images-icônes, breadcrumbs courts et lignes répétées.'}
+            {cleaner === 'aggressive' && '✓ Recommandé : vire tout ce qui ressemble à du chrome web. Garde le contenu narratif et les blocs produit/prix.'}
+            {cleaner === 'gemini' && '✨ Max qualité : Gemini Flash Lite extrait sémantiquement le contenu utile. Coût ~0.0003$/page.'}
+          </p>
+        </div>
+
+        {politeMode && (
+          <div style={{ marginTop: 14, padding: 14, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: radii.md }}>
+            <label style={labelStyle}>
+              ⏱️ Délai entre requêtes : <span style={{ fontFamily: 'monospace', color: '#6ee7b7' }}>{hostDelayMs} ms</span>
+              {' '}({(hostDelayMs / 1000).toFixed(1)}s)
+            </label>
+            <input type="range" min={500} max={10000} step={250} value={hostDelayMs} onChange={(e) => setHostDelayMs(Number(e.target.value))} style={{ width: '100%', accentColor: colors.success }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, opacity: 0.55, marginTop: 2 }}>
+              <span>500 ms (rapide)</span><span>2 500 ms (équilibré)</span><span>10 s (très discret)</span>
+            </div>
+            <p style={{ marginTop: 8, fontSize: 11, color: '#6ee7b7' }}>
+              Mode discret actif : 1 worker max par domaine, jitter ±20 %, backoff exponentiel sur 429/503, respect du <code style={{ fontFamily: 'monospace', background: 'rgba(16,185,129,0.15)', padding: '1px 4px', borderRadius: 3 }}>Crawl-delay</code> du robots.txt.
             </p>
           </div>
+        )}
 
-          {politeMode && (
-            <div className="mt-3 rounded-xl bg-emerald-950/40 p-4 ring-1 ring-emerald-800/60">
-              <Label>
-                ⏱️ Délai entre requêtes : <span className="font-mono text-emerald-300">{hostDelayMs} ms</span>
-                {' '}({(hostDelayMs / 1000).toFixed(1)}s)
-              </Label>
-              <input type="range" min={500} max={10000} step={250} value={hostDelayMs} onChange={(e) => setHostDelayMs(Number(e.target.value))} className="w-full accent-emerald-500" />
-              <div className="flex justify-between text-xs text-zinc-400">
-                <span>500 ms (rapide)</span>
-                <span>2 500 ms (équilibré)</span>
-                <span>10 s (très discret)</span>
+        <div style={{ marginTop: 18, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <button
+            onClick={handleExplore}
+            disabled={exploring || !url.trim()}
+            style={{ ...btnPrimary, opacity: (exploring || !url.trim()) ? 0.5 : 1, cursor: (exploring || !url.trim()) ? 'not-allowed' : 'pointer' }}
+          >
+            {exploring ? '🔍 Exploration…' : '🔍 Explorer le site'}
+          </button>
+          {exploreError && <span style={{ fontSize: 12, color: colors.danger }}>⚠ {exploreError}</span>}
+        </div>
+      </Section>
+
+      {/* ÉTAPE 2 — ARBRE */}
+      {tree && (
+        <Section
+          step={2}
+          title={`Arborescence découverte (${tree.totalPages} pages)`}
+          subtitle={
+            <>
+              Source : <Badge color={tree.source === 'sitemap' ? 'green' : 'amber'}>{tree.source === 'sitemap' ? '✓ sitemap.xml' : '🔍 BFS interne'}</Badge>
+              . Coche les pages à scraper (toutes pré-sélectionnées par défaut).
+            </>
+          }
+        >
+          <div style={{ marginBottom: 12, display: 'flex', flexWrap: 'wrap', gap: 6, fontSize: 11, alignItems: 'center' }}>
+            <button onClick={() => setSelected(new Set(allUrls))} style={{ ...btnSecondary, padding: '6px 12px', fontSize: 11 }}>Tout cocher ({allUrls.length})</button>
+            <button onClick={() => setSelected(new Set())} style={{ ...btnSecondary, padding: '6px 12px', fontSize: 11 }}>Tout décocher</button>
+            <button onClick={() => setCollapsed(new Set(flatten(tree.root).filter((n) => n.children.length).map((n) => n.url)))} style={{ ...btnSecondary, padding: '6px 12px', fontSize: 11 }}>Replier tout</button>
+            <button onClick={() => setCollapsed(new Set())} style={{ ...btnSecondary, padding: '6px 12px', fontSize: 11 }}>Déplier tout</button>
+            <span style={{ marginLeft: 'auto', fontSize: 12, opacity: 0.75 }}>
+              <strong style={{ color: colors.primary }}>{selected.size}</strong> / {allUrls.length} sélectionnées
+            </span>
+          </div>
+
+          <div style={{ maxHeight: 400, overflow: 'auto', border: `1px solid ${colors.border}`, borderRadius: radii.md, background: '#0a0a0f', padding: 12, fontFamily: 'JetBrains Mono, Menlo, monospace', fontSize: 12 }}>
+            <TreeView node={tree.root} selected={selected} collapsed={collapsed} onToggleSelect={toggleNode} onToggleCollapse={toggleCollapsed} />
+          </div>
+
+          {tree.warnings.length > 0 && (
+            <details style={{ marginTop: 12, fontSize: 11, opacity: 0.7 }}>
+              <summary style={{ cursor: 'pointer', opacity: 0.8 }}>💬 {tree.warnings.length} avertissement(s) du crawler</summary>
+              <ul style={{ marginTop: 6, paddingLeft: 18, listStyle: 'none' }}>
+                {tree.warnings.map((w, i) => <li key={i} style={{ marginBottom: 3 }}>• {w}</li>)}
+              </ul>
+            </details>
+          )}
+
+          <div style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <button
+              onClick={handleScrape}
+              disabled={selected.size === 0 || job?.status === 'running'}
+              style={{
+                ...btnPrimary,
+                background: gradients.green,
+                boxShadow: '0 4px 12px rgba(16,185,129,0.4)',
+                opacity: (selected.size === 0 || job?.status === 'running') ? 0.4 : 1,
+                cursor: (selected.size === 0 || job?.status === 'running') ? 'not-allowed' : 'pointer',
+              }}
+            >
+              ⚡ Lancer le scraping ({selected.size} pages)
+            </button>
+            {scrapeError && <span style={{ fontSize: 12, color: colors.danger }}>⚠ {scrapeError}</span>}
+          </div>
+        </Section>
+      )}
+
+      {/* ÉTAPE 3 — PROGRESSION LIVE */}
+      {job && (
+        <Section
+          step={3}
+          title="Progression en direct"
+          subtitle={
+            <>
+              Job <code style={{ background: '#0a0a0f', padding: '2px 6px', borderRadius: 4, fontFamily: 'monospace', fontSize: 11 }}>{job.id}</code>
+              {' · '}
+              <Badge color={job.status === 'done' ? 'green' : job.status === 'error' ? 'red' : job.status === 'cancelled' ? 'amber' : 'blue'}>{job.status}</Badge>
+            </>
+          }
+        >
+          <ProgressHero job={job} />
+          <ProgressStats job={job} />
+
+          {job.results.some((r) => r.cleanRemovedPct !== undefined) && (
+            <CleaningChart results={job.results} />
+          )}
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 14 }}>
+            <div>
+              <label style={labelStyle}>📜 Logs live</label>
+              <div style={{ height: 256, overflow: 'auto', border: `1px solid ${colors.border}`, borderRadius: radii.md, background: '#000', padding: 12, fontFamily: 'JetBrains Mono, Menlo, monospace', fontSize: 11, lineHeight: 1.55 }}>
+                {job.logs.length === 0 ? (
+                  <div style={{ opacity: 0.4 }}>En attente…</div>
+                ) : job.logs.slice(-200).map((l, i) => (
+                  <div key={`${l.ts}-${i}`} style={{ color: l.level === 'error' ? '#fca5a5' : l.level === 'warn' ? '#fcd34d' : '#e4e4e7' }}>
+                    <span style={{ opacity: 0.4 }}>{new Date(l.ts).toLocaleTimeString()}</span>{' '}{l.msg}
+                  </div>
+                ))}
               </div>
-              <p className="mt-2 text-xs text-emerald-300">
-                Mode discret actif : 1 worker max par domaine, jitter aléatoire ±20 %, backoff exponentiel sur 429/503, respect du <code className="rounded bg-emerald-900/50 px-1 py-0.5 font-mono text-emerald-200">Crawl-delay</code> du robots.txt.
-              </p>
+            </div>
+            <div>
+              <label style={labelStyle}>✅ Résultats récents (brut → nettoyé)</label>
+              <div style={{ height: 256, overflow: 'auto', border: `1px solid ${colors.border}`, borderRadius: radii.md, background: '#0a0a0f' }}>
+                <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse' }}>
+                  <thead style={{ position: 'sticky', top: 0, background: colors.bgCard }}>
+                    <tr>
+                      <th style={thStyle}>URL</th>
+                      <th style={{ ...thStyle, textAlign: 'right' }}>Brut</th>
+                      <th style={{ ...thStyle, textAlign: 'right' }}>Net</th>
+                      <th style={{ ...thStyle, textAlign: 'right' }}>−%</th>
+                      <th style={{ ...thStyle, textAlign: 'right' }}>Chunks</th>
+                      <th style={{ ...thStyle, textAlign: 'right' }}>⏱</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {job.results.length === 0 ? (
+                      <tr><td colSpan={6} style={{ padding: 16, textAlign: 'center', opacity: 0.5 }}>Aucun résultat encore</td></tr>
+                    ) : job.results.slice().reverse().map((r) => (
+                      <tr key={r.url} style={{ background: r.ok ? 'transparent' : 'rgba(239,68,68,0.08)', borderTop: `1px solid ${colors.border}` }}>
+                        <td style={{ padding: '4px 8px', fontFamily: 'monospace', maxWidth: 180 }}>
+                          <span style={{ color: r.ok ? '#6ee7b7' : '#fca5a5' }}>{r.ok ? '✓' : '✗'}</span>{' '}
+                          <span style={{ display: 'inline-block', maxWidth: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', verticalAlign: 'bottom' }} title={r.url}>{shortPath(r.url)}</span>
+                          {r.error && <div style={{ fontSize: 9, color: '#fca5a5' }}>{r.error}</div>}
+                        </td>
+                        <td style={{ padding: '4px 8px', textAlign: 'right', opacity: 0.5 }}>{fmtBytes(r.bytesRaw)}</td>
+                        <td style={{ padding: '4px 8px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtBytes(r.bytes)}</td>
+                        <td style={{ padding: '4px 8px', textAlign: 'right' }}>
+                          {r.cleanRemovedPct !== undefined ? (
+                            <span style={{ fontFamily: 'monospace', color: r.cleanRemovedPct >= 90 ? '#6ee7b7' : r.cleanRemovedPct >= 70 ? '#7dd3fc' : r.cleanRemovedPct >= 30 ? '#fcd34d' : '#a1a1aa' }}>
+                              {r.cleanRemovedPct}%
+                            </span>
+                          ) : <span style={{ opacity: 0.4 }}>—</span>}
+                        </td>
+                        <td style={{ padding: '4px 8px', textAlign: 'right', fontFamily: 'monospace', color: '#c4b5fd' }}>{r.chunkCount ?? (r.ingested === false ? '—' : '·')}</td>
+                        <td style={{ padding: '4px 8px', textAlign: 'right', opacity: 0.5, fontFamily: 'monospace', fontSize: 10 }}>{fmtDuration(r.durationMs)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          {job.status === 'running' && (
+            <div style={{ marginTop: 14 }}>
+              <button onClick={handleCancel} style={{ ...btnSecondary, background: colors.warning, color: '#1a1a1a', border: 'none', padding: '6px 14px', fontSize: 11 }}>⏸ Annuler le job</button>
             </div>
           )}
 
-          <div className="mt-5 flex gap-3">
-            <button
-              onClick={handleExplore}
-              disabled={exploring || !url.trim()}
-              className="rounded-lg bg-rose-600 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-rose-700 disabled:opacity-50"
-            >
-              {exploring ? '🔍 Exploration…' : '🔍 Explorer le site'}
-            </button>
-            {exploreError && <span className="self-center text-sm text-rose-600">⚠ {exploreError}</span>}
+          {job.status === 'done' && (
+            <div style={{ marginTop: 14, padding: 14, background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: radii.md, fontSize: 12, color: '#6ee7b7' }}>
+              ✓ Terminé. {job.results.filter((r) => r.ingested).length} document(s) ingéré(s){importToLeads ? `, contacts importés en Leads` : ''}.
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* Jobs passés */}
+      {pastJobs.length > 0 && (
+        <Section step={4} title="Jobs passés" subtitle="Historique des scrapes pour ce tenant.">
+          <div style={{ overflow: 'auto', border: `1px solid ${colors.border}`, borderRadius: radii.md, background: '#0a0a0f' }}>
+            <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse' }}>
+              <thead style={{ background: colors.bgCard }}>
+                <tr>
+                  <th style={thStyle}>Source</th>
+                  <th style={thStyle}>Status</th>
+                  <th style={{ ...thStyle, textAlign: 'right' }}>Leads</th>
+                  <th style={{ ...thStyle, textAlign: 'right' }}>Erreurs</th>
+                  <th style={{ ...thStyle, textAlign: 'right' }}>Démarré</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pastJobs.slice(0, 20).map((j) => (
+                  <tr key={j.id} style={{ borderTop: `1px solid ${colors.border}` }}>
+                    <td style={{ padding: '6px 10px', maxWidth: 280, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace', opacity: 0.85 }} title={j.sourceUrl}>{j.sourceUrl}</td>
+                    <td style={{ padding: '6px 10px' }}>
+                      <Badge color={j.status === 'done' ? 'green' : j.status === 'error' ? 'red' : j.status === 'cancelled' ? 'amber' : 'blue'}>{j.status}</Badge>
+                    </td>
+                    <td style={{ padding: '6px 10px', textAlign: 'right', fontFamily: 'monospace', color: '#6ee7b7' }}>{j.leadCount || 0}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'right', fontFamily: 'monospace', color: '#fca5a5' }}>{j.errorCount || 0}</td>
+                    <td style={{ padding: '6px 10px', textAlign: 'right', opacity: 0.55, fontSize: 10 }}>{j.startedAt ? new Date(j.startedAt).toLocaleString('fr-FR') : '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </Section>
-
-        {/* ÉTAPE 2 — ARBRE */}
-        {tree && (
-          <Section
-            step={2}
-            title={`Arborescence découverte (${tree.totalPages} pages)`}
-            subtitle={
-              <>
-                Source : <Badge color={tree.source === 'sitemap' ? 'green' : 'amber'}>{tree.source === 'sitemap' ? '✓ sitemap.xml' : '🔍 BFS interne'}</Badge>
-                . Coche les pages à scraper (toutes pré-sélectionnées par défaut).
-              </>
-            }
-          >
-            <div className="mb-3 flex flex-wrap gap-2 text-xs">
-              <button onClick={() => setSelected(new Set(allUrls))} className="rounded-md bg-zinc-800 px-3 py-1 font-medium text-zinc-200 hover:bg-zinc-700">Tout cocher ({allUrls.length})</button>
-              <button onClick={() => setSelected(new Set())} className="rounded-md bg-zinc-800 px-3 py-1 font-medium text-zinc-200 hover:bg-zinc-700">Tout décocher</button>
-              <button onClick={() => setCollapsed(new Set(flatten(tree.root).filter((n) => n.children.length).map((n) => n.url)))} className="rounded-md bg-zinc-800 px-3 py-1 font-medium text-zinc-200 hover:bg-zinc-700">Replier tout</button>
-              <button onClick={() => setCollapsed(new Set())} className="rounded-md bg-zinc-800 px-3 py-1 font-medium text-zinc-200 hover:bg-zinc-700">Déplier tout</button>
-              <span className="ml-auto self-center text-zinc-300">
-                <strong className="text-rose-400">{selected.size}</strong> / {allUrls.length} sélectionnées
-              </span>
-            </div>
-
-            <div className="max-h-[400px] overflow-auto rounded-lg border border-zinc-800 bg-zinc-950 p-3 font-mono text-xs">
-              <TreeView node={tree.root} selected={selected} collapsed={collapsed} onToggleSelect={toggleNode} onToggleCollapse={toggleCollapsed} />
-            </div>
-
-            {tree.warnings.length > 0 && (
-              <details className="mt-3 text-xs text-zinc-400">
-                <summary className="cursor-pointer text-zinc-300 hover:text-white">💬 {tree.warnings.length} avertissement(s) du crawler</summary>
-                <ul className="mt-2 space-y-1 pl-4">
-                  {tree.warnings.map((w, i) => <li key={i} className="text-zinc-400">• {w}</li>)}
-                </ul>
-              </details>
-            )}
-
-            <div className="mt-5 flex items-center gap-3">
-              <button onClick={handleScrape} disabled={selected.size === 0 || job?.status === 'running'} className="rounded-lg bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-500 disabled:opacity-40">
-                ⚡ Lancer le scraping ({selected.size} pages)
-              </button>
-              {scrapeError && <span className="text-sm text-rose-400">⚠ {scrapeError}</span>}
-            </div>
-          </Section>
-        )}
-
-        {/* ÉTAPE 3 — PROGRESSION LIVE */}
-        {job && (
-          <Section
-            step={3}
-            title="Progression en direct"
-            subtitle={
-              <>
-                Job <code className="rounded bg-zinc-800 px-1.5 py-0.5 font-mono text-xs text-zinc-200">{job.id}</code>
-                {' · '}
-                <Badge color={job.status === 'done' ? 'green' : job.status === 'error' ? 'red' : job.status === 'cancelled' ? 'amber' : 'blue'}>{job.status}</Badge>
-              </>
-            }
-          >
-            <ProgressHero job={job} />
-            <ProgressStats job={job} />
-
-            {job.results.some((r) => r.cleanRemovedPct !== undefined) && (
-              <CleaningChart results={job.results} />
-            )}
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <Label>📜 Logs live</Label>
-                <div className="h-64 overflow-auto rounded-lg border border-zinc-800 bg-black p-3 font-mono text-xs leading-relaxed text-zinc-100">
-                  {job.logs.length === 0 ? (
-                    <div className="text-zinc-500">En attente…</div>
-                  ) : job.logs.slice(-200).map((l, i) => (
-                    <div key={`${l.ts}-${i}`} className={l.level === 'error' ? 'text-rose-400' : l.level === 'warn' ? 'text-amber-300' : 'text-zinc-200'}>
-                      <span className="text-zinc-500">{new Date(l.ts).toLocaleTimeString()}</span>{' '}{l.msg}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <Label>✅ Résultats récents (brut → nettoyé)</Label>
-                <div className="h-64 overflow-auto rounded-lg border border-zinc-800 bg-zinc-950">
-                  <table className="w-full text-xs">
-                    <thead className="sticky top-0 bg-zinc-900 text-zinc-300">
-                      <tr>
-                        <th className="px-2 py-1.5 text-left font-semibold">URL</th>
-                        <th className="px-2 py-1.5 text-right font-semibold">Brut</th>
-                        <th className="px-2 py-1.5 text-right font-semibold">Net</th>
-                        <th className="px-2 py-1.5 text-right font-semibold">−%</th>
-                        <th className="px-2 py-1.5 text-right font-semibold">Chunks</th>
-                        <th className="px-2 py-1.5 text-right font-semibold">⏱</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-800">
-                      {job.results.length === 0 ? (
-                        <tr><td colSpan={6} className="p-4 text-center text-zinc-500">Aucun résultat encore</td></tr>
-                      ) : job.results.slice().reverse().map((r) => (
-                        <tr key={r.url} className={r.ok ? '' : 'bg-rose-950/30'}>
-                          <td className="px-2 py-1 font-mono max-w-[180px]">
-                            <span className={r.ok ? 'text-emerald-400' : 'text-rose-400'}>{r.ok ? '✓' : '✗'}</span>{' '}
-                            <span className="text-zinc-200 truncate inline-block max-w-[150px] align-bottom" title={r.url}>{shortPath(r.url)}</span>
-                            {r.error && <div className="text-[10px] text-rose-300">{r.error}</div>}
-                          </td>
-                          <td className="px-2 py-1 text-right text-zinc-500">{fmtBytes(r.bytesRaw)}</td>
-                          <td className="px-2 py-1 text-right text-zinc-100 font-mono">{fmtBytes(r.bytes)}</td>
-                          <td className="px-2 py-1 text-right">
-                            {r.cleanRemovedPct !== undefined ? (
-                              <span className={`font-mono ${r.cleanRemovedPct >= 90 ? 'text-emerald-400' : r.cleanRemovedPct >= 70 ? 'text-sky-400' : r.cleanRemovedPct >= 30 ? 'text-amber-400' : 'text-zinc-500'}`}>
-                                {r.cleanRemovedPct}%
-                              </span>
-                            ) : <span className="text-zinc-600">—</span>}
-                          </td>
-                          <td className="px-2 py-1 text-right font-mono text-violet-300">{r.chunkCount ?? (r.ingested === false ? '—' : '·')}</td>
-                          <td className="px-2 py-1 text-right text-zinc-500 font-mono text-[10px]">{fmtDuration(r.durationMs)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            {job.status === 'running' && (
-              <div className="mt-4">
-                <button onClick={handleCancel} className="rounded-lg bg-amber-500 px-4 py-1.5 text-xs font-semibold text-white hover:bg-amber-400">⏸ Annuler le job</button>
-              </div>
-            )}
-
-            {job.status === 'done' && (
-              <div className="mt-4 rounded-lg bg-emerald-950/40 p-4 text-sm text-emerald-200 ring-1 ring-emerald-800/60">
-                ✓ Terminé. {job.results.filter((r) => r.ingested).length} document(s) ingéré(s){importToLeads ? `, contacts importés en Leads` : ''}.
-              </div>
-            )}
-          </Section>
-        )}
-
-        {/* Jobs passés */}
-        {pastJobs.length > 0 && (
-          <Section step={4} title="Jobs passés" subtitle="Historique des scrapes pour ce tenant.">
-            <div className="overflow-auto rounded-lg border border-zinc-800 bg-zinc-950">
-              <table className="w-full text-xs">
-                <thead className="bg-zinc-900 text-zinc-300">
-                  <tr>
-                    <th className="px-2 py-1.5 text-left">Source</th>
-                    <th className="px-2 py-1.5 text-left">Status</th>
-                    <th className="px-2 py-1.5 text-right">Leads</th>
-                    <th className="px-2 py-1.5 text-right">Erreurs</th>
-                    <th className="px-2 py-1.5 text-right">Démarré</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-800">
-                  {pastJobs.slice(0, 20).map((j) => (
-                    <tr key={j.id} className="hover:bg-zinc-800/30">
-                      <td className="px-2 py-1.5 truncate max-w-[280px] font-mono text-zinc-300" title={j.sourceUrl}>{j.sourceUrl}</td>
-                      <td className="px-2 py-1.5">
-                        <Badge color={j.status === 'done' ? 'green' : j.status === 'error' ? 'red' : j.status === 'cancelled' ? 'amber' : 'blue'}>{j.status}</Badge>
-                      </td>
-                      <td className="px-2 py-1.5 text-right font-mono text-emerald-300">{j.leadCount || 0}</td>
-                      <td className="px-2 py-1.5 text-right font-mono text-rose-300">{j.errorCount || 0}</td>
-                      <td className="px-2 py-1.5 text-right text-zinc-400 text-[10px]">{j.startedAt ? new Date(j.startedAt).toLocaleString('fr-FR') : '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Section>
-        )}
-      </div>
-    </div>
+      )}
+    </SimpleOrgPage>
   );
 }
 
 /* ─── COMPOSANTS PRIMITIVES ────────────────────────────────────── */
+
+const thStyle: React.CSSProperties = {
+  padding: '8px 10px',
+  textAlign: 'left',
+  fontWeight: 700,
+  fontSize: 10,
+  textTransform: 'uppercase',
+  letterSpacing: 0.5,
+  opacity: 0.7,
+};
 
 function ProgressHero({ job }: { job: any }) {
   const elapsed = job.startedAt ? (job.finishedAt || Date.now()) - job.startedAt : 0;
@@ -614,38 +679,43 @@ function ProgressHero({ job }: { job: any }) {
   const remaining = job.total - job.done;
   const etaSec = ratePerSec > 0 ? remaining / ratePerSec : 0;
 
+  const barBackground = job.status === 'done' ? gradients.green
+    : job.status === 'error' ? colors.danger
+    : job.status === 'cancelled' ? colors.warning
+    : gradients.brand;
+
   return (
-    <div className="mb-4 rounded-xl bg-zinc-950 p-4 ring-1 ring-zinc-800">
-      <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2 text-sm">
-        <span className="font-medium text-zinc-100">
-          <strong className="font-mono text-base text-rose-400">{job.done}</strong>
-          <span className="text-zinc-500"> / </span>
-          <span className="font-mono">{job.total}</span> pages
-          {job.errors > 0 && <span className="ml-2 rounded bg-rose-950/50 px-1.5 py-0.5 text-[10px] text-rose-300 ring-1 ring-rose-700/40">{job.errors} erreur(s)</span>}
+    <div style={{ marginBottom: 14, padding: 14, background: '#0a0a0f', borderRadius: radii.md, border: `1px solid ${colors.border}` }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
+        <span style={{ fontSize: 13 }}>
+          <strong style={{ fontFamily: 'monospace', fontSize: 16, color: colors.primary }}>{job.done}</strong>
+          <span style={{ opacity: 0.5 }}> / </span>
+          <span style={{ fontFamily: 'monospace' }}>{job.total}</span> pages
+          {job.errors > 0 && <span style={{ marginLeft: 8, padding: '2px 6px', borderRadius: 4, background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.35)', color: '#fca5a5', fontSize: 10 }}>{job.errors} erreur(s)</span>}
         </span>
-        <div className="flex items-center gap-3 text-xs">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 11 }}>
           {job.status === 'running' && etaSec > 0 && etaSec < 9_000 && (
-            <span className="text-zinc-400">ETA <strong className="font-mono text-zinc-200">~{fmtDuration(etaSec * 1000)}</strong></span>
+            <span style={{ opacity: 0.7 }}>ETA <strong style={{ fontFamily: 'monospace' }}>~{fmtDuration(etaSec * 1000)}</strong></span>
           )}
-          <span className="font-mono text-2xl font-bold text-zinc-100">{job.progress}%</span>
+          <span style={{ fontFamily: 'monospace', fontSize: 24, fontWeight: 800 }}>{job.progress}%</span>
         </div>
       </div>
-      <div className="relative h-3 overflow-hidden rounded-full bg-zinc-800">
+      <div style={{ position: 'relative', height: 12, overflow: 'hidden', borderRadius: 999, background: colors.border }}>
         <div
-          className={`h-full transition-all duration-500 ${
-            job.status === 'done' ? 'bg-gradient-to-r from-emerald-500 to-emerald-400'
-              : job.status === 'error' ? 'bg-rose-500'
-              : job.status === 'cancelled' ? 'bg-amber-500'
-              : 'animate-pulse bg-gradient-to-r from-rose-500 via-fuchsia-500 to-violet-500'
-          }`}
-          style={{ width: `${job.progress}%` }}
+          style={{
+            height: '100%',
+            background: barBackground,
+            width: `${job.progress}%`,
+            transition: 'width 0.5s ease',
+            animation: job.status === 'running' ? 'pulse 1.6s ease-in-out infinite' : undefined,
+          }}
         />
       </div>
       {job.currentUrl && (
-        <div className="mt-2 flex items-center gap-2 truncate text-xs">
-          <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-rose-400" />
-          <span className="font-mono text-zinc-400">↓</span>
-          <span className="truncate font-mono text-zinc-300" title={job.currentUrl}>{job.currentUrl}</span>
+        <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, fontFamily: 'monospace', overflow: 'hidden' }}>
+          <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: colors.primary }} />
+          <span style={{ opacity: 0.55 }}>↓</span>
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', opacity: 0.85 }} title={job.currentUrl}>{job.currentUrl}</span>
         </div>
       )}
     </div>
@@ -671,36 +741,26 @@ function ProgressStats({ job }: { job: any }) {
   const okPct = total > 0 ? Math.round((okResults.length / total) * 100) : 0;
 
   return (
-    <div className="mb-4 grid gap-3 grid-cols-2 md:grid-cols-5">
-      <StatCard icon="✅" label="OK / KO" value={`${okResults.length} / ${koResults.length}`} sub={total > 0 ? `${okPct}% succès` : 'aucune page'} color={koResults.length === 0 ? 'emerald' : okPct >= 80 ? 'sky' : 'amber'} />
-      <StatCard icon="🌐" label="Octets bruts" value={fmtBytes(totalRaw)} sub="avant cleaner" color="zinc" />
-      <StatCard icon="✨" label="Octets nettoyés" value={fmtBytes(totalNet)} sub={avgRemoved > 0 ? `−${avgRemoved}% en moyenne` : 'cleaner off'} color={avgRemoved >= 80 ? 'emerald' : avgRemoved >= 50 ? 'sky' : 'amber'} />
-      <StatCard icon="🧩" label="Chunks ingérés" value={totalChunks} sub={`${okResults.length} doc(s)`} color="violet" />
-      <StatCard icon="⚡" label="Vitesse" value={pagesPerMin > 0 ? `${pagesPerMin}/min` : '—'} sub={avgDuration > 0 ? `~${fmtDuration(avgDuration)}/page` : 'démarrage…'} color="rose" />
+    <div style={{ marginBottom: 14, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10 }}>
+      <StatCard icon="✅" label="OK / KO" value={`${okResults.length} / ${koResults.length}`} sub={total > 0 ? `${okPct}% succès` : 'aucune page'} gradient={koResults.length === 0 ? gradients.green : okPct >= 80 ? gradients.blue : gradients.orange} />
+      <StatCard icon="🌐" label="Octets bruts" value={fmtBytes(totalRaw)} sub="avant cleaner" gradient="linear-gradient(135deg, #3f3f46, #52525b)" />
+      <StatCard icon="✨" label="Octets nettoyés" value={fmtBytes(totalNet)} sub={avgRemoved > 0 ? `−${avgRemoved}% en moyenne` : 'cleaner off'} gradient={avgRemoved >= 80 ? gradients.green : avgRemoved >= 50 ? gradients.blue : gradients.orange} />
+      <StatCard icon="🧩" label="Chunks ingérés" value={String(totalChunks)} sub={`${okResults.length} doc(s)`} gradient={gradients.purple} />
+      <StatCard icon="⚡" label="Vitesse" value={pagesPerMin > 0 ? `${pagesPerMin}/min` : '—'} sub={avgDuration > 0 ? `~${fmtDuration(avgDuration)}/page` : 'démarrage…'} gradient={gradients.pink} />
     </div>
   );
 }
 
-function StatCard({ icon, label, value, sub, color }: {
-  icon: string; label: string; value: React.ReactNode; sub?: string;
-  color: 'zinc' | 'emerald' | 'sky' | 'amber' | 'violet' | 'rose';
+function StatCard({ icon, label, value, sub, gradient }: {
+  icon: string; label: string; value: React.ReactNode; sub?: string; gradient: string;
 }) {
-  const colorMap = {
-    zinc:    { bg: 'bg-zinc-900',          text: 'text-zinc-200',    border: 'ring-zinc-700' },
-    emerald: { bg: 'bg-emerald-950/60',    text: 'text-emerald-300', border: 'ring-emerald-700/50' },
-    sky:     { bg: 'bg-sky-950/60',        text: 'text-sky-300',     border: 'ring-sky-700/50' },
-    amber:   { bg: 'bg-amber-950/60',      text: 'text-amber-300',   border: 'ring-amber-700/50' },
-    violet:  { bg: 'bg-violet-950/60',     text: 'text-violet-300',  border: 'ring-violet-700/50' },
-    rose:    { bg: 'bg-rose-950/60',       text: 'text-rose-300',    border: 'ring-rose-700/50' },
-  }[color];
   return (
-    <div className={`rounded-xl ${colorMap.bg} p-3 ring-1 ${colorMap.border}`}>
-      <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
-        <span>{icon}</span>
-        <span>{label}</span>
+    <div style={{ background: gradient, borderRadius: radii.md, padding: 12, color: 'white', boxShadow: shadows.sm }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, opacity: 0.95 }}>
+        <span>{icon}</span><span>{label}</span>
       </div>
-      <div className={`mt-1 font-mono text-lg font-bold ${colorMap.text}`}>{value}</div>
-      {sub && <div className="text-[10px] text-zinc-500">{sub}</div>}
+      <div style={{ marginTop: 4, fontFamily: 'monospace', fontSize: 18, fontWeight: 800 }}>{value}</div>
+      {sub && <div style={{ fontSize: 10, opacity: 0.85, marginTop: 2 }}>{sub}</div>}
     </div>
   );
 }
@@ -710,30 +770,27 @@ function CleaningChart({ results }: { results: JobResult[] }) {
   const maxRaw = Math.max(...slice.map((r) => r.bytesRaw || 0), 1);
 
   return (
-    <div className="mb-4 rounded-xl bg-zinc-950 p-4 ring-1 ring-zinc-800">
-      <div className="mb-2 flex items-center justify-between">
-        <Label>📊 Efficacité du cleaner (30 dernières pages)</Label>
-        <div className="flex items-center gap-3 text-[10px] text-zinc-500">
-          <span className="flex items-center gap-1"><span className="h-2 w-3 bg-zinc-600" />Brut</span>
-          <span className="flex items-center gap-1"><span className="h-2 w-3 bg-emerald-400" />Net</span>
+    <div style={{ marginBottom: 14, padding: 14, background: '#0a0a0f', borderRadius: radii.md, border: `1px solid ${colors.border}` }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+        <label style={labelStyle}>📊 Efficacité du cleaner (30 dernières pages)</label>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 10, opacity: 0.55 }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ width: 12, height: 8, background: '#52525b', display: 'inline-block' }} />Brut</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ width: 12, height: 8, background: '#6ee7b7', display: 'inline-block' }} />Net</span>
         </div>
       </div>
-      <div className="space-y-1">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {slice.map((r, i) => {
           const rawPct = ((r.bytesRaw || 0) / maxRaw) * 100;
           const netPct = ((r.bytes || 0) / maxRaw) * 100;
+          const removedPct = r.cleanRemovedPct || 0;
           return (
-            <div key={`${r.url}-${i}`} className="flex items-center gap-2 text-[10px]">
-              <span className="w-32 truncate font-mono text-zinc-500" title={r.url}>{shortPath(r.url)}</span>
-              <div className="relative h-3 flex-1 overflow-hidden rounded bg-zinc-900">
-                <div className="absolute h-full bg-zinc-700/60" style={{ width: `${rawPct}%` }} />
-                <div className="absolute h-full bg-gradient-to-r from-emerald-500 to-emerald-300" style={{ width: `${netPct}%` }} />
+            <div key={`${r.url}-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10 }}>
+              <span style={{ width: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace', opacity: 0.55 }} title={r.url}>{shortPath(r.url)}</span>
+              <div style={{ position: 'relative', height: 10, flex: 1, overflow: 'hidden', borderRadius: 3, background: '#0a0a0f' }}>
+                <div style={{ position: 'absolute', height: '100%', background: 'rgba(82,82,91,0.6)', width: `${rawPct}%` }} />
+                <div style={{ position: 'absolute', height: '100%', background: 'linear-gradient(90deg, #10b981, #6ee7b7)', width: `${netPct}%` }} />
               </div>
-              <span className={`w-12 text-right font-mono ${
-                (r.cleanRemovedPct || 0) >= 90 ? 'text-emerald-400' :
-                (r.cleanRemovedPct || 0) >= 70 ? 'text-sky-400' :
-                'text-amber-400'
-              }`}>−{r.cleanRemovedPct ?? 0}%</span>
+              <span style={{ width: 48, textAlign: 'right', fontFamily: 'monospace', color: removedPct >= 90 ? '#6ee7b7' : removedPct >= 70 ? '#7dd3fc' : '#fcd34d' }}>−{r.cleanRemovedPct ?? 0}%</span>
             </div>
           );
         })}
@@ -744,12 +801,12 @@ function CleaningChart({ results }: { results: JobResult[] }) {
 
 function Section({ step, title, subtitle, children }: { step: number; title: string; subtitle?: React.ReactNode; children: React.ReactNode }) {
   return (
-    <section className="mb-6 rounded-2xl bg-zinc-900 p-6 shadow-lg ring-1 ring-zinc-800">
-      <header className="mb-4 flex items-start gap-3">
-        <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-rose-600 text-sm font-bold text-white shadow-lg shadow-rose-600/30">{step}</span>
+    <section style={sectionCard}>
+      <header style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 16 }}>
+        <span style={stepBadge(step)}>{step}</span>
         <div>
-          <h2 className="text-lg font-semibold text-white">{title}</h2>
-          {subtitle && <p className="text-sm text-zinc-400">{subtitle}</p>}
+          <h2 style={{ fontSize: 17, fontWeight: 700, margin: 0 }}>{title}</h2>
+          {subtitle && <p style={{ fontSize: 12, opacity: 0.7, marginTop: 4, marginBottom: 0 }}>{subtitle}</p>}
         </div>
       </header>
       {children}
@@ -757,34 +814,42 @@ function Section({ step, title, subtitle, children }: { step: number; title: str
   );
 }
 
-function Label({ children }: { children: React.ReactNode }) {
-  return <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-zinc-200">{children}</label>;
-}
-
-function Hint({ children }: { children: React.ReactNode }) {
-  return <p className="mt-1 text-xs text-zinc-400">{children}</p>;
-}
-
 function Toggle({ label, hint, value, onChange }: { label: string; hint?: string; value: boolean; onChange: (v: boolean) => void }) {
   return (
-    <label className={`flex cursor-pointer items-start gap-3 rounded-lg p-3 ring-1 transition ${value ? 'bg-rose-950/30 ring-rose-700/50 hover:ring-rose-500' : 'bg-zinc-950 ring-zinc-700 hover:ring-zinc-500'}`}>
-      <input type="checkbox" checked={value} onChange={(e) => onChange(e.target.checked)} className="mt-0.5 h-4 w-4 accent-rose-500" />
-      <div className="flex-1">
-        <div className="text-sm font-medium text-zinc-100">{label}</div>
-        {hint && <div className="text-xs text-zinc-400">{hint}</div>}
+    <label
+      style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: 10,
+        padding: 10,
+        borderRadius: radii.md,
+        border: value ? '1px solid rgba(217,70,239,0.4)' : `1px solid ${colors.border}`,
+        background: value ? 'rgba(217,70,239,0.08)' : colors.bgCard,
+        cursor: 'pointer',
+        transition: 'border-color .15s, background .15s',
+      }}
+    >
+      <input type="checkbox" checked={value} onChange={(e) => onChange(e.target.checked)} style={{ marginTop: 3, width: 14, height: 14, accentColor: colors.primary }} />
+      <div style={{ flex: 1 }}>
+        <div style={{ fontSize: 12, fontWeight: 600 }}>{label}</div>
+        {hint && <div style={{ fontSize: 10, opacity: 0.55, marginTop: 2 }}>{hint}</div>}
       </div>
     </label>
   );
 }
 
 function Badge({ color, children }: { color: 'green' | 'red' | 'amber' | 'blue'; children: React.ReactNode }) {
-  const cls = {
-    green: 'bg-emerald-900/50 text-emerald-200 ring-1 ring-emerald-700/60',
-    red: 'bg-rose-900/50 text-rose-200 ring-1 ring-rose-700/60',
-    amber: 'bg-amber-900/50 text-amber-200 ring-1 ring-amber-700/60',
-    blue: 'bg-sky-900/50 text-sky-200 ring-1 ring-sky-700/60',
+  const map = {
+    green: { bg: 'rgba(16,185,129,0.15)', border: 'rgba(16,185,129,0.4)', text: '#6ee7b7' },
+    red:   { bg: 'rgba(239,68,68,0.15)',  border: 'rgba(239,68,68,0.4)',  text: '#fca5a5' },
+    amber: { bg: 'rgba(245,158,11,0.15)', border: 'rgba(245,158,11,0.4)', text: '#fcd34d' },
+    blue:  { bg: 'rgba(59,130,246,0.15)', border: 'rgba(59,130,246,0.4)', text: '#7dd3fc' },
   }[color];
-  return <span className={`inline-block rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${cls}`}>{children}</span>;
+  return (
+    <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 4, fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, background: map.bg, border: `1px solid ${map.border}`, color: map.text }}>
+      {children}
+    </span>
+  );
 }
 
 function TreeView({ node, selected, collapsed, onToggleSelect, onToggleCollapse }: {
@@ -801,29 +866,29 @@ function TreeView({ node, selected, collapsed, onToggleSelect, onToggleCollapse 
 
   return (
     <div>
-      <div className="flex items-center gap-1.5 py-0.5 hover:bg-zinc-900">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '2px 0' }}>
         {node.children.length > 0 ? (
-          <button onClick={() => onToggleCollapse(node.url)} className="flex h-4 w-4 items-center justify-center text-zinc-400 hover:text-rose-400" aria-label={isCollapsed ? 'Déplier' : 'Replier'}>
+          <button onClick={() => onToggleCollapse(node.url)} style={{ width: 16, height: 16, background: 'transparent', border: 0, color: colors.textMuted, cursor: 'pointer', fontSize: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-label={isCollapsed ? 'Déplier' : 'Replier'}>
             {isCollapsed ? '▶' : '▼'}
           </button>
         ) : (
-          <span className="w-4 text-center text-zinc-600">·</span>
+          <span style={{ width: 16, textAlign: 'center', opacity: 0.3 }}>·</span>
         )}
         <input
           type="checkbox"
           checked={isChecked}
           ref={(el) => { if (el) el.indeterminate = !isChecked && partial; }}
           onChange={(e) => onToggleSelect(node, e.target.checked || allChildrenSelected ? e.target.checked : true)}
-          className="h-3.5 w-3.5 accent-rose-500"
+          style={{ width: 14, height: 14, accentColor: colors.primary }}
         />
-        <span className="truncate" title={node.url}>
-          <span className="text-zinc-100">{shortPath(node.url)}</span>
-          {node.title && <span className="ml-2 text-zinc-400">— {node.title}</span>}
+        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }} title={node.url}>
+          <span>{shortPath(node.url)}</span>
+          {node.title && <span style={{ marginLeft: 8, opacity: 0.55 }}>— {node.title}</span>}
         </span>
-        {node.children.length > 0 && <span className="ml-auto text-[10px] text-zinc-500">{node.children.length} enfants</span>}
+        {node.children.length > 0 && <span style={{ fontSize: 9, opacity: 0.5 }}>{node.children.length} enfants</span>}
       </div>
       {!isCollapsed && node.children.length > 0 && (
-        <div className="ml-5 border-l border-zinc-800 pl-2">
+        <div style={{ marginLeft: 20, paddingLeft: 8, borderLeft: `1px solid ${colors.border}` }}>
           {node.children.map((c) => (
             <TreeView key={c.url} node={c} selected={selected} collapsed={collapsed} onToggleSelect={onToggleSelect} onToggleCollapse={onToggleCollapse} />
           ))}

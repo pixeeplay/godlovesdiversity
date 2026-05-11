@@ -8,20 +8,22 @@
  */
 import { useEffect, useState } from 'react';
 import { Plus, Loader2, Calendar, Trash2, X, GripVertical, CheckCircle2 } from 'lucide-react';
+import { SimpleOrgPage, card, input, btnPrimary, btnSecondary } from './SimpleOrgPage';
+import { colors, gradients, radii, shadows } from '@/lib/design-tokens';
 
 const COLUMNS = [
-  { id: 'todo',    label: 'À faire',  color: 'zinc',    emoji: '📋' },
-  { id: 'doing',   label: 'En cours', color: 'sky',     emoji: '🚧' },
-  { id: 'review',  label: 'Review',   color: 'amber',   emoji: '👀' },
-  { id: 'done',    label: 'Terminé',  color: 'emerald', emoji: '✅' },
-  { id: 'archive', label: 'Archivé',  color: 'zinc',    emoji: '📦' }
+  { id: 'todo',    label: 'À faire',  emoji: '📋', accent: '#a1a1aa' },
+  { id: 'doing',   label: 'En cours', emoji: '🚧', accent: '#7dd3fc' },
+  { id: 'review',  label: 'Review',   emoji: '👀', accent: '#fcd34d' },
+  { id: 'done',    label: 'Terminé',  emoji: '✅', accent: '#6ee7b7' },
+  { id: 'archive', label: 'Archivé',  emoji: '📦', accent: '#71717a' },
 ] as const;
 
-const PRIORITY_COLORS: Record<string, string> = {
-  low:    'bg-zinc-700 text-zinc-300',
-  normal: 'bg-blue-500/20 text-blue-300',
-  high:   'bg-amber-500/20 text-amber-300',
-  urgent: 'bg-rose-500/30 text-rose-200'
+const PRIORITY_STYLES: Record<string, { bg: string; color: string }> = {
+  low:    { bg: 'rgba(82,82,91,0.5)',    color: '#d4d4d8' },
+  normal: { bg: 'rgba(59,130,246,0.2)',  color: '#7dd3fc' },
+  high:   { bg: 'rgba(245,158,11,0.2)',  color: '#fcd34d' },
+  urgent: { bg: 'rgba(239,68,68,0.3)',   color: '#fca5a5' },
 };
 
 type Task = {
@@ -70,7 +72,7 @@ export function OrgTasksBoardClient({ orgSlug }: { orgSlug: string }) {
     await fetch(`/api/orgs/${orgSlug}/tasks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: newTitle, status })
+      body: JSON.stringify({ title: newTitle, status }),
     });
     setNewTitle('');
     setAdding(null);
@@ -78,7 +80,6 @@ export function OrgTasksBoardClient({ orgSlug }: { orgSlug: string }) {
   }
 
   async function moveTask(taskId: string, newStatus: string, newPosition: number) {
-    // Optimistic UI
     setTasksByStatus((prev) => {
       const next: Record<string, Task[]> = JSON.parse(JSON.stringify(prev));
       let task: Task | null = null;
@@ -96,31 +97,39 @@ export function OrgTasksBoardClient({ orgSlug }: { orgSlug: string }) {
     await fetch(`/api/orgs/${orgSlug}/tasks`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: taskId, status: newStatus, position: newPosition })
+      body: JSON.stringify({ id: taskId, status: newStatus, position: newPosition }),
     });
   }
 
   const total = Object.values(tasksByStatus).reduce((s, arr) => s + arr.length, 0);
 
   return (
-    <div className="px-3 lg:px-4 pb-6">
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">📋 Tâches</h1>
-          <p className="text-sm text-zinc-400">{total} tâche{total > 1 ? 's' : ''} · drag & drop entre colonnes</p>
-        </div>
-      </div>
-
+    <SimpleOrgPage
+      orgSlug={orgSlug}
+      emoji="📋"
+      title="Tâches"
+      desc={`${total} tâche${total > 1 ? 's' : ''} · drag & drop entre colonnes`}
+    >
       {loading ? (
-        <p className="text-zinc-500 text-center py-8 flex items-center justify-center gap-2"><Loader2 size={14} className="animate-spin" /> Chargement…</p>
+        <div style={{ textAlign: 'center', padding: 36, opacity: 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+          <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} /> Chargement…
+        </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-3">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
           {COLUMNS.map((col) => {
             const tasks = tasksByStatus[col.id] || [];
             return (
               <section
                 key={col.id}
-                className={`bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl flex flex-col min-h-[60vh]`}
+                style={{
+                  background: colors.bgCard,
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: radii.lg,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minHeight: '60vh',
+                  overflow: 'hidden',
+                }}
                 onDragOver={(e) => { e.preventDefault(); setDropZone({ status: col.id, position: tasks.length }); }}
                 onDrop={(e) => {
                   e.preventDefault();
@@ -128,23 +137,36 @@ export function OrgTasksBoardClient({ orgSlug }: { orgSlug: string }) {
                   setDraggedId(null); setDropZone(null);
                 }}
               >
-                <header className={`px-3 py-2 border-b border-zinc-800 flex items-center justify-between sticky top-0 bg-zinc-900 z-10 rounded-t-2xl`}>
-                  <span className="font-bold text-sm flex items-center gap-1.5 text-zinc-100">
+                <header
+                  style={{
+                    padding: '10px 12px',
+                    borderBottom: `1px solid ${colors.border}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    position: 'sticky',
+                    top: 0,
+                    background: colors.bgCard,
+                    zIndex: 1,
+                    borderTop: `3px solid ${col.accent}`,
+                  }}
+                >
+                  <span style={{ fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
                     {col.emoji} {col.label}
-                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400`}>{tasks.length}</span>
+                    <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 4, background: '#0a0a0f', opacity: 0.7 }}>{tasks.length}</span>
                   </span>
                   <button
                     onClick={() => setAdding(col.id)}
-                    className="text-zinc-400 hover:text-white p-1 rounded hover:bg-zinc-800"
+                    style={{ background: 'transparent', border: 0, color: colors.textMuted, padding: 4, borderRadius: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     title="Ajouter une tâche"
                   >
                     <Plus size={14} />
                   </button>
                 </header>
 
-                <div className="flex-1 overflow-y-auto p-2 space-y-2">
+                <div style={{ flex: 1, overflowY: 'auto', padding: 8, display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {adding === col.id && (
-                    <div className="bg-zinc-950 ring-1 ring-fuchsia-500/40 rounded-lg p-2">
+                    <div style={{ background: '#0a0a0f', border: '1px solid rgba(217,70,239,0.4)', borderRadius: radii.md, padding: 8 }}>
                       <textarea
                         autoFocus
                         value={newTitle}
@@ -155,52 +177,73 @@ export function OrgTasksBoardClient({ orgSlug }: { orgSlug: string }) {
                         }}
                         placeholder="Titre de la tâche…"
                         rows={2}
-                        className="w-full bg-transparent text-xs text-zinc-100 focus:outline-none resize-none"
+                        style={{ width: '100%', background: 'transparent', border: 0, color: 'inherit', fontSize: 12, outline: 'none', resize: 'none', fontFamily: 'inherit' }}
                       />
-                      <div className="flex items-center gap-1 mt-1">
-                        <button onClick={() => createTask(col.id)} disabled={!newTitle.trim()} className="text-[10px] bg-fuchsia-600 hover:bg-fuchsia-500 disabled:opacity-40 text-white font-bold px-2 py-1 rounded">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                        <button
+                          onClick={() => createTask(col.id)}
+                          disabled={!newTitle.trim()}
+                          style={{ ...btnPrimary, padding: '4px 10px', fontSize: 10, opacity: !newTitle.trim() ? 0.4 : 1, cursor: !newTitle.trim() ? 'not-allowed' : 'pointer' }}
+                        >
                           Créer
                         </button>
-                        <button onClick={() => { setAdding(null); setNewTitle(''); }} className="text-[10px] text-zinc-500 hover:text-zinc-300 px-2 py-1">
+                        <button
+                          onClick={() => { setAdding(null); setNewTitle(''); }}
+                          style={{ background: 'transparent', border: 0, color: colors.textMuted, fontSize: 10, padding: '4px 8px', cursor: 'pointer' }}
+                        >
                           Annuler
                         </button>
                       </div>
                     </div>
                   )}
 
-                  {tasks.map((task) => (
-                    <article
-                      key={task.id}
-                      draggable
-                      onDragStart={() => setDraggedId(task.id)}
-                      onDragEnd={() => { setDraggedId(null); setDropZone(null); }}
-                      onClick={() => setEditing(task)}
-                      className={`bg-zinc-950 hover:bg-zinc-900 ring-1 ring-zinc-800 hover:ring-zinc-700 rounded-lg p-2.5 cursor-grab active:cursor-grabbing transition ${draggedId === task.id ? 'opacity-30' : ''}`}
-                    >
-                      <div className="flex items-start gap-1.5 mb-1.5">
-                        <GripVertical size={12} className="text-zinc-600 mt-0.5 shrink-0" />
-                        <p className="text-xs text-zinc-100 flex-1 line-clamp-3">{task.title}</p>
-                      </div>
-                      {task.description && <p className="text-[10px] text-zinc-500 line-clamp-2 mb-1.5">{task.description}</p>}
-                      <div className="flex items-center justify-between gap-1 mt-1">
-                        <span className={`text-[9px] uppercase font-bold px-1.5 py-0.5 rounded ${PRIORITY_COLORS[task.priority] || PRIORITY_COLORS.normal}`}>
-                          {task.priority}
-                        </span>
-                        {task.dueDate && (
-                          <span className={`text-[9px] flex items-center gap-0.5 ${new Date(task.dueDate) < new Date() ? 'text-rose-400' : 'text-zinc-500'}`}>
-                            <Calendar size={9} /> {new Date(task.dueDate).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
-                          </span>
-                        )}
-                      </div>
-                      {task.tags && task.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mt-1.5">
-                          {task.tags.slice(0, 3).map((t) => (
-                            <span key={t} className="text-[9px] bg-violet-500/15 text-violet-300 px-1.5 py-0.5 rounded-full">#{t}</span>
-                          ))}
+                  {tasks.map((task) => {
+                    const prio = PRIORITY_STYLES[task.priority] || PRIORITY_STYLES.normal;
+                    const overdue = task.dueDate && new Date(task.dueDate) < new Date();
+                    return (
+                      <article
+                        key={task.id}
+                        draggable
+                        onDragStart={() => setDraggedId(task.id)}
+                        onDragEnd={() => { setDraggedId(null); setDropZone(null); }}
+                        onClick={() => setEditing(task)}
+                        style={{
+                          background: '#0a0a0f',
+                          border: `1px solid ${colors.border}`,
+                          borderRadius: radii.md,
+                          padding: 10,
+                          cursor: 'grab',
+                          opacity: draggedId === task.id ? 0.3 : 1,
+                          transition: 'border-color .15s, opacity .15s',
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 6 }}>
+                          <GripVertical size={12} style={{ opacity: 0.35, marginTop: 2, flexShrink: 0 }} />
+                          <p style={{ fontSize: 12, flex: 1, margin: 0, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{task.title}</p>
                         </div>
-                      )}
-                    </article>
-                  ))}
+                        {task.description && (
+                          <p style={{ fontSize: 10, opacity: 0.55, margin: '0 0 6px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{task.description}</p>
+                        )}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, marginTop: 4 }}>
+                          <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', padding: '2px 6px', borderRadius: 4, background: prio.bg, color: prio.color }}>
+                            {task.priority}
+                          </span>
+                          {task.dueDate && (
+                            <span style={{ fontSize: 9, display: 'flex', alignItems: 'center', gap: 3, color: overdue ? '#fca5a5' : colors.textMuted }}>
+                              <Calendar size={9} /> {new Date(task.dueDate).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
+                            </span>
+                          )}
+                        </div>
+                        {task.tags && task.tags.length > 0 && (
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
+                            {task.tags.slice(0, 3).map((t) => (
+                              <span key={t} style={{ fontSize: 9, background: 'rgba(196,181,253,0.15)', color: '#c4b5fd', padding: '2px 6px', borderRadius: 999 }}>#{t}</span>
+                            ))}
+                          </div>
+                        )}
+                      </article>
+                    );
+                  })}
                 </div>
               </section>
             );
@@ -209,7 +252,7 @@ export function OrgTasksBoardClient({ orgSlug }: { orgSlug: string }) {
       )}
 
       {editing && <TaskEditor orgSlug={orgSlug} task={editing} onClose={() => setEditing(null)} onSaved={() => { setEditing(null); load(); }} />}
-    </div>
+    </SimpleOrgPage>
   );
 }
 
@@ -230,8 +273,8 @@ function TaskEditor({ orgSlug, task, onClose, onSaved }: { orgSlug: string; task
       body: JSON.stringify({
         title, description, status, priority,
         dueDate: dueDate || null,
-        tags: tags.split(',').map((t) => t.trim()).filter(Boolean)
-      })
+        tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+      }),
     });
     setBusy(false);
     onSaved();
@@ -243,31 +286,41 @@ function TaskEditor({ orgSlug, task, onClose, onSaved }: { orgSlug: string; task
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl max-w-xl w-full p-5 space-y-3" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="font-bold text-zinc-100">Éditer la tâche</h3>
-          <button onClick={onClose}><X size={18} className="text-zinc-400 hover:text-white" /></button>
+    <div
+      style={{ position: 'fixed', inset: 0, zIndex: 50, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+      onClick={onClose}
+    >
+      <div
+        style={{ background: colors.bgCard, border: `1px solid ${colors.border}`, borderRadius: radii.lg, maxWidth: 600, width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: 20, boxShadow: shadows.lg, display: 'flex', flexDirection: 'column', gap: 12 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h3 style={{ fontWeight: 700, fontSize: 15, margin: 0 }}>Éditer la tâche</h3>
+          <button onClick={onClose} style={{ background: 'transparent', border: 0, color: 'inherit', cursor: 'pointer', opacity: 0.55 }}>
+            <X size={18} />
+          </button>
         </div>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm font-bold focus:border-fuchsia-500 focus:outline-none text-zinc-100" placeholder="Titre" />
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs focus:border-fuchsia-500 focus:outline-none text-zinc-200" placeholder="Description (markdown OK)" />
-        <div className="grid grid-cols-3 gap-2">
-          <select value={status} onChange={(e) => setStatus(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-2 text-xs text-zinc-200">
+        <input value={title} onChange={(e) => setTitle(e.target.value)} style={{ ...input, fontSize: 14, fontWeight: 700 }} placeholder="Titre" />
+        <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} style={{ ...input, fontFamily: 'inherit' }} placeholder="Description (markdown OK)" />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+          <select value={status} onChange={(e) => setStatus(e.target.value)} style={input}>
             {COLUMNS.map((c) => <option key={c.id} value={c.id}>{c.emoji} {c.label}</option>)}
           </select>
-          <select value={priority} onChange={(e) => setPriority(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-2 text-xs text-zinc-200">
+          <select value={priority} onChange={(e) => setPriority(e.target.value)} style={input}>
             <option value="low">Low</option>
             <option value="normal">Normal</option>
             <option value="high">High</option>
             <option value="urgent">Urgent</option>
           </select>
-          <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-2 text-xs text-zinc-200" />
+          <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} style={input} />
         </div>
-        <input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Tags : foi, paris, sprint-2…" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200" />
-        <div className="flex justify-between pt-2">
-          <button onClick={remove} className="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1"><Trash2 size={11} /> Supprimer</button>
-          <button onClick={save} disabled={busy} className="bg-fuchsia-600 hover:bg-fuchsia-500 disabled:opacity-50 text-white font-bold text-sm px-4 py-2 rounded-lg flex items-center gap-1.5">
-            {busy ? <Loader2 size={12} className="animate-spin" /> : <CheckCircle2 size={12} />} Enregistrer
+        <input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Tags : foi, paris, sprint-2…" style={input} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 8, borderTop: `1px solid ${colors.border}` }}>
+          <button onClick={remove} style={{ background: 'transparent', border: 0, color: '#fca5a5', fontSize: 11, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Trash2 size={11} /> Supprimer
+          </button>
+          <button onClick={save} disabled={busy} style={{ ...btnPrimary, opacity: busy ? 0.5 : 1, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            {busy ? <Loader2 size={12} style={{ animation: 'spin 1s linear infinite' }} /> : <CheckCircle2 size={12} />} Enregistrer
           </button>
         </div>
       </div>
