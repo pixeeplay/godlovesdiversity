@@ -241,6 +241,7 @@ model Order {
   billingAddress  Json?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  orderItems      OrderItem[]
   @@index([status, createdAt])
   @@index([email])
 }
@@ -439,12 +440,24 @@ model Testimonial {
   authorAvatar String?
   videoUrl     String?
   posterImage  String?
+  thumbnailUrl String?
+  duration     Int?     // secondes
+  locale       String   @default("fr")
   quote        String?  @db.Text
   rating       Int?
   tags         String[] @default([])
   featured     Boolean  @default(false)
   published    Boolean  @default(true)
   position     Int      @default(0)
+  // Sous-titres multi-locale (format VTT, généré IA)
+  transcription String? @db.Text
+  subtitlesFr  String?  @db.Text
+  subtitlesEn  String?  @db.Text
+  subtitlesEs  String?  @db.Text
+  subtitlesDe  String?  @db.Text
+  subtitlesIt  String?  @db.Text
+  views        Int      @default(0)
+  likes        Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   @@index([published, position])
@@ -491,22 +504,83 @@ model Banner {
 
 model MapLocation {
   id           String   @id @default(cuid())
+  slug         String?  @unique
   name         String
-  type         String?
+  // NEUTRE — category libre + tags (remplace VenueType enum 24 valeurs religieuses)
+  category     String?
+  tags         String[] @default([])
+  type         String?  // legacy compat
   address      String?
   lat          Float
   lng          Float
+  postalCode   String?
+  region       String?
   country      String?
   city         String?
   description  String?  @db.Text
+  shortDescription String?
   featured     Boolean  @default(false)
+  verified     Boolean  @default(false)
+  published    Boolean  @default(true)
+  views        Int      @default(0)
+
+  // Médias
+  coverImage   String?
+  photos       String[] @default([])
+  logo         String?
+  videos       String[] @default([])
+
+  // Horaires + tags (Json pour cross-day flexibility)
   openingHours Json?
   contact      Json?
   images       String[] @default([])
+
+  // Réseaux sociaux
+  instagram    String?
+  facebook     String?
+  social       Json?   // social links libre
+
+  // Sync FB events
+  facebookPageId      String?
+  facebookPageToken   String?   @db.Text
+  autoPublishFbEvents Boolean   @default(false)
+  fbSyncedAt          DateTime?
+
+  // Owner (gérant lieu)
+  ownerId    String?
+  ownerEmail String?
+
+  // Notation neutre (remplace VenueRating)
+  rating     String?  // "RAINBOW" | "FRIENDLY" | "NEUTRAL" | "CAUTION" — libre
+
+  // Enrichissement IA
+  googlePlaceId        String?
+  enrichedAt           DateTime?
+  enrichmentConfidence Float?
+  enrichmentSources    Json?
+  enrichmentNotes      String?   @db.Text
+  upcomingEventsHint   Json?
+  freshnessScore       Float?
+  freshnessCheckedAt   DateTime?
+
+  // Phone/email/website
+  phone      String?
+  email      String?
+  website    String?
+  bookingUrl String?
+
+  coupons        LocationCoupon[]
+  participations LocationEventParticipation[]
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   @@index([type])
+  @@index([category])
   @@index([country, city])
+  @@index([rating, published])
+  @@index([featured, published])
+  @@index([lat, lng])
+  @@index([enrichedAt])
 }
 
 // ─── MODERATION QUEUE ─────────────────────────────────────────
@@ -540,4 +614,1412 @@ model Poster {
   sizes     String[] @default([])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// ─── NEWSLETTER PLAN (plan annuel par mois) ───────────────────
+
+model NewsletterPlan {
+  id          String   @id @default(cuid())
+  year        Int
+  month       Int      // 1..12
+  theme       String?
+  subject     String?
+  audiences   String[] @default([])
+  scheduledAt DateTime?
+  notes       String?  @db.Text
+  status      String   @default("planned") // planned | ready | sent
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@unique([year, month])
+}
+
+// ─── SOCIAL POSTS (calendrier social cross-réseaux) ───────────
+
+model SocialPost {
+  id           String   @id @default(cuid())
+  platform     String   // instagram | facebook | linkedin | twitter | tiktok | youtube
+  content      String   @db.Text
+  mediaUrls    String[] @default([])
+  scheduledAt  DateTime?
+  publishedAt  DateTime?
+  status       String   @default("draft") // draft | scheduled | published | failed
+  hashtags     String[] @default([])
+  externalId   String?  // id du post sur la plateforme
+  errorMessage String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@index([scheduledAt])
+  @@index([platform, status])
+}
+
+// ─── RICH PAGES (pages marketing : about, contact, terms, etc) ─
+
+model RichPage {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  bodyHtml  String?  @db.Text
+  meta      Json?    // { description, ogImage, robots, ... }
+  status    String   @default("draft") // draft | published
+  position  Int      @default(0)
+  parentId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([status])
+  @@index([parentId, position])
+}
+
+// ─── PARTNERS (logos partenaires, sponsors) ───────────────────
+
+model Partner {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  logoUrl      String?
+  websiteUrl   String?
+  description  String?  @db.Text
+  category     String?
+  featured     Boolean  @default(false)
+  position     Int      @default(0)
+  contactName  String?
+  contactEmail String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@index([active, position])
+  @@index([featured])
+}
+
+// ════════════════════════════════════════════════════════════════════
+// PHASE 1 — DB FOUNDATION (iso GLD neutralisé) — 48 modèles
+// ════════════════════════════════════════════════════════════════════
+//
+// Conventions :
+// - Aucun mot religieux : prière → geste communautaire, faith → category,
+//   officiant → professional, sacred → document, etc.
+// - TenantUser = miroir local du User platform (id reste l'id platform).
+//   Les FK userId sont des String mais une relation TenantUser optionnelle
+//   est maintenue pour le typing Prisma client.
+// - Multi-tenant déjà gradé (1 DB par tenant) : pas de tenantId.
+
+// ─── ENUMS NEUTRES ──────────────────────────────────────────────
+
+enum PhotoStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+}
+
+enum PlaceCategory {
+  STUDIO
+  VENUE
+  OFFICE
+  RETAIL
+  PUBLIC_SPACE
+  OUTDOOR
+  ONLINE
+  OTHER
+}
+
+enum PhotoSource {
+  WEB
+  IOS
+  ANDROID
+  IMPORT
+  API
+}
+
+enum JourneyStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+enum ProfessionalCategory {
+  COACH
+  THERAPIST
+  CONSULTANT
+  LAWYER
+  PHOTOGRAPHER
+  ARTIST
+  MENTOR
+  EXPERT
+  OTHER
+}
+
+enum VocalEntryStatus {
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum LiveStreamSource {
+  YOUTUBE
+  VIMEO
+  TWITCH
+  CUSTOM
+}
+
+enum AnnotationPerspective {
+  AUTHOR
+  EXPERT
+  COMMUNITY
+  PERSONAL
+}
+
+// ─── IDENTITÉ & USER ────────────────────────────────────────────
+
+/// Miroir local du User platform DB (l'id reste le même).
+/// Permet d'attacher du profil enrichi côté tenant sans toucher au User platform.
+model TenantUser {
+  id              String   @id // = platform User.id
+  email           String   @unique
+  name            String?
+  image           String?
+  role            String   @default("VIEWER") // ADMIN | EDITOR | MODERATOR | VIEWER
+
+  // Profil enrichi
+  bio             String?  @db.Text
+  publicName      String?  // pseudo affiché
+  identity        String?  // libre, ex "creator" / "founder" / "freelance"
+  categories      String[] @default([])  // remplace traditions[] — catégories thématiques libres
+  cityProfile     String?
+  ghostMode       Boolean  @default(false)
+
+  // Notifications
+  notifyDigest    Boolean  @default(true)
+  notifyEvents    Boolean  @default(true)
+  notifyPeerHelp  Boolean  @default(true)
+  notifyMentor    Boolean  @default(true)
+  notifyShop      Boolean  @default(true)
+
+  // Dashboard perso visuel
+  bannerUrl       String?
+  bannerPrompt    String?  @db.Text
+  dashboardTheme  String?  @default("fuchsia")
+  favoriteColor   String?  @default("#d61b80")
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations back
+  bookmarks            Bookmark[]
+  journalEntries       JournalEntry[]
+  futureLetters        FutureLetter[]
+  aiConversations      AIConversation[]
+  activityLogs         UserActivityLog[]
+  vocalEntries         VocalEntry[]
+  menuOverride         UserMenuOverride?
+  mfa                  UserMfa?
+  smsCodes             SmsCode[]
+
+  connectProfile       ConnectProfile?
+  swipesGiven          ConnectSwipe[]        @relation("swipeFrom")
+  swipesReceived       ConnectSwipe[]        @relation("swipeTo")
+  connectionsFrom      ConnectConnection[]   @relation("connFrom")
+  connectionsTo        ConnectConnection[]   @relation("connTo")
+  connectPosts         ConnectPost[]
+  connectReactions     ConnectReaction[]
+  conversations1       ConnectConversation[] @relation("convA")
+  conversations2       ConnectConversation[] @relation("convB")
+  connectMessages      ConnectMessage[]
+  reportsFiled         ConnectReport[]       @relation("reporterRel")
+  reportsAgainst       ConnectReport[]       @relation("reportedRel")
+  blocksGiven          ConnectBlock[]        @relation("blockerRel")
+  blocksReceived       ConnectBlock[]        @relation("blockedRel")
+  premiumSub           ConnectPremium?
+
+  @@index([role])
+}
+
+/// Bookmark générique (témoignages, lieux, posts, produits, events, etc.).
+model Bookmark {
+  id           String      @id @default(cuid())
+  userId       String
+  user         TenantUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resourceType String      // "testimonial" | "location" | "post" | "product" | "event" | "article"
+  resourceId   String
+  note         String?
+  createdAt    DateTime    @default(now())
+  @@unique([userId, resourceType, resourceId])
+  @@index([userId, resourceType])
+}
+
+/// Journal intime — strictement privé, jamais publié.
+model JournalEntry {
+  id        String      @id @default(cuid())
+  userId    String
+  user      TenantUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  content   String      @db.Text
+  encrypted Boolean     @default(false)
+  mood      String?
+  tags      String[]    @default([])
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  @@index([userId, createdAt])
+}
+
+/// Lettre programmée à soi-même — délivrée à une date future par email.
+model FutureLetter {
+  id           String      @id @default(cuid())
+  userId       String
+  user         TenantUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject      String?
+  content      String      @db.Text
+  deliveryDate DateTime
+  delivered    Boolean     @default(false)
+  deliveredAt  DateTime?
+  createdAt    DateTime    @default(now())
+  @@index([deliveryDate, delivered])
+}
+
+/// Conversations IA sauvegardées (coach, citation, juridique, etc.).
+model AIConversation {
+  id        String      @id @default(cuid())
+  userId    String
+  user      TenantUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tool      String      // "coach" | "legal" | "quote" | "assistant" | ...
+  title     String?
+  messages  Json
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  @@index([userId, tool, createdAt])
+}
+
+/// Log d'activité user pour timeline + feed perso.
+model UserActivityLog {
+  id           String      @id @default(cuid())
+  userId       String
+  user         TenantUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action       String
+  resourceType String?
+  resourceId   String?
+  metadata     Json?
+  createdAt    DateTime    @default(now())
+  @@index([userId, createdAt])
+}
+
+/// Override fin de la visibilité du menu admin pour un user spécifique.
+model UserMenuOverride {
+  id        String      @id @default(cuid())
+  userId    String      @unique
+  user      TenantUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hidden    String[]    @default([])
+  visible   String[]    @default([])
+  notes     String?
+  updatedBy String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+/// Audio enregistré par l'utilisateur + transcription IA (neutre, ex "vocal-prayer").
+model VocalEntry {
+  id            String           @id @default(cuid())
+  userId        String
+  user          TenantUser       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storageKey    String
+  audioMime     String           @default("audio/webm")
+  durationSec   Int?
+  fileSizeBytes Int?
+  language      String           @default("fr")
+  transcription String?          @db.Text
+  title         String?
+  mood          String?
+  category      String?          // tag libre, ex "memo" | "interview" | "reflexion"
+  status        VocalEntryStatus @default(PROCESSING)
+  errorMessage  String?          @db.Text
+  isPublic      Boolean          @default(false)
+  transcribedAt DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+/// 2FA TOTP par utilisateur.
+model UserMfa {
+  id            String      @id @default(cuid())
+  userId        String      @unique
+  user          TenantUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totpSecret    String      @db.Text
+  backupCodes   String[]    @default([])
+  enabledAt     DateTime?
+  verifiedAt    DateTime?
+  smsPhone      String?
+  smsEnabled    Boolean     @default(false)
+  recoveryEmail String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+/// Codes SMS one-time (Twilio) pour actions critiques.
+model SmsCode {
+  id         String      @id @default(cuid())
+  userId     String
+  user       TenantUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phoneE164  String
+  code       String
+  purpose    String
+  consumedAt DateTime?
+  expiresAt  DateTime
+  createdAt  DateTime    @default(now())
+  @@index([userId, purpose, consumedAt])
+}
+
+/// Tracker des échecs de login pour lockout.
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ip        String?
+  ua        String?
+  succeeded Boolean  @default(false)
+  reason    String?
+  createdAt DateTime @default(now())
+  @@index([email, createdAt])
+  @@index([ip, createdAt])
+}
+
+// ─── CMS & PAGES ────────────────────────────────────────────────
+
+/// Page multi-locale avec contenu Json (extension de RichPage pour locale support).
+model Page {
+  id        String   @id @default(cuid())
+  slug      String
+  locale    String   @default("fr")
+  title     String
+  content   Json
+  published Boolean  @default(true)
+  meta      Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([slug, locale])
+  @@index([published])
+}
+
+/// Section riche d'une page éditoriale (empilée verticalement, mediaUrl optionnel).
+model Section {
+  id          String   @id @default(cuid())
+  pageSlug    String
+  locale      String   @default("fr")
+  title       String?
+  subtitle    String?
+  body        String?  @db.Text
+  mediaUrl    String?
+  mediaType   String?  // 'image' | 'video'
+  layout      String   @default("text-image")
+  accentColor String?
+  ctaText     String?
+  ctaUrl      String?
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([pageSlug, locale, order])
+}
+
+/// Item du menu de navigation arborescent.
+model MenuItem {
+  id        String     @id @default(cuid())
+  locale    String     @default("fr")
+  label     String
+  href      String
+  external  Boolean    @default(false)
+  parentId  String?
+  parent    MenuItem?  @relation("MenuChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children  MenuItem[] @relation("MenuChildren")
+  order     Int        @default(0)
+  published Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  @@index([locale, parentId, order])
+}
+
+/// Bloc visuel d'une page éditée via Page Builder (drag-drop granulaire).
+model PageBlock {
+  id          String   @id @default(cuid())
+  pageSlug    String
+  position    Int      @default(0)
+  width       String   @default("full")
+  height      String   @default("auto")
+  type        String
+  data        Json
+  effect      String?
+  effectDelay Int?
+  visible     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([pageSlug, position])
+  @@index([visible])
+}
+
+/// Setting key-value global tenant.
+model Setting {
+  key       String   @id
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+}
+
+// ─── E-COMMERCE AVANCÉ ──────────────────────────────────────────
+
+model PhotoComment {
+  id          String   @id @default(cuid())
+  photoId     String
+  authorName  String
+  authorEmail String?
+  content     String   @db.Text
+  approved    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  @@index([photoId, createdAt])
+}
+
+model ProductReview {
+  id        String   @id @default(cuid())
+  productId String
+  authorId  String?
+  rating    Int
+  title     String?
+  content   String?  @db.Text
+  photos    String[] @default([])
+  verified  Boolean  @default(false)
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  @@index([productId, status])
+  @@index([authorId])
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
+model StockAlert {
+  id          String    @id @default(cuid())
+  email       String
+  productId   String
+  variantOpts Json?
+  notifiedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  @@index([productId, notifiedAt])
+}
+
+model LoyaltyAccount {
+  id        String          @id @default(cuid())
+  userId    String          @unique
+  points    Int             @default(0)
+  tier      String          @default("bronze")
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  ledger    LoyaltyLedger[]
+}
+
+model LoyaltyLedger {
+  id        String         @id @default(cuid())
+  accountId String
+  account   LoyaltyAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  delta     Int
+  reason    String
+  metadata  Json?
+  createdAt DateTime       @default(now())
+  @@index([accountId, createdAt])
+}
+
+/// Variants détaillés (taille, couleur, etc.).
+model ProductVariant {
+  id         String   @id @default(cuid())
+  productId  String
+  name       String
+  sku        String?
+  options    Json
+  priceCents Int?
+  stock      Int?
+  images     String[] @default([])
+  order      Int      @default(0)
+  published  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@index([productId, order])
+}
+
+model ReferralCode {
+  id          String     @id @default(cuid())
+  code        String     @unique
+  ownerId     String?
+  uses        Int        @default(0)
+  rewardKind  String     @default("discount")
+  rewardValue Int        @default(0)
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  redemptions Referral[]
+}
+
+model Referral {
+  id            String       @id @default(cuid())
+  codeId        String
+  code          ReferralCode @relation(fields: [codeId], references: [id], onDelete: Cascade)
+  referredEmail String
+  status        String       @default("pending")
+  convertedAt   DateTime?
+  rewardGivenAt DateTime?
+  createdAt     DateTime     @default(now())
+  @@index([codeId, status])
+}
+
+/// Décisions de modération IA (audit trail) — étend ModerationItem.
+model ModerationDecision {
+  id         String    @id @default(cuid())
+  targetType String
+  targetId   String
+  score      Float
+  category   String?
+  reason     String?   @db.Text
+  action     String
+  reviewedBy String?
+  reviewedAt DateTime?
+  createdAt  DateTime  @default(now())
+  @@index([targetType, targetId])
+  @@index([action, createdAt])
+}
+
+// ─── CONNECT (réseau social interne, neutre) ───────────────────
+
+model ConnectProfile {
+  id     String     @id @default(cuid())
+  userId String     @unique
+  user   TenantUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  handle      String    @unique
+  displayName String
+  birthYear   Int?
+  city        String?
+  country     String?   @default("FR")
+  bio         String?   @db.Text
+  photos      String[]  @default([])
+  verified    Boolean   @default(false)
+  verifiedAt  DateTime?
+
+  // Visibilité par mode
+  showInWall       Boolean @default(true)
+  showInDating     Boolean @default(false)
+  showInPro        Boolean @default(false)
+
+  // Mode Dating (opt-in)
+  intentions       String[] @default([])
+  quote            String?  @db.Text
+  maxDistanceKm    Int      @default(50)
+  ageRangeMin      Int      @default(18)
+  ageRangeMax      Int      @default(99)
+  showOnlyVerified Boolean  @default(true)
+
+  // Mode Pro
+  jobTitle     String?
+  proCategory  String?
+  proPitch     String?  @db.Text
+  proAvailable Boolean  @default(false)
+  proRate      String?
+
+  // Catégories thématiques (remplace traditions)
+  identity   String?
+  categories String[] @default([])
+
+  lat Float?
+  lng Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([showInDating, country])
+  @@index([showInPro, proCategory])
+}
+
+model ConnectSwipe {
+  id         String     @id @default(cuid())
+  fromId     String
+  toId       String
+  from       TenantUser @relation("swipeFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to         TenantUser @relation("swipeTo", fields: [toId], references: [id], onDelete: Cascade)
+  action     String
+  intentions String[]   @default([])
+  createdAt  DateTime   @default(now())
+  @@unique([fromId, toId])
+  @@index([toId, action])
+}
+
+model ConnectMatch {
+  id         String   @id @default(cuid())
+  user1Id    String
+  user2Id    String
+  intentions String[] @default([])
+  status     String   @default("active")
+  createdAt  DateTime @default(now())
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
+}
+
+model ConnectConnection {
+  id         String     @id @default(cuid())
+  fromId     String
+  toId       String
+  from       TenantUser @relation("connFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to         TenantUser @relation("connTo", fields: [toId], references: [id], onDelete: Cascade)
+  status     String     @default("pending")
+  message    String?    @db.Text
+  createdAt  DateTime   @default(now())
+  acceptedAt DateTime?
+  @@unique([fromId, toId])
+  @@index([toId, status])
+}
+
+model ConnectPost {
+  id               String            @id @default(cuid())
+  authorId         String
+  author           TenantUser        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  type             String            @default("post") // post | testimonial | wish | photo | event
+  text             String            @db.Text
+  imageUrl         String?
+  videoUrl         String?
+  circleSlug       String?
+  visibility       String            @default("public")
+  moderationStatus String            @default("pending")
+  moderationNotes  String?           @db.Text
+  reactions        ConnectReaction[]
+  commentsCount    Int               @default(0)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  @@index([authorId, createdAt])
+  @@index([visibility, moderationStatus, createdAt])
+}
+
+model ConnectReaction {
+  id        String      @id @default(cuid())
+  postId    String
+  post      ConnectPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      TenantUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String      // "like" | "support" | "cheer" | "super"
+  createdAt DateTime    @default(now())
+  @@unique([postId, userId, type])
+  @@index([postId])
+}
+
+model ConnectConversation {
+  id        String           @id @default(cuid())
+  user1Id   String
+  user2Id   String
+  user1     TenantUser       @relation("convA", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2     TenantUser       @relation("convB", fields: [user2Id], references: [id], onDelete: Cascade)
+  origin    String           @default("connect")
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  messages  ConnectMessage[]
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
+}
+
+model ConnectMessage {
+  id               String              @id @default(cuid())
+  conversationId   String
+  conversation     ConnectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId         String
+  sender           TenantUser          @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  text             String              @db.Text
+  imageUrl         String?
+  audioUrl         String?
+  readAt           DateTime?
+  moderationStatus String              @default("approved")
+  createdAt        DateTime            @default(now())
+  @@index([conversationId, createdAt])
+}
+
+model ConnectReport {
+  id          String     @id @default(cuid())
+  reporterId  String
+  reporter    TenantUser @relation("reporterRel", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedId  String
+  reported    TenantUser @relation("reportedRel", fields: [reportedId], references: [id], onDelete: Cascade)
+  contentType String?
+  contentId   String?
+  reason      String
+  details     String?    @db.Text
+  status      String     @default("pending")
+  adminNotes  String?    @db.Text
+  createdAt   DateTime   @default(now())
+  reviewedAt  DateTime?
+  @@index([status, createdAt])
+}
+
+model ConnectBlock {
+  id        String     @id @default(cuid())
+  blockerId String
+  blocker   TenantUser @relation("blockerRel", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockedId String
+  blocked   TenantUser @relation("blockedRel", fields: [blockedId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+  @@unique([blockerId, blockedId])
+}
+
+model ConnectPremium {
+  id                String     @id @default(cuid())
+  userId            String     @unique
+  user              TenantUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeCustomerId  String?
+  stripeSubId       String?
+  status            String     @default("none")
+  trialEndsAt       DateTime?
+  currentPeriodEnd  DateTime?
+  cancelAtPeriodEnd Boolean    @default(false)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+}
+
+// ─── CARTE & LIEUX (NEUTRE — ex Venue/VenueCoupon/VenueParticipation) ─
+
+/// Coupon spécifique à un MapLocation (-10 % au resto X sur présentation).
+model LocationCoupon {
+  id            String       @id @default(cuid())
+  locationId    String
+  location      MapLocation? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  code          String       @unique
+  description   String?
+  discountKind  String       @default("percent")
+  discountValue Int          @default(0)
+  maxUses       Int?
+  uses          Int          @default(0)
+  validFrom     DateTime?
+  validUntil    DateTime?
+  active        Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  @@index([locationId, active])
+}
+
+/// Lien entre un MapLocation et un CalendarOccasion.
+model LocationEventParticipation {
+  id                  String           @id @default(cuid())
+  locationId          String
+  location            MapLocation?     @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  occasionId          String
+  occasion            CalendarOccasion @relation(fields: [occasionId], references: [id], onDelete: Cascade)
+  startsAt            DateTime
+  endsAt              DateTime?
+  livestreamUrl       String?
+  notes               String?          @db.Text
+  createdAt           DateTime         @default(now())
+  @@unique([locationId, occasionId])
+  @@index([startsAt])
+}
+
+// ─── CALENDRIER (NEUTRE — ex ReligiousEvent) ────────────────────
+
+/// Occasion calendaire (saison, fête, occasion thématique).
+model CalendarOccasion {
+  id              String                       @id @default(cuid())
+  slug            String                       @unique
+  name            String
+  category        String                       // libre : "season", "campaign", "anniversary", "holiday", "milestone"
+  tags            String[]                     @default([])
+  dateMode        String                       @default("fixed")     // "fixed" | "lunar" | "computed"
+  computeRule     String?                      // ex "easter+0", "ramadan-start", cron-like
+  startsAt        DateTime
+  endsAt          DateTime?
+  duration        Int                          @default(1)
+  description     String?                      @db.Text
+  audienceNote    String?                      @db.Text
+  emoji           String?
+  color           String?
+  externalUrl     String?
+  published       Boolean                      @default(true)
+  participations  LocationEventParticipation[]
+  createdAt       DateTime                     @default(now())
+  updatedAt       DateTime                     @updatedAt
+  @@index([category, startsAt])
+  @@index([startsAt, published])
+}
+
+// ─── CERCLES / GESTES COMMUNAUTAIRES (NEUTRE) ──────────────────
+
+/// Message de chat dans un cercle communautaire (ex prière → discussion thématique).
+model CircleMessage {
+  id         String   @id @default(cuid())
+  circle     String   // slug libre : "creators", "founders", "saison-1"...
+  authorName String?
+  authorId   String?
+  message    String   @db.Text
+  createdAt  DateTime @default(now())
+  @@index([circle, createdAt])
+}
+
+/// Geste communautaire géolocalisé, TTL 24h (ex bougie → souhait/voeu).
+model CommunityGesture {
+  id         String   @id @default(cuid())
+  userHash   String?  // anonyme par défaut
+  intention  String?  @db.Text // texte court d'intention
+  category   String?  // libre : "wish", "support", "celebration"...
+  lat        Float
+  lng        Float
+  city       String?
+  country    String?
+  expiresAt  DateTime
+  status     String   @default("active")  // active | expired | hidden
+  createdAt  DateTime @default(now())
+  @@index([expiresAt, status])
+  @@index([lat, lng])
+}
+
+/// Intention/voeu partagé dans un cercle ou en public.
+model CommunityIntention {
+  id          String   @id @default(cuid())
+  authorHash  String?
+  authorName  String?
+  category    String?
+  circle      String?  // null = public
+  text        String   @db.Text
+  supportCount Int     @default(0)  // ex "Je soutiens"
+  status      String   @default("approved")
+  isAnonymous Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  @@index([circle, createdAt])
+  @@index([status, createdAt])
+}
+
+/// Présence live dans un cercle — heartbeat client (auto-expire).
+model CirclePresence {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  circle       String
+  category     String?
+  city         String?
+  country      String?
+  lastSeenAt   DateTime @default(now())
+  joinedAt     DateTime @default(now())
+  @@index([circle, lastSeenAt])
+}
+
+/// Parcours collectif / challenge communautaire (ex Camino → roadmap collective).
+model CollectiveJourney {
+  id            String                 @id @default(cuid())
+  slug          String                 @unique
+  name          String
+  category      String                 // libre : "challenge", "roadmap", "tour", "season"
+  totalUnits    Int                    // ex 30 (jours), 800 (km), 12 (semaines)
+  unit          String                 @default("step") // step | km | day | week | task
+  description   String?                @db.Text
+  emoji         String?
+  color         String?
+  startLabel    String?                // ex "Jour 1"
+  endLabel      String?                // ex "Arrivée"
+  coverImage    String?
+  status        JourneyStatus          @default(DRAFT)
+  steps         JourneyStep[]
+  contributions JourneyContribution[]
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  @@index([status])
+}
+
+model JourneyStep {
+  id            String            @id @default(cuid())
+  journeyId     String
+  journey       CollectiveJourney @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  order         Int
+  name          String
+  unitsFromStart Int
+  description   String?           @db.Text
+  quote         String?           @db.Text
+  imageUrl      String?
+  @@unique([journeyId, order])
+  @@index([journeyId, unitsFromStart])
+}
+
+/// Contribution d'un user à un parcours collectif (1 contribution = N unités).
+model JourneyContribution {
+  id        String            @id @default(cuid())
+  journeyId String
+  journey   CollectiveJourney @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  userHash  String?
+  source    String            // "manual" | "post" | "checkin" | "task-completed" | ...
+  units     Int               @default(1)
+  createdAt DateTime          @default(now())
+  @@index([journeyId, createdAt])
+}
+
+/// Annotation collaborative d'un document (ex SacredAnnotation → notes sur un manuel/référence).
+model DocumentAnnotation {
+  id          String                @id @default(cuid())
+  document    String                // slug du document annoté ("manual", "guide", "transcript-ep1")
+  reference   String                // ex "ch.2 §4" | "00:12:34" | "page 17"
+  passageText String?               @db.Text
+  annotation  String                @db.Text
+  authorName  String?
+  authorRole  String?               // libre : "expert", "client", "auteur"
+  category    String?               // ex "queer-theology" → "perspective-experte"
+  perspective AnnotationPerspective @default(COMMUNITY)
+  upvotes     Int                   @default(0)
+  status      String                @default("approved") // pending | approved | hidden
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  @@index([document, reference])
+  @@index([category, status, createdAt])
+}
+
+/// Professionnel·le référencé·e (ex officiant → expert/prestataire).
+model Professional {
+  id              String                @id @default(cuid())
+  name            String
+  category        ProfessionalCategory  @default(OTHER)
+  customCategory  String?               // si OTHER, libre
+  role            String?               // ex "coach certifié", "photographe portrait"
+  affiliations    String[]              @default([])
+  city            String?
+  country         String?
+  email           String?
+  phone           String?
+  website         String?
+  bio             String?               @db.Text
+  servicesOffered String[]              @default([])
+  languages       String[]              @default([])
+  verified        Boolean               @default(false)
+  published       Boolean               @default(true)
+  avatarUrl       String?
+  bookings        ProfessionalBooking[]
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  @@index([category, country, city])
+}
+
+model ProfessionalBooking {
+  id             String       @id @default(cuid())
+  professionalId String
+  professional   Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  requesterName  String
+  requesterEmail String
+  serviceType    String
+  proposedDate   DateTime?
+  city           String?
+  message        String?      @db.Text
+  status         String       @default("pending")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  @@index([professionalId, status])
+}
+
+// ─── PHOTOS UGC ────────────────────────────────────────────────
+
+model UserPhoto {
+  id              String         @id @default(cuid())
+  storageKey      String
+  thumbnailKey    String?
+  caption         String?
+  authorName      String?
+  authorEmail     String?
+  locale          String         @default("fr")
+  status          PhotoStatus    @default(PENDING)
+  rejectionReason String?
+
+  latitude  Float?
+  longitude Float?
+  city      String?
+  country   String?
+  placeName String?
+  placeCategory PlaceCategory?
+
+  uploadedById      String?
+  reviewedById      String?
+  reviewedAt        DateTime?
+  aiModerationScore Float?
+  aiModerationFlags Json?
+
+  likes  Int          @default(0)
+  source PhotoSource  @default(WEB)
+  ipHash String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([status, createdAt])
+  @@index([country])
+  @@index([placeCategory])
+}
+
+// ─── IA / RAG / AVATAR / SITE-VOIX ─────────────────────────────
+
+/// Document de la base de connaissances RAG (consolidation RagSource/KnowledgeDoc).
+model KnowledgeDoc {
+  id         String           @id @default(cuid())
+  title      String
+  source     String?
+  sourceType String           @default("text") // text | pdf | url | photo
+  author     String?
+  content    String           @db.Text
+  tags       String[]         @default([])
+  locale     String           @default("fr")
+  enabled    Boolean          @default(true)
+  chunks     KnowledgeChunk[]
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  @@index([enabled, locale])
+}
+
+model KnowledgeChunk {
+  id        String       @id @default(cuid())
+  docId     String
+  doc       KnowledgeDoc @relation(fields: [docId], references: [id], onDelete: Cascade)
+  position  Int
+  text      String       @db.Text
+  embedding Json
+  tokens    Int          @default(0)
+  createdAt DateTime     @default(now())
+  @@index([docId])
+}
+
+model UnansweredQuery {
+  id          String   @id @default(cuid())
+  question    String   @db.Text
+  locale      String   @default("fr")
+  topScore    Float    @default(0)
+  status      String   @default("PENDING")
+  adminAnswer String?  @db.Text
+  createdAt   DateTime @default(now())
+  @@index([status, createdAt])
+}
+
+/// Voix éditoriale quotidienne du site (ex SoulEntry → journal IA neutre).
+model SiteJournal {
+  id          String   @id @default(cuid())
+  date        DateTime @unique
+  mood        String
+  moodScore   Float    @default(0.5)
+  body        String   @db.Text
+  bodyShort   String?  @db.Text
+  stats       Json?
+  generatedBy String   @default("gemini")
+  approved    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  @@index([date])
+  @@index([mood])
+}
+
+model Avatar {
+  id              String             @id @default(cuid())
+  slug            String             @unique
+  name            String
+  persona         String?
+  provider        String
+  externalId      String
+  thumbnailUrl    String?
+  previewVideoUrl String?
+  status          String             @default("training")
+  trainingError   String?            @db.Text
+  voiceId         String?
+  metadata        Json?
+  generations     AvatarGeneration[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  @@index([persona, status])
+}
+
+model AvatarGeneration {
+  id            String    @id @default(cuid())
+  avatarId      String
+  avatar        Avatar    @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+  scriptText    String    @db.Text
+  videoUrl      String?
+  durationSec   Int?
+  outfit        String?
+  setting       String?
+  language      String    @default("fr")
+  externalJobId String?
+  status        String    @default("pending")
+  errorMessage  String?   @db.Text
+  costCents     Int?
+  createdAt     DateTime  @default(now())
+  finishedAt    DateTime?
+  @@index([avatarId, status])
+  @@index([status, createdAt])
+}
+
+/// Stream live (ex WebcamSource → diffusion live neutre).
+model LiveStream {
+  id             String           @id @default(cuid())
+  slug           String           @unique
+  name           String
+  city           String?
+  country        String?
+  category       String?          // libre : "studio-live", "workshop", "talk"
+  emoji          String?
+  description    String?
+  source         LiveStreamSource @default(YOUTUBE)
+  channelId      String?
+  videoId        String?
+  externalUrl    String?
+  schedule       String?
+  featured       Boolean          @default(false)
+  active         Boolean          @default(true)
+  lastVerifiedAt DateTime?
+  lastLive       Boolean          @default(false)
+  lastVideoId    String?
+  discoveredBy   String           @default("manual")
+  discoveredAt   DateTime         @default(now())
+  liveCount      Int              @default(0)
+  failCount      Int              @default(0)
+  reportedDeadAt DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  @@index([active, category])
+  @@index([lastVerifiedAt])
+}
+
+// ─── PLATEFORME / DEVOPS / SÉCURITÉ ────────────────────────────
+
+model AdminInvitation {
+  id          String    @id @default(cuid())
+  code        String    @unique @default(cuid())
+  email       String
+  role        String    @default("ADMIN")
+  expiresAt   DateTime
+  usedAt      DateTime?
+  usedByIp    String?
+  usedByUa    String?
+  createdById String?
+  createdAt   DateTime  @default(now())
+  @@index([email, usedAt])
+  @@index([expiresAt])
+}
+
+model ClaudeSession {
+  id                String          @id @default(cuid())
+  userId            String?
+  prompt            String          @db.Text
+  model             String          @default("claude-sonnet-4-5")
+  workingDir        String?
+  permissionMode    String          @default("bypassPermissions")
+  status            String          @default("running")
+  durationMs        Int?
+  totalInputTokens  Int?
+  totalOutputTokens Int?
+  errorMessage      String?         @db.Text
+  messages          ClaudeMessage[]
+  createdAt         DateTime        @default(now())
+  finishedAt        DateTime?
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+model ClaudeMessage {
+  id        String        @id @default(cuid())
+  sessionId String
+  session   ClaudeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  type      String
+  payload   Json
+  index     Int           @default(0)
+  createdAt DateTime      @default(now())
+  @@index([sessionId, index])
+}
+
+model ClaudeApproval {
+  id                String    @id @default(cuid())
+  sessionId         String?
+  action            String
+  description       String    @db.Text
+  context           Json?
+  status            String    @default("pending")
+  telegramMessageId String?
+  decidedBy         String?
+  decidedAt         DateTime?
+  expiresAt         DateTime
+  createdAt         DateTime  @default(now())
+  @@index([status, expiresAt])
+  @@index([sessionId])
+}
+
+model EmailLog {
+  id           String   @id @default(cuid())
+  to           String
+  fromAddr     String
+  subject      String
+  type         String   @default("transactional")
+  provider     String   @default("resend")
+  status       String   @default("pending")
+  providerId   String?
+  errorMessage String?  @db.Text
+  campaignId   String?
+  createdAt    DateTime @default(now())
+  @@index([createdAt])
+  @@index([to, createdAt])
+  @@index([type, status, createdAt])
+}
+
+/// Log de tous les messages échangés via le bot Telegram (étend TelegramAlert).
+model TelegramMessage {
+  id            String   @id @default(cuid())
+  direction     String   // 'in' | 'out'
+  chatId        String
+  userId        String?
+  username      String?
+  firstName     String?
+  text          String?  @db.Text
+  command       String?
+  aiInterpreted Boolean  @default(false)
+  imageUrl      String?
+  callbackData  String?
+  status        String   @default("delivered")
+  errorMessage  String?  @db.Text
+  raw           Json?
+  createdAt     DateTime @default(now())
+  @@index([chatId, createdAt])
+  @@index([direction, createdAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  target    String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  @@index([createdAt])
+  @@index([userId])
+}
+
+/// Analytics interne RGPD-friendly (hash visiteur anonyme).
+model PageView {
+  id          String   @id @default(cuid())
+  path        String
+  visitorHash String
+  referrer    String?
+  country     String?
+  createdAt   DateTime @default(now())
+  @@unique([path, visitorHash, createdAt])
+  @@index([path, createdAt])
+  @@index([createdAt])
+}
+
+/// Post programmé multi-réseaux (étend SocialPost).
+model ScheduledPost {
+  id          String    @id @default(cuid())
+  title       String?
+  content     String    @db.Text
+  mediaKeys   String[]  @default([])
+  channels    String[]  @default([])
+  scheduledAt DateTime
+  status      String    @default("PENDING") // PENDING | PUBLISHED | FAILED | CANCELLED
+  publishedAt DateTime?
+  results     Json?
+  createdById String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  @@index([scheduledAt, status])
+}
+
+// ─── SUBMISSIONS / PEER HELP ───────────────────────────────────
+
+model PeerHelp {
+  id           String             @id @default(cuid())
+  authorName   String?
+  authorEmail  String?
+  country      String?
+  topic        String
+  message      String             @db.Text
+  urgent       Boolean            @default(false)
+  status       String             @default("active")
+  supportCount Int                @default(0)
+  responses    PeerHelpResponse[]
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  @@index([status, createdAt])
+  @@index([topic, status])
+}
+
+model PeerHelpResponse {
+  id         String   @id @default(cuid())
+  peerHelpId String
+  peerHelp   PeerHelp @relation(fields: [peerHelpId], references: [id], onDelete: Cascade)
+  authorName String?
+  message    String   @db.Text
+  approved   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  @@index([peerHelpId, approved])
+}
+
+// ─── THEME (étendu pour auto-activation + holidaySlug + musicUrl) ─
+
+model Theme {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  category    String   // "holiday" | "aesthetic" | "seasonal" | "campaign" | "permanent"
+
+  // Couleurs (CSS variables injectées dynamiquement)
+  colors      Json     // { primary, secondary, accent, bg, fg, border, ... }
+  palette     Json?    // legacy compat
+  fonts       Json?
+  blocks      Json?
+  decorations Json?
+  customCss   String?  @db.Text
+
+  // Audio d'ambiance
+  musicUrl    String?
+  musicVolume Float?   @default(0.3)
+  mood        String?
+
+  // Auto-activation calendrier
+  autoActivate    Boolean @default(false)
+  autoStartMonth  Int?
+  autoStartDay    Int?
+  autoEndMonth    Int?
+  autoEndDay      Int?
+  daysBefore      Int     @default(7)
+  durationDays    Int     @default(7)
+  holidaySlug     String? // ref à CalendarOccasion.slug pour dates calculées
+  geographicScope String?
+
+  // État
+  active         Boolean   @default(false)
+  priority       Int       @default(0)
+  preview        String?
+  previewImage   String?
+  scheduledFrom  DateTime?
+  scheduledUntil DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([active])
+  @@index([category])
+  @@index([autoActivate])
+}
+
+// ─── AiManual (déjà SQL en init, ajouté pour cohérence Prisma client) ─
+
+model AiManual {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  audience    String   // "user" | "admin" | "superadmin"
+  title       String
+  version     String?
+  tone        String?
+  language    String   @default("fr")
+  content     String   @db.Text
+  htmlContent String?  @db.Text
+  outline     Json?
+  pdfUrl      String?
+  videoScript String?  @db.Text
+  provider    String?
+  model       String?
+  tokensUsed  Int?
+  tags        String[] @default([])
+  sectionCount Int     @default(0)
+  wordCount    Int     @default(0)
+  publishedAt  DateTime?
+  publishedToTelegram Boolean @default(false)
+  generatedBy String   @default("gemini")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([audience, createdAt])
+  @@index([publishedAt])
 }
