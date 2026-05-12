@@ -29,7 +29,7 @@ export { ThemeProvider, themeToCssVars, resolveTheme, THEME_PRESETS } from './Th
 export type { SiteTheme } from './Theme';
 
 // Renderer
-export { PageBlocksRenderer } from './PageBlocksRenderer';
-export type { Block } from './PageBlocksRenderer';
+export { PageBlocksRenderer, BLOCK_TYPES } from './PageBlocksRenderer';
+export type { Block, BlockType } from './PageBlocksRenderer';
 
 export const PIXEESITE_BLOCKS_VERSION = '0.2.0';
