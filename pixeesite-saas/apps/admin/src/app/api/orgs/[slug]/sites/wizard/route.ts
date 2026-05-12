@@ -59,7 +59,18 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
           await platformDb.org.update({ where: { id: orgId }, data: themePatch }).catch(() => {});
         }
 
-        // 3. Crée le site
+        // 2b. THEME COMPLET pour le Site (palette dérivée + fonts) — c'est ce qui sera lu par le render
+        const siteTheme = buildSiteTheme({
+          primaryColor: b.primaryColor || palette?.primary || null,
+          font: b.font || null,
+          palette,
+        });
+        emit({
+          step: 'derive-theme', ok: true,
+          detail: `palette=${siteTheme.primary}/${siteTheme.secondary}/${siteTheme.accent} font=${(siteTheme.fontHeading || '').split(',')[0]}`,
+        });
+
+        // 3. Crée le site (avec son theme complet)
         const slug = (b.name as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
         let finalSlug = slug;
         let counter = 2;
@@ -68,7 +79,11 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
           if (counter > 100) break;
         }
         const site = await platformDb.site.create({
-          data: { orgId, slug: finalSlug, name: b.name, status: 'published', deployedAt: new Date(), templateId: b.templateId || null },
+          data: {
+            orgId, slug: finalSlug, name: b.name, status: 'published', deployedAt: new Date(),
+            templateId: b.templateId || null,
+            theme: siteTheme as any,
+          },
         });
         emit({ step: 'site-created', ok: true, detail: { id: site.id, slug: finalSlug }, progress: 6 });
 
@@ -1149,6 +1164,120 @@ const DEFAULT_PRICING_PLANS = [
   { name: 'Premium', price: '99€', period: '/mois', description: 'Le plus populaire', features: ['Tout l\'Essentiel', 'Fonctionnalité avancée', 'Personnalisation', 'Support prioritaire'], highlight: true, ctaLabel: 'Choisir', ctaHref: '/contact' },
   { name: 'Sur-mesure', price: 'Sur devis', period: '', description: 'Pour les besoins spécifiques', features: ['Tout Premium', 'Accompagnement dédié', 'SLA personnalisé'], highlight: false, ctaLabel: 'Demander', ctaHref: '/contact' },
 ];
+
+// ═══════════════════════════════════════════════════════════════════
+// THEME DERIVATION — palette HSL + fonts whitelistées
+// ═══════════════════════════════════════════════════════════════════
+
+/** Fonts Google Fonts whitelistées (chargées dynamiquement côté render). */
+const FONT_WHITELIST = [
+  'Inter', 'Poppins', 'Playfair Display', 'DM Sans', 'Manrope',
+  'Bricolage Grotesque', 'Outfit', 'Fraunces', 'Cormorant Garamond',
+  'Space Grotesk', 'Plus Jakarta Sans', 'Lora', 'Marcellus', 'Cinzel',
+] as const;
+
+/** Renvoie le nom de font normalisé si dans la whitelist, sinon `null`. */
+function normalizeFont(raw?: string | null): string | null {
+  if (!raw) return null;
+  const s = String(raw).trim().replace(/^["']|["']$/g, '');
+  // Match exact (insensible à la casse)
+  const hit = FONT_WHITELIST.find((f) => f.toLowerCase() === s.toLowerCase());
+  return hit || null;
+}
+
+/** Wrap d'une font en stack CSS avec fallback. */
+function fontStack(name: string | null, kind: 'heading' | 'body'): string {
+  const fallbackHeading = '"Playfair Display", Georgia, serif';
+  const fallbackBody = '"Inter", system-ui, -apple-system, sans-serif';
+  if (!name) return kind === 'heading' ? fallbackHeading : fallbackBody;
+  // Serif vs sans-serif fallback selon connaissance
+  const serifFonts = new Set(['Playfair Display', 'Fraunces', 'Cormorant Garamond', 'Lora', 'Marcellus', 'Cinzel']);
+  const fb = serifFonts.has(name) ? 'Georgia, serif' : 'system-ui, -apple-system, sans-serif';
+  return `"${name}", ${fb}`;
+}
+
+/** hex → HSL [h, s, l] (0-360, 0-100, 0-100). */
+function hexToHsl(hex: string): [number, number, number] {
+  let h = hex.trim().replace('#', '');
+  if (h.length === 3) h = h.split('').map((c) => c + c).join('');
+  if (!/^[0-9a-f]{6}$/i.test(h)) return [290, 80, 55]; // fallback fuchsia
+  const r = parseInt(h.slice(0, 2), 16) / 255;
+  const g = parseInt(h.slice(2, 4), 16) / 255;
+  const b = parseInt(h.slice(4, 6), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let hh = 0, s = 0;
+  const l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: hh = ((g - b) / d + (g < b ? 6 : 0)); break;
+      case g: hh = ((b - r) / d + 2); break;
+      case b: hh = ((r - g) / d + 4); break;
+    }
+    hh *= 60;
+  }
+  return [Math.round(hh), Math.round(s * 100), Math.round(l * 100)];
+}
+
+function hslToHex(h: number, s: number, l: number): string {
+  s /= 100; l /= 100;
+  const k = (n: number) => (n + h / 30) % 12;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n: number) => {
+    const v = l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+    return Math.round(v * 255).toString(16).padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+/** Rotation de teinte sur le cercle chromatique. */
+function rotateHue(hex: string, deg: number): string {
+  const [h, s, l] = hexToHsl(hex);
+  return hslToHex((h + deg + 360) % 360, s, l);
+}
+
+interface BuildThemeOpts {
+  primaryColor: string | null;
+  font: string | null;
+  palette: any | null;
+}
+
+/**
+ * Construit un theme complet (palette + fonts + radius + spacing)
+ * à partir des choix utilisateur du wizard et de la palette du template.
+ */
+function buildSiteTheme(opts: BuildThemeOpts) {
+  const primary = opts.primaryColor || opts.palette?.primary || '#d946ef';
+  const secondary = opts.palette?.secondary || rotateHue(primary, 180);
+  const accent = opts.palette?.accent || rotateHue(primary, 60);
+  const background = opts.palette?.background || '#0a0a0f';
+  const foreground = opts.palette?.foreground || '#fafafa';
+
+  // Fonts : si l'user a choisi une font → s'applique à heading + body
+  // Sinon : palette template → heading=fontHeading, body=fontBody
+  const userFont = normalizeFont(opts.font);
+  const tplHeading = normalizeFont(opts.palette?.fontHeading);
+  const tplBody = normalizeFont(opts.palette?.fontBody);
+
+  const fontHeadingName = userFont || tplHeading || 'Playfair Display';
+  const fontBodyName = userFont || tplBody || 'Inter';
+
+  return {
+    primary,
+    secondary,
+    accent,
+    background,
+    foreground,
+    fontHeading: fontStack(fontHeadingName, 'heading'),
+    fontBody: fontStack(fontBodyName, 'body'),
+    // Champs internes utiles côté render : noms bruts pour Google Fonts loader
+    fontHeadingName,
+    fontBodyName,
+    radius: opts.palette?.radius || '1rem',
+    spacing: opts.palette?.spacing || 'comfortable',
+  };
+}
 
 /** Petit helper IA qui demande un { items: [...] } et retourne le tableau (ou []). */
 async function safeAiArray(orgId: string, prompt: string): Promise<any[]> {

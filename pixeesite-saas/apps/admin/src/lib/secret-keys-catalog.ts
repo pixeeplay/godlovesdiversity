@@ -31,6 +31,13 @@ export const PLATFORM_KEYS_CATALOG = [
   { key: 'MASTER_KEY', category: 'infra', description: 'Master key encryption secrets (32 bytes hex)' },
   { key: 'MINIO_ROOT_USER', category: 'infra', description: 'MinIO admin user (storage tenants)' },
   { key: 'MINIO_ROOT_PASSWORD', category: 'infra', description: 'MinIO admin password' },
+
+  // Media library partagée (free tiers, fallback plateforme si l'org n'a pas configuré)
+  { key: 'UNSPLASH_ACCESS_KEY', category: 'media', description: 'Unsplash (Client-ID, 50 req/h gratuit)' },
+  { key: 'PEXELS_API_KEY', category: 'media', description: 'Pexels photos + vidéos (gratuit)' },
+  { key: 'PIXABAY_KEY', category: 'media', description: 'Pixabay photos + vidéos (gratuit)' },
+  { key: 'GIPHY_KEY', category: 'media', description: 'Giphy GIFs (gratuit)' },
+  { key: 'YOUTUBE_API_KEY', category: 'media', description: 'YouTube Data API v3 (search vidéos)' },
 ];
 
 export const ORG_KEYS_CATALOG = [
@@ -52,6 +59,13 @@ export const ORG_KEYS_CATALOG = [
   { key: 'HEYGEN_API_KEY', category: 'media', description: 'HeyGen (avatars vidéo)' },
   { key: 'RUNWAY_API_KEY', category: 'media', description: 'Runway ML (Gen-3, Gen-4)' },
   { key: 'REPLICATE_API_TOKEN', category: 'media', description: 'Replicate (modèles open-source)' },
+
+  // Media library (free tiers, peuvent aussi être platform-level)
+  { key: 'UNSPLASH_ACCESS_KEY', category: 'media', description: 'Unsplash photos (Client-ID, 50 req/h gratuit)' },
+  { key: 'PEXELS_API_KEY', category: 'media', description: 'Pexels photos + vidéos (gratuit)' },
+  { key: 'PIXABAY_KEY', category: 'media', description: 'Pixabay photos + vidéos (gratuit)' },
+  { key: 'GIPHY_KEY', category: 'media', description: 'Giphy GIFs (gratuit)' },
+  { key: 'YOUTUBE_API_KEY', category: 'media', description: 'YouTube Data API v3 (search vidéos)' },
 
   // Mail / Communication
   { key: 'RESEND_API_KEY', category: 'mail', description: 'Resend API key (mails du tenant)' },

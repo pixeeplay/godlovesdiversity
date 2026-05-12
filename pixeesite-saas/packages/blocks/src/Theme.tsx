@@ -11,6 +11,13 @@
  */
 import type { ReactNode, CSSProperties } from 'react';
 
+/** Fonts Google Fonts whitelistées. Chargées dynamiquement via <GoogleFontsLoader>. */
+export const FONT_WHITELIST = [
+  'Inter', 'Poppins', 'Playfair Display', 'DM Sans', 'Manrope',
+  'Bricolage Grotesque', 'Outfit', 'Fraunces', 'Cormorant Garamond',
+  'Space Grotesk', 'Plus Jakarta Sans', 'Lora', 'Marcellus', 'Cinzel',
+] as const;
+
 export interface SiteTheme {
   /** Couleur primaire — boutons, accents */
   primary?: string;
@@ -26,6 +33,10 @@ export interface SiteTheme {
   fontHeading?: string;
   /** Font pour le body */
   fontBody?: string;
+  /** Nom brut Google Fonts pour le heading (chargé dynamiquement). */
+  fontHeadingName?: string;
+  /** Nom brut Google Fonts pour le body (chargé dynamiquement). */
+  fontBodyName?: string;
   /** Border radius global (rem ou px) */
   radius?: string;
   /** Spacing system : compact / comfortable / spacious */
@@ -101,6 +112,38 @@ export function ThemeProvider({ theme, children, className = '' }: {
 /** Récupère un theme avec fallback complet (utile pour les calculs côté serveur). */
 export function resolveTheme(theme?: SiteTheme | null): Required<SiteTheme> {
   return { ...DEFAULT_THEME, ...(theme || {}) };
+}
+
+/**
+ * Charge dynamiquement les Google Fonts demandées par le theme.
+ *
+ * Lit `theme.fontHeadingName` + `theme.fontBodyName` (champs bruts type "Inter"
+ * "Playfair Display"). Seuls les noms dans FONT_WHITELIST sont chargés.
+ *
+ * Rendu côté serveur (Next.js Server Component compatible) : on émet
+ * <link rel="stylesheet" ...> que le navigateur récupère avant le rendu visuel.
+ */
+export function GoogleFontsLoader({ theme }: { theme?: SiteTheme | null }) {
+  const allowed = new Set<string>(FONT_WHITELIST as readonly string[]);
+  const fonts = new Set<string>();
+  if (theme?.fontHeadingName && allowed.has(theme.fontHeadingName)) fonts.add(theme.fontHeadingName);
+  if (theme?.fontBodyName && allowed.has(theme.fontBodyName)) fonts.add(theme.fontBodyName);
+  // Tente aussi d'extraire le 1er token du stack fontHeading / fontBody si fourni brut
+  const tryExtract = (stack?: string) => {
+    if (!stack) return;
+    const first = stack.split(',')[0]?.trim().replace(/^["']|["']$/g, '');
+    if (first && allowed.has(first)) fonts.add(first);
+  };
+  tryExtract(theme?.fontHeading);
+  tryExtract(theme?.fontBody);
+  if (fonts.size === 0) return null;
+
+  const families = Array.from(fonts)
+    .map((f) => `family=${encodeURIComponent(f)}:wght@400;600;700;800;900`)
+    .join('&');
+  const href = `https://fonts.googleapis.com/css2?${families}&display=swap`;
+
+  return <link rel="stylesheet" href={href} />;
 }
 
 /** 5 thèmes pré-built que les utilisateurs peuvent appliquer en 1 clic. */

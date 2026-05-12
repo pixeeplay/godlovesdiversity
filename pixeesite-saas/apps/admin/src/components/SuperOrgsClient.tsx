@@ -47,6 +47,30 @@ export function SuperOrgsClient() {
     load();
   }
 
+  // Phase 20 — Seed marketplace templates (11 themed templates)
+  const [seedingMarketplace, setSeedingMarketplace] = useState(false);
+  const [seedMarketplaceResult, setSeedMarketplaceResult] = useState<string | null>(null);
+  async function seedMarketplace() {
+    setSeedingMarketplace(true);
+    setSeedMarketplaceResult(null);
+    try {
+      const r = await fetch('/api/admin/seed-marketplace-templates', { method: 'POST' });
+      const j = await r.json();
+      if (j.ok) {
+        setSeedMarketplaceResult(
+          `OK · ${j.created} créés, ${j.updated} mis à jour (${j.total})`
+        );
+      } else {
+        setSeedMarketplaceResult(
+          `Partiel : ${j.created || 0} créés, ${j.updated || 0} màj, ${(j.errors || []).length} erreurs`
+        );
+      }
+    } catch (e: any) {
+      setSeedMarketplaceResult(`Erreur : ${e.message}`);
+    }
+    setSeedingMarketplace(false);
+  }
+
   const [initOrg, setInitOrg] = useState<string | null>(null);
   const [initLog, setInitLog] = useState<any[]>([]);
   const [initBusy, setInitBusy] = useState(false);
@@ -74,6 +98,10 @@ export function SuperOrgsClient() {
             {migrating ? '⏳ Migration…' : '🔧 Migrate tenants'}
           </button>
           {migrateResult && <span style={{ fontSize: 12, color: '#10b981' }}>{migrateResult}</span>}
+          <button onClick={seedMarketplace} disabled={seedingMarketplace} style={btnSecondary} title="Phase 20 — Upsert les 11 templates thémés de la marketplace (Photo, Restau, Coach, Podcast, Asso, École, Agence, Immo, E-com, Link, Blog)">
+            {seedingMarketplace ? '⏳ Seed…' : '📦 Seed marketplace'}
+          </button>
+          {seedMarketplaceResult && <span style={{ fontSize: 12, color: seedMarketplaceResult.startsWith('OK') ? '#10b981' : '#f59e0b' }}>{seedMarketplaceResult}</span>}
           <input style={{ ...input, maxWidth: 280 }} placeholder="Rechercher slug ou nom…" value={q} onChange={(e) => setQ(e.target.value)} />
         </div>
       </div>

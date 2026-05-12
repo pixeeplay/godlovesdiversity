@@ -94,7 +94,9 @@ export async function aiCall(opts: AiCallOpts): Promise<AiResult> {
       case 'openrouter': result = await callOpenRouter({ orgId: opts.orgId, model, prompt: opts.prompt, systemPrompt, temperature, maxTokens }); break;
       case 'groq': result = await callGroq({ orgId: opts.orgId, model, prompt: opts.prompt, systemPrompt, temperature, maxTokens }); break;
       case 'ollama': result = await callOpenAICompat({ provider: 'ollama', baseUrl: baseUrl || 'http://localhost:11434/v1', apiKey: 'ollama', model, prompt: opts.prompt, systemPrompt, temperature, maxTokens }); break;
+      case 'ollama-cloud': result = await callOllamaCloudFn({ orgId: opts.orgId, baseUrl: baseUrl || 'https://ollama.com', model, prompt: opts.prompt, systemPrompt, temperature, maxTokens }); break;
       case 'lmstudio': result = await callOpenAICompat({ provider: 'lmstudio', baseUrl: baseUrl || 'http://localhost:1234/v1', apiKey: 'lm-studio', model, prompt: opts.prompt, systemPrompt, temperature, maxTokens }); break;
+      case 'mistral': result = await callMistral({ orgId: opts.orgId, model, prompt: opts.prompt, systemPrompt, temperature, maxTokens }); break;
       default: result = { ok: false, output: '', provider, model, error: `Provider ${provider} non implémenté` };
     }
     await recordUsage(opts.orgId, { ...result, provider, model, operation: opts.feature });
@@ -211,6 +213,18 @@ async function callOpenAICompat({ provider, baseUrl, apiKey, model, prompt, syst
     promptTokens: j.usage?.prompt_tokens,
     outputTokens: j.usage?.completion_tokens,
   };
+}
+
+async function callMistral(args: any): Promise<AiResult> {
+  const key = await getOrgSecret(args.orgId, 'MISTRAL_API_KEY');
+  if (!key) return { ok: false, output: '', provider: 'mistral', model: args.model, error: 'MISTRAL_API_KEY non configurée' };
+  return callOpenAICompat({ ...args, provider: 'mistral', baseUrl: 'https://api.mistral.ai/v1', apiKey: key });
+}
+
+async function callOllamaCloudFn({ orgId, baseUrl, model, prompt, systemPrompt, temperature, maxTokens }: any): Promise<AiResult> {
+  const key = await getOrgSecret(orgId, 'OLLAMA_CLOUD_API_KEY');
+  if (!key) return { ok: false, output: '', provider: 'ollama-cloud', model, error: 'OLLAMA_CLOUD_API_KEY non configurée' };
+  return callOpenAICompat({ provider: 'ollama-cloud', baseUrl: `${baseUrl.replace(/\/$/, '')}/v1`, apiKey: key, model, prompt, systemPrompt, temperature, maxTokens });
 }
 
 /** Convenience helpers. */

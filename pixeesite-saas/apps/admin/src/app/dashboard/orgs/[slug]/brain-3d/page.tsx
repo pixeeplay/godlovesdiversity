@@ -1,6 +1,6 @@
-import { Brain3DClient } from '@/components/Brain3DClient';
+import { BrainVizClient } from '@/components/BrainVizClient';
 
 export default async function Brain3dPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  return <Brain3DClient orgSlug={slug} />;
+  return <BrainVizClient orgSlug={slug} />;
 }

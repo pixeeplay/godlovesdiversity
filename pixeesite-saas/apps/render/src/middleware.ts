@@ -1,36 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { platformDb } from '@pixeesite/database';
 
 /**
- * Middleware multi-tenant : résout l'org à partir du host.
+ * Middleware multi-tenant — Edge Runtime safe (PAS d'import @pixeesite/database).
  *
- * 3 cas :
- *   1. arnaud.pixeesite.app   → orgSlug = "arnaud" (subdomain)
- *   2. arnaud-photo.com       → DB lookup CustomDomain → orgSlug
- *   3. localhost:3001         → header X-Tenant-Slug forcé (dev)
+ * Le middleware Next.js tourne par défaut en Edge Runtime qui ne supporte pas
+ * Node.js (Prisma, pg). Donc on fait UNIQUEMENT du parsing de host ici, et le
+ * lookup custom domain est fait côté server component (apps/render/src/app/[[...slug]]/page.tsx).
  *
- * Le orgSlug résolu est passé via header `x-pixeesite-org-slug` aux
- * pages serveur qui peuvent ensuite getTenantPrisma(slug).
+ * Cas gérés :
+ *   1. <slug>.pixeeplay.com           → orgSlug = "<slug>"
+ *   2. <slug>.pixeesite.app/.com      → idem (legacy)
+ *   3. localhost / sslip.io           → ?org=<slug> en query param (dev)
+ *   4. Custom domain (mon-site.com)   → header x-pixeesite-host transmis,
+ *                                       résolution DB côté page.tsx
  */
 
 const PLATFORM_DOMAINS = ['pixeesite.app', 'pixeesite.com', 'pixeeplay.com', 'render.pixeesite.app'];
-
-// Subdomains réservés à la plateforme (admin, www, marketing) qui ne sont PAS des org slugs.
-// Ex : pixeesite.pixeeplay.com = landing marketing, pas un org "pixeesite"
 const RESERVED_SUBDOMAINS = new Set(['www', 'admin', 'app', 'api', 'pixeesite', 'render', 'docs', 'status']);
 
-// Dev / staging subdomains (sslip.io for Coolify): the org slug comes from a query param `?org=` for testing
 function getDevSlug(req: NextRequest): string | null {
   const queryOrg = req.nextUrl.searchParams.get('org');
-  if (queryOrg) return queryOrg;
-  return null;
+  return queryOrg || null;
 }
 
-export async function middleware(req: NextRequest) {
+export function middleware(req: NextRequest) {
   const url = req.nextUrl;
   const host = (req.headers.get('host') || '').toLowerCase().split(':')[0];
 
-  // Skip API routes and static
+  // Skip API routes et static
   if (url.pathname.startsWith('/_next') || url.pathname.startsWith('/api/')) {
     return NextResponse.next();
   }
@@ -41,12 +38,11 @@ export async function middleware(req: NextRequest) {
   const devSlug = req.headers.get('x-tenant-slug') || getDevSlug(req);
   if (devSlug) orgSlug = devSlug;
 
-  // Cas 1 : subdomain *.pixeesite.app / *.pixeesite.com / *.pixeeplay.com
+  // Cas 1 : subdomain *.pixeeplay.com / *.pixeesite.app / *.pixeesite.com
   if (!orgSlug) {
     for (const domain of PLATFORM_DOMAINS) {
       if (host.endsWith(`.${domain}`)) {
         const candidate = host.slice(0, -domain.length - 1).split('.')[0];
-        // Filtre les subdomains réservés (admin, www, etc.) qui ne sont pas des orgs
         if (candidate && !RESERVED_SUBDOMAINS.has(candidate)) {
           orgSlug = candidate;
         }
@@ -55,31 +51,15 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // Cas 2 : custom domain → DB lookup
-  if (!orgSlug && !PLATFORM_DOMAINS.includes(host) && !host.includes('localhost')) {
-    try {
-      const cd = await platformDb.customDomain.findUnique({
-        where: { domain: host },
-        select: { verified: true, org: { select: { slug: true } } },
-      });
-      if (cd?.verified) orgSlug = cd.org.slug;
-    } catch {
-      // DB unavailable → laisser passer en mode dégradé
-    }
-  }
-
-  if (!orgSlug) {
-    // Pas d'org résolu : page d'erreur platform
-    return NextResponse.rewrite(new URL('/_unknown-org', req.url));
-  }
-
-  // CRITIQUE : on doit propager le header sur la REQUÊTE forwardée au server component,
-  // pas sur la response. Sinon headers().get() côté page rend null → notFound().
+  // Cas custom domain : pas de subdomain match → on laisse passer avec x-pixeesite-host.
+  // Le server component (page.tsx) fera le lookup CustomDomain dans la platform DB.
   const requestHeaders = new Headers(req.headers);
-  requestHeaders.set('x-pixeesite-org-slug', orgSlug);
+  requestHeaders.set('x-pixeesite-host', host);
+  if (orgSlug) requestHeaders.set('x-pixeesite-org-slug', orgSlug);
+
   const res = NextResponse.next({ request: { headers: requestHeaders } });
-  // Aussi sur la response (debug / browser visibility)
-  res.headers.set('x-pixeesite-org-slug', orgSlug);
+  if (orgSlug) res.headers.set('x-pixeesite-org-slug', orgSlug);
+  res.headers.set('x-pixeesite-host', host);
   return res;
 }
 

@@ -92,6 +92,7 @@ export function DashboardShell({ user, orgs, children }: { user: any; orgs: Org[
       title: 'IA & Outils', emoji: '✨',
       items: [
         { href: `/dashboard/orgs/${slug}/ai`, icon: '🤖', label: 'AI Settings multi-providers' },
+        { href: `/dashboard/orgs/${slug}/ai/topology`, icon: '🗺️', label: 'AI Topology Map' },
         { href: `/dashboard/orgs/${slug}/ai-autopilot`, icon: '🚁', label: 'AI Autopilot' },
         { href: `/dashboard/orgs/${slug}/manuals`, icon: '📗', label: 'Manuels auto IA' },
         { href: `/dashboard/orgs/${slug}/rag`, icon: '🧠', label: 'Cerveau RAG' },
@@ -99,6 +100,8 @@ export function DashboardShell({ user, orgs, children }: { user: any; orgs: Org[
         { href: `/dashboard/orgs/${slug}/playground`, icon: '🎮', label: 'Playground RAG' },
         { href: `/dashboard/orgs/${slug}/legal-assistant`, icon: '⚖️', label: 'Assistant juridique' },
         { href: `/dashboard/orgs/${slug}/avatar-studio`, icon: '🎭', label: 'Avatar Studio (vidéo)' },
+        { href: `/dashboard/orgs/${slug}/studio`, icon: '🎬', label: 'Studio créatif', badge: 'NEW' },
+        { href: `/dashboard/orgs/${slug}/journal-ia`, icon: '📖', label: 'Journal IA (voix éditoriale)' },
         { href: `/dashboard/orgs/${slug}/translations`, icon: '🌍', label: 'Traductions IA' },
         { href: `/dashboard/orgs/${slug}/telegram-bot`, icon: '🤳', label: 'Bot Telegram' },
         { href: `/dashboard/orgs/${slug}/integrations`, icon: '🔌', label: 'Intégrations' },

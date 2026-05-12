@@ -2,7 +2,12 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { EFFECTS, EFFECT_CATEGORIES, type Effect, type EffectCategory } from '@pixeesite/blocks';
+import {
+  EFFECTS, EFFECT_CATEGORIES, type Effect, type EffectCategory,
+  PageBlocksRenderer, EffectsStyles, GoogleFontsLoader,
+  type SiteTheme, type Block as RendererBlock,
+} from '@pixeesite/blocks';
+import { MediaLibrary, MediaLibraryToolbarButton, type MediaResult } from './MediaLibrary';
 
 export interface Block {
   id?: string;
@@ -54,8 +59,80 @@ export function PageBuilderEditor(props: Props) {
   const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<Date | null>(null);
-  const [previewMode, setPreviewMode] = useState<'live' | 'blocks'>('blocks');
+  // 'preview' = rendu live via <PageBlocksRenderer> avec les blocs en cours d'édition (INSTANTANÉ).
+  // 'live'    = iframe vers le site déployé (nécessite Save + reload pour voir les changements).
+  // 'blocks'  = aperçu compact des cards (mode dev).
+  const [previewMode, setPreviewMode] = useState<'preview' | 'live' | 'blocks'>('preview');
   const [iframeKey, setIframeKey] = useState(0);
+  const [mediaLibOpen, setMediaLibOpen] = useState(false);
+  const [dropTargetIdx, setDropTargetIdx] = useState<number | null>(null);
+
+  /** Applique un média sur un bloc en fonction du type. */
+  function applyMediaToBlock(idx: number, m: MediaResult, useAs?: string) {
+    const block = blocks[idx];
+    if (!block) return;
+    const target = useAs || block.type;
+    if (target === 'parallax-hero' || target === 'hero') {
+      updateData(idx, m.type === 'video' ? { bgVideo: m.url, alt: m.alt } : { bgImage: m.url, alt: m.alt });
+    } else if (target === 'parallax-slider') {
+      const slides = Array.isArray(block.data?.slides) ? [...block.data.slides] : [];
+      slides[0] = { ...(slides[0] || {}), image: m.url, alt: m.alt };
+      updateData(idx, { slides });
+    } else if (target === 'gallery') {
+      const items = Array.isArray(block.data?.items) ? [...block.data.items] : [];
+      items.push({ src: m.url, alt: m.alt });
+      updateData(idx, { items });
+    } else if (target === 'cta-banner') {
+      updateData(idx, { bgImage: m.url, alt: m.alt });
+    } else if (block.type === 'video' || m.type === 'video' || m.type === 'youtube') {
+      updateData(idx, { src: m.url });
+    } else {
+      updateData(idx, { src: m.url, alt: m.alt || block.data?.alt || '' });
+    }
+  }
+
+  /** Insertion depuis la lib quand pas de bloc édité : crée un bloc image/video. */
+  function insertMediaAsBlock(m: MediaResult, useAs?: string) {
+    if (editingIdx != null) {
+      applyMediaToBlock(editingIdx, m, useAs);
+      return;
+    }
+    // Crée un bloc selon le type
+    const newBlock: Block = {
+      position: blocks.length,
+      width: 'full',
+      type: useAs === 'parallax-hero' ? 'parallax-hero'
+        : useAs === 'parallax-slider' ? 'parallax-slider'
+        : useAs === 'cta-banner' ? 'cta'
+        : m.type === 'video' || m.type === 'youtube' ? 'video'
+        : 'image',
+      data: {},
+      effect: 'fade-up',
+      effectDelay: blocks.length * 100,
+      visible: true,
+    };
+    if (newBlock.type === 'parallax-hero') {
+      newBlock.data = { title: 'Titre', subtitle: '', bgImage: m.url, height: '90vh' };
+    } else if (newBlock.type === 'parallax-slider') {
+      newBlock.data = { slides: [{ image: m.url, title: 'Slide 1', alt: m.alt }], height: '85vh' };
+    } else if (newBlock.type === 'video') {
+      newBlock.data = { src: m.url };
+    } else {
+      newBlock.data = { src: m.url, alt: m.alt || '' };
+    }
+    setBlocks((prev) => [...prev, newBlock]);
+    setEditingIdx(blocks.length);
+  }
+
+  // Theme dérivé des props (primaryColor + font choisis dans le wizard).
+  // Sert au rendu du mode "Preview live" pour matcher le site déployé.
+  const previewTheme: SiteTheme = {
+    primary: props.theme?.primary || '#d946ef',
+    fontHeading: props.theme?.font ? `"${props.theme.font}", system-ui, sans-serif` : undefined,
+    fontBody: props.theme?.font ? `"${props.theme.font}", system-ui, sans-serif` : undefined,
+    fontHeadingName: props.theme?.font || undefined,
+    fontBodyName: props.theme?.font || undefined,
+  };
 
   // URL publique : <orgSlug>.pixeeplay.com/<siteSlug>[/page]
   // Fallback orgDefaultDomain si custom domain configuré, sinon localhost en dev
@@ -165,6 +242,7 @@ export function PageBuilderEditor(props: Props) {
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
             {savedAt && <span style={{ fontSize: 11, color: '#10b981' }}>✓ Sauvé {savedAt.toLocaleTimeString('fr-FR')}</span>}
             <a href={livePreviewUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: '#06b6d4', textDecoration: 'none' }}>↗ Voir live</a>
+            {props.canEdit && <MediaLibraryToolbarButton onClick={() => setMediaLibOpen(true)} />}
             {props.canEdit && (
               <button onClick={() => save()} disabled={saving} style={{ background: 'linear-gradient(135deg, #d946ef, #06b6d4)', color: 'white', border: 0, padding: '8px 16px', borderRadius: 8, fontWeight: 600, cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.5 : 1 }}>
                 {saving ? 'Sauvegarde…' : '💾 Enregistrer'}
@@ -202,14 +280,49 @@ export function PageBuilderEditor(props: Props) {
                   key={i}
                   draggable={props.canEdit}
                   onDragStart={() => setDraggedIdx(i)}
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={() => { if (draggedIdx != null && draggedIdx !== i) moveBlock(draggedIdx, i); setDraggedIdx(null); }}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    // Détecte drop média (depuis MediaLibrary)
+                    const types = e.dataTransfer.types;
+                    if (types.includes('application/x-pxs-media') || types.includes('text/plain')) {
+                      setDropTargetIdx(i);
+                      e.dataTransfer.dropEffect = 'copy';
+                    }
+                  }}
+                  onDragLeave={() => setDropTargetIdx(null)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setDropTargetIdx(null);
+                    // 1) Drop média venant de la lib
+                    const mediaJson = e.dataTransfer.getData('application/x-pxs-media');
+                    if (mediaJson) {
+                      try {
+                        const m: MediaResult = JSON.parse(mediaJson);
+                        applyMediaToBlock(i, m);
+                        setEditingIdx(i);
+                        return;
+                      } catch {}
+                    }
+                    const txt = e.dataTransfer.getData('text/plain');
+                    if (txt && /^https?:\/\//.test(txt)) {
+                      // URL nue → apply comme image/src
+                      applyMediaToBlock(i, { id: 'drop', type: 'photo', url: txt, thumb: txt, source: 'local' } as any);
+                      setEditingIdx(i);
+                      return;
+                    }
+                    // 2) Sinon reorder de blocs
+                    if (draggedIdx != null && draggedIdx !== i) moveBlock(draggedIdx, i);
+                    setDraggedIdx(null);
+                  }}
                   onClick={() => setEditingIdx(i)}
                   style={{
-                    background: '#18181b',
-                    border: editingIdx === i ? '1px solid #d946ef' : '1px solid #27272a',
+                    background: dropTargetIdx === i ? '#d946ef22' : '#18181b',
+                    border: dropTargetIdx === i
+                      ? '2px dashed #d946ef'
+                      : editingIdx === i ? '1px solid #d946ef' : '1px solid #27272a',
                     borderRadius: 10, padding: 10, marginBottom: 6, cursor: 'pointer',
                     opacity: draggedIdx === i ? 0.3 : (b.visible === false ? 0.5 : 1),
+                    transition: 'background .15s, border-color .15s',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11 }}>
@@ -233,12 +346,42 @@ export function PageBuilderEditor(props: Props) {
 
           {/* Preview */}
           <div style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', gap: 4, padding: 8, background: '#18181b', borderBottom: '1px solid #27272a' }}>
-              <button onClick={() => setPreviewMode('live')} style={{ background: previewMode === 'live' ? '#d946ef' : 'transparent', color: previewMode === 'live' ? 'white' : '#a1a1aa', border: 0, padding: '4px 10px', borderRadius: 6, fontSize: 11, cursor: 'pointer' }}>🌐 Live</button>
-              <button onClick={() => setPreviewMode('blocks')} style={{ background: previewMode === 'blocks' ? '#d946ef' : 'transparent', color: previewMode === 'blocks' ? 'white' : '#a1a1aa', border: 0, padding: '4px 10px', borderRadius: 6, fontSize: 11, cursor: 'pointer' }}>🧩 Blocs ({blocks.length})</button>
-              <button onClick={() => setIframeKey((k) => k + 1)} style={{ marginLeft: 'auto', background: 'transparent', color: '#a1a1aa', border: 0, padding: '4px 10px', fontSize: 11, cursor: 'pointer' }}>🔄</button>
+            <div style={{ display: 'flex', gap: 4, padding: 8, background: '#18181b', borderBottom: '1px solid #27272a', position: 'sticky', top: 0, zIndex: 2 }}>
+              <button
+                onClick={() => setPreviewMode('preview')}
+                title="Rendu instantané des modifs en cours (PageBlocksRenderer)"
+                style={{ background: previewMode === 'preview' ? 'linear-gradient(135deg,#d946ef,#06b6d4)' : 'transparent', color: previewMode === 'preview' ? 'white' : '#a1a1aa', border: 0, padding: '4px 10px', borderRadius: 6, fontSize: 11, cursor: 'pointer', fontWeight: 600 }}
+              >
+                🎨 Preview live
+              </button>
+              <button
+                onClick={() => setPreviewMode('live')}
+                title="iframe vers le site déployé (nécessite Save)"
+                style={{ background: previewMode === 'live' ? '#d946ef' : 'transparent', color: previewMode === 'live' ? 'white' : '#a1a1aa', border: 0, padding: '4px 10px', borderRadius: 6, fontSize: 11, cursor: 'pointer' }}
+              >
+                🌐 Site déployé
+              </button>
+              <button
+                onClick={() => setPreviewMode('blocks')}
+                title="Liste compacte des blocs (dev)"
+                style={{ background: previewMode === 'blocks' ? '#d946ef' : 'transparent', color: previewMode === 'blocks' ? 'white' : '#a1a1aa', border: 0, padding: '4px 10px', borderRadius: 6, fontSize: 11, cursor: 'pointer' }}
+              >
+                🧩 Blocs ({blocks.length})
+              </button>
+              {previewMode === 'live' && (
+                <button onClick={() => setIframeKey((k) => k + 1)} style={{ marginLeft: 'auto', background: 'transparent', color: '#a1a1aa', border: 0, padding: '4px 10px', fontSize: 11, cursor: 'pointer' }}>🔄</button>
+              )}
             </div>
-            {previewMode === 'live' ? (
+            {previewMode === 'preview' ? (
+              <div style={{ flex: 1, overflow: 'auto', background: '#0a0a0f' }}>
+                <GoogleFontsLoader theme={previewTheme} />
+                <EffectsStyles />
+                <PageBlocksRenderer
+                  blocks={blocks.filter((b) => b.visible !== false) as RendererBlock[]}
+                  theme={previewTheme}
+                />
+              </div>
+            ) : previewMode === 'live' ? (
               <iframe key={iframeKey} src={livePreviewUrl} style={{ flex: 1, border: 0, background: 'white' }} />
             ) : (
               <div style={{ flex: 1, overflow: 'auto', padding: 16, background: '#0a0a0f' }}>
@@ -259,6 +402,15 @@ export function PageBuilderEditor(props: Props) {
           onClose={() => setEditingIdx(null)}
         />
       )}
+
+      {/* ─── Media Library ─── */}
+      <MediaLibrary
+        orgSlug={props.orgSlug}
+        suggestions={[props.siteName, props.pageTitle].filter(Boolean) as string[]}
+        open={mediaLibOpen}
+        onClose={() => setMediaLibOpen(false)}
+        onInsert={(m, useAs) => insertMediaAsBlock(m, useAs)}
+      />
     </div>
   );
 }

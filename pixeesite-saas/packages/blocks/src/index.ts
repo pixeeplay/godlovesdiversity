@@ -25,7 +25,7 @@ export { ParallaxSlider } from './ParallaxSlider';
 export type { ParallaxSlide, ParallaxSliderProps } from './ParallaxSlider';
 
 // Theme
-export { ThemeProvider, themeToCssVars, resolveTheme, THEME_PRESETS } from './Theme';
+export { ThemeProvider, themeToCssVars, resolveTheme, THEME_PRESETS, GoogleFontsLoader, FONT_WHITELIST } from './Theme';
 export type { SiteTheme } from './Theme';
 
 // Renderer

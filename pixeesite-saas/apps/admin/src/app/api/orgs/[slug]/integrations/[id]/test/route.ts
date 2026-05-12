@@ -7,11 +7,12 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 /**
- * POST /api/orgs/[slug]/integrations/[provider]/test
+ * POST /api/orgs/[slug]/integrations/[id]/test
+ * [id] = nom du provider (slack, telegram, ...) car provider est UNIQUE.
  * Teste la connexion à un provider en faisant un ping API.
  */
-export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string; provider: string }> }) {
-  const { slug, provider } = await params;
+export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string; id: string }> }) {
+  const { slug, id: provider } = await params;
   let auth;
   try { auth = await requireOrgMember(slug, ['owner', 'admin']); } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 403 });
