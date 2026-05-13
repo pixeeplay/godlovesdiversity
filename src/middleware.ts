@@ -19,9 +19,21 @@ const intlMiddleware = createMiddleware(routing);
  * /fr/admin/* qui n'existe pas → 404.
  */
 export default async function middleware(req: NextRequest) {
-  // Multi-domain scope detection (parislgbt.com / francelgbt.com / lgbt.pixeeplay.com)
+  // Multi-domain scope detection (parislgbt.com / lgbtfrance.fr / lgbt.pixeeplay.com)
   const hostHeader = req.headers.get('host') ?? '';
-  const scope = detectScope(hostHeader);
+  let scope = detectScope(hostHeader);
+
+  // PREVIEW MODE — sur staging, permet de simuler un front via :
+  //   - ?preview=paris ou ?preview=france (priorité 1)
+  //   - cookie 'preview_site' = paris | france (persistant après 1er param)
+  // Permet à Arnaud de voir les 2 fronts sur lgbt.pixeeplay.com avant migration DNS.
+  const previewParam = req.nextUrl.searchParams.get('preview');
+  const previewCookie = req.cookies.get('preview_site')?.value;
+  const previewScope = previewParam || previewCookie;
+  if (previewScope === 'paris' || previewScope === 'france') {
+    scope = previewScope;
+  }
+
   // We propagate the scope via request headers so server components can read it
   req.headers.set('x-site-scope', scope);
 
@@ -102,7 +114,23 @@ export default async function middleware(req: NextRequest) {
   }
 
   // === Bloc 3 : tout le reste → i18n ===
-  return intlMiddleware(req);
+  const response = intlMiddleware(req);
+
+  // Inject x-site-scope dans la réponse pour que server components / RSC le lisent
+  response.headers.set('x-site-scope', scope);
+
+  // Persist preview cookie si query param ?preview= utilisé
+  if (previewParam === 'paris' || previewParam === 'france') {
+    response.cookies.set('preview_site', previewParam, {
+      maxAge: 60 * 60 * 24 * 7,  // 7 days
+      path: '/',
+      sameSite: 'lax'
+    });
+  } else if (previewParam === 'reset' || previewParam === 'none') {
+    response.cookies.delete('preview_site');
+  }
+
+  return response;
 }
 
 export const config = {

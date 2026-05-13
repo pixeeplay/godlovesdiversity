@@ -6,6 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { AskAssistantWidget } from '@/components/AskAssistantWidget';
 import { TickerDonate } from '@/components/TickerDonate';
+import { PreviewBanner } from '@/components/PreviewBanner';
 import { AmbientPlayer } from '@/components/AmbientPlayer';
 import { PageTracker } from '@/components/PageTracker';
 import { ThemeProvider } from '@/components/ThemeProvider';
@@ -39,6 +40,7 @@ export default async function LocaleLayout({
       <ThemeProvider>
         <NextIntlClientProvider messages={messages} locale={locale}>
           <LangSetter locale={locale} />
+          <PreviewBanner />
           <div className="min-h-screen flex flex-col">
             <div className="sticky top-0 z-50 shadow-xl shadow-black/40">
               <TickerDonate />
