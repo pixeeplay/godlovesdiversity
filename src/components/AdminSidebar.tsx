@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
+import { FrontSwitcher } from './admin/FrontSwitcher';
 import {
   LayoutDashboard, ShieldCheck, FileText, Mail, Calendar,
   Sparkles, Users, Settings, LogOut, Heart, UploadCloud, MapPin, Home,
@@ -113,6 +114,7 @@ const NAV: Entry[] = [
       { href: '/admin/mail-setup', label: 'Setup mail (Gmail / DNS)', icon: Mail },
       { href: '/admin/themes', label: 'Thèmes saisonniers 🎨', icon: Sparkles },
       { href: '/admin/features', label: 'Feature flags 🚦', icon: Sparkles },
+      { href: '/admin/seo', label: 'SEO Boosts ⚡', icon: Sparkles, badge: 'NEW' },
       { href: '/admin/setup', label: 'Assistant configuration', icon: Sparkles }
     ]
   },
@@ -209,22 +211,15 @@ export function AdminSidebar({
 
   return (
     <aside className="w-72 sm:w-64 h-screen lg:h-auto shrink-0 bg-zinc-900 border-r border-zinc-800 flex flex-col">
-      <div className="p-5 border-b border-zinc-800 flex items-center justify-between gap-2">
+      <div className="p-4 border-b border-zinc-800 flex items-center justify-between gap-2">
         <Link href="/admin" className="flex items-center gap-2 group hover:text-brand-pink transition" title="Retour au tableau de bord">
-          <Heart className="text-brand-pink group-hover:scale-110 transition" />
-          <span className="font-display font-bold">GLD Admin</span>
+          <Heart className="text-brand-pink group-hover:scale-110 transition" size={20} />
+          <span className="font-display font-bold">LGBT Admin</span>
         </Link>
-        <Link
-          href="/"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Voir le site front (nouvel onglet)"
-          className="bg-zinc-800 hover:bg-fuchsia-500/30 hover:text-fuchsia-300 text-zinc-400 p-1.5 rounded-lg transition flex items-center gap-1"
-        >
-          <Home size={14} />
-          <span className="text-[10px] font-bold uppercase">Front</span>
-        </Link>
+        <span className="text-[9px] font-semibold uppercase tracking-wider text-zinc-500 bg-zinc-800/60 px-2 py-0.5 rounded">v2</span>
       </div>
+      {/* Front switcher : parislgbt.com / lgbtfrance.fr */}
+      <FrontSwitcher />
 
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
         {filteredNav.map((entry) => {

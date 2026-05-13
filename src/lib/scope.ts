@@ -1,14 +1,14 @@
 /**
- * Multi-domain scope helper for parislgbt.com / francelgbt.com / lgbt.pixeeplay.com.
+ * Multi-domain scope helper for parislgbt.com / lgbtfrance.fr / lgbt.pixeeplay.com.
  *
- * Detects which "site" the current request is for, based on the hostname:
- * - parislgbt.com    → SITE_SCOPE = 'paris'   (Paris-only content)
- * - francelgbt.com   → SITE_SCOPE = 'france'  (all France content)
- * - lgbt.pixeeplay.com → SITE_SCOPE = 'staging'  (toggle Paris/France via switcher)
- * - localhost / dev  → SITE_SCOPE = 'dev' (everything)
+ * Cercles concentriques :
+ *   - parislgbt.com   → 'paris'  : SOUS-ENSEMBLE de France (city=Paris OU CP 75xxx)
+ *   - lgbtfrance.fr   → 'france' : TOUT (Paris inclus, mais angle régional)
+ *   - lgbt.pixeeplay  → 'staging': bascule manuelle via switcher BO
+ *   - localhost       → 'dev'    : tout
  *
- * The middleware injects the scope into a header `x-site-scope` so that
- * server components and API routes can read it via `getScope()`.
+ * Le middleware injecte `x-site-scope` dans les headers pour que server components
+ * et API routes lisent le scope via `getScope()`.
  */
 import { headers } from 'next/headers';
 
@@ -21,7 +21,7 @@ export function detectScope(hostname: string | null | undefined): Scope {
   if (!hostname) return 'dev';
   const h = hostname.toLowerCase();
   if (h.includes('parislgbt.com')) return 'paris';
-  if (h.includes('francelgbt.com')) return 'france';
+  if (h.includes('lgbtfrance.fr') || h.includes('francelgbt.com')) return 'france';
   if (h.includes('lgbt.pixeeplay.com') || h.includes('lgbt.pixelplay.com')) return 'staging';
   return 'dev';
 }
@@ -43,18 +43,43 @@ export function getScope(): Scope {
 }
 
 /**
- * Returns a Prisma `where` filter to apply automatically to scoped queries.
+ * Returns a Prisma `where` filter for the Listing/Place model.
  *
- * - paris → only places/events tagged with PARIS scope (or city='Paris')
- * - france → all places (no filter)
- * - staging/dev → no filter (admin can switch view manually)
+ * Cercles concentriques (Paris ⊂ France) :
+ *   - paris   → city=Paris OU CP 75xxx (sous-ensemble géo)
+ *   - france  → TOUT (Paris inclus, mais affiché avec angle régional)
+ *   - staging/dev → no filter
  */
 export function scopedWhere(scope: Scope): Record<string, unknown> {
   if (scope === 'paris') {
-    // OR: city is Paris OR scope array contains PARIS
-    return { OR: [{ city: 'Paris' }, { scope: { has: 'PARIS' as const } }] };
+    return {
+      OR: [
+        { city: { equals: 'Paris', mode: 'insensitive' as const } },
+        { postal_code: { startsWith: '75' } }
+      ]
+    };
   }
   return {};
+}
+
+/**
+ * Site domain par scope — pour filtrer par site_id en multi-tenant.
+ */
+export function siteDomain(scope: Scope): string {
+  if (scope === 'paris') return 'parislgbt.com';
+  if (scope === 'france') return 'lgbtfrance.fr';
+  return 'lgbt.pixeeplay.com';
+}
+
+/**
+ * Prisma where filter par site_id (multi-tenant Site model).
+ * À utiliser dans les queries Listing/DirectoryEvent.
+ */
+export async function scopedSiteWhere(scope: Scope, prisma: any): Promise<Record<string, unknown>> {
+  const domain = siteDomain(scope);
+  const site = await prisma.site.findUnique({ where: { domain } }).catch(() => null);
+  if (!site) return {};
+  return { site_id: site.id };
 }
 
 /**

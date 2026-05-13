@@ -120,7 +120,7 @@ async function main() {
 
     try {
       if (data.type === "event") {
-        const event = await prisma.event.upsert({
+        const event = await prisma.directoryEvent.upsert({
           where: { site_id_slug: { site_id: targetSite.id, slug: data.slug } },
           create: {
             slug: data.slug,
