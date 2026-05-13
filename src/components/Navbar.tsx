@@ -7,6 +7,7 @@ import { NeonHeart } from './NeonHeart';
 import { ThemeToggle } from './ThemeToggle';
 import { CartBadge } from './CartBadge';
 import { MegaMenuTrigger } from './MegaMenu';
+import { LieuxMegaMenu } from './LieuxMegaMenu';
 import { DynamicIslandSearch } from './DynamicIslandSearch';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -112,6 +113,10 @@ export function Navbar() {
             const hasChildren = m.children?.length > 0;
             const localePrefix = locale !== 'fr' ? `/${locale}` : '';
             const fullHref = m.external ? m.href : `${localePrefix}${m.href}`;
+            // Onglet "Lieux" : on remplace par le mega-menu riche (cats × régions × villes)
+            if (m.id === 'lieux') {
+              return <LieuxMegaMenu key={m.id} locale={locale} />;
+            }
             // Détection des icônes par label/href
             const Icon = /message/i.test(m.href) ? MessageCircle :
                          /argument/i.test(m.href) ? FileText :

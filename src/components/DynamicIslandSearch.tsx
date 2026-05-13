@@ -22,11 +22,13 @@ interface SearchResult {
 }
 
 const CATEGORY_META: Record<string, { label: string; icon: any; color: string; bg: string }> = {
-  page:   { label: 'Page',     icon: FileText,        color: 'text-cyan-300',    bg: 'bg-cyan-500/15'    },
-  admin:  { label: 'Admin',    icon: Settings,        color: 'text-fuchsia-300', bg: 'bg-fuchsia-500/15' },
-  venue:  { label: 'Lieu',     icon: MapPin,          color: 'text-emerald-300', bg: 'bg-emerald-500/15' },
-  forum:  { label: 'Forum',    icon: MessageSquare,   color: 'text-violet-300',  bg: 'bg-violet-500/15'  },
-  event:  { label: 'Event',    icon: Calendar,        color: 'text-amber-300',   bg: 'bg-amber-500/15'   }
+  page:    { label: 'Page',     icon: FileText,        color: 'text-cyan-300',    bg: 'bg-cyan-500/15'    },
+  admin:   { label: 'Admin',    icon: Settings,        color: 'text-fuchsia-300', bg: 'bg-fuchsia-500/15' },
+  listing: { label: 'Lieu',     icon: MapPin,          color: 'text-pink-300',    bg: 'bg-pink-500/15'    },
+  venue:   { label: 'Lieu',     icon: MapPin,          color: 'text-emerald-300', bg: 'bg-emerald-500/15' },
+  article: { label: 'Article',  icon: FileText,        color: 'text-amber-300',   bg: 'bg-amber-500/15'   },
+  forum:   { label: 'Forum',    icon: MessageSquare,   color: 'text-violet-300',  bg: 'bg-violet-500/15'  },
+  event:   { label: 'Event',    icon: Calendar,        color: 'text-amber-300',   bg: 'bg-amber-500/15'   }
 };
 
 interface Props {

@@ -98,7 +98,37 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // 2. Venues (DB)
+  // 2a. Listings (DB) — 3378 lieux du scrape + CSV, source principale pour la recherche
+  if (results.length < 20) {
+    try {
+      const listings = await prisma.listing.findMany({
+        where: {
+          OR: [
+            { name: { contains: q, mode: 'insensitive' } },
+            { city: { contains: q, mode: 'insensitive' } },
+            { subtitle_fr: { contains: q, mode: 'insensitive' } }
+          ],
+          status: 'PUBLISHED'
+        },
+        include: {
+          categories: { include: { category: { select: { slug: true, name_fr: true } } }, take: 1 }
+        },
+        orderBy: [{ featured: 'desc' }, { name: 'asc' }],
+        take: 12
+      });
+      for (const l of listings) {
+        const cat = l.categories[0]?.category;
+        results.push({
+          title: l.name,
+          href: `/fr/listing/${l.slug}`,
+          category: 'listing',
+          subtitle: `${cat?.name_fr || 'Lieu'} · ${l.city || '?'}${l.postal_code ? ' (' + l.postal_code + ')' : ''}`
+        });
+      }
+    } catch {}
+  }
+
+  // 2b. Venues legacy (DB)
   if (results.length < 30) {
     try {
       const venues = await prisma.venue.findMany({
@@ -110,7 +140,7 @@ export async function GET(req: NextRequest) {
           published: true
         },
         select: { name: true, slug: true, city: true, country: true, type: true },
-        take: 8
+        take: 5
       });
       for (const v of venues) {
         results.push({
@@ -118,6 +148,31 @@ export async function GET(req: NextRequest) {
           href: `/lieux/${v.slug}`,
           category: 'venue',
           subtitle: `${v.type} · ${v.city || '?'} · ${v.country || ''}`
+        });
+      }
+    } catch {}
+  }
+
+  // 2c. Articles SEO (Top 10 par ville)
+  if (results.length < 35) {
+    try {
+      const articles = await prisma.article.findMany({
+        where: {
+          OR: [
+            { title: { contains: q, mode: 'insensitive' } },
+            { excerpt: { contains: q, mode: 'insensitive' } }
+          ],
+          published: true
+        },
+        select: { title: true, slug: true, locale: true, excerpt: true },
+        take: 5
+      });
+      for (const a of articles) {
+        results.push({
+          title: a.title,
+          href: `/${a.locale}/blog/${a.slug}`,
+          category: 'article',
+          subtitle: a.excerpt || 'Guide LGBT'
         });
       }
     } catch {}
