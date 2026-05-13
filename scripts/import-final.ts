@@ -123,6 +123,9 @@ async function main() {
   let parisFromWp = 0, parisFromCsv = 0;
   if (!franceOnly) {
     console.log('📦 Paris site — import WP scrapes…');
+    if (!fs.existsSync(SCRAPE_DIR)) {
+      console.log(`⚠️ ${SCRAPE_DIR} introuvable — skipping WP scrape (Paris ne recevra que les venues CSV)`);
+    }
     const wpFiles = fs.existsSync(SCRAPE_DIR)
       ? fs.readdirSync(SCRAPE_DIR).filter(f => (f.startsWith('job_listing__')) && f.endsWith('.json'))
       : [];
