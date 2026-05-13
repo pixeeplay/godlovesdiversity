@@ -125,7 +125,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     if (t) activeThemeSlug = t.slug;
   } catch {}
 
+  // Scope du front actuel (paris / france / staging / dev) pour filtrer les banners
+  const { getScope } = await import('@/lib/scope');
+  const currentScope = getScope();
+
   function isBannerActive(b: any): boolean {
+    // Filtre site scope : null = les 2 fronts, "paris" = paris-only, "france" = france-only
+    if (b.siteScope === 'paris' && currentScope !== 'paris' && currentScope !== 'staging' && currentScope !== 'dev') return false;
+    if (b.siteScope === 'france' && currentScope !== 'france' && currentScope !== 'staging' && currentScope !== 'dev') return false;
+    // Sur staging/dev on voit toutes les banners (peu importe le scope) sauf si preview cookie/param défini
     // Si lié à un thème : visible seulement si ce thème est actif
     if (b.linkedThemeSlug) return activeThemeSlug === b.linkedThemeSlug;
     // Sinon : check fenêtre date

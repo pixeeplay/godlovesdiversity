@@ -123,7 +123,19 @@ export function BannersManager({ initial }: { initial: Banner[] }) {
               <div className="absolute top-1 left-1 text-[10px] bg-black/70 px-1.5 py-0.5 rounded font-bold">#{i + 1}</div>
             </div>
             <div className="flex-1 min-w-0">
-              {b.eyebrow && <div className="text-[10px] uppercase tracking-widest text-brand-pink mb-1">{b.eyebrow}</div>}
+              <div className="flex items-center gap-2 mb-1">
+                {b.eyebrow && <div className="text-[10px] uppercase tracking-widest text-brand-pink">{b.eyebrow}</div>}
+                {/* Badge scope front */}
+                {(b as any).siteScope === 'paris' && (
+                  <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-pink-500/20 text-pink-300">🌸 Paris only</span>
+                )}
+                {(b as any).siteScope === 'france' && (
+                  <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-violet-500/20 text-violet-300">🏳️‍🌈 France only</span>
+                )}
+                {!(b as any).siteScope && (
+                  <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-zinc-700/50 text-zinc-400">🌈 2 fronts</span>
+                )}
+              </div>
               <div className="font-bold">{b.title}</div>
               {b.subtitle && <p className="text-xs text-zinc-400 line-clamp-2 mt-1">{b.subtitle}</p>}
               <div className="flex gap-1 mt-2">
@@ -184,6 +196,7 @@ function BannerEditor({ banner, onClose, onSaved }: {
   const [activeFrom, setActiveFrom] = useState((banner as any)?.activeFrom?.slice(0, 10) || '');
   const [activeUntil, setActiveUntil] = useState((banner as any)?.activeUntil?.slice(0, 10) || '');
   const [linkedThemeSlug, setLinkedThemeSlug] = useState((banner as any)?.linkedThemeSlug || '');
+  const [siteScope, setSiteScope] = useState<'' | 'paris' | 'france'>((banner as any)?.siteScope || '');
   const [aiBusy, setAiBusy] = useState<'image' | 'video' | null>(null);
   const [aiPreview, setAiPreview] = useState<{ data: string; mimeType: string }[]>([]);
   const [hfModel, setHfModel] = useState<'higgsfield-lite' | 'higgsfield-standard' | 'higgsfield-turbo'>('higgsfield-lite');
@@ -309,6 +322,7 @@ function BannerEditor({ banner, onClose, onSaved }: {
         eyebrow, title, subtitle, mediaUrl, mediaType, cta1Text, cta1Url, cta2Text, cta2Url, accentColor,
         aiPrompt: aiPrompt || null,
         presetSlug: presetSlug || null,
+        siteScope: siteScope || null,
         activeFrom: activeFrom || null,
         activeUntil: activeUntil || null,
         linkedThemeSlug: linkedThemeSlug || null
@@ -518,6 +532,38 @@ function BannerEditor({ banner, onClose, onSaved }: {
               <input value={linkedThemeSlug} onChange={(e) => setLinkedThemeSlug(e.target.value)} placeholder="ex: pride-rainbow, noel-classique, halloween…" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs font-mono" />
             </label>
             <p className="text-[9px] text-zinc-500">💡 Si lié à un thème : la bannière apparaît dès que le thème est actif (manuellement ou par auto-activation date).</p>
+
+            {/* Scope multi-front : Paris / France / les 2 */}
+            <div className="pt-3 mt-3 border-t border-zinc-800">
+              <span className="text-[9px] uppercase text-zinc-500 block mb-2 font-bold">🎯 Apparaît sur quel front ?</span>
+              <div className="grid grid-cols-3 gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setSiteScope('')}
+                  className={`text-[11px] py-2 px-2 rounded-lg font-bold transition ${siteScope === '' ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-400'}`}
+                  title="Banner visible sur Paris ET France"
+                >
+                  🌈 Les 2 fronts
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSiteScope('paris')}
+                  className={`text-[11px] py-2 px-2 rounded-lg font-bold transition ${siteScope === 'paris' ? 'bg-pink-500 text-white shadow-lg' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-400'}`}
+                  title="Banner visible uniquement sur parislgbt.com"
+                >
+                  🌸 Paris uniquement
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSiteScope('france')}
+                  className={`text-[11px] py-2 px-2 rounded-lg font-bold transition ${siteScope === 'france' ? 'bg-violet-500 text-white shadow-lg' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-400'}`}
+                  title="Banner visible uniquement sur lgbtfrance.fr"
+                >
+                  🏳️‍🌈 France uniquement
+                </button>
+              </div>
+              <p className="text-[9px] text-zinc-500 mt-1.5">💡 Sur staging (lgbt.pixeeplay.com) toutes les bannières sont visibles. Le scope filtre uniquement en prod ou avec ?preview=paris|france.</p>
+            </div>
           </div>
         </div>
         <div className="border-t border-zinc-800 p-4 flex justify-end gap-2">

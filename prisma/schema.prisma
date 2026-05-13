@@ -367,6 +367,10 @@ model Banner {
   /// Slug d'un Theme lié — si le theme est actif, cette banner aussi (override calendrier)
   linkedThemeSlug String?
 
+  /// Scope multi-front : null = visible sur les 2 fronts, "paris" = uniquement parislgbt.com,
+  /// "france" = uniquement lgbtfrance.fr. Détecté côté serveur via x-site-scope header.
+  siteScope       String?
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

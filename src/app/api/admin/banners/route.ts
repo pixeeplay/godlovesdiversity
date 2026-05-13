@@ -35,7 +35,8 @@ export async function POST(req: Request) {
       presetSlug: body.presetSlug || null,
       activeFrom: body.activeFrom ? new Date(body.activeFrom) : null,
       activeUntil: body.activeUntil ? new Date(body.activeUntil) : null,
-      linkedThemeSlug: body.linkedThemeSlug || null
+      linkedThemeSlug: body.linkedThemeSlug || null,
+      siteScope: body.siteScope || null
     }
   });
   return NextResponse.json({ ok: true, banner });
