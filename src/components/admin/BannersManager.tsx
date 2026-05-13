@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
-import { Plus, Pencil, Trash2, Save, X, Loader2, ArrowUp, ArrowDown, UploadCloud, Image as ImageIcon, Eye, EyeOff } from 'lucide-react';
+import { Plus, Pencil, Trash2, Save, X, Loader2, ArrowUp, ArrowDown, UploadCloud, Image as ImageIcon, Eye, EyeOff, Stethoscope } from 'lucide-react';
 
 type Banner = {
   id: string;
@@ -24,6 +24,33 @@ export function BannersManager({ initial }: { initial: Banner[] }) {
   const [banners, setBanners] = useState(initial);
   const [editing, setEditing] = useState<Banner | null>(null);
   const [creating, setCreating] = useState(false);
+  const [diagBusy, setDiagBusy] = useState(false);
+
+  async function checkStorage() {
+    setDiagBusy(true);
+    try {
+      const r = await fetch('/api/admin/storage/check');
+      const j = await r.json();
+      // Affiche un dialog lisible
+      let msg = `${r.ok ? '✅' : '❌'} Diagnostic MinIO\n\n`;
+      msg += `Bucket : ${j.resolvedBucket}\n`;
+      msg += `Endpoint : ${j.env?.S3_ENDPOINT}\n`;
+      msg += `Access Key : ${j.env?.S3_ACCESS_KEY}\n\n`;
+      msg += '─── Étapes ───\n';
+      for (const step of j.steps || []) {
+        msg += `${step.ok ? '✅' : '❌'} ${step.step}\n`;
+        if (step.error) msg += `   Erreur : ${step.error}\n`;
+        if (step.hint) msg += `   💡 ${step.hint}\n`;
+        if (step.buckets) msg += `   Buckets : ${step.buckets.join(', ')}\n`;
+      }
+      if (j.summary) msg += `\n${j.summary}`;
+      alert(msg);
+    } catch (e: any) {
+      alert(`Diagnostic échoué : ${e.message}`);
+    } finally {
+      setDiagBusy(false);
+    }
+  }
 
   async function move(b: Banner, dir: 1 | -1) {
     const sorted = [...banners].sort((a, b) => a.order - b.order);
@@ -57,11 +84,22 @@ export function BannersManager({ initial }: { initial: Banner[] }) {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
         <a href="/" target="_blank" rel="noreferrer" className="btn-ghost text-xs"><Eye size={12} /> Voir le résultat sur la home</a>
-        <button onClick={() => setCreating(true)} className="btn-primary text-sm">
-          <Plus size={14} /> Nouvelle bannière
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={checkStorage}
+            disabled={diagBusy}
+            className="text-xs px-3 py-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 disabled:opacity-50 flex items-center gap-1.5 font-bold transition"
+            title="Diagnostic MinIO : vérifie credentials, bucket, upload/read"
+          >
+            {diagBusy ? <Loader2 size={12} className="animate-spin" /> : <Stethoscope size={12} />}
+            {diagBusy ? 'Diag…' : 'Diagnostic MinIO'}
+          </button>
+          <button onClick={() => setCreating(true)} className="btn-primary text-sm">
+            <Plus size={14} /> Nouvelle bannière
+          </button>
+        </div>
       </div>
 
       <div className="space-y-3">

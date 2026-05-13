@@ -45,9 +45,23 @@ export async function POST(req: Request) {
       await uploadBuffer(key, buf, f.type || 'application/octet-stream');
     } catch (e: any) {
       console.error('MinIO upload failed:', e);
+      const detail = e?.message || String(e);
+      // Hint contextuel selon le type d'erreur
+      let hint = '';
+      const m = detail.toLowerCase();
+      if (m.includes('econnrefused') || m.includes('econn')) {
+        hint = '\n→ Service MinIO indisponible. Coolify → Resources → minio doit être UP.';
+      } else if (m.includes('enotfound') || m.includes('getaddrinfo')) {
+        hint = '\n→ DNS MinIO injoignable. Vérifie S3_ENDPOINT (par défaut http://minio:9000).';
+      } else if (m.includes('invalid accesskeyid') || m.includes('signaturedoesnotmatch') || m.includes('access denied')) {
+        hint = '\n→ Credentials invalides. Vérifie S3_ACCESS_KEY / S3_SECRET_KEY sur Coolify vs MINIO_ROOT_USER / MINIO_ROOT_PASSWORD.';
+      } else if (m.includes('nosuchbucket')) {
+        hint = '\n→ Bucket inexistant. Lance "GET /api/admin/storage/check" pour le créer automatiquement.';
+      }
       return NextResponse.json({
-        error: 'Upload MinIO échoué. Vérifie que le bucket existe et que les credentials S3 sont valides.',
-        detail: e?.message
+        error: `Upload MinIO échoué — ${detail}${hint}\n\n→ Diagnostic complet : GET /api/admin/storage/check`,
+        detail,
+        hint
       }, { status: 500 });
     }
     out.push({ key, url: publicUrl(key), mime: f.type || '', name: f.name, size: buf.length });
