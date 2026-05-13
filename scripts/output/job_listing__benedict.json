@@ -1,0 +1,54 @@
+{
+  "type": "listing",
+  "name": "Benedict",
+  "categories": [
+    "restaurant"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/benedict_restaurant0107.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/benedict_restaurant0116.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/B-36.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "19 Rue Sainte-Croix de la Bretonnerie",
+    "lat": 48.85826,
+    "lng": 2.35611
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/benedict_restaurant0106-1024x614.jpg",
+  "description": "Benedict vous accueille dans son cadre chaleureux en plein coeur du Marais. Venez découvrir nos spécialités ainsi que le menu réactualisé au jour le jour selon les saisons et les envies du chef.",
+  "email": null,
+  "hours": {
+    "friday": "12:00-15:00, 19:30-23:00",
+    "monday": "12:00-15:00, 19:30-23:00",
+    "saturday": "11:00-23:30",
+    "sunday": "11:00-23:30",
+    "thursday": "12:00-15:00, 19:30-23:00",
+    "tuesday": "12:00-15:00, 19:30-23:00",
+    "wednesday": "12:00-15:00, 19:30-23:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/benedict-paris-logo.jpg",
+  "phone": "01 42 76 91 37",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/pages/Benedict/181869295343414?fref=ts",
+    "instagram": "http://instagram.com/benedict_paris",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Bistrot, brunch, Bar a cocktail",
+  "transport": "Metro 1,11 : Hôtel De Ville",
+  "venue": null,
+  "website": "http://benedict-paris.com/",
+  "source_url": "https://www.parislgbt.com/listing/benedict/",
+  "slug": "benedict",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/benedict/",
+    "en": "https://www.parislgbt.com/en/listing/benedict/"
+  }
+}

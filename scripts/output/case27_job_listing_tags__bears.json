@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Bears",
+  "categories": [],
+  "tags": [
+    "bears"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/bears/",
+  "slug": "bears",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/bears/",
+    "en": "https://www.parislgbt.com/en/tag/bears/"
+  }
+}

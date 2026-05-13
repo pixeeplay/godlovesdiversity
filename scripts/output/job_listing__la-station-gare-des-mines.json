@@ -1,0 +1,49 @@
+{
+  "type": "listing",
+  "name": "La Station - Gare Des Mines",
+  "categories": [
+    "clubs"
+  ],
+  "tags": [
+    "djs-at-work",
+    "queer",
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/STATION-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/STATION-5.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/06.23-%C2%A9-Julien-Gawor-26-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75018",
+    "street": "29 Av. de la Prte d'Aubervilliers",
+    "lat": 48.90125,
+    "lng": 2.36993
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/07.23-Garage-Mu-Festival-%C2%A9-Ga%C3%ABlle-Matata-66-1024x683.jpg",
+  "description": "Ancienne gare de marchandises, la Station serait le lieu de prédilection Queer friendly des “clubbers expérimentaux”. Ce laboratoire convoque l’âme du clubbing berlinois chaque semaine avec de nombreux temps forts en plein air et dans son club sur deux niveaux. Ses soirées concerts et clubbing attirent la fine fleur de la scène musicale en plein élan extatique.\n\nAu carrefour de Paris, Saint-Denis et Aubervilliers, La Station — Gare des Mines est un laboratoire convivial et festif consacré aux scènes artistiques émergentes, fondé sur les vestiges d’une gare à charbon désaffectée.",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/LOGO-LA-STATION.jpg",
+  "phone": "+33 9 73 26 11 47",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/stationgaredesmines",
+    "instagram": "https://www.instagram.com/collectifmu",
+    "tiktok": null,
+    "twitter": "https://twitter.com/collectifmu"
+  },
+  "subtitle": "Laboratoire convivial et festif consacré aux scènes artistiques émergentes",
+  "transport": "Tram T3b Porte D'Aubervilliers / RER E : Rosa Parks",
+  "website": "http://lastation.paris/",
+  "source_url": "https://www.parislgbt.com/listing/la-station-gare-des-mines/",
+  "slug": "la-station-gare-des-mines",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-station-gare-des-mines/",
+    "en": "https://www.parislgbt.com/en/listing/la-station-gare-des-mines/"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "category",
+  "name": "Etablissement culturel",
+  "categories": [
+    "etablissement-culturel"
+  ],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/category/etablissement-culturel/",
+  "slug": "etablissement-culturel",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/category/etablissement-culturel/",
+    "en": "https://www.parislgbt.com/en/category/etablissement-culturel/"
+  }
+}

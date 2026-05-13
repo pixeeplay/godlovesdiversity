@@ -1,0 +1,32 @@
+{
+  "type": "page",
+  "name": "Ajouter une entrée • Paris LGBT+ Guide",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": "**Vous souhaitez ajouter votre établissement ou votre événement LGBTQIA+ Friendly à notre annuaire ?**\n\n**IMPORTANT :**\n\n*   Si votre événement est sur Facebook, il vous suffit d’inviter le profil de notre rédacteur ‘[Ricardo Bello](https://www.facebook.com/profile.php?id=100059933145959)‘ afin qu’il soit **automatiquement listé**\n*   Sinon, veillez à remplir correctement tous les champs\n*   Chaque soumission sera relue et validée par nos rédacteurs",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/02/Logo-Paris-LGBT_Paris-LGBT-Couleur-300x214.png",
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/ajout-listing/",
+  "slug": "ajout-listing",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/ajout-listing/",
+    "en": "https://www.parislgbt.com/en/ajout-listing/"
+  }
+}

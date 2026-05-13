@@ -1,0 +1,54 @@
+{
+  "type": "listing",
+  "name": "Gay Voyageur",
+  "categories": [
+    "visites"
+  ],
+  "tags": [
+    "accueil-public",
+    "hotes",
+    "gay"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/02/Gay-Voyageur-1024x683.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/02/Gay-Voyageur-Carre.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/02/Gay-Voyageur-1024x683.png",
+  "description": "Le **[Gay Voyageur](https://www.gayvoyageur.com/)** est un média LGBTQ+ dédié au voyage inclusif, aux destinations gay-friendly et aux hébergements accueillants. Il inspire les voyageurs queer à découvrir le monde en toute sécurité, fierté et liberté, avec des guides, conseils et récits authentiques.",
+  "email": null,
+  "hours": {
+    "monday": "00:00-23:59",
+    "tuesday": "00:00-23:59",
+    "wednesday": "00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/02/Gay-Voyageur-Carre.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/guidegay",
+    "instagram": "https://www.instagram.com/gayvoyageur",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Découvre le monde avec Fierté",
+  "transport": "Métro, Bus, RER",
+  "venue": null,
+  "website": "https://www.gayvoyageur.com/",
+  "source_url": "https://www.parislgbt.com/listing/gay-voyageur/",
+  "slug": "gay-voyageur",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/gay-voyageur/",
+    "en": "https://www.parislgbt.com/en/listing/gay-voyageur/"
+  }
+}

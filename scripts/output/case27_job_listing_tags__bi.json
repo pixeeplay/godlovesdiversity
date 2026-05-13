@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Bisexuel-le-s",
+  "categories": [],
+  "tags": [
+    "bi"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/bi/",
+  "slug": "bi",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/bi/",
+    "en": "https://www.parislgbt.com/en/tag/bi/"
+  }
+}

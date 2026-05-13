@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Terrasse",
+  "categories": [],
+  "tags": [
+    "terrasse"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/terrasse/",
+  "slug": "terrasse",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/terrasse/",
+    "en": "https://www.parislgbt.com/en/tag/terrasse/"
+  }
+}

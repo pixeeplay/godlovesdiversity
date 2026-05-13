@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "Le Cirque Electrique",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "les 15 ans d'En veux-tu? En v'là! @Le Cirque Electrique * Cirque Electrique",
+      "url": "https://www.parislgbt.com/listing/les-15-ans-den-veux-tu-en-vla-le-cirque-electrique/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/le-cirque-electrique/",
+  "slug": "le-cirque-electrique",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/le-cirque-electrique/",
+    "en": "https://www.parislgbt.com/en/events-venue/le-cirque-electrique/"
+  }
+}

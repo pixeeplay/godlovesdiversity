@@ -1,0 +1,64 @@
+{
+  "type": "listing",
+  "name": "Le Klub",
+  "categories": [
+    "clubs"
+  ],
+  "tags": [
+    "djs-at-work",
+    "entree-payante",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2021/07/Le-Klub-photo-3.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/07/Le-Klub-photo-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/07/Le-Klub-photo-2.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "MENTAL QUEER / 29 - 05 - 2026",
+      "url": "https://www.parislgbt.com/listing/mental-queer-29-05-2026/"
+    },
+    {
+      "title": "DARKXROOM spéciale SAMEDI 30 mai",
+      "url": "https://www.parislgbt.com/listing/darkxroom-speciale-samedi-30-mai/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75001",
+    "street": "14 Rue Saint-Denis",
+    "lat": 48.85919,
+    "lng": 2.34791
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2021/07/40128125_1781582938584274_5205384355685335040_n-1024x576.jpg",
+  "description": "Repaire des cultures alternatives au cœur de Paris depuis 2006. Sur 2 niveaux\n\nROCK, GOTH, LGBTQ HQ ... GIGS & KLUBBING",
+  "hours": {
+    "friday": "23:45-06:00",
+    "monday": null,
+    "saturday": "23:45-06:00",
+    "sunday": null,
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2021/07/12647172_912481265494450_710072952813421971_n.png",
+  "phone": "01 42 71 49 30",
+  "social": {
+    "facebook": "https://www.facebook.com/leklubparis",
+    "instagram": "https://www.instagram.com/le_klub/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Repaire des cultures alternatives au cœur de Paris depuis 2006",
+  "transport": "Métro : Châtelet les Halles: 4 - 1 - 7 -11 - 14 / RER : A - B - D",
+  "website": "https://www.leklub-paris.com/",
+  "source_url": "https://www.parislgbt.com/listing/le-klub/",
+  "slug": "le-klub",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-klub/",
+    "en": "https://www.parislgbt.com/en/listing/le-klub/"
+  }
+}

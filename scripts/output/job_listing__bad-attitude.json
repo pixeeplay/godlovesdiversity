@@ -1,0 +1,51 @@
+{
+  "type": "listing",
+  "name": "Bad Attitude",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "salle-de-sport"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/08/Bad-Attitude-activites.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/08/Bad-Attitude-banner.webp",
+  "dates": [],
+  "description": "**L'association belle, rebelle et inclusive !**\n\n Association de type loi 1901 à but non lucratif, nous proposons des créneaux d'entrainement de jeux libres de badminton sur Paris pour les personnes LGBTQIA+ et celleux qui les aiment mais pas que... des soirées, des tournois et pleins d'autres choses !\n\nAujourd’hui, forte de ses 198 adhérent·e·s, Bad Attitude est ouverte à tou·te·s les joueur·se·s quelles que soient leurs orientations sexuelles et quels que soient leurs niveaux de jeu.\n\nAssociation implantée dans le 11e et 20e arrondissement de Paris, elle est populaire, ouverte et accessible à tou-te-s.\n\n**Membre de la Fédération Sportive LGBT+**\n\n Nous sommes fièr.es. d'appartenir à cette fédération qui depuis plus de 30 ans nous rassemble autour de l’inclusion, la diversité et assure la représentativité de toutes les composantes de la communauté sportive LGBT+.\n\nUn réseau d'associations badistes\n\nBad Attitude fait partie d'un collectif des associations LGBT de badminton de Paris regroupant Acrobad, A.S.B.G., Goodminton et Sitébad. Ce collectif organise notamment des tournois inter associatifs au fil des saisons et mutualise des outils notamment pour les candidatures avant les adhésions.\n\nUn peu de notre histoire\n\n Cela part d'une idée un dimanche soir en 2013 à Anvers. Et depuis Bad Attitude continue de grandir...",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/08/Logo-Bad-Attitude.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/badattitude_paris/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "L'association belle, rebelle et inclusive !",
+  "transport": null,
+  "venue": null,
+  "website": "https://www.badattitude.fr/",
+  "source_url": "https://www.parislgbt.com/listing/bad-attitude/",
+  "slug": "bad-attitude",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bad-attitude/",
+    "en": "https://www.parislgbt.com/en/listing/bad-attitude/"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "type": "listing",
+  "name": "Diva's Kabaret",
+  "categories": [
+    "cabarets"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "drags",
+    "entree-payante"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2019/12/divas-kabaret-paris-marais-cabaret-confidentiel-bling-bling.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2019/12/divas-kabaret-paris-marais-cabaret-pas-cher.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2019/12/divas-kabaret-paris-marais-cabaret-salle.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/76178567_147013866662507_8940840128822116352_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/73007038_147013839995843_6258183012911939584_o.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75004",
+    "street": "35 Rue des Rosiers",
+    "lat": 48.85786,
+    "lng": 2.35795
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/76959418_157347182295842_1894046574279917568_o-1024x682-1.jpg",
+  "description": "Tout nouveau, tout beau, dans une cave voutée du 12eme siècle, Le Diva’s Kabaret vous accueille les jeudis, vendredis et samedis de 20 h a 2 h du matin. Une Ambiance de folie, des artistes transformistes parmi les meilleurs d’Europe : La DivaLive, LaraFulCamp, Sweety Bonbon. Dans planches généreuses pour vos restaurer sur place, du champagne accessible. On vous garantie une soirée inoubliable, pleine de rire, de partage, dans un esprit familial et convivial. On veut vous rendre heureux et on vous le prouvera :-) Venez découvrir notre cabaret en plein cœur de Paris !\n\nA kabaret in Paris where you can find all the ingredients for a successful weekend thanks to music hall, burlesque, piano bar or jazz influences. All these elements will guarantee you a real show in Paris, a dinner show that you will not forget thanks to the fabulous Diva Live, the earthy Lara FullCamp or the seductive Sweety Bonbon.",
+  "email": null,
+  "hours": {
+    "friday": "20:00-02:00",
+    "monday": null,
+    "saturday": "20:00-02:00",
+    "sunday": null,
+    "thursday": "20:00-02:00",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": null,
+  "phone": "06 22 82 40 02",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/divaskabaret",
+    "instagram": "https://www.instagram.com/divaskabaret/",
+    "tiktok": null,
+    "twitter": "https://twitter.com/divaskabaret"
+  },
+  "subtitle": "Cabaret parisien avec les artistes transformistes parmi les meilleurs d’Europe",
+  "transport": "M° 1 : Saint-Paul / Hôtel De Ville",
+  "venue": null,
+  "website": "http://www.divas-kabaret.fr/",
+  "source_url": "https://www.parislgbt.com/listing/divas-kabaret/",
+  "slug": "divas-kabaret",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/divas-kabaret/",
+    "en": "https://www.parislgbt.com/en/listing/divas-kabaret/"
+  }
+}

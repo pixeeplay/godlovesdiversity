@@ -1,0 +1,64 @@
+{
+  "type": "listing",
+  "name": "Banana Café",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "drags",
+    "gay",
+    "jeunes-etudiants",
+    "djs-at-work",
+    "terrasse",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Banana-Cafe-Happy-New-Year.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Boys-Or-Not-Lundi-Banana-Cafe.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Fire-Banama-Cafe-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Fire-Banama-Cafe.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Banana-Cafe-equipe-Michel-Michel-2024.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75001",
+    "street": "13 Rue de la Ferronnerie",
+    "lat": 48.86022,
+    "lng": 2.34765
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/Banana-Cafe-facade-2023-1024x768.jpg",
+  "description": "Né en 1990, ce monument hystérique a su se réinventer pour toujours vous faire vivre des soirées hautes en couleurs et en émotions, dont il a seul le secret.\n\n🍸 Cocktails fantastiques, ambiance électrique et clientèle éclectique, rien ne brise la folle humeur de cet établissement bien connu de la capitale.\n\n👯‍♂️Afterwork déjanté, chaleureuse cave voûtée « Piano Bar », le tout accompagné d’une extravagante troupe d’artistes !\n\nLe Club Banana Café est le rendez-vous à prendre avec la nuit à Paris.\n\nDans la galerie : l'équipe en Marie Antoinette avec Michel Michel, disparu en 2025.",
+  "email": null,
+  "hours": {
+    "friday": "18:00-07:00",
+    "monday": "18:00-07:00",
+    "saturday": "18:00-07:00",
+    "sunday": "18:00-07:00",
+    "thursday": "18:00-07:00",
+    "tuesday": "18:00-07:00",
+    "wednesday": "18:00-07:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/banana-cafe-logo.jpg",
+  "phone": "0142333531",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/bananacafeparis",
+    "instagram": "https://www.instagram.com/bananacafeparis/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Lieu mythique des Nuits Gay parisiennes, piano bar",
+  "transport": "Metro 1,4,14 + RER A,B,D Chatelet Les Halles",
+  "venue": null,
+  "website": "https://sites.google.com/view/banana-cafe-paris/accueil?authuser=2",
+  "source_url": "https://www.parislgbt.com/listing/banana-cafe/",
+  "slug": "banana-cafe",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/banana-cafe/",
+    "en": "https://www.parislgbt.com/en/listing/banana-cafe/"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "type": "event",
+  "name": "WE MUSIC FESTIVAL",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/01/407218d0-8e8e-4f6d-ac75-984504372d4b-1.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Nice",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 43.71008,
+    "lng": 7.26184
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/01/407218d0-8e8e-4f6d-ac75-984504372d4b-1.jpeg",
+  "dates": [
+    {
+      "start": "2026-06-13T15:00:00+02:00"
+    }
+  ],
+  "description": "**Le 1er WE MUSIC FESTIVAL va être un réel SUCCES et c'est grâce à vous, les préventes s'envolent et les billets à tarifs réduit commencent à se faire rare.**\n\nRESERVEZ VITE VOTRE PLACE à tarif PREFERENTIEL !!\n\n LE 30 JANVIER les tarifs passeront à 35€ le PASS SOIR et 60€ le PASS WE\n\n Tarifs Actuels :\n\n Tarif Asso : 15€\n\n Tarif Réduit Pass Soir : 20€\n\n Tarif Spécial WE : 50€\n\n[https://shotgun.live/fr/events/we-music-festival](https://shotgun.live/fr/events/we-music-festival)\n\nThéâtre de Verdure - Ville de Nice\n\nAu programme : 12 artistes, 16 heures de musique, et un line-up qui mélange légendes et nouvelles signatures.\n\nPROGRAMMATION :\n\n SAMEDI 13 JUIN 2026\n\n FRITZ KALKBRENNER\n\n ANTHONY ROTHER\n\n JOHN DIXON\n\n EGEON DUSK\n\n NESS TORIA\n\n ANDRE DALCAN\n\n DIMANCHE 14 JUIN 2026\n\n KITTIN & THE HACKER\n\n METARAPH\n\n CHRIS BEKKER\n\n BEN CRAFTER\n\n ANNA CROUSE\n\nLe WE Music Festival, c’est une scène pensée pour la communauté, pour les amoureux du son, pour tous ceux qui vivent la nuit comme un terrain de jeu.\n\nUn format intimiste, une ambiance électrique, une expérience qui va marquer les débuts d’un rendez-vous annuel à Nice.\n\nPrépare toi. L’été 2026 s’annonce incandescent. 🔥🎛",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://shotgun.live/fr/events/we-music-festival",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": "http://www.wemusicfestival.fr",
+  "source_url": "https://www.parislgbt.com/listing/we-music-festival/",
+  "slug": "we-music-festival",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/we-music-festival/",
+    "en": "https://www.parislgbt.com/en/listing/we-music-festival/"
+  }
+}

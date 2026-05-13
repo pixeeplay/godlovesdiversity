@@ -1,0 +1,59 @@
+{
+  "type": "listing",
+  "name": "Chez Olympe",
+  "categories": [
+    "bars",
+    "restaurant"
+  ],
+  "tags": [
+    "arts-culture",
+    "handicap",
+    "djs-at-work",
+    "drags",
+    "terrasse",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/06/Chez-Olympe-facade-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/06/Chez-Olympe-facade.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/06/Chez-Olympe-table.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/06/Chez-Olympe-menu.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Pantin",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.89321,
+    "lng": 2.4018
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/06/Chez-Olympe-cover-1024x1024.jpg",
+  "description": "Olympe est un lieu de vie comme une maison. Une maison chaleureuse et vivante. On y réunit les ami·es, les voisin·es, notre communauté, notre famille choisie pour partager des bonheurs simples, discuter, rire aux éclats et se fabriquer des souvenirs.\n\nCréé par le duo d'A La Folie, Remy Baiget (ex DA du Rex Club) et Mohammed Azaiche (Cabaret Sauvage), duo en charge du Bal de l’Amour pour la mairie de Paris, Chez Olympe est un bar populaire LGBT engagé dans son quartier, Pantin en Seine Saint-denis, engagé envers ses communautés et fidèle à ses valeurs de partage, de fête et d'exigence artistique.\n\nPantin devient ainsi une ville encore plus inclusive et dispose d'une nouvelle scène pour les talents de demain :\n\n\"Nous sommes perçus par les artistes comme un tremplin, reprend Rémy Baiget. Ils démarrent ici avant de poursuivre leur carrière sur des scènes plus importantes. Chez Olympe, on peut sentir une réelle effervescence artistique. » Et le show ne fait que commencer !\" ([source](https://www.pantin.fr/la-ville/aller-plus-loin/pantin-terrain-dexpression-et-de-fete-11256) Mairie de Pantin).\n\nLes visiteurs peuvent profiter d’une variété d’options culinaires, allant du petit-déjeuner au dîner, incluant des plats végétariens et végétaliens. Olympe met à disposition un bar sur place avec diverses boissons alcoolisées, allant de la bière aux cocktails, et accueille régulièrement des animations telles que du cabaret et de la musique live. Le restaurant dispose également d'un espace extérieur pour celles et ceux qui préfèrent dîner en plein air.\n\nNe ratez pas le Bingo Drag du dimanche de Morphine Blaze et les shows de drag certains soirs.",
+  "email": null,
+  "hours": {
+    "monday": null,
+    "tuesday": null,
+    "wednesday": "10:00-00:00, 00:00-00:00, 10:00-00:00, 10:00-00:00, 10:00-00:00, 00:00-10:00, 10:00-00:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/06/Chez-Olympe-logo.jpg",
+  "phone": "01 74 40 02 22",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/chezolympepantin",
+    "instagram": "https://www.instagram.com/chez_olympe/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "🏠💞Maison du bonheur",
+  "transport": "M° Hoche (Ligne 5)",
+  "venue": null,
+  "website": "https://bento.me/olympe",
+  "source_url": "https://www.parislgbt.com/listing/chez-olympe/",
+  "slug": "chez-olympe",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/chez-olympe/",
+    "en": "https://www.parislgbt.com/en/listing/chez-olympe/"
+  }
+}

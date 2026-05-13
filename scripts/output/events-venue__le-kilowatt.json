@@ -1,0 +1,37 @@
+{
+  "type": "listing",
+  "name": "Le Kilowatt",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Paris Queer Festival 2026 * Le Kilowatt",
+      "url": "https://www.parislgbt.com/listing/paris-queer-festival-2026/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/le-kilowatt/",
+  "slug": "le-kilowatt",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/le-kilowatt/",
+    "en": "https://www.parislgbt.com/en/events-venue/le-kilowatt/"
+  }
+}

@@ -39,7 +39,10 @@ CREDENTIALS_LOCAL.md
 /IDEES_SPIRITUEL_VIRTUEL.md
 /EVALUATION_ET_PLAN_IA_LOCALE_*.md
 
-# Scraper outputs
-/scripts/output/
+# Scraper outputs : on commit les JSON pour pouvoir lancer import-final.ts depuis le container Coolify
+# (sinon "Cannot find module /app/scripts/output/...")
+# /scripts/output/   ← UNCOMMENTED: les JSON sont commit pour disponibilité runtime
+/scripts/output/scrape.log
+/scripts/output/.scraper.pid
 /scripts/node_modules/
 /scripts/.env

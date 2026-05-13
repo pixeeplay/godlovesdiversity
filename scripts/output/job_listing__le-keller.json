@@ -1,0 +1,58 @@
+{
+  "type": "listing",
+  "name": "Le Keller",
+  "categories": [
+    "cruising"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "cruising",
+    "fetichisme",
+    "naturisme",
+    "gay",
+    "hommes-exclusivement",
+    "entree-payante"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/480_320_csupload_58667233.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/480_319_csupload_58667437.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/480_320_csupload_58667514.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "14 Rue Keller",
+    "lat": 48.85455,
+    "lng": 2.37632
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/LeKellerDevanture1909-LE-KELLER-1024x768-1.jpg",
+  "description": "LE KELLER est le club historique et mythique de la scène hard et fetish gay française depuis plus de 40 ans !\n\nLE KELLER organise des parties principalement sur les thèmes Bondage, Fist, SM et Uro",
+  "hours": {
+    "friday": "22:00-05:00",
+    "monday": null,
+    "saturday": "22:00-05:00",
+    "sunday": "17:00-23:45",
+    "thursday": "21:00-03:00",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/46418511_292982528009953_8251314048918880256_o.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/lekellerpari",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Club historique et mythique de la scène hard et fetish gay",
+  "transport": "M° 8 : Voltaire / Ledru-Rollin / Bastille",
+  "website": "https://www.lekeller.com/",
+  "source_url": "https://www.parislgbt.com/listing/le-keller/",
+  "slug": "le-keller",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-keller/",
+    "en": "https://www.parislgbt.com/en/listing/le-keller/"
+  }
+}

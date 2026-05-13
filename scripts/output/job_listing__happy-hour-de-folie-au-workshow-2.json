@@ -1,0 +1,58 @@
+{
+  "type": "event",
+  "name": "HAPPY HOUR DE FOLIE AU WORKSHOW",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/02/26825_image_398141742_718616360302690_284277433761523368_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "173 rue Saint-Martin",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/02/26825_image_398141742_718616360302690_284277433761523368_n-1024x576.jpg",
+  "dates": [
+    {
+      "start": "2026-05-14T17:00:00+02:00"
+    },
+    {
+      "start": "2026-05-21T17:00:00+02:00"
+    },
+    {
+      "start": "2026-05-28T17:00:00+02:00"
+    },
+    {
+      "start": "2026-06-04T17:00:00+02:00"
+    },
+    {
+      "start": "2026-06-11T17:00:00+02:00"
+    }
+  ],
+  "description": "**Tous les Jeudis : Happy Hour de Folie au Workshow Paris !**\n\nLieu : Workshow Paris, 173 rue Saint-Martin, 75003 Paris\n\nDate : Tous les jeudis\n\nHeure : 17h00 - 22h00\n\nDescription : Rejoignez-nous chaque jeudi pour notre Happy Hour de folie au Workshow Paris ! Profitez de notre ambiance chaleureuse et festive, que ce soit sur notre terrasse ou dans notre intérieur spacieux. Venez vous détendre après le travail avec de la bonne musique et des boissons à prix imbattables !\n\nOffres Spéciales :\n\nPinte de bière blonde à partir de 3,50 €\n\nCocktails à partir de 5 €\n\nPintes de soda à partir de 3,50 €\n\nChope litre de bière à partir de 6 €\n\nHoraires d’ouverture : 17h00 - 2h00 du matin\n\nPourquoi venir ?\n\nAmbiance festive avec de la musique et des DJ sets\n\nEspace spacieux sur deux niveaux, parfait pour se détendre ou danser\n\nHappy Hour prolongé de 17h00 à 22h00\n\nLe Happy Hour le moins cher du centre de Paris !\n\nNe manquez pas cette occasion de profiter de nos offres spéciales et de passer une soirée mémorable au Workshow Paris. On vous attend nombreux chaque jeudi à partir de 17h00 !",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/78311733_2208049539296143_629503271991508992_n-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "WorkshoW",
+    "slug": "workshow",
+    "url": "https://www.parislgbt.com/listing/workshow/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/happy-hour-de-folie-au-workshow-2/",
+  "slug": "happy-hour-de-folie-au-workshow-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/happy-hour-de-folie-au-workshow-2/",
+    "en": "https://www.parislgbt.com/en/listing/happy-hour-de-folie-au-workshow-2/"
+  }
+}

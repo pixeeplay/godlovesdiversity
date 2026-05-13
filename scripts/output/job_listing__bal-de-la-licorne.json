@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Bal de la licorne",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/Visuel-Web_1090x726px-BD.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75005",
+    "street": "28 Rue du Sommerard",
+    "lat": 48.85053,
+    "lng": 2.34323
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/Visuel-Web_1090x726px-BD-1024x682.jpg",
+  "dates": [
+    {
+      "start": "2026-06-13T19:00:00+02:00"
+    }
+  ],
+  "description": "Le musée de Cluny - musée national du Moyen Âge vous invite à sa première édition du Bal de la Licorne.\n\nLe temps d’une soirée et à l’occasion du mois des fiertés, le musée se transforme en un espace de fête autour de l’univers de la licorne. Figure emblématique du Moyen Âge, elle est devenue un symbole contemporain des communautés LGBTQIA+.\n\nLe programme mêle performances et musique : la drag queen Élysée Moon proposera des interventions chantées et un quiz autour des licornes, puis un DJ set de Corrine fera vibrer la cour de l’hôtel médiéval.\n\nDes étudiants de l’École du Louvre seront présents dans l’exposition \"Licornes !\" pour vous accompagner dans votre découverte des œuvres.\n\nUn service de restauration et de bar est assuré par la Table de Cana pendant la soirée (service payant).\n\nTarif unique : 22€\n\n Réservation obligatoire (pas de vente sur place).\n\n Ouverture de la billetterie mercredi 13 mai à 10h.\n\nÀ partir de 18 ans\n\n Dans l’esprit festif de la soirée, les costumes sont les bienvenus.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/bal-de-la-licorne/",
+  "slug": "bal-de-la-licorne",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bal-de-la-licorne/",
+    "en": "https://www.parislgbt.com/en/listing/bal-de-la-licorne/"
+  }
+}

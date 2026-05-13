@@ -1,0 +1,44 @@
+{
+  "type": "listing",
+  "name": "173 rue Saint Martin, Paris",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "INTERNATIONAL BEER PONG CHAMPIONSHIP",
+      "url": "https://www.parislgbt.com/listing/international-beer-pong-championship-6/"
+    },
+    {
+      "title": "AYA NAKAMURA AFTER SHOW * 173 rue Saint Martin, Paris",
+      "url": "https://www.parislgbt.com/listing/aya-nakamura-after-show-2/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": "173 rue Saint Martin",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/173-rue-saint-martin-paris/",
+  "slug": "173-rue-saint-martin-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/173-rue-saint-martin-paris/",
+    "en": "https://www.parislgbt.com/en/events-venue/173-rue-saint-martin-paris/"
+  }
+}

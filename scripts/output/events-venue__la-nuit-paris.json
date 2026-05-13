@@ -1,0 +1,48 @@
+{
+  "type": "event",
+  "name": "La Nuit Paris",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "BBB : Aya Nakamura After Show * La Nuit Paris",
+      "url": "https://www.parislgbt.com/listing/bbb-aya-nakamura-after-show/"
+    },
+    {
+      "title": "BBB : Chante Aya * La Nuit Paris",
+      "url": "https://www.parislgbt.com/listing/bbb-chante-aya/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [
+    {
+      "start": "2025-05-29T00:00:00+02:00"
+    },
+    {
+      "start": "2025-05-31T00:00:00+02:00"
+    }
+  ],
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/la-nuit-paris/",
+  "slug": "la-nuit-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/la-nuit-paris/",
+    "en": "https://www.parislgbt.com/en/events-venue/la-nuit-paris/"
+  }
+}

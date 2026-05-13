@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Flash Cocotte x Barbi(e)turix",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/43211_image_685456004_1363822515790680_7020126199394921949_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75019",
+    "street": "Allée du Belvédère",
+    "lat": 48.89258,
+    "lng": 2.39402
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/43211_image_685456004_1363822515790680_7020126199394921949_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-16T23:45:00+02:00"
+    }
+  ],
+  "description": "BARBI(E)TURIX rejoint Flash Cocotte pour une queer nuit incandescente ⚡️\n\nSon, corps, sueur, electricity !!!",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1590637672044282",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/flash-cocotte-x-barbieturix-3/",
+  "slug": "flash-cocotte-x-barbieturix-3",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/flash-cocotte-x-barbieturix-3/",
+    "en": "https://www.parislgbt.com/en/listing/flash-cocotte-x-barbieturix-3/"
+  }
+}

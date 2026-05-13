@@ -1,0 +1,66 @@
+{
+  "type": "listing",
+  "name": "Cabaret Artishow",
+  "categories": [
+    "cabarets"
+  ],
+  "tags": [
+    "entree-payante",
+    "drags"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/91500393_1824435401020774_6835322309918588928_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/82334730_1745580368906278_4022592620550160384_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/72988022_1657637217700594_8758543278485274624_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Artishow_salle.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/01/14-Fev-2025-lArtishow-conserve-ses-tarifs-habituels-pour-la-St.Valentin-.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Artishow-2025.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Artishow2025_boutique.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "TARIF SPECIAL ETE JUSQU'AU 9 SEPTEMBRE",
+      "url": "https://www.parislgbt.com/listing/tarif-special-ete-jusquau-9-septembre/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75011",
+    "street": "3 Cité Souzy",
+    "lat": 48.85165,
+    "lng": 2.38901
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/Artishow_couverture2024-1024x768.jpg",
+  "description": "**“Mon vrai métier, c’est la nuit**\n\n**que je l’exerce, travesti**\n\n**je suis artiste”.**\n\n**Les paroles de Charles Aznavour sonnent juste.**\n\nLe cabaret Artishow offre un spectacle hyper pro et une ambiance chaleureuse. Le lieu réunit une troupe de danseurs, chanteurs et serveurs, impeccables sur scène et d’une immense gentillesse en salle. Tout le panthéon pop passe sur scène, de Kylie Minogue à Véronique Sanson, en passant par Amy Winehouse et Christine and the Queen. Le Toc Toc Show une fois par mois est recommandé.\n\nOuverture de la boutique en 2025, repartez avec un costume de scène pour changer votre quotidien !",
+  "email": null,
+  "hours": {
+    "friday": "20:00-00:30",
+    "monday": null,
+    "saturday": "20:00-00:30",
+    "sunday": null,
+    "thursday": "20:00-00:30",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/Artishow_logo2024.jpg",
+  "phone": "01 43 48 56 04",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/xafulcie",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Cabaret parisien qui propose régulièrement de nouvelles revues !",
+  "transport": "Metro 9 : Rue Des Boulets",
+  "venue": null,
+  "website": "http://www.artishowcabaret.com/",
+  "source_url": "https://www.parislgbt.com/listing/artishow-cabaret/",
+  "slug": "artishow-cabaret",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/artishow-cabaret/",
+    "en": "https://www.parislgbt.com/en/listing/artishow-cabaret/"
+  }
+}

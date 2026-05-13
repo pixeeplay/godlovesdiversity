@@ -1,0 +1,110 @@
+{
+  "type": "listing",
+  "name": "WorkshoW",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "terrasse",
+    "handicap",
+    "bi",
+    "drags",
+    "gay",
+    "jeunes-etudiants",
+    "lesbien",
+    "djs-at-work",
+    "queer",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/85252416_2352921861475576_2067702049201455104_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/80400891_2236743943093369_6234243118607106048_n.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "DEVIANCE JUNGLE PARIS PRIDE | Party + After",
+      "url": "https://www.parislgbt.com/listing/deviance-jungle-paris-pride-party-after/"
+    },
+    {
+      "title": "LA BETISIERE : FÊTE DE LA MUSIQUE",
+      "url": "https://www.parislgbt.com/listing/la-betisiere-fete-de-la-musique/"
+    },
+    {
+      "title": "LA BÊTISIÈRE : Fête de la musique",
+      "url": "https://www.parislgbt.com/listing/la-betisiere-fete-de-la-musique-2/"
+    },
+    {
+      "title": "HAPPY HOUR DE FOLIE AU WORKSHOW",
+      "url": "https://www.parislgbt.com/listing/happy-hour-de-folie-au-workshow-2/"
+    },
+    {
+      "title": "POP OF STREET",
+      "url": "https://www.parislgbt.com/listing/pop-of-street/"
+    },
+    {
+      "title": "AYA NAKAMURA AFTER SHOW",
+      "url": "https://www.parislgbt.com/listing/aya-nakamura-after-show/"
+    },
+    {
+      "title": "INTERNATIONAL BEER PONG CHAMPIONSHIP",
+      "url": "https://www.parislgbt.com/listing/international-beer-pong-championship-6/"
+    },
+    {
+      "title": "DAVID GUETTA AFTER SHOW",
+      "url": "https://www.parislgbt.com/listing/david-guetta-after-show/"
+    },
+    {
+      "title": "JUL AFTER SHOW",
+      "url": "https://www.parislgbt.com/listing/jul-after-show/"
+    },
+    {
+      "title": "AYA NAKAMURA AFTER SHOW",
+      "url": "https://www.parislgbt.com/listing/aya-nakamura-after-show-2/"
+    },
+    {
+      "title": "DAVID GUETTA AFTER SHOW",
+      "url": "https://www.parislgbt.com/listing/david-guetta-after-show-2/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "173 Rue Saint-Martin",
+    "lat": 48.86263,
+    "lng": 2.352
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/66110368_1925852494182517_3140311393404715008_n.jpg",
+  "description": "Vous êtes en plein milieu de la Capitale, au carrefour des Halles et du Marais ? Alors marchez jusqu'à la rue Saint-Martin en direction de Beaubourg, et là, arrêtez vous !\n\nLe WorkshoW apparaît alors comme une évidence : une grande terrasse, deux bars, 450 m2 de bonne ambiance qui se propage au rez-de- chaussée en version chill’ et cocktails, comme au sous- sol aménagé option dancefloor et live shows.\n\nLieu de vie, d’événements culturels variés et de fête, le WorkshoW vous offre ce moment de détente que vous cherchiez dans son cadre urbain, décalé et authentique. Le verre que vous commanderez, ce sera installés dans l’un des canapés Club lors d’un vernissage, sur une chaise de bistrot pendant un pop-up store ou encore autour d’un établi d’atelier, partageant une planche entre amis.\n\nNos clients le savent : venir au WorkshoW, c’est un peu comme aller chez un pote, le savoir faire en plus ; car oui, l’aventure est avant tout humaine et commence par le rêve de quatre amis qui souhaitaient construire plus qu’un simple bar, mais un véritable concept de vie : « eat, drink & socialize ».",
+  "email": null,
+  "hours": {
+    "friday": "12:00-02:00",
+    "monday": "12:00-02:00",
+    "saturday": "12:00-02:00",
+    "sunday": null,
+    "thursday": "12:00-02:00",
+    "tuesday": "12:00-02:00",
+    "wednesday": "12:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/78311733_2208049539296143_629503271991508992_n.jpg",
+  "phone": "0171243166",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/WorkshowParis/",
+    "instagram": "https://www.instagram.com/workshowparis/?hl=f",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Bar, Restaurant, Music & Club",
+  "transport": "métro 1,11 Rambuteau, Hôtel de Ville ou 4 : Etienne Marcel",
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/workshow/",
+  "slug": "workshow",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/workshow/",
+    "en": "https://www.parislgbt.com/en/listing/workshow/"
+  }
+}

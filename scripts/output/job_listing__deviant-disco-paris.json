@@ -1,0 +1,46 @@
+{
+  "type": "listing",
+  "name": "Deviant Disco Paris",
+  "categories": [
+    "associations",
+    "clubs"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/04/bandeau-logo-DDP-1024x539.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/04/logo-DDP-black.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/04/bandeau-logo-DDP-1024x539.jpg",
+  "description": "Telle pourrait être la devise de cette tribu inhabituelle, composée d'un rassemblement de crate diggers, de DJ's, d'artistes visuels, de performeurs et, in fine, de fêtards à l'esprit très ouvert. Leur but : vous faire danser sur des sons très, très éloignés des playlists conventionnelles des clubs de masse. Née à la fin des années 70 sur les cendres du psych-rock et du flower power, la musique disco trouve ses racines dans les grands clubs de la région de New York et dans les lieux underground. Hélas, elle a parfois fini par sonner de manière fastidieuse et formatée.\n\nComme dans tous les genres, quelques artistes ont néanmoins réussi à s'affranchir de l'aspect originel du disco mainstream, détournant ce style musical tout en donnant naissance à des sous-genres plus réfléchis. Au début des années 80, la scène cosmic disco italienne ouvre la voie au italo disco ; en Europe, de nombreux compositeurs - qu'ils soient belges, français, allemands ou turcs, entre autres - donnent naissance à leur propre définition de la musique disco. Peu de temps après, les auditeurs avides trouveront des productions disco disponibles dans le monde entier, en Asie du Sud-Est, en Afrique, au Brésil ou même dans le sous-continent indien, chaque région ajoutant son propre mélange au canon du genre. En Europe, l'utilisation massive de synthétiseurs et de boîtes à rythmes impitoyables a progressivement laissé de côté les mélodies complexes, donnant naissance à ce que l'on appellera la synth wave et le death disco.\n\nDeviant Disco est né de tous ces courants musicaux. Par ailleurs, DD n'est pas seulement une équipe de DJ's et de diggers furieux, c'est aussi un label et un organisateur de soirées.\n\nQuelque chose qui ressemble à du disco, mais qui n'en est pas vraiment : restez à l'écoute des sorties déviantes, des événements publics et de l'épicerie fine musicale.",
+  "hours": {
+    "monday": "Uniquement sur rendez-vous",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/04/logo-DDP-black.png",
+  "phone": "0659099400",
+  "social": {
+    "facebook": "https://www.facebook.com/deviantdiscoparis",
+    "twitter": "https://twitter.com/disco_paris"
+  },
+  "subtitle": "Don’t be Disco, be Deviant Disco !",
+  "transport": "Strasbourg Saint Denis",
+  "website": "https://www.deviantdisco.space/",
+  "source_url": "https://www.parislgbt.com/listing/deviant-disco-paris/",
+  "slug": "deviant-disco-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/deviant-disco-paris/",
+    "en": "https://www.parislgbt.com/en/listing/deviant-disco-paris/"
+  }
+}

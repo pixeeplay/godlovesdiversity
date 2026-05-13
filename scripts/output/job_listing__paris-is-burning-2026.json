@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Paris is Burning documentaire fondamental",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/Paris-is-burning-movie-poster-md.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75006",
+    "street": "53 Rue Notre-Dame-des-Champs",
+    "lat": 48.84425,
+    "lng": 2.33036
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/Paris-is-burning-movie-poster-md.jpg",
+  "dates": [
+    {
+      "start": "2026-06-16T20:00:00+02:00"
+    }
+  ],
+  "description": "**Paris Is Burning**\n\nParis Is Burning est un documentaire américain réalisé par Jennie Livingston, sorti en 1991, qui chronicle la culture des bals à New York dans les années 1980, centrée sur la communauté afro-américaine et latino LGBTQ+.\n\nC'est toute l'âme des reines des bals ou balls qui se transmet à travers ce documentaire FONDAMENTAL sur cette tradition afro américaine, qui s'est largement répandue et vulgarisée dans nos contrées, et pas que.\n\nLe succès mondial de RuPaul Drag Race a mis sur le haut du podium des rêves des adolescents transis par les talons et la libération par les froufrous le modèle du défilé de mode et des concours de beauté en mode ghetto cette culture voging.\n\nAutant regarder sur grand écran et avec ses amis.es ce documentaire passionnant !\n\nParis Is Burning est un film documentaire de 1990 réalisé par Jennie Livingston qui explore la sous-culture underground de la danse de salon et de la performance dans les années 1980 parmi les communautés afro-américaines, latino, gay et transgenres de New York.\n\nLe film offre un aperçu intime de la vie des drag queens, des femmes trans et des hommes gays de couleur alors qu’ils s’affrontent dans des concours de bal, montrent leur talent et s’expriment à travers la mode et le style.\n\nProjeté par le Ciné Club [The Breakfast Club](https://www.cinemasindependantsparisiens.fr/breakfast-club/), qu'on remercie.\n\n6€ la séance.\n\nCinéma Le Lucernaire, 53 Rue Notre Dame des Champs, 75006 Paris.\n\nM° Vavin oi ND des Champs",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "M° Vavin ou ND des Champs",
+  "venue": {
+    "name": "Le Lucernaire",
+    "slug": "le-lucernaire",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Le%20Lucernaire"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/paris-is-burning-2026/",
+  "slug": "paris-is-burning-2026",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/paris-is-burning-2026/",
+    "en": "https://www.parislgbt.com/en/listing/paris-is-burning-2026/"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "type": "listing",
+  "name": "Isoego.com",
+  "categories": [],
+  "tags": [
+    "prevention-sante",
+    "bears",
+    "bi",
+    "gay",
+    "queer",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/01/Affiche-Maison-LGBT-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/01/photo-1581612129334-551ccd069e62-1024x683.jpg",
+  "description": "Isoego.com est un projet de plateforme en ligne offrant à la communauté LGBTQIA+, un accès facile à des praticiens en esthétique, bien-être et médecines douces.\n\nNotre ambition est de créer un environnement inclusif où chaque individu se sent respecté, accepté et pris en charge dans sa quête de bien-être et de beauté.\n\nParce que l'identité de genre est parfois un obstacle pour trouver des praticiens, la plateforme isoego.com s'incrit dans une démarche wellness friendly.",
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/01/logo-isoego-3.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/isoego.2023",
+    "instagram": "https://www.instagram.com/isoego_community",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Plateforme web esthétique et bien-être dédiée à la communauté LGBTQIA+",
+  "transport": "web",
+  "source_url": "https://www.parislgbt.com/listing/isoego-com/",
+  "slug": "isoego-com",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/isoego-com/",
+    "en": "https://www.parislgbt.com/en/listing/isoego-com/"
+  }
+}

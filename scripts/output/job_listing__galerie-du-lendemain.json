@@ -1,0 +1,55 @@
+{
+  "type": "listing",
+  "name": "Galerie du Lendemain",
+  "categories": [
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/06/2020_Galerie-du-Lendemain.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "107-109, rue Quincampoix",
+    "lat": 48.86304,
+    "lng": 2.35145
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/06/17_FLYER_Galerie-du-Lendemain_Subjective-beaute-724x1024.jpg",
+  "description": "La Galerie du Lendemain présente « Subjective Beauté. Le choix du corps masculin », sa seconde exposition de groupe de la saison 2022-2023. Une exposition qui fait suite à celle consacrée au nu masculin, au printemps 2022.\n\nCette fois-ci, les artistes sélectionnés ont répondu à la question suivante : qu’est-ce qui pourrait définir la beauté dans l’art ?\n\nEn recueillant les réponses, bien au delà de la représentation de la nature et sa splendeur à préserver, qui aurait pu interpeller en premier nos artistes, c’est le choix de la figure humaine et plus précisément celui de la « figure masculine » qui a porté leurs regards.\n\nPar cette représentation humaine du masculin, chaque artiste peut ainsi exprimer ses pensées,ses rêves, sa vision du réel et ses désirs intimes.\n\nLe corps masculin serait donc aujourd’hui, à nouveau, comme à l’époque de la Grèce antique,la représentation artistique de la beauté ?\n\nC’est ce que suggèrent ces oeuvres, peintures, photographies, dessins et collages, qui sont également une alternative à la brutalité de notre époque, au conflit, à la discorde.\n\nCes œuvres auraient pu revêtir une dimension dérangeante, choquante, car l’art peut aussi servir à cela, afin de porter un message essentiel au monde ; au contraire, ici, les oeuvres s’emparent du sujet de l’exposition avec une dimension à la fois universelle et intime, essayant simplement de saisir ces instants de beauté que seuls les artistes savent percevoir : dans l’abandon d’un corps en mouvement, la tendre étreinte et l’élan vers la liberté qui montrent la voie, le sourire franc qui s’illumine sur un visage, la découverte d’une île où l’on peut vivre nu le temps d’un été, le partage et l’harmonie dans un groupe, et bien d’autres détails que les artistes ont choisi de révéler ici pour répondre, de manière subjective, à notre question, élevant ainsi nos esprits et apportant de la douceur à nos cœurs.",
+  "email": null,
+  "hours": {
+    "friday": "13:00-20:00",
+    "monday": "13:00-20:00",
+    "saturday": "13:00-20:00",
+    "sunday": null,
+    "thursday": "13:00-20:00",
+    "tuesday": "13:00-20:00",
+    "wednesday": "13:00-20:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/06/logo-Galerie-du-Lendemain.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/galeriedulendemain/",
+    "instagram": "https://www.instagram.com/galeriedulendemain/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Subjective Beauté. Le choix du corps masculin",
+  "transport": "Ménilmontant, Réaumur Sébastopol, Rambuteau",
+  "venue": null,
+  "website": "https://www.galeriedulendemain.com/fr/",
+  "source_url": "https://www.parislgbt.com/listing/galerie-du-lendemain/",
+  "slug": "galerie-du-lendemain",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/galerie-du-lendemain/",
+    "en": "https://www.parislgbt.com/en/listing/galerie-du-lendemain/"
+  }
+}

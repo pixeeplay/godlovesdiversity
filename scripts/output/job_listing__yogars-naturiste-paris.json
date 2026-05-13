@@ -1,0 +1,50 @@
+{
+  "type": "event",
+  "name": "Yogars naturiste Paris",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/05/0023AA55-47E0-401C-883A-E168583E493F.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.85344,
+    "lng": 2.39264
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/05/0023AA55-47E0-401C-883A-E168583E493F-1024x995.jpeg",
+  "dates": [
+    {
+      "start": "2026-05-13T19:00:00+02:00"
+    }
+  ],
+  "description": "Cours collectifs tous niveaux de yoga naturiste entre hommes (méthode Iyengar).\n\nLundi 20h-21h\n\nMercredi 19h-20h\n\nParis 11e métro Philippe Auguste ou Alexandre Dumas (adresse et codes communiqués par mail le jour même).\n\nTarif à l’unité 25€\n\nCarte de 5 cours 110€ valable 2 mois\n\nCarte de 10 cours 200€ valable 3 mois\n\nRéservation impérative https://yogarsnu.reservio.com/\n\nMerci d’arriver 10mn avant pour vous changer tranquillement et régler le cours avant le début (prévoyez l’appoint svp).\n\n** Toute annulation le jour même est due **\n\nApportez votre tapis, (deux briques en liège idéalement et une sangle de yoga).\n\nIl n’y a aucun matériel sur place.\n\nBienvenue aux hommes trans ;-)\n\nLien vers les réseaux sociaux et groupe WhatsApp / Telegram / Signal\n\nhttps://linktr.ee/yogarsnuparis",
+  "email": null,
+  "hours": {
+    "monday": "20:00-21:00",
+    "wednesday": "19:00-20:00"
+  },
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://yogarsnu.reservio.com/",
+  "social": {
+    "facebook": null,
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "métro Philippe Auguste ou Alexandre Dumas",
+  "venue": null,
+  "website": "https://linktr.ee/yogarsnuparis",
+  "source_url": "https://www.parislgbt.com/listing/yogars-naturiste-paris/",
+  "slug": "yogars-naturiste-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/yogars-naturiste-paris/",
+    "en": "https://www.parislgbt.com/en/listing/yogars-naturiste-paris/"
+  }
+}

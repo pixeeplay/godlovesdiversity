@@ -1,0 +1,46 @@
+{
+  "type": "event",
+  "name": "DRINK & PLAY - SUMMER PRIDE EDITION !",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42787_image_669689251_1405674808241221_4066555741636299566_n-1-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75007",
+    "street": "50 Rue de Lille",
+    "lat": 48.85877,
+    "lng": 2.32905
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42787_image_669689251_1405674808241221_4066555741636299566_n-1-1.jpg",
+  "dates": [
+    {
+      "start": "2026-06-20T19:30:00+02:00"
+    }
+  ],
+  "description": "**Curious Creature Productions are back to entertain you once more. To celebrate Pride Month and our 4th birthday we invite you to DRINK & PLAY : SUMMER PRIDE EDITION!**\n\nIndulge yourself with our generous apéro, while enjoying staged readings of five brand-new short plays.\n\n'Summer Lovin', 'The Lube Job', 'Project D.I.L.F', 'The Talk' & 'Bait & Switch'.\n\nWritten and Directed by Jimi Dhalluin-Goninan.\n\nStarring Alice Griffin, Julie Kalya, Margeaux Lampley, Ford Leland, Dimitri Michelsen, Tom Morton , Darcy Ruscio, & Iris Selmpesi\n\n🎟️ [**TICKETS**](https://subdomain-159945.placeminute.com/) 🎫\n\nEntry 15€ (includes show & refreshments)\n\n Presale tickets are available at [https://subdomain-159945.placeminute.com/](https://subdomain-159945.placeminute.com/ \"https://subdomain-159945.placeminute.com/\").\n\nLimited tickets can be purchased at the door, but due to popular demand you're advised to reserve your spot at curiouscreatureboxoffice@gmail.com",
+  "email": "curiouscreatureboxoffice@gmail.com",
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://subdomain-159945.placeminute.com/",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Pavé d'Orsay",
+    "slug": "le-pave-dorsay",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Le%20Pav%C3%A9%20d%27Orsay"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/drink-play-summer-pride-edition/",
+  "slug": "drink-play-summer-pride-edition",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/drink-play-summer-pride-edition/",
+    "en": "https://www.parislgbt.com/en/listing/drink-play-summer-pride-edition/"
+  }
+}

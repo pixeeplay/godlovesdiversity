@@ -1,0 +1,63 @@
+{
+  "type": "event",
+  "name": "Paris Queer Festival 2026",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/41953_image_619278909_897523092791538_2201792016224892988_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Vitry-sur-Seine",
+    "country": "France",
+    "postal_code": "94400",
+    "street": "18 Rue des Fusillés",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/03/41953_image_619278909_897523092791538_2201792016224892988_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-30T12:00:00+02:00"
+    },
+    {
+      "end": "2026-05-31T22:00:00+02:00",
+      "start": "2026-05-31T12:00:00+02:00"
+    }
+  ],
+  "description": "Ghost Elektra, Replicant Events et Glitter Factory présentent :\n\nParis Queer Festival 2026\n\nSponsorisé par Tinder\n\nDepuis 2020, le Marché Drag & Queer s’impose comme la toute première et la plus grande convention drag de France.\n\nCette année, il franchit une nouvelle étape et se réinvente naturellement sous le nom de Paris Queer Festival, avec l’ambition d’offrir une programmation encore plus riche, plurielle et audacieuse, mettant à l’honneur les talents de la scène LGBTQIA+.\n\nPour sa septième édition, le Paris Queer Festival voit encore plus grand et promet une programmation tout simplement LÉ-GEN-DAIRE !\n\nPrès d’une soixantaine d’exposant·e·s se réunissent pour célébrer la culture LGBT et l’art du drag à travers des shows, des performances musicales, des tables rondes et des ateliers dans une ambiance festive et inclusive, tout au long du week-end.\n\nNouveauté cette année : une scène musicale inédite offrant carte blanche aux collectifs clubbing LGBT qui font vibrer la nuit parisienne, une nouvelle scène dédiée aux représentations live, ainsi qu’un nouvel espace intérieur dédié aux tables rondes, ateliers et masterclasses.\n\nAu programme : un marché, deux scènes extérieures, des tables rondes, des ateliers gratuits, des drag bingos, des DJ sets et, bien sûr, une avalanche de paillettes pendant tout le week-end ! ✨",
+  "email": null,
+  "hours": {
+    "friday": null,
+    "monday": null,
+    "saturday": "12:00-02:00",
+    "sunday": "12:00-22:00",
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://shotgun.live/festivals/paris-queer-festival-2026",
+  "social": {
+    "facebook": "https://www.facebook.com/ParisQueerFestival",
+    "instagram": "https://www.instagram/ParisQueerFestival",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "RER C : Les Ardoines, Bus 282 : Rue des Fusillés",
+  "venue": {
+    "name": "Le Kilowatt",
+    "slug": "le-kilowatt",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Le%20Kilowatt"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/paris-queer-festival-2026-2/",
+  "slug": "paris-queer-festival-2026-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/paris-queer-festival-2026-2/",
+    "en": "https://www.parislgbt.com/en/listing/paris-queer-festival-2026-2/"
+  }
+}

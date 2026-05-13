@@ -1,0 +1,49 @@
+{
+  "type": "listing",
+  "name": "Personn'ailes",
+  "categories": [
+    "associations"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/PersonnAiles-equipe.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/PersonnAiles-1er-dec.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/02/PersonnAiles-tarmac-1024x683.jpg",
+  "description": "✈️Personn’Ailes, Association LGBT+ et Gay friendly du Groupe Air France​. 🧑🏾‍✈️ 👨🏻‍✈️\n\nDepuis 2001, une association qui rassemble et fait avancer la diversité.\n\nPersonn’Ailes, crée en 2001, est la première association LGBT et gay friendly d’une compagnie aérienne française. C’est une association type Loi 1901, sans couleur politique ni syndicale et dont la création est parue au Journal Officiel de février 2002.\n\nL’assemblée constituante s’est faite par la rencontre de Personnels Navigants et de Personnels Sol. Depuis plus de 18 ans l’association a fait progresser l’acceptation de la diversité des orientations sexuelles et d’identité de genre au sein de la compagnie et de ses filiales.\n\nCe qui fait la force de l’association c’est la diversité de ses centaines d’adhérents qui sont des femmes, des hommes, des hétérosexuels, des bisexuels ou homosexuels, pères ou mères de famille. On y trouve des jeunes salariés comme des retraités. Tous les grades de l’entreprise y sont représentés\n\nNos Objectifs Soutenir, prévenir, et faire avancer le mieux-vivre ensemble.\n\n L’association LGBT+ Personn’Ailes s’engage à soutenir et accompagner toutes les personnes victimes de discriminations ou mises à l’écart en raison de leur orientation sexuelle ou de leur identité de genre, au sein de l’entreprise.\n\nNous menons également des actions de sensibilisation et de prévention contre le VIH et les infections sexuellement transmissibles (IST), afin de promouvoir la santé et le bien-être de toutes et tous.\n\nNotre objectif : encourager le respect, l’inclusion et un « mieux-vivre ensemble », pour évoluer dans un environnement professionnel ouvert, bienveillant et respectueux de la diversité.\n\n🔥 [**ADHESION**](https://www.helloasso.com/associations/personn-ailes) 🔥",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/02/PersonnAiles-logo.jpg",
+  "phone": null,
+  "registration_url": "https://www.helloasso.com/associations/personn-ailes",
+  "social": {
+    "facebook": "https://www.facebook.com/personnailes",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Envolez-vous vers la diversité",
+  "transport": null,
+  "venue": null,
+  "website": "https://personnailes.org/",
+  "source_url": "https://www.parislgbt.com/listing/personnailes/",
+  "slug": "personnailes",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/personnailes/",
+    "en": "https://www.parislgbt.com/en/listing/personnailes/"
+  }
+}

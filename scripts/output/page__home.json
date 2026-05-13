@@ -1,0 +1,37 @@
+{
+  "type": "page",
+  "name": "Home • Guide - Agenda LGBT Paris",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": "Votre guide LGBT+ à Paris. Trouvez les meilleurs bars, restaurants, clubs, boutiques et plus encore !",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/02/Logo-Paris-LGBT_Paris-LGBT-Couleur-300x214.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Trouvez les meilleurs bars, restaurants, clubs, boutiques et plus encore !",
+  "transport": null,
+  "venue": null,
+  "website": "https://www.parislgbt.com/",
+  "source_url": "https://www.parislgbt.com/",
+  "slug": "home",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/",
+    "en": "https://www.parislgbt.com/en/"
+  }
+}

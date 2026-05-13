@@ -1,0 +1,55 @@
+{
+  "type": "listing",
+  "name": "Merry Club",
+  "categories": [
+    "cruising"
+  ],
+  "tags": [
+    "jeunes-etudiants",
+    "djs-at-work",
+    "entree-payante"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Merry-Club-salle-1024x742.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": null,
+    "street": "87 rue Saint-Honoré",
+    "lat": 48.86123,
+    "lng": 2.34353
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/Merry-Club-salle-1024x742.jpg",
+  "description": "Une salle de location exceptionnelle située au cœur de Paris, idéale pour tous vos événements.",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/Merry-Club-logo.jpg",
+  "phone": "06 03 80 86 88",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/lenextparis/",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Une salle de location exceptionnelle située au cœur de Paris, idéale pour tous vos événements.",
+  "transport": "Metro 1,4,14 / RER A,B,D Chatelet Les Halles",
+  "website": "https://merry-club.com/",
+  "source_url": "https://www.parislgbt.com/listing/merry-club/",
+  "slug": "merry-club",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/merry-club/",
+    "en": "https://www.parislgbt.com/en/listing/merry-club/"
+  }
+}

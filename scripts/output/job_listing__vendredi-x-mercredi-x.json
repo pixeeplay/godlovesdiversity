@@ -1,0 +1,69 @@
+{
+  "type": "listing",
+  "name": "VENDREDI X MERCREDI X",
+  "categories": [
+    "clubs",
+    "cabarets",
+    "bars"
+  ],
+  "tags": [
+    "djs-at-work",
+    "drags",
+    "queer",
+    "gay"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/12/VendrediX-MercrediX_ivresse.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/12/VendrediX-MercrediX_republique.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "VENDREDIXXL Sueur Pailletée | 15 MAI",
+      "url": "https://www.parislgbt.com/listing/vendredixxl-sueur-pailletee-15-mai/"
+    },
+    {
+      "title": "MercrediX République Mai 2026",
+      "url": "https://www.parislgbt.com/listing/mercredix-republique-2026/"
+    },
+    {
+      "title": "XOXO – PRIDE PARIS 2026 – Festival Joyeusement Bordélique LGBTQIA+",
+      "url": "https://www.parislgbt.com/listing/xoxo-pride-paris-2026-festival-joyeusement-bordelique-lgbtqia-2026/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/12/VendrediX-MercrediX_sur-seine-1024x576.jpg",
+  "description": "Véritable label qui marque les nuits LGBT parisiennes depuis plusieurs années, VendrediX - MercrediX réenchante le dancezfloor depuis une très bonne idée qu'a eu Maurice Hadad son créateur : donner des apéros festifs dans des rades de quartier. Cette lumineuse idée a fait la joie de bars bien placés mais mal foutus. Le succès a été immédiat, MercrediX est devenu une référence.\n\nDepuis, VendrediX - MercrediX expérimente et réussit toujours à contenter ses publics :\n\nVendrediX sur Seine au Silicet, un rdv populaire en bord de Seine à Chatelet\n\nVendrediX à la Bellevilloise avec plusieurs salles\n\nVendrediX cabaret avec Ivresse, la meneuse de revue et productrice\n\nXoxo, le festival de la prochaine Pride\n\nVendrediX est en tournée toute l'année également, Maurice n'arrête pas !",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/12/VendrediX-MercrediX-logo.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/vendredixmercredix",
+    "instagram": "https://www.instagram.com/vendredix_official",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "VendrediX et MercrediX fédère une communauté LGBTQA+ inclusive autour d'événements festifs, culturels",
+  "transport": null,
+  "venue": null,
+  "website": "https://vendredix.fr/",
+  "source_url": "https://www.parislgbt.com/listing/vendredi-x-mercredi-x/",
+  "slug": "vendredi-x-mercredi-x",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/vendredi-x-mercredi-x/",
+    "en": "https://www.parislgbt.com/en/listing/vendredi-x-mercredi-x/"
+  }
+}

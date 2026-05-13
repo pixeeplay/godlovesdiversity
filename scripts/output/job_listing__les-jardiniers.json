@@ -1,0 +1,59 @@
+{
+  "type": "listing",
+  "name": "Les Jardiniers",
+  "categories": [
+    "bars",
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture",
+    "handicap",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/04/Jardin-2024-vcisu-ouverture-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/04/Jardin-27-CVG-Mix.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/04/Jardin-2024-vcisu-ouverture.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Montrouge",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.81746,
+    "lng": 2.31069
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/04/Jardin-2024-vcisu-ouverture-1-1024x1024.jpg",
+  "description": "Lieu culturel hybride, Les Jardiniers accueillent des expositions d’art contemporain, une cantine écoresponsable, des évènements ouverts à tous·tes: workshop, conférences, salons, résidences de création, concerts… C’est dans les anciens ateliers des jardiniers municipaux de Montrouge, que cet espace réhabilité de 600 m2 met en place un projet culturel dialoguant avec des réflexions sur l’écologie environnementale et nos tissus sociaux contemporains. Lieu de vie pluriel, les jardiniers se veulent comme un espace ouvert, où aller et revenir, parfois rester, flâner, apprendre, travailler, se rencontrer. Ouvrir le champ des possibles. Avant tout lieu d’exposition, Les Jardiniers suivent le rythme des saisons culturelles en se découvrant au travers d’autres voix et d’autres regards portés sur notre monde. Dans un esprit de convivialité, la cantine des Jardiniers propose quotidiennement une offre de restauration / bar engagée, orientée vers des produits locaux, de saison et de petits producteurs — pour un bien manger respectueux des conditions environnementales et sociales. Dans ce mouvement d’idées, Les Jardiniers imaginent un écosystème des communs: où des relations nouvelles se forment, où des outils se prêtent au jeu de l’expérimentation. Terreau fertile, Les Jardiniers invitent à la construction collective d’autres récits du mieux vivre ensemble. En transformation permanente, pensé comme une cabane, un refuge, ce lieu évoluera et s’inventera par et pour les usages de qui nous sommes et deviendrions.\n\nLes Jardiniers sont co-fondés par les artistes Fabrice Hyber et Adrien van Melle–Nehama et par Henri van Melle, commissaire d’exposition et Christophe Vix-Gras, directeur artistique.",
+  "email": null,
+  "hours": {
+    "friday": "00:00-23:59",
+    "monday": "00:00-23:59",
+    "saturday": "00:00-23:59",
+    "sunday": "00:00-23:59",
+    "thursday": "00:00-23:59",
+    "tuesday": "00:00-23:59",
+    "wednesday": "00:00-23:59"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/04/Jardin-logo.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/LesJardiniersMontrouge",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Lieu culturel hybride & inclusif",
+  "transport": "M° Mairie de Montrouge",
+  "venue": null,
+  "website": "https://lesjardiniers.org/",
+  "source_url": "https://www.parislgbt.com/listing/les-jardiniers/",
+  "slug": "les-jardiniers",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/les-jardiniers/",
+    "en": "https://www.parislgbt.com/en/listing/les-jardiniers/"
+  }
+}

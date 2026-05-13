@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "GANG BAMBI - AFTER DE LA PRIDE DE TROYES !",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42876_image_670787585_1572653501528029_4008618229007776474_n-1-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Troyes",
+    "country": "France",
+    "postal_code": "10000",
+    "street": "42 rue Paillot de Montabert",
+    "lat": 48.29573,
+    "lng": 4.07396
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42876_image_670787585_1572653501528029_4008618229007776474_n-1-1.jpg",
+  "dates": [
+    {
+      "start": "2026-06-06T20:00:00+02:00"
+    }
+  ],
+  "description": "**// ART DÉCO - SOIRÉE GANG BAMBI //**\n\nSamedi 07 juin à 20h00, c'est la GANG BAMBI à L'ART DÉCO en After officielle de la Pride de Troyes & Sainte-Savine.\n\nGang Bambi est une soirée parisienne née en 2016 qui a su s’imposer dans la nuit queer de La Java à la Folie jusqu’au Grand Podium de la marche des Fiertés.\n\nLe Collectif Gang Bambi dans ses costumes de 1000 feux,\n\n accompagnés d’un gang de drags, cultivent un son éclectique, classieux, plein d’énergie et d’humour. Iels allient Électro, Techno, House, Disco et une Indie Dance bitchy et efficace qui met tout le monde d’accord sur le dancefloor.\n\nPour l'after de la Pride de Troyes iels vous préparent une teuf pleine de joie et belles vibes.\n\nDJs sets :\n\n Vespi\n\n Louna Driol\n\n Juda La Vidange\n\n Loki Starfish\n\n Fabisounours\n\nPerformers :\n\n Kitty Space\n\n Cookie Cunty\n\n Al Pagay\n\n Dear Angel\n\n Galatea Gold\n\n Estrella Gold\n\n Captain Edward Bitch\n\nDes Stands plein de love :\n\n- Pride de Troyes\n\n - Aux Adelphes\n\n - OST Troyes\n\nStand Paillettes par\n\n - Trick'Ass\n\nEt d'autres surprises !!\n\nTout public\n\nDurée : 6h",
+  "email": "lartdeco@ste-savine.fr",
+  "hours": null,
+  "logo": null,
+  "phone": "03 25 40 15 55",
+  "registration_url": "https://billetterie.seetickets.fr/soiree-gang-bambi-concert-l-art-deco-sainte-savine-06-juin-2026-css5-maisonduboulanger-pg101-ri11743015.html",
+  "social": {
+    "facebook": "https://www.facebook.com/events/1851921402377968",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "L'ART DÉCO",
+    "slug": "l-art-deco",
+    "url": "https://www.lart-deco.com/"
+  },
+  "website": "https://www.lart-deco.com/",
+  "source_url": "https://www.parislgbt.com/listing/gang-bambi-after-de-la-pride-de-troyes-2/",
+  "slug": "gang-bambi-after-de-la-pride-de-troyes-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/gang-bambi-after-de-la-pride-de-troyes-2/",
+    "en": "https://www.parislgbt.com/en/listing/gang-bambi-after-de-la-pride-de-troyes-2/"
+  }
+}

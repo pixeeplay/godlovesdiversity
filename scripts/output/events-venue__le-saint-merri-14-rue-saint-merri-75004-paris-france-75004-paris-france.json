@@ -1,0 +1,40 @@
+{
+  "type": "listing",
+  "name": "Le saint merri",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Hole (veille de jour férié)",
+      "url": "https://www.parislgbt.com/listing/hole-veille-de-jour-ferie/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "14 rue saint merri",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/le-saint-merri-14-rue-saint-merri-75004-paris-france-75004-paris-france/",
+  "slug": "le-saint-merri-14-rue-saint-merri-75004-paris-france-75004-paris-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/le-saint-merri-14-rue-saint-merri-75004-paris-france-75004-paris-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/le-saint-merri-14-rue-saint-merri-75004-paris-france-75004-paris-france/"
+  }
+}

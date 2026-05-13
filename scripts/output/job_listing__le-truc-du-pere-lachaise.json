@@ -1,0 +1,119 @@
+{
+  "type": "event",
+  "name": "Le Truc du Père Lachaise",
+  "categories": [
+    "cabarets",
+    "clubs"
+  ],
+  "tags": [
+    "handicap",
+    "arts-culture",
+    "bi",
+    "drags",
+    "entree-payante",
+    "fetichisme",
+    "gay",
+    "queer",
+    "lesbien"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_1079-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_1075-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_1329-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_6736-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_6739-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_6725-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_6745-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_5226-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_1296.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_1290.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_5977.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_6731-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_5989-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/IMG_5939-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/09/IMG_2080-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/IMG_7898.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/IMG_8126-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/A13A3171-1-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Les-Voisins-nov-Groupe-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/A13A2803-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/A13A3450-1-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/A13A3240-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/2S1A3205-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/DSC_7487.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/DBN_3742.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/DBN_3580-Modifier.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/DBN_3622.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/IMG_2030-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/A13A1404-Google-Photos-scaled.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "Victor Victoria cabaret féministe",
+      "url": "https://www.parislgbt.com/listing/victor-victoria-cabaret-feministe-12/"
+    },
+    {
+      "title": "Bad Biches cabaret",
+      "url": "https://www.parislgbt.com/listing/bad-biches-cabaret-4/"
+    },
+    {
+      "title": "Bad Biches cabaret",
+      "url": "https://www.parislgbt.com/listing/bad-biches-cabaret-5/"
+    },
+    {
+      "title": "Madame - Récital lyralcoolique pour chanteuse désabusée et clavier ringard",
+      "url": "https://www.parislgbt.com/listing/madame-recital-lyralcoolique-pour-chanteuse-desabusee-et-clavier-ringard/"
+    },
+    {
+      "title": "Les Voisins du Père-Lachaise cabaret",
+      "url": "https://www.parislgbt.com/en/listing/les-voisins-du-pere-lachaise-cabaret/"
+    },
+    {
+      "title": "Victor Victoria cabaret féministe",
+      "url": "https://www.parislgbt.com/en/listing/victor-victoria-cabaret-feministe-11/"
+    }
+  ],
+  "address": {
+    "street": "17 rue Fernand Léger, Paris 20 (métro Père Lachaise ou Gambetta). Paris, France",
+    "lat": 48.86388,
+    "lng": 2.38951
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/12/IMG_1093-768x1024.jpeg",
+  "dates": [
+    {
+      "start": "2026-07-03T00:00:00+02:00"
+    },
+    {
+      "start": "2026-06-04T00:00:00+02:00"
+    },
+    {
+      "start": "2026-06-05T00:00:00+02:00"
+    },
+    {
+      "start": "2026-07-02T00:00:00+02:00"
+    },
+    {
+      "start": "2026-07-04T00:00:00+02:00"
+    },
+    {
+      "start": "2026-06-06T00:00:00+02:00"
+    }
+  ],
+  "description": "Le Truc du Père Lachaise, loft industriel au cœur de Paris, est le théâtre, un week-end par mois seulement, de soirées organisées par son association \"Les Truculents\" autour du cabaret.\n\nLes Truculents explorent le spectacle vivant et donnent de la voix aux artistes qui développent une réflexion sur le sujet des genres et des sexualités, dans une optique inclusive, ouverte, joyeuse et non communautaire.\n\nDes spectacles immersifs très variés, qui ont généralement lieu la première semaine de chaque mois : cabaret Victor Victoria, cabaret Bad Biches, cabaret Les Voisins du Père-Lachaise, et le Bal surprise du dimanche après-midi.\n\nUn lieu discret, une équipe de bénévoles toujours au top, un bar associatif à prix doux, on se sent chez soi au Truc venez voir :)",
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/12/IMG_1406.jpeg",
+  "phone": "0670789001",
+  "social": {
+    "facebook": "https://www.facebook.com/lesalleTRUC",
+    "instagram": "https://instagram.com/les_truculents?igshid=OGQ5ZDc2ODk2ZA%3D%3D&utm_source=qr"
+  },
+  "subtitle": "Des soirées cabaret + club, en mode inclusif, immersif produits par l'association Les Truculents",
+  "transport": "Métro Père Lachaise",
+  "website": "https://lestruculents.fr/",
+  "source_url": "https://www.parislgbt.com/listing/le-truc-du-pere-lachaise/",
+  "slug": "le-truc-du-pere-lachaise",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-truc-du-pere-lachaise/",
+    "en": "https://www.parislgbt.com/en/listing/le-truc-du-pere-lachaise/"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "type": "listing",
+  "name": "Institut du Monde Arabe",
+  "categories": [
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2022/11/305773232_6181670585193186_2194224588626061359_n-1024x379.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2022/11/292581179_6009295445764035_826575160072359886_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75005",
+    "street": "1 Rue des Fossés Saint-Bernard",
+    "lat": 48.84938,
+    "lng": 2.35649
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2022/11/305773232_6181670585193186_2194224588626061359_n-1024x379.png",
+  "description": "Fruit d’un partenariat entre la France et les pays de la Ligue arabe, l’Institut du monde arabe est une fondation de droit privé dont la vocation est de faire connaître – ou mieux connaître –, aux publics français et européen, l’apport du monde arabe à la civilisation universelle et de promouvoir le dialogue entre le monde arabe et l’Occident.",
+  "email": null,
+  "hours": {
+    "friday": null,
+    "monday": "00:00-23:59",
+    "saturday": null,
+    "sunday": null,
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2022/11/292581179_6009295445764035_826575160072359886_n.jpg",
+  "phone": "+33 1 40 51 38 38",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/institutdumondearabe/?ref=page_internal",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Centre culturel, un partenariat entre la France et les pays arabes",
+  "transport": "Jussieu",
+  "venue": null,
+  "website": "https://www.imarabe.org/fr",
+  "source_url": "https://www.parislgbt.com/listing/institut-du-monde-arabe/",
+  "slug": "institut-du-monde-arabe",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/institut-du-monde-arabe/",
+    "en": "https://www.parislgbt.com/en/listing/institut-du-monde-arabe/"
+  }
+}

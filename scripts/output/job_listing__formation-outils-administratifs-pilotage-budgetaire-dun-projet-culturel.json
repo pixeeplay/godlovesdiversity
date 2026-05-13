@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Formation Outils administratifs & pilotage budgétaire d'un projet culturel",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/39635_image_601011307_1417952747003077_5892529685988197596_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Bagnolet",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/01/39635_image_601011307_1417952747003077_5892529685988197596_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-06-03T09:00:00+02:00"
+    }
+  ],
+  "description": "**BUT**\n\nCette action de formation s’adresse à des porteur-euses de projet du monde associatif souhaitant s’outiller sur la gestion administrative, juridique et financière de leur structure.\n\nElle a pour ambition de sensibiliser, outiller et accompagner sur ces différents volets, en essayant de lever des freins et en cherchant à faire économiser du temps dans la gestion de son projet.\n\n**OBJECTIFS PÉDAGOGIQUES**\n\n* Connaître et comprendre le cadre juridique et les obligations légales des associations loi 1901\n* Adapter sa structure juridique à son objet social et à ses activités, et notamment au regard des perspectives d’emploi\n* Appréhender les différents documents administratifs nécessaires dans le portage de son projet et nécessaires à la recherche de financement\n* Comprendre et s’outiller sur les obligations comptables des associations\n* Comprendre les dispositifs de mesure d’utilité sociale et sa mise en oeuvre\n\n**Prix**\n\n245 euros H.T.\n\n**MODALITÉS D’ORGANISATION LOGISTIQUE**\n\n* Durée : 1 jour / 7 heures de formation\n* Effectif : 12 personnes maximum\n* Lieu : Bagnolet, France",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://forms.gle/4nUChfcCtCm2uAPU9",
+  "social": {
+    "facebook": "https://www.facebook.com/events/1461253391635182",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Sample",
+    "slug": "le-sample",
+    "url": "https://www.parislgbt.com/listing/le-sample/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/formation-outils-administratifs-pilotage-budgetaire-dun-projet-culturel/",
+  "slug": "formation-outils-administratifs-pilotage-budgetaire-dun-projet-culturel",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/formation-outils-administratifs-pilotage-budgetaire-dun-projet-culturel/",
+    "en": "https://www.parislgbt.com/en/listing/formation-outils-administratifs-pilotage-budgetaire-dun-projet-culturel/"
+  }
+}

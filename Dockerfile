@@ -32,6 +32,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/package.json ./package.json
+# Scripts (import-final.ts, rewrite-descriptions.ts, generate-top10-articles.ts)
+# + data CSV + scraped JSON outputs nécessaires pour /admin/seo (npx tsx scripts/*.ts)
+COPY --from=builder /app/scripts ./scripts
 # On copie l'intégralité de node_modules pour que Prisma + tsx trouvent leurs binaires/wasm.
 # Plus lourd qu'une copie sélective mais 100% fiable.
 COPY --from=builder /app/node_modules ./node_modules

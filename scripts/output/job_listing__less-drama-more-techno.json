@@ -1,0 +1,61 @@
+{
+  "type": "listing",
+  "name": "Less Drama More Techno",
+  "categories": [
+    "clubs"
+  ],
+  "tags": [
+    "djs-at-work",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/LDMTevents_visuel.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/LDMTevents_logo.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "LDMT PRIDE ❤️ …'26",
+      "url": "https://www.parislgbt.com/listing/ldmt-pride-%e2%9d%a4%ef%b8%8f-26/"
+    },
+    {
+      "title": "TECHNOSTERONE [pride edition] 06.06.26",
+      "url": "https://www.parislgbt.com/listing/technosterone-pride-edition-06-06-26/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/03/LDMTevents_visuel.jpg",
+  "description": "We are an events agency based in central Paris, whose activity is divided into 2 distinct divisions\n\nOn the one hand, we offer a whole range of services around the production of events (for product presentation, gallery opening, cocktail), including location scouting, artists booking, on-site coordination, but also the creation of a musical atmosphere dedicated to your event.\n\nOn the other hand, we produce our own events and concepts for parties and afterworks under the trademarks «Less Drama More Techno», «Jim Afterwork», and many more …\n\n2021 also saw the launch of our own records label, which produces the agency’s artists best tracks.",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/03/LDMTevents_logo.jpg",
+  "phone": "06 95 83 19 37",
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/ldmtevents",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": "https://ldmtevents.com/",
+  "source_url": "https://www.parislgbt.com/listing/less-drama-more-techno/",
+  "slug": "less-drama-more-techno",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/less-drama-more-techno/",
+    "en": "https://www.parislgbt.com/en/listing/less-drama-more-techno/"
+  }
+}

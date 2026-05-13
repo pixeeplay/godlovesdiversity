@@ -1,0 +1,45 @@
+{
+  "type": "listing",
+  "name": "Danser Nos Vies",
+  "categories": [
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/02/inbound5808003125961551780-1024x368.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/02/inbound3037646713026178305.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/02/inbound5808003125961551780-1024x368.png",
+  "description": "Danser Nos Vies, un espace de transmission et de partage de la passion des danses à deux afro-caribéennes et en particulier de la salsa cubaine, de la bachata et de la kizomba à travers des cours et ateliers techniques.\n\nIl est né de la volonté de libérer les corps pour qu'ils puissent vivre la danse à deux en s'émancipant totalement du poids de l'hétéronormativité et ses dangers.\n\nLa communauté Queer Salsa Paris lancée sur instagram en 2020 a permis de visibiliser la danse à deux afro-caribéenne inclusive en France et de créer des ponts entre les danseur.se.s queer parisiens et des danseur.se.s queer renommés à l'international à travers des voyages de groupes à des masterclass et festivals queer à l'etranger.\n\nAujourd'hui, la vocation de Danser Nos Vies est de permettre à chacun.e de vivre la danse à sa façon, en alignement avec sa vérité, ses victoires et ses défis.",
+  "hours": {
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/02/inbound3037646713026178305.png",
+  "social": {
+    "instagram": "https://www.instagram.com/dansernosvies"
+  },
+  "subtitle": "Espace de danse à deux afro-caribéennes non genrée pour une danse qui nous ressemble",
+  "transport": "Métro Avron ou Buzenval",
+  "website": "https://www.dansernosvies.com/",
+  "source_url": "https://www.parislgbt.com/listing/danser-nos-vies/",
+  "slug": "danser-nos-vies",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/danser-nos-vies/",
+    "en": "https://www.parislgbt.com/en/listing/danser-nos-vies/"
+  }
+}

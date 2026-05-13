@@ -1,0 +1,59 @@
+{
+  "type": "listing",
+  "name": "Lou Diprey",
+  "categories": [
+    "cabarets"
+  ],
+  "tags": [
+    "drags"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/01/LoveBazar-1-scaled.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "The Brunch And Queen \"all you can eat, all you can see\"",
+      "url": "https://www.parislgbt.com/listing/the-brunch-and-queen-all-you-can-eat-all-you-can-see/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.87036,
+    "lng": 2.37222
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/01/LoveBazar-1-1024x673.jpg",
+  "description": "**Lou Diprey, le nouveau Cabaret pop moderne inclusif Parisien vous présente Love Bazar 2 soirs par semaine.**\n\nLa nouvelle revue dîner-spectacle drag queen de Paris !\n\nChorégraphié par Yoan, Quentin et Julien, le show vous permettra de reconnaître nos Reines à succès : Misty Phoenix, Azémylia et Jenny from the Bloc Note, dont l'art et l'élégance vous éblouirons.\n\nVivez un show drag exigeant, chic, pop-electro autour d'un dîner gourmand, dans un cadre festif et secret.",
+  "email": null,
+  "hours": {
+    "friday": "19:00-23:00",
+    "monday": null,
+    "saturday": "19:00-23:00",
+    "sunday": null,
+    "thursday": "19:00-23:00",
+    "tuesday": null,
+    "wednesday": "19:00-23:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/01/logofondbleu.jpg",
+  "phone": "0666150208",
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/lou.diprey/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Le Nouveau Cabaret Pop-Moderne de Paris",
+  "transport": "Goncourt",
+  "venue": null,
+  "website": "https://www.loudiprey.com/",
+  "source_url": "https://www.parislgbt.com/listing/lou-diprey/",
+  "slug": "lou-diprey",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/lou-diprey/",
+    "en": "https://www.parislgbt.com/en/listing/lou-diprey/"
+  }
+}

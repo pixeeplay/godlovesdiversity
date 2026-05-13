@@ -1,0 +1,19 @@
+{
+  "type": "tag",
+  "name": "Jeunes/étudiants",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/jeunes-etudiants/",
+  "slug": "jeunes-etudiants",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/jeunes-etudiants/",
+    "en": "https://www.parislgbt.com/en/tag/jeunes-etudiants/"
+  }
+}

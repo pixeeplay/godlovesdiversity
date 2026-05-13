@@ -1,0 +1,62 @@
+{
+  "type": "listing",
+  "name": "SecteurX",
+  "categories": [
+    "cruising"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "cruising",
+    "bears",
+    "fetichisme",
+    "gay",
+    "hommes-exclusivement",
+    "jeunes-etudiants",
+    "djs-at-work"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/secteurX.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/553244_10150258211229943_1698508383_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/409663_10150258211164943_689920081_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/486219_10150258204914943_1824678843_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/580446_10150258204934943_1724793956_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Secteur-X-17-ANS.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "49 Rue des Blancs Manteaux",
+    "lat": 48.85975,
+    "lng": 2.35463
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2019/12/71185777_10151092119484943_1503949864608727040_o-1024x1024.jpg",
+  "description": "Francis, Yves et toute l'équipe sont heureux de vous recevoir tous les jours au Secteur X. Convivialité, bonne humeur et bons moments bien chauds sont au programme et font le succès du lieu !\n\nFrancis, Yves and the whole team are happy to welcome you every day in Sector X. Friendliness, good humor and good hot moments are on the program and make the place a success!",
+  "hours": {
+    "friday": "15:00-06:00",
+    "monday": "15:00-04:00",
+    "saturday": "15:00-06:00",
+    "sunday": "15:00-04:00",
+    "thursday": "15:00-04:00",
+    "tuesday": "15:00-04:00",
+    "wednesday": "15:00-04:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/secteurx-logo.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/SECTEURXPARIS",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Convivialité, bonne humeur et bons moments bien chauds",
+  "transport": "Métro 11 : Rambuteau",
+  "website": "http://www.secteurx.fr/",
+  "source_url": "https://www.parislgbt.com/listing/secteurx/",
+  "slug": "secteurx",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/secteurx/",
+    "en": "https://www.parislgbt.com/en/listing/secteurx/"
+  }
+}

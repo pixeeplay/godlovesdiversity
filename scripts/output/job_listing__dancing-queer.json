@@ -1,0 +1,49 @@
+{
+  "type": "listing",
+  "name": "Dancing Queer",
+  "categories": [
+    "associations",
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture",
+    "bi",
+    "gay",
+    "lesbien",
+    "queer",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/05/Design-sans-titre-11-1024x256.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/05/DANCING-QUEER4-scaled.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/05/Design-sans-titre-11-1024x256.png",
+  "description": "Dancing Queer est une école de danse queer et inclusive située à Paris, entre les 12e, 13e et 20e arrondissements.\n\nOn te propose des cours de danses afro-caribéennes : salsa, bachata et kizomba. Les cours sont ouverts à toustes, quel que soit ton niveau et que tu sois gay, lesbienne, bi, ace, trans, etc.\n\nContrairement aux autres écoles, les rôles ne sont pas imposés. Chacun.e peut choisir d'être leader, follower ou d’alterner selon ses envies, sans lien avec son genre.\n\nLes cours se déroulent dans une ambiance safe et sans jugement.\n\nOn organise des cours annuels pour permettre aux participant.es de progresser sur la durée, des stages intensifs pour approfondir des techniques spécifiques ou s'initier à une danse, mais aussi des événements de danse sociale, comme des soirées dans Paris.",
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/05/DANCING-QUEER4-scaled.png",
+  "social": {
+    "instagram": "https://www.instagram.com/dancingqueer_paris/",
+    "tiktok": "https://www.tiktok.com/@dancing_queer",
+    "twitter": null
+  },
+  "subtitle": "Dancing Queer c'est ton école de danse queer et safe à Paris !",
+  "transport": "Reuilly Diderot",
+  "website": "https://www.dancingqueer.com/",
+  "source_url": "https://www.parislgbt.com/listing/dancing-queer/",
+  "slug": "dancing-queer",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/dancing-queer/",
+    "en": "https://www.parislgbt.com/en/listing/dancing-queer/"
+  }
+}

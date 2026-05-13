@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "King Fest",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/king_fest_affiche-finale.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Saint-Denis",
+    "country": "France",
+    "postal_code": "93210",
+    "street": "14 Rue Saint-Just",
+    "lat": 48.90822,
+    "lng": 2.36147
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/king_fest_affiche-finale-819x1024.png",
+  "dates": [
+    {
+      "start": "2026-05-30T14:00:00+02:00"
+    }
+  ],
+  "description": "**King Fest**\n\nLe premier festival de dragking créé par des kings pour les kings et celleux qui les aiment ; avec un programme 100% King sur toute une journée !\n\nDes ateliers, des stands d’artisans, uune scène ouverte de la Kings Factory, des conférences, un grand Cabaret King et un DJ set !\n\nPour résumé, c’est une journée NO KINGS BUT DRAGKINGS !\n\n🎟️ [**TICKETS**](https://www.helloasso.com/associations/en-compagnie-d-alice/evenements/king-fest) 🔥",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://www.helloasso.com/associations/en-compagnie-d-alice/evenements/king-fest",
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/dragkingfestival/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Théâtre des 3T",
+    "slug": "theatre-des-3t",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Th%C3%A9%C3%A2tre%20des%203T"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/king-fest/",
+  "slug": "king-fest",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/king-fest/",
+    "en": "https://www.parislgbt.com/en/listing/king-fest/"
+  }
+}

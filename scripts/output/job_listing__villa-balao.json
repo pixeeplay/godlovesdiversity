@@ -1,0 +1,50 @@
+{
+  "type": "listing",
+  "name": "Villa Balāo",
+  "categories": [
+    "hebergement"
+  ],
+  "tags": [
+    "gay",
+    "hommes-exclusivement",
+    "hotes",
+    "naturisme",
+    "piscine",
+    "spa"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/10/villa-balao_pool-1024x768.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Balaruc-les-Bains",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 43.44147,
+    "lng": 3.67888
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/10/villa-balao_pool-1024x768.jpg",
+  "description": "Découvrez notre maison d’hôtes 100% gay à Balaruc-les-Bains, ville thermale proche de Sète, Montpellier et le Cap d’Agde.\n\nPour une escapade détente et chaleureuse dans l’Hérault, entre mer et étang.\n\nUne adresse confidentielle et exclusive pour un séjour au masculin.\n\nEvasion — Détente — Confort — Convivialité — Naturisme libre\n\nNotre villa contemporaine vous offre le luxe d’une authenticité simple pour un séjour Gay & Adult only.\n\nPiscine chauffée, Spa thérapeutique, boulodrome, jardin méditerranéen sans vis à vis, équipements modernes et aménagements variés sont à votre disposition.\n\n**RESERVATIONS** : [https://villabalao.com](https://villabalao.com/)\n\nJérôme & Pascal\n\nVilla Balāo - Gay Guest house, Chambres d’hôtes B&B",
+  "email": null,
+  "hours": {
+    "monday": "00:00-23:59",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/10/logo-villa-balao-bande-color-square.png",
+  "phone": "07.60.80.60.40",
+  "registration_url": null,
+  "social": null,
+  "subtitle": "Chambre d'hôtes - Gay Guesthouse",
+  "transport": "Train & Avion",
+  "venue": null,
+  "website": "http://www.villabalao.com/",
+  "source_url": "https://www.parislgbt.com/listing/villa-balao/",
+  "slug": "villa-balao",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/villa-balao/",
+    "en": "https://www.parislgbt.com/en/listing/villa-balao/"
+  }
+}

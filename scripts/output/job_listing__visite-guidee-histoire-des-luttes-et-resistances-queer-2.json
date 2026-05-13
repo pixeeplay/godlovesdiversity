@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Visite guidée : Histoire des luttes et résistances queer",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/IMG_4097-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/03/IMG_4097-768x1024.jpg",
+  "dates": [
+    {
+      "start": "2026-05-31T15:00:00+02:00"
+    }
+  ],
+  "description": "Cette visite \"Luttes et Résistances Queer\" se concentre sur l'histoire des difficultés rencontrées par la communauté LGBTQIA+ au cours des siècles en France.\n\nVotre guide vous racontera l'histoire des combats et des résistances menées par cette même communauté pour l'obtention d'une égalité des droits, jusqu'à aujourd'hui : de la répression à l'expression.\n\nMerci de vous présenter à 14h50, 10 minutes avant le départ de la visite.\n\n**Ticket non échangeable et non remboursable.**\n\nCes visites sont un safe space pour toutes les personnes de la communauté LGBTQIA+. Nos guides se réservent le droit de refuser tout.e participant.e tenant des propos haineux au cours des visites.\n\nChaque ticket acheté contribue à financer des visites offertes gratuitement à des associations de défense des droits des personnes LGBTQIA+.\n\n🎟️**RESERVATIONS ICI :** 🔥\n\nhttps://www.billetweb.fr/histoire-des-luttes-resistances-queer1",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/02/Queer-Tours-France-logo-1-300x300.webp",
+  "phone": null,
+  "registration_url": "https://www.billetweb.fr/histoire-des-luttes-resistances-queer1",
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Queer Tours France",
+    "slug": "queer-tours-france",
+    "url": "https://www.parislgbt.com/listing/queer-tours-france/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/visite-guidee-histoire-des-luttes-et-resistances-queer-2/",
+  "slug": "visite-guidee-histoire-des-luttes-et-resistances-queer-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/visite-guidee-histoire-des-luttes-et-resistances-queer-2/",
+    "en": "https://www.parislgbt.com/en/listing/visite-guidee-histoire-des-luttes-et-resistances-queer-2/"
+  }
+}

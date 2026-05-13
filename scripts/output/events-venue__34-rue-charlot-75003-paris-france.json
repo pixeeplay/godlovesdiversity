@@ -1,0 +1,41 @@
+{
+  "type": "listing",
+  "name": "34 rue Charlot, 75003 Paris, France",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "MACHO /// MENSCH HARD-WEEKEND * 34 rue Charlot, 75003 Paris, France",
+      "url": "https://www.parislgbt.com/listing/macho-mensch-hard-weekend/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "34 rue Charlot",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/34-rue-charlot-75003-paris-france/",
+  "slug": "34-rue-charlot-75003-paris-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/34-rue-charlot-75003-paris-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/34-rue-charlot-75003-paris-france/"
+  }
+}

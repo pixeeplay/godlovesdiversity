@@ -1,0 +1,55 @@
+{
+  "type": "listing",
+  "name": "Le Petit Prince",
+  "categories": [
+    "restaurant"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/slide03_big.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/slide05_big.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/50485413_2271272472907265_5453946383826419712_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/50226110_2271269319574247_9206503711713525760_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75005",
+    "street": "12 Rue de Lanneau",
+    "lat": 48.84848,
+    "lng": 2.34654
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/slide01_big-1024x640.jpg",
+  "description": "Le restaurant historique de l’ancien quartier gay de la rive gauche perché sur la colline Sainte- Geneviève à deux pas du Panthéon.\n\nans l’historique «quartier latin», dans le 5e arrondissement de Paris, à deux pas du Panthéon sur l’emplacement des anciens thermes gallo-romains, le restaurant« Le Petit Prince de Paris » fondé en 1976 est l’adresse incontournable parisienne.\n\nCe restaurant traditionnel parisien ouvert tous les soirs dès 19 heures 30 invite à découvrir, dans un décor cosy et chaleureux une carte raffinée et familiale prête à séduire le palais de tous, et ce dans un excellent rapport qualité prix!\n\nLe chef signe une cuisine traditionnelle parfaitement maîtrisée dans laquelle les produits du terroir sont magnifiés par des saveurs d’ici et d’ailleurs.",
+  "email": null,
+  "hours": {
+    "friday": "19:30-00:30",
+    "monday": "19:30-00:30",
+    "saturday": "19:30-00:30",
+    "sunday": "19:30-00:30",
+    "thursday": "19:30-00:30",
+    "tuesday": "19:30-00:30",
+    "wednesday": "19:30-00:30"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/46401504_2177858682248645_2196649968293380096_n.jpg",
+  "phone": "01 43 54 77 26",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/Le-Petit-Prince-De-Paris-154364861264714/",
+    "instagram": "https://www.instagram.com/le_petit_prince_de_paris75005/?fbclid=IwAR0YLAAAFBDiD2qumfNPP09gPXOR5wv1IddXcQxS83wQ8RYWqPbDc2iGcOM",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Maitre Restaurateur, ambassadeur d une cuisine fait maison",
+  "transport": "Métro 10 : Maubert-Mutualité",
+  "venue": null,
+  "website": "https://www.lepetitprincedeparis.fr/",
+  "source_url": "https://www.parislgbt.com/listing/le-petit-prince/",
+  "slug": "le-petit-prince",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-petit-prince/",
+    "en": "https://www.parislgbt.com/en/listing/le-petit-prince/"
+  }
+}

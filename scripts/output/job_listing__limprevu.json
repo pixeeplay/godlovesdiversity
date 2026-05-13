@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "name": "L'Imprévu",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/IMG_4074.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/IMG_4234.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/IMG_4135.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "9 rue Quincampoix",
+    "lat": 48.85955,
+    "lng": 2.34958
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/IMG_4367-1024x683.jpg",
+  "description": "Depuis 1997, les marcheurs de la rue Quincampoix s'accordent à dire que l'Imprévu est un lieu hors du commun.\n\n Les secrets de ce bar atypique n'attendent que vous.\n\nFaites-donc votre choix parmi les nombreuses surprises de cette cartes.\n\n Ensuite, laissez-vous emporter vers de nouvelles aventures imprévisibles.\n\nSaurez-vous rester éveillés dans cet univers où tout peut arriver\n\n et où le temps semble s'être arrêté...?",
+  "email": null,
+  "hours": {
+    "friday": "15:00-02:00",
+    "monday": "15:00-01:00",
+    "saturday": "15:00-02:00",
+    "sunday": "15:00-00:00",
+    "thursday": "15:00-02:00",
+    "tuesday": "15:00-01:00",
+    "wednesday": "15:00-01:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/imprevu-logo.jpg",
+  "phone": "01 42 78 23 50",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/pages/category/Pub/Imprevu-Cafe-126734657536",
+    "instagram": "https://instagram.com/imprevucafe_ive",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Bar atypique au coeur des Halles",
+  "transport": "Metro 1,4,14 / RER A,B,D Chatelet Les Halles",
+  "venue": null,
+  "website": "http://imprevu-cafe.fr/",
+  "source_url": "https://www.parislgbt.com/listing/limprevu/",
+  "slug": "limprevu",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/limprevu/",
+    "en": "https://www.parislgbt.com/en/listing/limprevu/"
+  }
+}

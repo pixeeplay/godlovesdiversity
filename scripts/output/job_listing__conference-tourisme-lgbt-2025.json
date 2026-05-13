@@ -1,0 +1,48 @@
+{
+  "type": "event",
+  "name": "Conférence Tourisme LGBT",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/05/Visuel-conf-20-juin-event.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "street": "Salle des Mariages de la Mairie Paris Centre, Paris 3, Paris, France",
+    "lat": 48.86409,
+    "lng": 2.36233
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/05/Visuel-conf-20-juin-event-1024x576.jpeg",
+  "dates": [
+    {
+      "start": "2025-06-20T18:00:00+02:00"
+    }
+  ],
+  "description": "**Tourisme LGBT & Nuit**\n\n**Des niches indispensables au succès d’une destination.**\n\nCette conférence est l'occasion de faire le tour des bonnes pratiques du tourisme LGBT à travers les cas pratiques proposés par les intervenants.es.\n\nIl est question des destinations espagnole et bruxelloise, qui tirent leur dynamisme de ces publics de niche, Nuit & LGBT.\n\nPourquoi la destination France ne valorise-t-elle pas ces visiteurs ? Nous n’aurons pas la réponse à une question plus politique que technique. Culturellement, la France pratique un tourisme classique, de masse, culturel, gastronomique, rural, sportif, mais pas LGBT à part quelques exceptions, comme Nice Côte d'Azur. Nous tenterons d'en savoir plus avec les intervenants présents et en vidéo.\n\n**Avec :**\n\nCorinne Menegaux – Directrice Générale de Paris je t'aime – Paris, première destination mondiale.\n\nEmilie Thiry, consultante, ex cabinet Tourisme Mairie de Paris\n\nAurélien Antonini, président Culture Nuit et BonjourBonsoir,\n\nFrédéric Boutry, Visit Brussels\n\nRémi Calmon, syndicat SNEG & Co\n\nClark Massad, The International LGBTQ+ Travel Association\n\nManuel Picaud Fondation FIER\n\nPrésentation par Michel Mau & Christophe Vix-Gras\n\n**Lancement du nouveau spot vidéo de promotion de Paris \"Paris Is Proud\" réalisée par Peter Enhancer.**\n\nConférence enregistrée.\n\n**Infos pratiques :**\n\nVendredi 20 juin 2025\n\nAccueil dès 18h\n\nSalle des Mariages de la Mairie Paris Centre, Paris 3.\n\nM° Arts et Métiers.\n\n🔥 [**CAPTATION DE LA CONFÉRENCE**](https://youtu.be/ugXtaxXNLEA) 🏳️‍🌈",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/02/Logo-Paris-LGBT_Paris-LGBT-Couleur-300x214.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "M° Arts et Métiers",
+  "venue": {
+    "name": "Mairie Paris Centre",
+    "slug": "mairie-paris-centre",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Mairie%20Paris%20Centre"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/conference-tourisme-lgbt-2025/",
+  "slug": "conference-tourisme-lgbt-2025",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/conference-tourisme-lgbt-2025/",
+    "en": "https://www.parislgbt.com/en/listing/conference-tourisme-lgbt-2025/"
+  }
+}

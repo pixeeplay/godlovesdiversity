@@ -1,0 +1,24 @@
+{
+  "type": "listing",
+  "name": "En France",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Journée du Souvenir Trans ( TDOR ) le 20 novembre 2026",
+      "url": "https://www.parislgbt.com/listing/journee-du-souvenir-trans-tdor-le-20-novembre-2026/"
+    }
+  ],
+  "source_url": "https://www.parislgbt.com/events-venue/en-france/",
+  "slug": "en-france",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/en-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/en-france/"
+  }
+}

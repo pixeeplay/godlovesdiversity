@@ -1,0 +1,49 @@
+{
+  "type": "listing",
+  "name": "Violette And Co",
+  "categories": [
+    "boutiques"
+  ],
+  "tags": [
+    "lesbien",
+    "arts-culture",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Violette-bandeau-1024x768.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Logo-Violette.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86648,
+    "lng": 2.37313
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/Violette-bandeau-1024x768.jpg",
+  "description": "Ouverte en 2004, Violette and Co est la première librairie française spécialisée dans les questions féministes, lesbiennes et LGBTI+. Plus qu’une simple librairie, Violette and Co est un lieu de circulation des savoirs et des récits, un espace de réflexion accueillant rencontres littéraires, signatures, clubs de lecture, ateliers d’écriture et expositions. C’est un lieu qui a permis de perpétuer les mémoires LGBTI+ et qui a œuvré à la mise en lumière de nombreuses autrices injustement effacées de l’histoire. C’est un lieu de passage pour toute lesbienne arrivant dans la capitale, un lieu qui nous assure que nous ne sommes pas seul·es ni isolé·es dans le temps, que l’histoire féministe, lesbienne, LGBTI+ a existé et perdurera !\n\nLe 12 février 2023, après 18 ans d’existence, la librairie Violette and Co a fermé ses portes en raison du départ à la retraite de ses fondatrices.La reprise par une nouvelle équipe est un succès et a pu bénéficier de l'aide de la Mairie de Paris pour avoir un bail dans le XIe arrondissement, non loin des Mots A La Bouche, et fait partie désormais des SCOP LGBT, comme les Mots A La Bouche et le club Le Tango. *\n\nViolette and Co est une librairie consacrée aux textes et aux images qui mettent en valeur les femmes et les homosexualités sous toutes leurs formes. Romans, essais, beaux livres, polars, BD, revues... sont rassemblés sur deux niveaux, librairie et café, où se rencontrent les féminismes, les réalités — et les imaginaires — lesbiens, gais et trans, et toutes les questions de genre.\n\nC’est un lieu lumineux, chaleureux et animé qui invite toutes celles et tous ceux qui aiment les littératures hors des sentiers battus et qui s’interrogent sur nos sociétés. Nous y proposons des ouvrages attachants, rebelles, sensuels, attirants..., des références essentielles, des nouveautés incontournables et, pourquoi pas, des classiques de demain.\n\n* En savoir plus sur le succès du [financement participatif.](https://www.helloasso.com/associations/violette-and-coop/collectes/ensemble-reouvrons-violette-and-co) Regardez la [vidéo](https://youtu.be/HOiAVxCvEe4) de Paris Commerces.",
+  "hours": {
+    "monday": null,
+    "tuesday": "11:00-20:30",
+    "wednesday": "11:00-20:30,11:00-20:30,11:00-20:30,11:00-20:30,11:00-20:30,14:00-19:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/Logo-Violette.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/Librairie-Violette-and-Co-65768473983",
+    "instagram": "https://www.instagram.com/violetteandco.librairie/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Librairie féministe, lesbienne, gay, trans, bi, intersexe",
+  "transport": "Metro 11 : Parmentier",
+  "website": "http://www.violetteandco.com/",
+  "source_url": "https://www.parislgbt.com/listing/violette-and-co/",
+  "slug": "violette-and-co",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/violette-and-co/",
+    "en": "https://www.parislgbt.com/en/listing/violette-and-co/"
+  }
+}

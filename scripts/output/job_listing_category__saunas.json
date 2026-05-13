@@ -1,0 +1,21 @@
+{
+  "type": "category",
+  "name": "Saunas",
+  "categories": [
+    "saunas"
+  ],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/category/saunas/",
+  "slug": "saunas",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/category/saunas/",
+    "en": "https://www.parislgbt.com/en/category/saunas/"
+  }
+}

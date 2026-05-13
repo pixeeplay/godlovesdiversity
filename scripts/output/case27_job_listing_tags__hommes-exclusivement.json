@@ -1,0 +1,19 @@
+{
+  "type": "tag",
+  "name": "Hommes exclusivement",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/hommes-exclusivement/",
+  "slug": "hommes-exclusivement",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/hommes-exclusivement/",
+    "en": "https://www.parislgbt.com/en/tag/hommes-exclusivement/"
+  }
+}

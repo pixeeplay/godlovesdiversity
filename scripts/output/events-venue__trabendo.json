@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "Trabendo",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Flash Cocotte x Barbi(e)turix * Trabendo",
+      "url": "https://www.parislgbt.com/listing/flash-cocotte-x-barbieturix-3/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/trabendo/",
+  "slug": "trabendo",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/trabendo/",
+    "en": "https://www.parislgbt.com/en/events-venue/trabendo/"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "type": "listing",
+  "name": "Cactus",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "handicap",
+    "terrasse",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/02/Cactus-inside.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/02/Cactus-bulots.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/02/Cactus-terrasse-1024x488.jpg",
+  "description": "Ce petit bistrot tranquille contribue depuis des décennies à la vie de notre quartier si joyeux et animé. Fondé par Fréderic du Cox, ce joli bar offre une quiétude totale. Pour les beats et les barbes, traversez la rue !\n\nRéouverture vendredi 14 février 2025.",
+  "email": null,
+  "hours": {
+    "monday": "15:00-23:00",
+    "tuesday": "15:00-23:00",
+    "wednesday": "15:00-02:00"
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/lecactus",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Bar / Bistro depuis 1910 au coeur du Marais.",
+  "transport": "M° Hotel de Ville, Rambuteau",
+  "website": "http://cactus.paris/",
+  "source_url": "https://www.parislgbt.com/listing/cactus/",
+  "slug": "cactus",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/cactus/",
+    "en": "https://www.parislgbt.com/en/listing/cactus/"
+  }
+}

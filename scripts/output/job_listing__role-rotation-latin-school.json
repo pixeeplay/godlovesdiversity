@@ -1,0 +1,45 @@
+{
+  "type": "listing",
+  "name": "Role Rotation Latin School",
+  "categories": [
+    "associations"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/07/LogoReduit-HD-FondBlanc.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/07/Logo-entier-Hommes-HD-FondBlanc-1024x450.jpg",
+  "description": "Role Rotation Latin School est une association de danses latines queer qui promeut le choix du rôle dans les danses à deux, sans distinction de genre. Follower ou leader c'est au choix!\n\nNous sommes ici pour élargir les codes des danses latines, très hétéronormés et souvent machistes, et faire éclater les frontières entre les lesbiennes, gays, trans, bis et hétéros.\n\nNous voulons créer un lieu sécurisant ou chacun.e peut être soi-même sans la peur d'être jugé.e ou rangé.e dans une case.\n\nC'est librement que nous venons en cours et c'est librement que nous dansons ensemble.",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/07/LogoReduit-HD-FondBlanc.jpg",
+  "phone": "0685527653",
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/rolerotationlatinschool/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Association queer de danses latines en role rotation à Paris",
+  "transport": "Bastille",
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/role-rotation-latin-school/",
+  "slug": "role-rotation-latin-school",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/role-rotation-latin-school/",
+    "en": "https://www.parislgbt.com/en/listing/role-rotation-latin-school/"
+  }
+}

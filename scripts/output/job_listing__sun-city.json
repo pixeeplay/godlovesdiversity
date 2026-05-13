@@ -1,0 +1,65 @@
+{
+  "type": "listing",
+  "name": "Sun City",
+  "categories": [
+    "salle-de-sport",
+    "saunas"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "entree-payante",
+    "gay",
+    "hommes-exclusivement",
+    "bears",
+    "ethnique",
+    "jeunes-etudiants",
+    "naturisme",
+    "piscine",
+    "salle-de-sport",
+    "spa"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/37379d_14c9512e14564bf49497750c0ad793f6_mv2.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/9575cc_7a6b1603bf3f46b0bc9f908b1c880ca4.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/9575cc_7a6b1603bf3f46b0bc9f908b1c880ca4-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/9575cc_6dd29c85b80c48aea3b898779b99305d.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "L'AFTERWORK KARAOKÉ DU SUN CITY",
+      "url": "https://www.parislgbt.com/listing/l-afterwork-karaoke-du-sun-city/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "62 Bd de Sébastopol",
+    "lat": 48.86382,
+    "lng": 2.3514
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/IMG_0124-1024x587-1.jpg",
+  "description": "Le SUN CITY est le plus grand et le plus beau sauna 100% Mecs de Paris ! 3000 m2 sur 3 étages dédiés à la détente,au sport et à la drague... Le Sun City vous propose une expérience unique dans un cadre magnifique !",
+  "hours": {
+    "monday": "12:00-02:00",
+    "tuesday": "12:00-02:00",
+    "wednesday": "12:00-02:00, 12:00-02:00, 12:00-02:00, 12:00-02:00, 12:00-06:00, 12:00-06:00, 12:00-06:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/1377203_327458094126440_6064299126558260337_n.jpg",
+  "phone": "01 40 09 26 09",
+  "social": {
+    "facebook": "https://www.facebook.com/SunCity75",
+    "instagram": "https://www.instagram.com/suncity_paris/",
+    "twitter": "https://twitter.com/SunCityParis"
+  },
+  "subtitle": "Le plus grand sauna gay de Paris",
+  "transport": "Metro 4 : Etienne Marcel",
+  "website": "https://www.suncity-paris.fr/",
+  "source_url": "https://www.parislgbt.com/listing/sun-city/",
+  "slug": "sun-city",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/sun-city/",
+    "en": "https://www.parislgbt.com/en/listing/sun-city/"
+  }
+}

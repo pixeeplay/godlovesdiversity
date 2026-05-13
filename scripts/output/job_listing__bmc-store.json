@@ -1,0 +1,52 @@
+{
+  "type": "listing",
+  "name": "BMC Store",
+  "categories": [
+    "boutiques"
+  ],
+  "tags": [
+    "sex-shop",
+    "fetichisme",
+    "handicap"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Capture-d%E2%80%99%C3%A9cran-2019-12-20-%C3%A0-17.01.52-1024x701-1.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/BMC-Store-Paris-gay-shop.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "21 Rue des Lombards",
+    "lat": 48.85933,
+    "lng": 2.34929
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/Capture-d%E2%80%99%C3%A9cran-2019-12-20-%C3%A0-17.01.52-1024x701-1.png",
+  "description": "BMC Store est un Sex-shop gay & friendly, avec un très grand choix de sextoys, lubrifiants et préservatifs, arômes, stimulants, accessoires SM et soft bondage , jockstraps, DVDs. Cabines vidéos pour visionnage sur place. er vos films préférés. Ouvert depuis 1988, la boutique est située dans la partie piétonne (et gay) de la rue des Lombards. Clientèle gay , Lesbienne et féminine à la recherche de sextoys fun !",
+  "email": null,
+  "hours": {
+    "friday": "10:00-01:00",
+    "monday": "10:00-01:00",
+    "saturday": "10:00-01:00",
+    "sunday": "10:00-01:00",
+    "thursday": "10:00-01:00",
+    "tuesday": "10:00-01:00",
+    "wednesday": "10:00-01:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/BMC-Store-Paris-gay-shop.jpg",
+  "phone": "0140279809",
+  "registration_url": null,
+  "social": null,
+  "subtitle": "Sexshop gay en plein centre du Marais",
+  "transport": "Metro 1,11,7 Chatelet ou 1 : Hôtel de Ville",
+  "venue": null,
+  "website": "https://www.bmc-store.com/",
+  "source_url": "https://www.parislgbt.com/listing/bmc-store/",
+  "slug": "bmc-store",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bmc-store/",
+    "en": "https://www.parislgbt.com/en/listing/bmc-store/"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "type": "listing",
+  "name": "Gay à Paris",
+  "categories": [],
+  "tags": [
+    "gay"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": "Guide des établissements et événements LGBT+ à Paris.",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/02/Logo-Paris-LGBT_Paris-LGBT-Couleur-300x214.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/tag/gay/",
+  "slug": "gay",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/gay/",
+    "en": "https://www.parislgbt.com/en/tag/gay/"
+  }
+}

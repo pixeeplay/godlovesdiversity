@@ -1,0 +1,52 @@
+{
+  "type": "listing",
+  "name": "Who's",
+  "categories": [
+    "bars",
+    "restaurant"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "handicap",
+    "jeunes-etudiants",
+    "djs-at-work"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/86430890_2825669107494776_8811238580132249600_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/81659443_2746341338760887_6610746561729134592_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/79159322_2695317247196630_387756863027937280_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/unefixe.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "HEAVEN BACK TO BASICS",
+      "url": "https://www.parislgbt.com/listing/heaven-back-to-basics/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "14 Rue Saint-Merri",
+    "lat": 48.85958,
+    "lng": 2.35296
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/75496076_2586611004733922_3471910506770464768_o-1024x576.jpg",
+  "description": "Ce bar restaurant où on peut s’ambiancer jusqu’à 6h en week end ouvre sur le restaurant, où un brunch est servi le dimanche, puis sur un vaste volume de bar avec mezzanine.\n\nAvec ses lumières tamisées, sa déco branchées et ses cocktails à base de fruit frais, le Who's est un établissement incontournable du Marais !",
+  "hours": {
+    "monday": "17:00-04:00",
+    "tuesday": "17:00-04:00",
+    "wednesday": "17:00-04:00, 17:00-04:00, 17:00-04:00, 17:00-04:00, 17:00-04:00, 17:00-04:00, 11:00-16:00 17:00-04:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/69299660_2441381862590171_2859225605155586048_n.jpg",
+  "phone": "0142727597",
+  "subtitle": "Lieu de fête du Marais",
+  "transport": "Métro 11 : Rambuteau",
+  "source_url": "https://www.parislgbt.com/listing/whos/",
+  "slug": "whos",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/whos/",
+    "en": "https://www.parislgbt.com/en/listing/whos/"
+  }
+}

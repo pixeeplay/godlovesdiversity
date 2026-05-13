@@ -1,0 +1,61 @@
+{
+  "type": "event",
+  "name": "MercrediX République Mai 2026",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/43045_image_680143198_1594919572636839_3334157351876413789_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75010",
+    "street": "18 Place de la République",
+    "lat": 48.86787,
+    "lng": 2.36311
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/43045_image_680143198_1594919572636839_3334157351876413789_n.jpg",
+  "dates": [
+    {
+      "start": "2026-05-13T18:00:00+02:00"
+    },
+    {
+      "start": "2026-05-20T18:00:00+02:00"
+    },
+    {
+      "start": "2026-05-27T18:00:00+02:00"
+    }
+  ],
+  "description": "MercrediX fait son grand retour ! Ferme ton ordi et on se retrouve à partir de 18h\n\n La mythique frite offerte revient à l'ouverture ❤️‍\n\n Venez vite !\n\nRendez-vous sur la terrasse XXL du Fluctuat Nec Mergitur, en plein cœur de la Place de la République.\n\n Le soleil descend, les verres s’entrechoquent… et l’odeur des frites commence à faire tourner les têtes. Goo !\n\nDj set Electro Pop & R&B dès 20h, jusqu'à 2h.\n\n Parfait pour couper la semaine\n\nFluctuat Nec Mergiture\n\n de 18h à 02h\n\n ️ Entrée gratuite\n\nEvenement LGBTQIA+ et hétéro friendly",
+  "email": null,
+  "hours": {
+    "friday": null,
+    "monday": null,
+    "saturday": null,
+    "sunday": null,
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": "18:00-02:00"
+  },
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/2172988943456488",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/mercredix-republique-2026/",
+  "slug": "mercredix-republique-2026",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/mercredix-republique-2026/",
+    "en": "https://www.parislgbt.com/en/listing/mercredix-republique-2026/"
+  }
+}

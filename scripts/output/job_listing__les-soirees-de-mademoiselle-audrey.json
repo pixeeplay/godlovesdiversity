@@ -1,0 +1,49 @@
+{
+  "type": "listing",
+  "name": "Les Soirées de Mademoiselle Audrey",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "lesbien"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/12/Les-Soirees-de-Mademoiselle-Audrey-neon.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/12/Les-Soirees-de-Mademoiselle-Audrey-tabouret.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/12/Les-Soirees-de-Mademoiselle-Audrey-verre.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/12/Les-Soirees-de-Mademoiselle-Audrey-banner.jpg",
+  "description": "Réseau féminin / Evénements Women Only dans des lieux incroyables !\n\n Afterwork, Clubbing, Dédicaces, Vernissages...\n\n 85 lieux partenaires en + de 12 ans.\n\nParis - Bordeaux - La Rochelle - Biarritz - Toulouse - Rouen",
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/12/Les-Soirees-de-Mademoiselle-Audrey-logo.jpg",
+  "social": {
+    "instagram": "https://www.instagram.com/lessoireesdemlleaudrey"
+  },
+  "subtitle": "Réseau féminin / Evénements Women Only dans des lieux incroyables",
+  "website": "https://www.soireesdemademoiselleaudrey.com/",
+  "source_url": "https://www.parislgbt.com/listing/les-soirees-de-mademoiselle-audrey/",
+  "slug": "les-soirees-de-mademoiselle-audrey",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/les-soirees-de-mademoiselle-audrey/",
+    "en": "https://www.parislgbt.com/en/listing/les-soirees-de-mademoiselle-audrey/"
+  }
+}

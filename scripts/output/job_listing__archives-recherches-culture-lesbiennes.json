@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "name": "Archives Recherches Culture Lesbiennes",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "arts-culture",
+    "accueil-public",
+    "femmes-exclusivement",
+    "lesbien"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/artistes-lesbiennes-1024x512.webp"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75012",
+    "street": "163, rue de Charenton",
+    "lat": 48.85131,
+    "lng": 2.40435
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/01/artistes-lesbiennes-1024x512.webp",
+  "description": "**«Maintenir les liens avec les associations, groupes ou journaux au niveau international est un travail permanent de relances car il y a toujours un danger que ceux-ci se relâchent et disparaissent», Claudie Lesselier (Bilan ARCL, bulletin n° 11, 1992).**\n\nLes fonds ARCL sont accessibles à toutes, sur rendez-vous, à partir du mois d’octobre.\n\nCréé en 1983, ce centre de documentation des cultures lesbiennes témoigne des mouvements et groupes lesbiens, féministes et homosexuels. Il s’enrichit sans cesse grâce aux abonnements et échanges, aux achats de livres, aux dons de documents anciens et récents.\n\nIl vous donne accès :\n\n en libre consultation :\n\n – aux dernières parutions de revues lesbiennes et féministes de nombreux pays, au fonds vidéos, aux livres d’art, dossiers de presse, mémoires universitaires, dossiers thématiques reflets des mouvements et luttes politiques…\n\nPermanences les mercredis de 14h à 17h30.\n\nPour venir aux Archives le mercredi, écrivez-nous à cette [adresse](mailto:permanence@arcl.fr).\n\nMerci de remplir ce [questionnaire](https://forms.gle/ZpZdajQmg5xGDroF8)avant votre première visite, afin que nous puissions préparer votre venue.\n\nAdhésion :selon revenus, 30 € en moyenne par an.",
+  "email": "permanence@arcl.fr",
+  "hours": {
+    "friday": null,
+    "monday": null,
+    "saturday": null,
+    "sunday": null,
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": "14:00-17:30"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/01/Logo-ARCL.png",
+  "phone": null,
+  "registration_url": "https://www.helloasso.com/associations/archives-recherches-et-cultures-lesbiennes/formulaires/1",
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/archiveslesbiennes/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "Métro Reuilly-Diderot",
+  "website": "https://www.arcl.fr/",
+  "source_url": "https://www.parislgbt.com/listing/archives-recherches-culture-lesbiennes/",
+  "slug": "archives-recherches-culture-lesbiennes",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/archives-recherches-culture-lesbiennes/",
+    "en": "https://www.parislgbt.com/en/listing/archives-recherches-culture-lesbiennes/"
+  }
+}

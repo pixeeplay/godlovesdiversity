@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "Zenith Paris - La Villette",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Pet Shop Boys • Zénith Paris, La Villette • 1er juillet 2026 * Zénith Paris - La Villette",
+      "url": "https://www.parislgbt.com/listing/pet-shop-boys-zenith-paris-la-villette-1er-juillet-2026/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/zenith-paris-la-villette/",
+  "slug": "zenith-paris-la-villette",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/zenith-paris-la-villette/",
+    "en": "https://www.parislgbt.com/en/events-venue/zenith-paris-la-villette/"
+  }
+}

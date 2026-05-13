@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "La Barbichette Cabaret",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42483_image_651340185_1406041261561932_1509812574173066152_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75018",
+    "street": "90 bd de Clichy",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42483_image_651340185_1406041261561932_1509812574173066152_n.jpg",
+  "dates": [
+    {
+      "start": "2026-06-12T19:30:00+02:00"
+    }
+  ],
+  "description": "C’est une épopée nocturne modulable où la nuit se transforme en une célébration artistique unique.\n\nCe cabaret indiscipliné réinvente l’imaginaire collectif, mêlant poésie, satire, musique et rencontres artistiques éphémères.\n\nInspiré par ses expériences avec Le Secret et Madame Arthur, Monsieur K. crée un espace festif où le public devient partie intégrante du spectacle, vivant des moments insoupçonnés et uniques. \n\nDans un mélange de disciplines et de saveurs, LA BARBICHETTE Cabaret offre une réflexion légère sur notre société, prouvant que le divertissement peut être à la fois intelligent et salutaire.\n\nInfos pratiques :\n\nL’entrée se fera par le Bar à Bulles, 4, cite Véron qui ouvre ses portes dès 18h. \n\nLa Chaufferie vous accueillera ensuite à partir de 19h30.\n\nLes billets sont disponibles sur la plateforme Shotgun (cliquable sur l'événement Facebook et le site internet)\n\nAlors, rendez-vous pour ce nouveau spectacle dans l’art, la fête et la démesure.\n\nOn a hâte de vous y retrouver ! ✨\n\nGraphisme : Marianne Larvol",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1501970121555161",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/la-barbichette-cabaret/",
+  "slug": "la-barbichette-cabaret",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-barbichette-cabaret/",
+    "en": "https://www.parislgbt.com/en/listing/la-barbichette-cabaret/"
+  }
+}

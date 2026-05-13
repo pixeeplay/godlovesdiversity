@@ -1,0 +1,44 @@
+{
+  "type": "listing",
+  "name": "David BnB Paris",
+  "categories": [
+    "hebergement"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/04/processed-6B844EF0-A9E0-4166-803C-E1650126E27B.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.89211,
+    "lng": 2.38495
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/04/IMG_8779-768x1024.jpeg",
+  "description": "Bienvenue chez David dans son appartement niché au cœur du vibrant quartier du 19e arrondissement de Paris.\n\nL’appartement offre un mélange harmonieux de confort moderne et de charme parisien authentique. Chaque chambre est soigneusement décorée avec des touches élégantes et équipée de toutes commodités pour vous assurer un séjour agréable.\n\nVous pourrez facilement explorer les trésors culturels, artistiques et gastronomiques de Paris, tout en profitant d'un cadre tranquille et relaxant pour vous ressourcer après une journée bien remplie.\n\nJe vous promets un accueil chaleureux pour une expérience inoubliable à Paris.",
+  "hours": {
+    "monday": "00:00-23:59",
+    "tuesday": "00:00-23:59",
+    "wednesday": "00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/04/IMG_5763-1-scaled.jpeg",
+  "phone": "0770409009",
+  "social": {
+    "facebook": "http://www.facebook.com/profile.php?id=61556526602537",
+    "instagram": "https://www.instagram.com/david_bnb.paris?igsh=NGxtdnA5Ynd6ZDJh&utm_source=qr",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Chambre à louer dans un bel appartement Parisien.",
+  "transport": "Métro Ligne 7",
+  "source_url": "https://www.parislgbt.com/listing/david-bnb-paris/",
+  "slug": "david-bnb-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/david-bnb-paris/",
+    "en": "https://www.parislgbt.com/en/listing/david-bnb-paris/"
+  }
+}

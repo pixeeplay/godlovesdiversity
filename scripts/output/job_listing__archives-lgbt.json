@@ -1,0 +1,43 @@
+{
+  "type": "listing",
+  "name": "Archives LGBT",
+  "categories": [
+    "associations",
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture",
+    "queer",
+    "accueil-public"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/01/ArchivesLGBT1-1024x768.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/01/logo-noir-rose.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75005",
+    "street": "13 rue Santeuil",
+    "lat": 48.84003,
+    "lng": 2.35426
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/01/ArchivesLGBT1-1024x768.jpeg",
+  "description": "Association loi 1901, le Centre d’archives est géré par le Collectif Archives LGBTQI+, qui a été créé à l’initiative d’Act Up-Paris en 2017. Il regroupe une vingtaine d’associations et plus d’une centaine d’adhérent·es. Tous les profils de l’archivistique et de la documentation y sont représentés, aux côtés d’universitaires (chercheur·euses et étudiant·es), d’enseignant·es, d’artistes, de juristes, de designers, de réalisateur·rices, de militant·es...\n\nNous menons le travail de réflexion et de mobilisation nécessaire pour que Paris et l’Île-de France disposent d’un Centre d’archives des mémoires et des cultures LGBTQI+ autonome et communautaire comme il en existe ailleurs en Europe et dans le monde depuis 50 ans.\n\nLe local temporaire à Césure va fermer d'ci fin 2025 avant le déménagement.\n\n**NOTRE PROJET : OUVRIR UN CENTRE PÉRENNE**\n\n Nous voulons ouvrir un Centre d'archives, des mémoires et des cultures LGBTQI+ d'envergure, adapté aux besoins et au désir d'archives qui anime toutes les générations de la communauté LGBTQI+\n\nAu terme de la phase de préfiguration qui se déroule actuellement à CÉSURE, dans le 5e arrondissement, nous nous préparons à investir un espace de 650 m2 de la Régie Immobilière de la Ville de Paris, rue de l'Ourcq, dans le 19e arrondissement.\n\nAvant le déménagement, plusieurs mois de travaux sont nécessaires pour aménager remettre cet espace aux normes et en faire un Centre adapté aux besoins spécifiques des archives LGBTQI+ et à notre politique de l’archive vivante.\n\n**ÊTRE UN CENTRE CULTUREL ET DE RECHERCHE**\n\nAprès emménagement dans le nouveau local, le Centre pourra déployer sa politique scientifique et culturelle au plan national et international. Il accueillera tous les publics qui viendront consulter les archives et suivre sa programmation. Il développera de nombreuses activités autour des archives et de leur production collective : ateliers de formation, conférences, colloques, séminaires, résidences d’artistes et de création, performances, projections/débats, master-class, activités pédagogiques auprès des scolaires, etc.\n\nLe Collectif propose des ateliers pratiques, comme de l’indexation, et des rencontres régulièrement.\n\n**Infos pratiques :**\n\n13 rue Santeuil, 75005 Paris.\n\n5e étage, salle 520",
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/01/logo-noir-rose.jpg",
+  "social": {
+    "instagram": "https://www.facebook.com/ArchivesLGBTQI"
+  },
+  "subtitle": "Nous animons en Île-de-France un centre d'archives LGBTQI+ autonome et communautaire",
+  "transport": "M° Censier-Daubenton",
+  "website": "https://archiveslgbtqi.fr/",
+  "source_url": "https://www.parislgbt.com/listing/archives-lgbt/",
+  "slug": "archives-lgbt",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/archives-lgbt/",
+    "en": "https://www.parislgbt.com/en/listing/archives-lgbt/"
+  }
+}

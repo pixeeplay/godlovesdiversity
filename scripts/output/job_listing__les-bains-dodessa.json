@@ -1,0 +1,63 @@
+{
+  "type": "listing",
+  "name": "Les Bains d'Odessa",
+  "categories": [
+    "saunas"
+  ],
+  "tags": [
+    "entree-payante",
+    "bears",
+    "naturisme",
+    "piscine",
+    "prevention-sante",
+    "terrasse",
+    "spa"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/les-bains-d_odessa-sauna-gay-12.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/les-bains-d_odessa-sauna-gay-09.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/les-bains-d_odessa-sauna-gay-11.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/les-bains-d_odessa-sauna-gay-15.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75014",
+    "street": "5 Rue d'Odessa",
+    "lat": 48.84297,
+    "lng": 2.32456
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/57484630_2118116408270563_8275531041628749824_o-1024x683-1.jpg",
+  "description": "Anciens bains publics depuis 1895, ce lieu luxuriant et classé abrite aujourd’hui la meilleure adresse de la Rive Gauche. Sa façade sur cour allie la discrétion à un cadre exceptionnel 100% masculin.\n\nA l’intérieur regorgent autant de décors authentiques que de recoins secrets dans lesquels l’on peut s’y perdre inlassablement. Dans cette atmosphère intemporelle, les murs chantent et guettent le théâtre d’amours passionnés.\n\nTrès fréquenté l’après-midi, laissez-vous séduire par 540m2 de plaisir. Entièrement rénovés, les Bains d’Odessa offrent 5 niveaux, 5 ambiances !\n\nL’abondante vapeur du hammam géant vous enrobe et vous procure à la fois plaisir et détente.\n\nProfitez aussi de la passion fougueuse du sauna sec pour des moments très chauds.\n\nLa Piscine d’époque à l’ambiance suggestive s’emparera de votre imagination afin de vous faire vivre un moment inoubliable. Laissez vous aller...\n\nLes Bains d’Odessa est avant tout un lieu convoité et convivial où l’énergie des rencontres créent un espace sensuel et serein.",
+  "email": null,
+  "hours": {
+    "friday": "12:00-22:00",
+    "monday": "12:00-22:00",
+    "saturday": "12:00-22:00",
+    "sunday": "12:00-22:00",
+    "thursday": "12:00-22:00",
+    "tuesday": "12:00-22:00",
+    "wednesday": "12:00-22:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/lesbainsdodessa-logo.jpg",
+  "phone": "01 40 47 83 43",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/lesbainsdodessa",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Sauna Hammam gay à Paris",
+  "transport": "Metro 4,6 : Edgar Quinet ou Montparnasse",
+  "venue": null,
+  "website": "http://www.lesbainsdodessa.com/",
+  "source_url": "https://www.parislgbt.com/listing/les-bains-dodessa/",
+  "slug": "les-bains-dodessa",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/les-bains-dodessa/",
+    "en": "https://www.parislgbt.com/en/listing/les-bains-dodessa/"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "type": "event",
+  "name": "La Cantine du Pensionnat",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/6-Pl.-du-Marche-Sainte-Catherine-75004-Paris-Metro-Saint-Paul-Bastille-06-10-33-81-09-1.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "2 Place Du Marché Sainte-Catherine",
+    "lat": 48.85534,
+    "lng": 2.36289
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/6-Pl.-du-Marche-Sainte-Catherine-75004-Paris-Metro-Saint-Paul-Bastille-06-10-33-81-09-1-1024x576.png",
+  "dates": [
+    {
+      "start": "2026-05-16T13:00:00+02:00"
+    },
+    {
+      "start": "2026-05-23T13:00:00+02:00"
+    },
+    {
+      "start": "2026-05-30T13:00:00+02:00"
+    },
+    {
+      "start": "2026-06-06T13:00:00+02:00"
+    },
+    {
+      "start": "2026-06-13T13:00:00+02:00"
+    }
+  ],
+  "description": "**👠🍝 La Cantine du Pensionnat ☕️👑**\n\nVotre drag brunch du pensionnat perdure Chez Cyril Brasserie du Marais !\n\nMélangeant show drag, quizz et jeux autours d’un bon repas et d’un bon breuvage, ce moment proposé par @lepensionnatqueer vous émerveillera le temps d’un bon repas !\n\nAnimé chaque semaine par l’un•e de nos pensionnaires qui invitera un•e autre artiste drag à découvrir autour d’un thème choisi pour l’occasion !\n\nVenez rire, jouer, rêver et surtout vous régaler ! ✨️",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/la-cantine-du-pensionnat/",
+  "slug": "la-cantine-du-pensionnat",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-cantine-du-pensionnat/",
+    "en": "https://www.parislgbt.com/en/listing/la-cantine-du-pensionnat/"
+  }
+}

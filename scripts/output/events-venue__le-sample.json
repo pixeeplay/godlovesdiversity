@@ -1,0 +1,40 @@
+{
+  "type": "listing",
+  "name": "Le Sample",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Formation Outils administratifs & pilotage budgétaire d'un projet culturel",
+      "url": "https://www.parislgbt.com/listing/formation-outils-administratifs-pilotage-budgetaire-dun-projet-culturel/"
+    },
+    {
+      "title": "Formation Modèles économiques des tiers-lieux culturels",
+      "url": "https://www.parislgbt.com/listing/formation-modeles-economiques-des-tiers-lieux-culturels/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/le-sample/",
+  "slug": "le-sample",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/le-sample/",
+    "en": "https://www.parislgbt.com/en/events-venue/le-sample/"
+  }
+}

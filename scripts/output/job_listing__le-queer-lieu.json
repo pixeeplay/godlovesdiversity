@@ -1,0 +1,52 @@
+{
+  "type": "listing",
+  "name": "Le Queer Lieu",
+  "categories": [
+    "bars",
+    "associations"
+  ],
+  "tags": [
+    "prevention-sante",
+    "librairies",
+    "lesbien",
+    "gay",
+    "drags",
+    "djs-at-work",
+    "bi",
+    "accueil-public",
+    "handicap"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/bann_bienvenue.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/04/LOGO-QUEER-LIEU.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Saint-Denis",
+    "country": "France",
+    "postal_code": "93200",
+    "street": "11 Rue Génin",
+    "lat": 48.92952,
+    "lng": 2.35422
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/bann_bienvenue.jpg",
+  "description": "Le Queer lieu est café partagé queer à Saint-Denis. Un endroit safe et chaleureux pour chacun·e, pleinement ouvert sur la ville et ses habitant·es. Un lieu pour se retrouver, se rencontrer, s’engager… dans toute notre diversité !\n\nNous ne sommes ouverts que depuis début Mars et construisons nos évènements petit à petit. Toute propositions venant d'un collectif, d'une association ou d'une personne pour pouvoir organiser des rendez vous récurrents sont les bienvenues :)\n\nC’est quand ?\n\n – Le jeudi soir de 17h à 21h\n\n – Le samedi de 15h à 20h\n\n – Le dimanche de 15h à 18h\n\nPlus d'information sur nos valeurs, notre philosophie et notre fonctionnement sur notre site : [www.lequeerlieu.fr](http://www.lequeerlieu.fr/) et sur notre instagram @[lequeerlieu](https://www.instagram.com/lequeerlieu/)",
+  "hours": {
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/04/LOGO-QUEER-LIEU.png",
+  "social": {
+    "instagram": "https://www.instagram.com/lequeerlieu/"
+  },
+  "subtitle": "Premier Café associatif LGBTQIA+ à Saint-Denis, Le Queer Lieu vous accueille à la Bourse du Travail pour des rendez vous artistiques, militants, associatifs ...",
+  "website": "https://www.lequeerlieu.fr/",
+  "source_url": "https://www.parislgbt.com/listing/le-queer-lieu/",
+  "slug": "le-queer-lieu",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-queer-lieu/",
+    "en": "https://www.parislgbt.com/en/listing/le-queer-lieu/"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "type": "listing",
+  "name": "90 bd de Clichy, 75018 Paris, France",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "La Barbichette Cabaret",
+      "url": "https://www.parislgbt.com/en/listing/la-barbichette-cabaret/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75018",
+    "street": "90 bd de Clichy",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/90-bd-de-clichy-75018-paris-france/",
+  "slug": "90-bd-de-clichy-75018-paris-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/90-bd-de-clichy-75018-paris-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/90-bd-de-clichy-75018-paris-france/"
+  }
+}

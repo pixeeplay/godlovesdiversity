@@ -1,0 +1,46 @@
+{
+  "type": "listing",
+  "name": "Les Aimant·e·s",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "lesbien"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Les-Aimantes-banner.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75003",
+    "street": "182 Rue Saint-Martin",
+    "lat": 48.86271,
+    "lng": 2.35224
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/Les-Aimantes-logo-1024x965.png",
+  "description": "Bar LGBTQIA+ inclusif accessible PMR\n\nOuvert toute l’année 7/7 de 15h30 à 2h (avec terrasse)",
+  "hours": {
+    "monday": "15:30-02:00",
+    "tuesday": "15:30-02:00",
+    "wednesday": "15:30-02:00, 15:30-02:00, 15:30-02:00, 15:30-02:00, 15:30-02:00, 15:30-02:00, 15:30-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/les-aimantes.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/profile.php?id=61561432809810",
+    "instagram": "https://www.instagram.com/barlesaimantes",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Bar lesbien",
+  "transport": "Métro 11 : Rambuteau",
+  "source_url": "https://www.parislgbt.com/listing/les-aimantes/",
+  "slug": "les-aimantes",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/les-aimantes/",
+    "en": "https://www.parislgbt.com/en/listing/les-aimantes/"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "type": "listing",
+  "name": "46 Rue Quincampoix, 75004 Paris, France",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "[Belgian Theory #3] Aux frontières du genre : renouveler les imaginaires",
+      "url": "https://www.parislgbt.com/listing/belgian-theory-3-aux-frontieres-du-genre-renouveler-les-imaginaires/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "46 Rue Quincampoix",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/46-rue-quincampoix-75004-paris-france/",
+  "slug": "46-rue-quincampoix-75004-paris-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/46-rue-quincampoix-75004-paris-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/46-rue-quincampoix-75004-paris-france/"
+  }
+}

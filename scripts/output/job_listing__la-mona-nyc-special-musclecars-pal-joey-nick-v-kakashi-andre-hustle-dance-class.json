@@ -1,0 +1,37 @@
+{
+  "type": "event",
+  "name": "LA MONA NYC SPECIAL : Musclecars, Pal Joey, Nick V, Kakashi, André ... Hustle Dance Class",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42870_image_678387043_1446999374133539_5124231961962765502_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75020",
+    "street": "19-21 rue Boyer",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42870_image_678387043_1446999374133539_5124231961962765502_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-16T22:00:00+02:00"
+    }
+  ],
+  "description": "✨ House, Hustle, Disco : New York s’invite sur le dancefloor de La Mona\n\nHOUSE ROOM (22h-05h30)\n\nMUSCLECARS, duo new-yorkais parmi les projets les plus excitants du moment, puise dans les racines tout en regardant vers l’avenir, où house, disco, jazz et soul électronique se réinventent. Pour ouvrir les portes, le légendaire PAL JOEY, qui fait partie de celles et ceux qui ont construit le son originel de la house new-yorkaise. NICK V complète ce plateau avec un closing au service du dancefloor, entre exigence musicale et sens du rythme.\n\nBOOGIE ROOM (23h-04h30)\n\nDJ KAKASHI est de retour après un opening remarqué en début de saison, où il avait emmené la salle jusqu’au bout de la nuit. À ses côtés, DJ ANDRE. Ensemble, ils dérouleront une sélection entre funk, disco, hip-hop et grooves sans détour.\n\nHUSTLE DANCE CLASS (House Room) \n\nEn ouverture à 22h, place au HUSTLE danse de couple non genrée née dans le New York des années 70, portée par les cultures disco et latines. Fluide, accessible et toujours actuelle, et prônant la liberté, elle trouve naturellement sa place sur le dancefloor house. Enseignée par VANILLE membre du projet Paris Hustle Lab.\n\nSPECTACLE (Boogie Room)\n\nNouveau format dans la Boogie Room dès l’ouverture des portes à 23h avec L’ORACLE D'AMAANA, une création de la compagnie Bastet fondée par Jihene Ba et présentée pour la première fois. Une immersion directe dans l’univers du club, où le public devient partie prenante d’une expérience dansée en interaction avec le DJ.\n\nESPACES EXTERIEURS\n\nJardin et terrasse pour se poser, chiller en plein air, fumer une cigarette.\n\n️ LA MONA SHOP\n\nTee-shirts, débardeurs, disques vinyles, briquets, cassettes audio …\n\nLa Mona, can u feel it ?",
+  "venue": {
+    "name": "La Bellevilloise",
+    "slug": "la-bellevilloise",
+    "url": "https://www.parislgbt.com/listing/la-bellevilloise/"
+  },
+  "source_url": "https://www.parislgbt.com/listing/la-mona-nyc-special-musclecars-pal-joey-nick-v-kakashi-andre-hustle-dance-class/",
+  "slug": "la-mona-nyc-special-musclecars-pal-joey-nick-v-kakashi-andre-hustle-dance-class",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-mona-nyc-special-musclecars-pal-joey-nick-v-kakashi-andre-hustle-dance-class/",
+    "en": "https://www.parislgbt.com/en/listing/la-mona-nyc-special-musclecars-pal-joey-nick-v-kakashi-andre-hustle-dance-class/"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "type": "listing",
+  "name": "Lucky Records",
+  "categories": [
+    "boutiques"
+  ],
+  "tags": [
+    "membre-du-snegco"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/83666949_3301142766579040_9176715034024214528_o.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "66 Rue de la Verrerie",
+    "lat": 48.85868,
+    "lng": 2.35148
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/89204489_3385678168125499_5688171639334764544_n.jpg",
+  "description": "Depuis 1991 \"Lucky Records\" 66 rue de la Verrerie 75004 Paris Marais, est votre disquaire Parisien spécialisé en collectors de Madonna et partenaire de \"Spotlight Magazine\".\n\n \"Lucky Records\" est la référence pour les amateurs de disques de collection et un passage obligé pour beaucoup de fans venant à Paris. Les plus grands artistes y sont représentés, mais Madonna est l'artiste phare chez \"Lucky Records Paris\".\n\n Opened in 1991 The Record Store \"Lucky Records\" partner of \"Spotlight Magazine\", is specialized in \"Madonna collector items\" and all \"Pop and Rock Artists\" collectors. The store is a must see for all music fans visiting Paris. We have at your disposal a very large selection of Vinyl, CD Album & Single, DVD, Book & Press, Memorabilia & Rarities.\n\n All the International and French Artists are here, but Madonna is still the most important artist in our shop.",
+  "email": null,
+  "hours": {
+    "friday": "12:00-19:00",
+    "monday": "12:00-19:00",
+    "saturday": "12:00-19:00",
+    "sunday": "12:00-19:00",
+    "thursday": "12:00-19:00",
+    "tuesday": "12:00-19:00",
+    "wednesday": "12:00-19:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/86697497_3343341175692532_7700136081164861440_n.jpg",
+  "phone": "0142727413",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/LUCKY-RECORDS-PARIS-263753056984708/",
+    "instagram": "https://www.instagram.com/luckyrecordsparis",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "disquaire Parisien spécialisé en collectors de Madonna",
+  "transport": "Métro 1,11 : Hôtel de Ville",
+  "website": "http://www.lucky-records.com/",
+  "source_url": "https://www.parislgbt.com/listing/lucky-records/",
+  "slug": "lucky-records",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/lucky-records/",
+    "en": "https://www.parislgbt.com/en/listing/lucky-records/"
+  }
+}

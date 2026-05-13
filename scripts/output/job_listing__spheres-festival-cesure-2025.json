@@ -1,0 +1,54 @@
+{
+  "type": "event",
+  "name": "Spheres Festival Cesure 2025",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/07/13-Sept-Sphere-Festival.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75005",
+    "street": "13 Rue Santeuil",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/07/13-Sept-Sphere-Festival-819x1024.jpeg",
+  "dates": [
+    {
+      "start": "2025-09-13T10:00:00+02:00"
+    },
+    {
+      "start": "2025-09-14T10:00:00+02:00"
+    }
+  ],
+  "description": "**✨ LE FESTIVAL DES CULTURES ALTERNATIVES ✨**\n\nParisLGBT : Césure est un tiers lieu qui s'engage résolument pour les cultures queer avec un Q. Son DA de Vedelly y fait un travail de programmation exigeant et curieux, qui utilise bien les avantages du lieu.\n\nCinq communautés sont réunies dans ce premier Sphères festival : le drag, le tatouage, le voguing, la photographie et la friperie.\n\nNous les avons choisies parce que ces communautés sont à la fois artistiques, alternatives et contemporaines.\n\nParce qu'elles sont belles, vives, drôles et jeunes.\n\nPlus que tout, nous les avons choisies parce qu'elles sont engagées et méritent, dans ce climat de repli sur soi, d'être exposées au cœur d'un événement ouvert à la curiosité et au brassage des identités.\n\n**Les 5 parrains/marraines du festival 🫶**\n\nPALOMA (drag), DODIE (tatouage), VINII REVLON (voguing), MARVIN BONHEUR (photographie) & MINIMAXXX (friperie).\n\nMarché fripes • Drag shows • Performances Live de Voguing • Flash Tattoos • Expo Photo • Talks • Food & drinks • DJ Set",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/07/Cesure_logo-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "Métro : Ligne 5 Campo-Formio / Ligne 7 Censier-Daubenton",
+  "venue": {
+    "name": "Césure",
+    "slug": "cesure-paris",
+    "url": "https://www.parislgbt.com/listing/cesure-paris/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/spheres-festival-cesure-2025/",
+  "slug": "spheres-festival-cesure-2025",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/spheres-festival-cesure-2025/",
+    "en": "https://www.parislgbt.com/en/listing/spheres-festival-cesure-2025/"
+  }
+}

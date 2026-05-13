@@ -1,0 +1,42 @@
+{
+  "type": "event",
+  "name": "Parution BD #PMA pour toutes : DAR A LUZ, Vers la maternité, contre vents et marées",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/01/Dar-A-Luz-Chloe-Roy-Regis-Traen-1.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/01/Dar-A-Luz-Chloe-Roy-Regis-Traen-1.png",
+  "dates": [
+    {
+      "start": "2026-01-23T00:00:00+02:00"
+    }
+  ],
+  "description": "Ma BD intitulée _DAR A LUZ, Vers la maternité, contre vents et marées_ vient de paraître aux éditions Lapin; elle raconte le parcours de PMA d'un couple de femmes en France, aux lendemains du vote de la loi de bioéthique de 2021.\n\nIl s’agit d’un roman graphique féministe, à la fois documentaire et sensible, qui aborde l’homoparentalité, les enjeux d’égalité et de visibilité LGBTQIA+, tout en dénonçant notamment les violences gynécologiques.\n\nDisponible dans toutes les librairies de France, de Belgique et du Québec, et en ligne sur la Fnac ou encore sur la librairie des éditions Lapin !\n\nVous pouvez également suivre la page Instagram qui vise à promouvoir ce livre, à partager quelques planches et à donner de multiples infos sur ce parcours : @chloeroy_daraluz\n\n🔥[Acheter le livre aux Mots à la Bouche](https://motsbouche.com/bd/33784-dar-a-luz-vers-la-maternite-contre-vents-et-marees.html)📚",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Les Mots à la Bouche",
+    "slug": "les-mots-a-la-bouche",
+    "url": "https://www.parislgbt.com/listing/les-mots-a-la-bouche/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/parution-bd-pma-pour-toutes-dar-a-luz-vers-la-maternite-contre-vents-et-marees-2/",
+  "slug": "parution-bd-pma-pour-toutes-dar-a-luz-vers-la-maternite-contre-vents-et-marees-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/parution-bd-pma-pour-toutes-dar-a-luz-vers-la-maternite-contre-vents-et-marees-2/",
+    "en": "https://www.parislgbt.com/en/listing/parution-bd-pma-pour-toutes-dar-a-luz-vers-la-maternite-contre-vents-et-marees-2/"
+  }
+}

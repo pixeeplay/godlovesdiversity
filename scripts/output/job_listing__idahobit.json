@@ -1,0 +1,59 @@
+{
+  "type": "event",
+  "name": "IDAHOBIT International Day Against Homophobia, Transphobia, and Biphobia",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/IDAHOBIT-Francais.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.85347,
+    "lng": 2.34821
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/01/IDAHOBIT-Francais-1024x445.png",
+  "dates": [
+    {
+      "start": "2026-05-17T00:00:00+02:00"
+    },
+    {
+      "start": "2027-05-17T00:00:00+02:00"
+    },
+    {
+      "start": "2028-05-17T00:00:00+02:00"
+    },
+    {
+      "start": "2029-05-17T00:00:00+02:00"
+    },
+    {
+      "start": "2030-05-17T00:00:00+02:00"
+    }
+  ],
+  "description": "**17 MAI 2025 : IDAHOT**\n\n17 MAY : IDAHOT\n\nIDAHOT =\n\nThe International Day Against Homophobia, Transphobia, and Biphobia (IDAHOBIT) is a global moment of solidarity and visibility for LGBTQIA+ individuals and communities. It is observed every year on 17 May, and brings together individuals, organisations, and governments from around the world to raise awareness about the issues facing LGBTQIA+ people, and to advocate for policies and laws that protect their rights.\n\nSignalez tout événement sur l'agenda mondial [may17.org/](https://may17.org/)\n\n2026 theme : At the heart of democracy\n\nEt ici bien sûr via le formulaire d'ajout pour annoncer vos projets :\n\n[https://www.parislgbt.com/ajout-listing/](https://www.parislgbt.com/ajout-listing/)\n\nEt le lien international of course :\n\n[https://may17.org/register-event/](https://may17.org/register-event/)",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/idahobit/",
+  "slug": "idahobit",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/idahobit/",
+    "en": "https://www.parislgbt.com/en/listing/idahobit/"
+  }
+}

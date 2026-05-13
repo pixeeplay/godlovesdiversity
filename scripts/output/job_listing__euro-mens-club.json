@@ -1,0 +1,46 @@
+{
+  "type": "listing",
+  "name": "Euro Men's Club",
+  "categories": [
+    "saunas"
+  ],
+  "tags": [
+    "gay",
+    "cruising"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/06/Euro-Mens-Club-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/06/Euro-Mens-Club-2.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/06/Euro-Mens-Club-3.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.87047,
+    "lng": 2.34023
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/06/Euro-Mens-Club-4-1024x682.jpg",
+  "description": "Situé au coeur de la capitale, l'endroit est une vraie révélation.\n\nIl vous transporte dans un univers poétique.\n\nLumières tamisées, statues de la Rome antique, mur d'eau.\n\nDès l'entrée, tout participe à un parcours initiatique fait de luxe et de volupté dans un subtil mélange de couleurs et de formes.\n\nChaque détail de l'architecture a été véritablement imaginé, pensé et dessiné avec patience et passion.",
+  "hours": {
+    "monday": "11:00-20:00",
+    "tuesday": "11:00-20:00",
+    "wednesday": "11:00-20:00, 11:00-20:00, 11:00-20:00, 11:00-20:00, 11:00-20:00, 11:00-20:00, 11:00-20:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/06/Plan-de-travail-11-1.png",
+  "social": {
+    "instagram": "https://www.instagram.com/euromens.club/"
+  },
+  "subtitle": "Le sauna gay le plus Rome Antique de Paris",
+  "transport": "M° Grands Boulevards (Lignes 8 et 9)",
+  "website": "https://e-m-c.fr/",
+  "source_url": "https://www.parislgbt.com/listing/euro-mens-club/",
+  "slug": "euro-mens-club",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/euro-mens-club/",
+    "en": "https://www.parislgbt.com/en/listing/euro-mens-club/"
+  }
+}

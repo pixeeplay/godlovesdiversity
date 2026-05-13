@@ -1,0 +1,52 @@
+{
+  "type": "listing",
+  "name": "Freedj",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "La Qonasse S04ep34",
+      "url": "https://www.parislgbt.com/listing/la-qonasse-s04ep34/"
+    },
+    {
+      "title": "Woopiii reçoit Front Runners * Freedj",
+      "url": "https://www.parislgbt.com/listing/woopiii-recoit-front-runners-2/"
+    },
+    {
+      "title": "La Qonasse XXL - Queen Battle - S04ep35",
+      "url": "https://www.parislgbt.com/listing/la-qonasse-xxl-queen-battle-s04ep35/"
+    },
+    {
+      "title": "Woopiii reçoit Gare! * Freedj",
+      "url": "https://www.parislgbt.com/listing/woopiii-recoit-gare-4/"
+    },
+    {
+      "title": "La Qonasse S04ep36",
+      "url": "https://www.parislgbt.com/listing/la-qonasse-s04ep36/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/freedj/",
+  "slug": "freedj",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/freedj/",
+    "en": "https://www.parislgbt.com/en/events-venue/freedj/"
+  }
+}

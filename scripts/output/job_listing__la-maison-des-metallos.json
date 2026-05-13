@@ -1,0 +1,61 @@
+{
+  "type": "listing",
+  "name": "La Maison des métallos",
+  "categories": [
+    "etablissement-culturel",
+    "cabarets"
+  ],
+  "tags": [
+    "arts-culture",
+    "terrasse",
+    "handicap",
+    "djs-at-work"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/11/131018_RdL_0304-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/11/131211_RdL_0046-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/11/231004_RdL_0326-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "94 rue Jean-Pierre Timbaud",
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/11/P1190301-bd-1024x685.jpg",
+  "description": "La Maison des métallos se caractérise par son histoire, imprégnée d’un ancrage social et politique qui l’a toujours placée au cœur des débats de son temps.\n\nDepuis 2007, la Maison des métallos - devenue établissement culturel de la Ville de Paris - est **un lieu de diffusion, de création, de débat d’idées et d’échanges faisant dialoguer l’art vivant avec les enjeux et préoccupations de la société contemporaine**.\n\n**Chaque mois, une équipe artistique différente** s’associe à l’équipe de la Maison des métallos pour **imaginer ensemble d’autres façons de se rencontrer autour de l’art vivant**. Ces artistes, qui viennent du théâtre, de la danse, du cirque, des images ou de tout cela à la fois, vous proposent une expédition chaque fois différente.",
+  "email": null,
+  "hours": {
+    "friday": "14:00-19:00",
+    "monday": null,
+    "saturday": "14:00-19:00",
+    "sunday": null,
+    "thursday": "14:00-19:00",
+    "tuesday": "14:00-19:00",
+    "wednesday": "14:00-19:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/11/MDM_LOGO4LIGNES_POSITIF_RVB.png",
+  "phone": "01 47 00 25 20",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/maisondesmetallos",
+    "instagram": "https://www.instagram.com/maisondesmetallos/",
+    "tiktok": null,
+    "twitter": "https://twitter.com/MaisonMetallos"
+  },
+  "subtitle": "Etablissement culturel de la Ville de Paris : chaque mois, un·e artiste et une thématique",
+  "transport": "Métro : arrêts Couronnes (ligne 2) ou Parmentier (ligne 3)",
+  "venue": null,
+  "website": "https://www.maisondesmetallos.paris/",
+  "source_url": "https://www.parislgbt.com/listing/la-maison-des-metallos/",
+  "slug": "la-maison-des-metallos",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-maison-des-metallos/",
+    "en": "https://www.parislgbt.com/en/listing/la-maison-des-metallos/"
+  }
+}

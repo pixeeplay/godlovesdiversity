@@ -1,0 +1,83 @@
+{
+  "type": "listing",
+  "name": "Speechless",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "arts-culture",
+    "bears",
+    "cruising",
+    "djs-at-work",
+    "drags",
+    "gay",
+    "lesbien",
+    "queer",
+    "terrasse",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0021.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0024.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0019.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0001.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/418609.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/418610.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0014-1-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0017-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0010-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0015-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0011-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0008-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/03/IMG-20250325-WA0007-1.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "Soirée SBK QUEER",
+      "url": "https://www.parislgbt.com/listing/soiree-sbk-queer/"
+    },
+    {
+      "title": "Soirée KONPA & KIZOMBA Queer",
+      "url": "https://www.parislgbt.com/listing/soiree-konpa-kizomba-queer/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": "45 rue de Montreuil",
+    "lat": 48.85046,
+    "lng": 2.38616
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/03/SPCHLS_LOGO_sans-fond-1-1024x478.png",
+  "description": "**✨ Speechless – bar à cocktails Queer, éthique et culturel ! 🌿🍸**\n\nSitué au cœur du 11ᵉ arrondissement, Speechless est bien plus qu’un simple bar à cocktails : c’est un lieu éthique, inclusif et culturel où chaque expérience est unique. Installé au 45 rue de Montreuil, dans le quartier Sainte-Marguerite, le bar se trouve à seulement 290 mètres de la station Faidherbe-Chaligny (ligne 8).\n\n**🍹 Des cocktails d’exception :**\n\nNotre équipe vous propose une carte de cocktails créative et de saison, élaborée avec des spiritueux de qualité et des produits au maximum locaux et faits maison. Envie d’un cocktail sur-mesure ? On s’adapte à vos goûts ! Et bien sûr, les grands classiques sont aussi au rendez-vous.\n\n**🥂 Bien plus que des cocktails :**\n\nChez Speechless, il y en a pour tout le monde ! En plus de nos créations avec ou sans alcool, nous proposons bières, cidres, vins et sodas maison, toujours dans une démarche de qualité et d’originalité.\n\n**🎭 Un lieu vibrant et animé :**\n\nLe bar est aussi un espace culturel qui propose des événements tout au long de l’année : concerts live, DJ sets, spectacles, drag show, bingo drag, karaoké, escape game, speed dating, flash tattoo, comedy club et bien plus encore !\n\n**🥑 Une offre 100 % végétale :**\n\nNotre engagement passe aussi par l’assiette : notre carte de tapas à partager est entièrement plant-based, pour une expérience à la fois gourmande et responsable.\n\n**📅 Privatisable pour vos événements :**\n\nAvec ses trois espaces distincts – le bar, le salon cosy et la cave voûtée, Speechless peut accueillir 80 à 100 personnes. Parfait pour organiser un anniversaire, un afterwork, un pot de départ, un projet ou juste une soirée entre ami.e.s.",
+  "email": null,
+  "hours": {
+    "friday": "18:00-02:00",
+    "monday": null,
+    "saturday": "18:00-02:00",
+    "sunday": null,
+    "thursday": "18:00-02:00",
+    "tuesday": "18:00-01:00",
+    "wednesday": "18:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/03/SPCHLS_SIGLE_FINAL.jpg",
+  "phone": "0682607597",
+  "registration_url": "https://www.privateaser.com/lieu/50982-speechless/booking-widget",
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/speechlessbar/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Bar à cocktails queer, éthique et culturel",
+  "transport": "Faidherbe Chaligny Ligne 8 - Nation ligne 6,9,1 RER A - Rue des Boulets ligne 9",
+  "website": "https://linktr.ee/speechlessbar_paris",
+  "source_url": "https://www.parislgbt.com/listing/speechless/",
+  "slug": "speechless",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/speechless/",
+    "en": "https://www.parislgbt.com/en/listing/speechless/"
+  }
+}

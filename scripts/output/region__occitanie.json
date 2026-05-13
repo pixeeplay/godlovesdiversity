@@ -1,0 +1,19 @@
+{
+  "type": "listing",
+  "name": "Occitanie",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/region/occitanie/",
+  "slug": "occitanie",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/region/occitanie/",
+    "en": "https://www.parislgbt.com/en/region/occitanie/"
+  }
+}

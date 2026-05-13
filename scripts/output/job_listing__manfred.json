@@ -1,0 +1,69 @@
+{
+  "type": "listing",
+  "name": "Manfred",
+  "categories": [
+    "restaurant",
+    "bars"
+  ],
+  "tags": [
+    "bi",
+    "lesbien",
+    "gay",
+    "terrasse"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/CB25C448-66C3-4F7A-98EA-BE1BBF281AF4.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/DC9B40A8-9434-4152-91B1-23A7B28AD75D.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/BA6830C7-629B-4E1B-971B-D4CB348223C7.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/7406BB49-AFBC-4B3A-93F3-321CE449BDB2.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/53F16932-3082-4237-8A43-F3AE2D75D866.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/E6C99871-63DC-490C-9B7C-81511A2E4319.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/3FDB72AE-0BFB-472C-918F-35AC5E3E69E6.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/A5DF24F6-4ED6-49B8-A643-25D16845412E.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/E1E7988D-2CBF-47E1-8B90-A0A9976D624D.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/8E1FC37E-79E4-4781-BD9B-DC016566B87E.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/5E313C43-28AF-4D10-9D2D-80C4177CD8CF.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/0F8843A5-14BB-4555-9C34-53BFF961F4F4.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86462,
+    "lng": 2.35933
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/05/C412EE11-30D9-471D-AE72-44CA0743354E-1024x700.jpeg",
+  "description": "**Jolie brasserie située dans le haut du Marais proche de République et Arts & Métiers...**\n\nIci on en a pour son argent : plats varié et copieux.\n\nPetit déjeuner, déjeuner, dîner, happy hour, brunch le samedi, dimanche et jour férié avec un buffet et des boissons chaudes à volontés.\n\nServeur/se sympa et ouvert d’esprit.\n\nC’est dans un cadre chaleureux que l’on vous accueil au Manfred.\n\nN’hésitez pas à réserver votre table ! 🙂",
+  "email": null,
+  "hours": {
+    "friday": "07:00-02:00",
+    "monday": "07:00-00:30",
+    "saturday": "07:00-02:00",
+    "sunday": "08:00-00:00",
+    "thursday": "07:00-02:00",
+    "tuesday": "07:00-00:30",
+    "wednesday": "07:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/05/4969507A-3E10-4677-BE50-02702C79F9F8.jpeg",
+  "phone": "0988554965",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Save water, drink champagne",
+  "transport": "M° République ou Arts et Métier",
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/manfred/",
+  "slug": "manfred",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/manfred/",
+    "en": "https://www.parislgbt.com/en/listing/manfred/"
+  }
+}

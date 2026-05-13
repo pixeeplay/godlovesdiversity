@@ -1,0 +1,46 @@
+{
+  "type": "event",
+  "name": "HEAVEN BACK TO BASICS",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/Copie-de-Copie-de-Copie-de-Copie-de-Affiche-Evenement-Festival-Musique-Moderne-Photo-Beige-Noir-1920-x-1080-px.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "16 Rue Saint-Merri",
+    "lat": 48.85949,
+    "lng": 2.35283
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/Copie-de-Copie-de-Copie-de-Copie-de-Affiche-Evenement-Festival-Musique-Moderne-Photo-Beige-Noir-1920-x-1080-px-1024x576.jpg",
+  "dates": [
+    {
+      "start": "2026-06-05T23:30:00+02:00"
+    }
+  ],
+  "description": "**HEAVEN — BACK TO BASICS**\n\n**UNE SEULE DATE.**\n\n**UN RETOUR HISTORIQUE.**\n\n**LE CLUB D’ORIGINE DE HEAVEN ROUVRE ENFIN SES PORTES.**\n\n Après des mois de fermeture et une rénovation totale, le lieu mythique qui a vu naître les plus grandes nuits HEAVEN revient pour une nuit exceptionnelle… plus beau, plus dark, plus intense que jamais.\n\n Pour célébrer cette réouverture ultra exclusive, HEAVEN vous prépare une édition spéciale en format UNIQUE EVENT.\n\n Une seule nuit. Une seule chance d’en faire partie.\n\n GUEST DJ : EVER\n\n HEAVEN RESIDENT : RICHARD VDV\n\n Attendez-vous à une ambiance explosive entre house, techno, tribal et énergie brésilienne jusqu’au lever du soleil.\n\n Club entièrement refait à neuf\n\n Production immersive\n\n Loveroom\n\n Stripper Shot\n\n Dancefloor XXL\n\n Atmosphère dark & sexy\n\n Capacity limited\n\n Cette nuit marquera le retour d’un lieu légendaire de la scène parisienne.\n\n Au cœur du Marais, là où tout a commencé.\n\n Événement exceptionnel — une seule date",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/69299660_2441381862590171_2859225605155586048_n-300x300.jpg",
+  "phone": null,
+  "registration_url": "https://shotgun.live/fr/events/heaven-back-to-basics",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Who's",
+    "slug": "whos",
+    "url": "https://www.parislgbt.com/listing/whos/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/heaven-back-to-basics/",
+  "slug": "heaven-back-to-basics",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/heaven-back-to-basics/",
+    "en": "https://www.parislgbt.com/en/listing/heaven-back-to-basics/"
+  }
+}

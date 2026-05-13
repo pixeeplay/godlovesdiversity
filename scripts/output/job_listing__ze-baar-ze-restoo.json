@@ -1,0 +1,61 @@
+{
+  "type": "listing",
+  "name": "Ze Baar / Ze Restoo",
+  "categories": [
+    "bars",
+    "restaurant"
+  ],
+  "tags": [
+    "lesbien",
+    "gay",
+    "bi",
+    "trans",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/14138154_290863301288176_4623940782848624744_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/zebaar.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75004",
+    "street": "41 Rue des Blancs Manteaux",
+    "lat": 48.85965,
+    "lng": 2.35497
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/photo3jpg.jpg",
+  "dates": [],
+  "description": "**L'endroit par excellence pu se retrouve entre amis au bar, avec un bar lounge au premier.**\n\nCe petit restaurant accolé au bar, où règne une ambiance conviviale, intimiste aussi et sans oublier une cuisine française de bistrot excellente et savoureuse.\n\nL'endroit où toute une équipe conduite par Pascal vous reçoit avec un sourire et est au petit soins.\n\nA ne pas manquer lors de votre passage dans le Marais.",
+  "email": null,
+  "hours": {
+    "friday": "19:30-01:00",
+    "monday": null,
+    "saturday": "18:00-01:00",
+    "sunday": "18:00-00:00",
+    "thursday": "19:30-00:00",
+    "tuesday": "19:30-00:00",
+    "wednesday": "19:30-00:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/14138154_290863301288176_4623940782848624744_o.jpg",
+  "phone": "01 42 71 75 18",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/pages/Ze-Baar-Ze-Restoo/129838867070759",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Restaurant et bar attenant, 2 bonnes adresses !",
+  "transport": "Metro 11 : Rambuteau",
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/ze-baar-ze-restoo/",
+  "slug": "ze-baar-ze-restoo",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/ze-baar-ze-restoo/",
+    "en": "https://www.parislgbt.com/en/listing/ze-baar-ze-restoo/"
+  }
+}

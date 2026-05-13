@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Darladi Dalida",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/Banniere-DD.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "11-13 Rue au Maire",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/Banniere-DD-1024x576.png",
+  "dates": [
+    {
+      "start": "2026-05-13T22:30:00+02:00"
+    }
+  ],
+  "description": "Le retour de la traditionnelle soirée entièrement dédiée à Dalida du Tango Paris. Depuis plus de 10 ans, tous les mois de mai (mois de son décès), nous lui rendons hommage ! Pour cette édition nous recevrons Garyshow et Madame Joëlle et bien entendu Ivresse poussera également la chansonnette dans cet hommage vibrant à l’idole de toute une communauté.\n\n📍@letangoparis– 11-13 Rue au Maire, 75003 Paris\n\n Entrée : 15 euros sur place",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Tango",
+    "slug": "le-tango",
+    "url": "https://www.parislgbt.com/listing/le-tango/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/darladi-dalida-5/",
+  "slug": "darladi-dalida-5",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/darladi-dalida-5/",
+    "en": "https://www.parislgbt.com/en/listing/darladi-dalida-5/"
+  }
+}

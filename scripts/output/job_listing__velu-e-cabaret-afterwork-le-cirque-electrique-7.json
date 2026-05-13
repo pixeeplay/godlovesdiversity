@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Velu.e Cabaret & Afterwork - Le Cirque Electrique",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42938_image_679097826_1580442080749171_6379766499015940256_n-1-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75020",
+    "street": "Place du Marquis du Vercors",
+    "lat": 48.87642,
+    "lng": 2.40955
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42938_image_679097826_1580442080749171_6379766499015940256_n-1-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-14T19:00:00+02:00"
+    }
+  ],
+  "description": "Velu.e vous convies sur les planches du tout nouveau Tigre du Cirque Electrique !! Qui a encore fait peau neuve !\n\nVelu.e c'est pour les noctambules de fin de journée, les amoureu.x.es des arts de nuit, les philanthropes de l’afterwork. Velu.e c’est à la fois un cabaret viscéral changeforme et détonnant, une soirée pour tou.te.s, une plateforme d'échange pour le cœur qui renoue avec l’essence même du cabaret Parisien, irrévérencieux et jubilatoire.\n\n Au programme : de quoi vous restaurer et/ou boire des coups, un show électrique, des stands qui font chaud au cœur, et enfin une soirée dansante et endiablée avec des DJ sets hauts en couleur.\n\nAvec:\n\n Üghett\n\n Julie Demont\n\n Esther\n\n Scrap Boo King\n\n Masha Kills\n\nLe Grand Retour de la Scène Ouverte de Velu.e\n\nMise en plis\n\n Edouard LKH\n\nDJs sets :\n\n Fabisounours\n\n Loki Starfish\n\nMadame Tiff\n\n19H à 1H30\n\n 10€ Early Birds / 12€ régular\n\n 13€ Sur place\n\n Tarif Mécène (pour nous soutenir) : 20€\n\n Tarif solidaire à 5€ uniquement sur demande écrite à : veluecabaret@gmail.com",
+  "email": "veluecabaret@gmail.com",
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://shotgun.live/fr/events/velu-e-cabaret-afterwork-le-cirque-electrique-8",
+  "social": {
+    "facebook": "https://www.facebook.com/events/4429125534037598",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Cirque Electrique",
+    "slug": "le-cirque-electrique",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Cirque%20Electrique"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/velu-e-cabaret-afterwork-le-cirque-electrique-7/",
+  "slug": "velu-e-cabaret-afterwork-le-cirque-electrique-7",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/velu-e-cabaret-afterwork-le-cirque-electrique-7/",
+    "en": "https://www.parislgbt.com/en/listing/velu-e-cabaret-afterwork-le-cirque-electrique-7/"
+  }
+}

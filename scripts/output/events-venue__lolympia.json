@@ -1,0 +1,37 @@
+{
+  "type": "listing",
+  "name": "L'Olympia",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "PICHE en concert à l'Olympia",
+      "url": "https://www.parislgbt.com/listing/piche-en-concert-a-lolympia/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/lolympia/",
+  "slug": "lolympia",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/lolympia/",
+    "en": "https://www.parislgbt.com/en/events-venue/lolympia/"
+  }
+}

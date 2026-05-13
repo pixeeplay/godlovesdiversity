@@ -1,0 +1,40 @@
+{
+  "type": "listing",
+  "name": "La Bellevilloise",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "LA MONA NYC SPECIAL : Musclecars, Pal Joey, Nick V, Kakashi, André ... Hustle Dance Class * La Bellevilloise, 19-21 rue Boyer, 75020 Paris, France",
+      "url": "https://www.parislgbt.com/listing/la-mona-nyc-special-musclecars-pal-joey-nick-v-kakashi-andre-hustle-dance-class/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75020",
+    "street": "19-21 rue Boyer",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/la-bellevilloise-19-21-rue-boyer-75020-paris-france/",
+  "slug": "la-bellevilloise-19-21-rue-boyer-75020-paris-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/la-bellevilloise-19-21-rue-boyer-75020-paris-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/la-bellevilloise-19-21-rue-boyer-75020-paris-france/"
+  }
+}

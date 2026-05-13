@@ -1,0 +1,44 @@
+{
+  "type": "listing",
+  "name": "Cabaret des Merveilles",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "arts-culture",
+    "drags",
+    "lesbien",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/05/Screenshot-2025-05-29-13.00.56.png",
+    "https://www.parislgbt.com/wp-content/uploads/2025/05/Cabaret-des-Merveilles-logo.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.85361,
+    "lng": 2.34291
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/05/Screenshot-2025-05-29-13.00.56.png",
+  "description": "Le Cabaret des Merveilles est un bar à cocktails et un espace d’échanges culturels Queer Féministe.\n\nCe lieu festif, solaire et bienveillant se veut catalyseur d’initiatives engagées à travers une programmation centrée autour des arts, de la culture, du bien-être, du partage de passions diverses et de thématiques féministes.\n\nUne nouvelle adresse où se rencontrer et se retrouver dans un climat de convivialité en sirotant de délicieux cocktails avec ou sans alcool !​​\n\nC'est un lieu riche qui fait la part aux spectacles chaque mardi et aux activités culturelles. Entrez, c'est tout un monde.",
+  "hours": {
+    "monday": "18:00-01:00",
+    "tuesday": "18:00-01:00",
+    "wednesday": "18:00-02:00,18:00-02:00,18:00-02:00,18:00-02:00,18:00-01:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/05/Cabaret-des-Merveilles-logo.jpg",
+  "subtitle": "Bar à cocktails Queer Féministe",
+  "transport": "M° Saint Michel (L4) ou RER C",
+  "website": "https://www.cabaret-des-merveilles.com/",
+  "source_url": "https://www.parislgbt.com/listing/cabaret-des-merveilles/",
+  "slug": "cabaret-des-merveilles",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/cabaret-des-merveilles/",
+    "en": "https://www.parislgbt.com/en/listing/cabaret-des-merveilles/"
+  }
+}

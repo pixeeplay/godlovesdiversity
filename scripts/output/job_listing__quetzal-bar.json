@@ -1,0 +1,50 @@
+{
+  "type": "listing",
+  "name": "Quetzal Bar",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "terrasse",
+    "gay",
+    "djs-at-work"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/82783734_1057376614611505_791252715316445184_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/83431688_1057375624611604_1950433245698981888_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/83654131_1057375111278322_2749168227836755968_o.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75004",
+    "street": "10 Rue de la Verrerie",
+    "lat": 48.8572,
+    "lng": 2.3552
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/89444288_1092385431110623_8583779689116467200_o-1024x484.jpg",
+  "description": "Look industriel, lignes chromées et lumières de couleurs pour ce grand bar accueillant une clientèle gay..\n\nTime Out : Le Quetzal est une des adresses gays les plus connues du Marais. L'endroit est réputé pour ses soirées chaudes et il est parfois difficile de s'y frayer un chemin ou même d'y entrer le week-end. Ce bar attire une clientèle très mâle, parisienne et internationale plutôt 30 à 40 ans, qui discute et danse sous la lumière violette rougeoyante des néons. L’ambiance est plutôt techno, house, transe, et la température monte au fur et à mesure de la soirée. L’endroit est assez grand mais toujours bondé le week-end. Happy hour sur la bière jusqu’à minuit.",
+  "hours": {
+    "monday": "17:00-02:00",
+    "tuesday": "17:00-02:00",
+    "wednesday": "17:00-02:00, 17:00-02:00, 17:00-02:00, 17:00-02:00, 17:00-03:00, 17:00-03:00, 17:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/89538215_1054589078253125_7320761705808527360_o.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/quetzalbarparis/",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Bar gay au coeur du Marais depuis 1987",
+  "transport": "Métro 1,11 : Hôtel de Ville",
+  "source_url": "https://www.parislgbt.com/listing/quetzal-bar/",
+  "slug": "quetzal-bar",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/quetzal-bar/",
+    "en": "https://www.parislgbt.com/en/listing/quetzal-bar/"
+  }
+}

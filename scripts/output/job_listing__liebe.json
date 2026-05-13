@@ -1,0 +1,51 @@
+{
+  "type": "listing",
+  "name": "Liebe",
+  "categories": [
+    "bars",
+    "clubs"
+  ],
+  "tags": [
+    "arts-culture",
+    "djs-at-work",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/07/Liebe_angle.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2024/07/Liebe-entree.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2024/07/Liebe-neon.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75009",
+    "street": "46 rue du Faubourg Montmartre",
+    "lat": 48.87477,
+    "lng": 2.34148
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/07/Liebe_creature-de-rave.jpg",
+  "description": "**🎉 Le Liebe se réinvente 🎉**\n\n Lieu culte du 9e, Le Liebe devient un spot hybride ouvert toute la journée ! 🌈\n\n🥘 Dès midi : plats tradi dès 10,50€, rolls, bowls et salades healthy jusqu’à 15h.\n\n🥤 L’après-midi : smoothies, jus frais, milkshakes, latte matcha dans une vibe coffee shop berlinois ☕✨\n\n🎶 De 17h à 22h : happy hours + DJ sets électro house, dark disco & pop. Lumières tamisées, ambiance qui monte…\n\n💿 Programmation pointue avec la crème des DJs de la scène locale & internationale 🌍 (Monarch, Hole, Master Squat, Candy Pop 👀).\n\n❤️‍🔥 Un lieu d’inclusion, de fête et de liberté, gay-friendly, festif, solaire. Le Liebe, c’est bien plus qu’un bar dansant :\n\n c’est le nouveau QG du Faubourg Montmartre.\n\n🎉 C'est également une cosmogonie de la teuf LGBT avec les raves Monarch et autres galanteries électronico-fetish, suivez les news [ici](https://shotgun.live/fr/venues/liebe)",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2024/07/Liebe_logo.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/liebebarelectro",
+    "instagram": "https://www.instagram.com/liebebarelectro",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Un repas, un verre, une danse et un baiser !",
+  "transport": "M° Cadet",
+  "venue": null,
+  "website": "https://www.liebebarelectro.com/",
+  "source_url": "https://www.parislgbt.com/listing/liebe/",
+  "slug": "liebe",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/liebe/",
+    "en": "https://www.parislgbt.com/en/listing/liebe/"
+  }
+}

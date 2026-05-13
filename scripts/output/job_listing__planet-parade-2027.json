@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Planet Parade - Faisons Corps avec la Planète - 2027",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/PlanetParade-small.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.36932
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/01/PlanetParade-small.jpeg",
+  "dates": [
+    {
+      "start": "2027-07-03T12:00:00+02:00"
+    }
+  ],
+  "description": "**Planet Parade #1**\n\n**Samedi 3 juillet 2027**\n\nFace à l’ampleur des crises écologiques et sociales qui, loin d’être prises au sérieux par nos dirigeants, subissent un backlash sans précédent, il est temps de se rassembler physiquement – avec la force des artistes – pour créer la première Planet Parade.\n\nParis Diversité, l'association qui édite le guide ParisLGBT, soutient la démarche pour apporter un intérêt pour les publics LGBT français et européens et créer le lien avec les acteurs LGBT. 🏳️‍🌈\n\n**La fête comme catalyseur d'action ... 🎉**\n\nL’expérience nous l’a montré : les marches combatives et les discours alarmants sont nécessaires, mais ne suffisent pas à fédérer l’ensemble de la société. Nous pouvons élargir nos cercles, embarquer de nouvelles personnes via d’autres formes d’expression – festives, artistiques, créatives – et faire enfin tomber l’étiquette “écologie punitive”. 🤡\n\nÀ la racine de ce qui nous anime, il y a un désir brûlant : défendre l’équilibre planétaire qui permet la vie et, entre autres, la nôtre, ICI. Cette cause commune nous relie et nous met en mouvement, au-delà des clivages idéologiques et de nos différences. Nous voulons célébrer une cause commune : la planète et par là même, notre petite pomme, nos amis, la famille, la terre ancestrale ou adoptée et les rêves à venir. Dans une période, où les divisions prennent de l’ampleur, mettre en lumière ce qui nous unit nous paraît essentiel. 🧿\n\nOn peut le voir avec la Pride 🏳️‍🌈 🏳️‍⚧️ ou encore la Techno Parade 🔊💿 : la joie est un réel vecteur de rassemblement. Elle fait rayonner les causes, en plus d’être un catalyseur d’action puissant. Alors, mettons-la au-devant de la scène. Célébrons, dansons, chantons… Créons ensemble une immense fête pour la planète où les artistes et publics LGBT aient leur place : sur la crête pour exploser de joie et engager à prendre plaisir à protéger la planète. 🌏\n\nVous voulez vous engager aux côtés des 700 bénévoles ? [Cliquez ici](https://planetparade.org/?membre=cvix&utm_source=linkedin&utm_medium=social&utm_campaign=lancement_site#mail)",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/planet-parade-2027/",
+  "slug": "planet-parade-2027",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/planet-parade-2027/",
+    "en": "https://www.parislgbt.com/en/listing/planet-parade-2027/"
+  }
+}

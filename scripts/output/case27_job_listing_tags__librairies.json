@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Librairies",
+  "categories": [],
+  "tags": [
+    "librairies"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/librairies/",
+  "slug": "librairies",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/librairies/",
+    "en": "https://www.parislgbt.com/en/tag/librairies/"
+  }
+}

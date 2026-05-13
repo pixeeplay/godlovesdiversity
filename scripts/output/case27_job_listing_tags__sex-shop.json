@@ -1,0 +1,19 @@
+{
+  "type": "tag",
+  "name": "Sex-shop",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/sex-shop/",
+  "slug": "sex-shop",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/sex-shop/",
+    "en": "https://www.parislgbt.com/en/tag/sex-shop/"
+  }
+}

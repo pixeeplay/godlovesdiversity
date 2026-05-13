@@ -1,0 +1,50 @@
+{
+  "type": "event",
+  "name": "Sous la lune s'envole la chouette",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/40329_image_611633615_859022006888293_808904550332098264_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "L'Argentière-la-Bessée",
+    "country": null,
+    "postal_code": "05",
+    "street": null,
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/01/40329_image_611633615_859022006888293_808904550332098264_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-22T09:00:00+02:00"
+    },
+    {
+      "end": "2026-05-24T16:00:00+02:00"
+    }
+  ],
+  "description": "Lien d'inscription : [https://airtable.com/apphMyY1Uo2XnzNg8/shrvWaqnVjNcGXPUh](https://airtable.com/apphMyY1Uo2XnzNg8/shrvWaqnVjNcGXPUh \"https://airtable.com/apphMyY1Uo2XnzNg8/shrvWaqnVjNcGXPUh\")\n\nDu 22 au 24 mai 2026, la 5ème édition des week-end sous la lune aura lieu à l'Argentière-la-bessée (05)\n\nLa thématique : dépassement de soi vs culture de la performance, avec des ateliers pour explorer le sujet\n\nEt pour prendre son envol sportif : escalade en falaise, randonnée aérienne, initiation highline et tissu aérien\n\nOuverture des inscriptions le 1er mars 2026",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://airtable.com/apphMyY1Uo2XnzNg8/shrvWaqnVjNcGXPUh",
+  "social": {
+    "facebook": "https://www.facebook.com/events/3566683983471590",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/sous-la-lune-senvole-la-chouette/",
+  "slug": "sous-la-lune-senvole-la-chouette",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/sous-la-lune-senvole-la-chouette/",
+    "en": "https://www.parislgbt.com/en/listing/sous-la-lune-senvole-la-chouette/"
+  }
+}

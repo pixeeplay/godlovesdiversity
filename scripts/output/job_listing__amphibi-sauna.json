@@ -1,0 +1,47 @@
+{
+  "type": "listing",
+  "name": "Amphibi Sauna",
+  "categories": [
+    "saunas"
+  ],
+  "tags": [
+    "trans",
+    "spa"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2021/01/136372966_104484711601536_669056716125653231_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/01/20221005_114658-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/01/amphibi-sauna-trans-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75017",
+    "street": "15 Rue Lacroix",
+    "lat": 48.89045,
+    "lng": 2.3224
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2021/01/IMG_20221208_211146_954-1024x1024.jpg",
+  "description": "EXCLUSIVEMENT réservé aux Travestis , Femmes transgenre et Hommes.\n\nAmphibi vous accueil avec plaisir Si vous êtes respectueux des différences.",
+  "hours": {
+    "monday": "13:00-22:00",
+    "tuesday": "13:00-22:00",
+    "wednesday": "13:00-22:00, 13:00-22:00, 13:00-22:00, 13:00-22:00, 13:00-22:00, 13:00-22:00, 13:00-22:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2021/01/amhpibi-sauna-logo-scaled.jpg",
+  "social": {
+    "instagram": "https://www.instagram.com/amphibisauna",
+    "twitter": "https://www.twitter.com/amphibi_sauna"
+  },
+  "subtitle": "Le sauna trans parisien",
+  "transport": "Métro Ligne 13 : Brochant",
+  "website": "https://amphibi.fr/",
+  "source_url": "https://www.parislgbt.com/listing/amphibi-sauna/",
+  "slug": "amphibi-sauna",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/amphibi-sauna/",
+    "en": "https://www.parislgbt.com/en/listing/amphibi-sauna/"
+  }
+}

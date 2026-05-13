@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "name": "Le Ju'",
+  "categories": [
+    "restaurant"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "terrasse"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/89200126_503400096990112_3604534668759662592_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/87043644_494926431170812_8028367381824798720_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75004",
+    "street": "16 Rue des Archives",
+    "lat": 48.85781,
+    "lng": 2.35484
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/87266282_497975930865862_918273632906510336_n.jpg",
+  "description": "Nouveau lieu du marais. Un endroit branché fun et trendy à découvrir !",
+  "email": null,
+  "hours": {
+    "friday": "07:30-02:00",
+    "monday": "07:30-02:00",
+    "saturday": "07:30-02:00",
+    "sunday": "07:30-02:00",
+    "thursday": "07:30-02:00",
+    "tuesday": "07:30-02:00",
+    "wednesday": "07:30-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/Logo-Le-Ju-Julien-Gambert-1024x1024-1.png",
+  "phone": "01 42 78 11 47",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/leju.restaurant",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Un endroit branché fun et trendy à découvrir",
+  "transport": "Metro ligne 1 Station Hotel de Ville",
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/le-ju/",
+  "slug": "le-ju",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-ju/",
+    "en": "https://www.parislgbt.com/en/listing/le-ju/"
+  }
+}

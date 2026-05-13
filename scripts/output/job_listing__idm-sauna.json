@@ -1,0 +1,70 @@
+{
+  "type": "listing",
+  "name": "IDM Sauna",
+  "categories": [
+    "salle-de-sport",
+    "saunas"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "entree-payante",
+    "naturisme",
+    "gay",
+    "hommes-exclusivement",
+    "jeunes-etudiants",
+    "drags",
+    "piscine",
+    "spa",
+    "cruising",
+    "salle-de-sport"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/84014022_2959681640716719_4449599905501020160_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/79450412_2833820273302857_511489033965142016_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/sport-gay-paris.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/27.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/32.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/40.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75009",
+    "street": "4 Rue du Faubourg Montmartre",
+    "lat": 48.8718,
+    "lng": 2.34393
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/gay-sauna-naturiste-paris-1024x656-1.jpg",
+  "description": "IDM est l'un des plus grands saunas gays de Paris mais aussi l'un des plus convivial. Situé sur les grands boulevards, dans un passage discret, il s'étend sur 5 étages et est entièrement climatisé. Sauna, jacuzzi et hammam au sous sol, véritable salle de sport naturiste (gym, cardio, bodybuilding avec plus de 20 machines) et vestiaires au rez-de-chaussée. Dans les étages : labyrinthes, glory holes, slings, cabines à thème, darkroom, lits à partouze, salons vidéos X. Bar, espace détente, fumoirs, internet, wifi gratuit. Capotes et gel disponibles partout.",
+  "email": null,
+  "hours": {
+    "friday": "12:00-01:00",
+    "monday": "12:00-01:00",
+    "saturday": "12:00-01:00",
+    "sunday": "12:00-01:00",
+    "thursday": "12:00-01:00",
+    "tuesday": "12:00-01:00",
+    "wednesday": "12:00-01:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/89760858_3045464998805049_7507936853014609920_o-1.jpg",
+  "phone": "01 45 23 10 03",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/idmsaun",
+    "instagram": "https://www.instagram.com/idmsaunaparis",
+    "tiktok": null,
+    "twitter": "https://twitter.com/idmsauna"
+  },
+  "subtitle": "Sauna, Hammam et salle de sport naturiste pour les Hommes au coeur de Paris depuis 36 ans !",
+  "transport": "Metro 8,9 : Grands Boulevards",
+  "venue": null,
+  "website": "http://www.idm-sauna.com/",
+  "source_url": "https://www.parislgbt.com/listing/idm-sauna/",
+  "slug": "idm-sauna",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/idm-sauna/",
+    "en": "https://www.parislgbt.com/en/listing/idm-sauna/"
+  }
+}

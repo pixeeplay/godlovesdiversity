@@ -1,0 +1,50 @@
+{
+  "type": "listing",
+  "name": "Théâtre La Croisée des Chemins",
+  "categories": [
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/shoootin-photo-2-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/shoootin-photo-14-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/shoootin-photo-7-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/shoootin-photo-12-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75019",
+    "street": "120 rue Haxo",
+    "lat": 48.87731,
+    "lng": 2.40196
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/12/shoootin-photo-11-1024x683.jpg",
+  "description": "Petit théâtre intimiste avec deux salles conviviales, La Croisée des Chemins a pour objectif de promouvoir le spectacle vivant et de le rendre accessible au public, notre projet s'articule autour de la collaboration artistique avec les jeunes talents.\n\nAvec une programmation éclectique, La Croisée des Chemins accueille tous ceux qui veulent partager des moments de convivialité et pourquoi pas faire du théâtre et de la scène une partie de leur vie quotidienne.\n\nNotre mission est d'accompagner les petites compagnies dans la réalisation de leurs projets, tout en proposant au public des spectacles de qualité.\n\nNotre ambition : faire de notre théâtre une scène, accessible, avide de créativité, dans laquelle chacun peut s'exprimer.",
+  "hours": {
+    "monday": null,
+    "tuesday": null,
+    "wednesday": "14:00-06:00,06:00-06:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/12/Bandeau-2023-2024-Belleville.png",
+  "phone": "0142199363",
+  "social": {
+    "facebook": "https://www.facebook.com/TheatreLaCroiseeDesChemins",
+    "instagram": "https://www.instagram.com/theatrelacroiseedeschemins/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Salle de spectacles intimiste à Paris 19è",
+  "transport": "Métro : Télégraphe / Porte des Lilas",
+  "website": "https://www.theatrelacroiseedeschemins.com/",
+  "source_url": "https://www.parislgbt.com/listing/theatre-la-croisee-des-chemins/",
+  "slug": "theatre-la-croisee-des-chemins",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/theatre-la-croisee-des-chemins/",
+    "en": "https://www.parislgbt.com/en/listing/theatre-la-croisee-des-chemins/"
+  }
+}

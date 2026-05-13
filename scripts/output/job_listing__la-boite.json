@@ -1,0 +1,51 @@
+{
+  "type": "listing",
+  "name": "La Boite",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "djs-at-work",
+    "drags",
+    "jeunes-etudiants"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/89761493_2967407410035097_7026110937664847872_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/85154661_2904243496351489_4578681990781337600_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/67439005_2435384316570745_8971210662910885888_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "15 Rue des Lombards",
+    "lat": 48.85925,
+    "lng": 2.34946
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/img-4864-1485961960-1024x768-1.jpg",
+  "description": "Un bar convivial pour se retrouver entre copains à l’heure de l’apéro, qui accueille également des soirées.",
+  "hours": {
+    "monday": null,
+    "tuesday": null,
+    "wednesday": "18:00-03:00, 18:00-03:00, 18:00-03:00, 18:00-03:00, 18:00-03:00, 18:00-03:00, 18:00-03:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/51564346_1971628046279710_3487308492807602176_n.jpg",
+  "phone": "0142775337",
+  "social": {
+    "facebook": "https://www.facebook.com/La-Boite-1129547410487782/?ref=br_r",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Un bar convivial avec des soirées à thème",
+  "transport": "Metro 1,4,7,11,14 : Chatelet",
+  "source_url": "https://www.parislgbt.com/listing/la-boite/",
+  "slug": "la-boite",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-boite/",
+    "en": "https://www.parislgbt.com/en/listing/la-boite/"
+  }
+}

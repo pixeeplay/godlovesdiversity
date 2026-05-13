@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "name": "L’enchanteur",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/81623431_1098894527108936_161721143785422848_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/71218430_1006459559685767_9028094425254854656_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/57456995_892892327709158_5995470862826864640_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "15 Rue Michel le Comte",
+    "lat": 48.86224,
+    "lng": 2.35595
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/18161141404-1024x683.jpg",
+  "description": "Pour le plus grand plaisir de tout le monde l’enchanteur reprend du service...\n\n On reprend les mêmes ingrédients, convivialité, fun, shot, karaoke... shot !",
+  "email": null,
+  "hours": {
+    "friday": "23:00-07:00",
+    "monday": "23:00-07:00",
+    "saturday": "23:00-07:00",
+    "sunday": "23:00-07:00",
+    "thursday": "23:00-07:00",
+    "tuesday": "23:00-07:00",
+    "wednesday": "23:00-07:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/57485151_890401527958238_2643526373250957312_o.jpg",
+  "phone": "01 48 04 02 38",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/pages/category/Karaoke/LEnchanteur-Paris-868560436809014",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "convivialité, fun, shot, karaoke",
+  "transport": "Métro 11 : Rambuteau",
+  "venue": null,
+  "website": "http://bar-karaoke-enchanteur.blogspot.com/",
+  "source_url": "https://www.parislgbt.com/listing/lenchanteur/",
+  "slug": "lenchanteur",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/lenchanteur/",
+    "en": "https://www.parislgbt.com/en/listing/lenchanteur/"
+  }
+}

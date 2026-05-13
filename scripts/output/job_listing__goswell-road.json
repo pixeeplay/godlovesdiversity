@@ -1,0 +1,53 @@
+{
+  "type": "listing",
+  "name": "Goswell Road",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/02/Philip-Ullman_IveNeverBeenAsHappy_GoswellRoad_Install-Web_0-1024x682.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.87138,
+    "lng": 2.35139
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/02/Philip-Ullman_IveNeverBeenAsHappy_GoswellRoad_Install-Web_0-1024x682.jpg",
+  "description": "Goswell Road réunit un artist run space et une maison d’édition initiés par le duo d’artistes Ruiz Stephinson en 2016. Le nom provient de la rue sur laquelle les artistes ont vécu à Londres, avant de déménager à Paris, et dériverait de l’expression « God’s Well », qui fait référence à la pratique païenne du culte des puits, cette rue ayant été construite au-dessus de la rivière souterraine New River. À l’occasion de chacune de ses expositions, Goswell Road publie un livre, et un bouquet de fleurs, composé par Ruiz Stephinson en accord avec les œuvres présentées, est aussi exposé.",
+  "email": null,
+  "hours": {
+    "friday": null,
+    "monday": null,
+    "saturday": null,
+    "sunday": null,
+    "thursday": "14:00-18:00",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/02/Goswell-Road-logo-Mail.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/goswellroad/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Artist-run space galerie & maison d'éditions",
+  "transport": "Bonne Nouvelle métro",
+  "website": "https://goswellroad.com/",
+  "source_url": "https://www.parislgbt.com/listing/goswell-road/",
+  "slug": "goswell-road",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/goswell-road/",
+    "en": "https://www.parislgbt.com/en/listing/goswell-road/"
+  }
+}

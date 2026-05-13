@@ -1,0 +1,54 @@
+{
+  "type": "event",
+  "name": "ALLIÉ.E.S et plus si affinités",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/02/IMG_4381.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75009",
+    "street": "6 Rue Frochot",
+    "lat": 48.88133,
+    "lng": 2.33763
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/02/IMG_4381-724x1024.jpeg",
+  "dates": [
+    {
+      "start": "2026-02-27T00:00:00+02:00"
+    },
+    {
+      "start": "2026-03-06T00:00:00+02:00"
+    },
+    {
+      "start": "2026-03-13T00:00:00+02:00"
+    },
+    {
+      "start": "2026-03-20T00:00:00+02:00"
+    },
+    {
+      "start": "2026-03-27T00:00:00+02:00"
+    }
+  ],
+  "description": "**Un spectacle mêlant stand up, théâtre, chant et danse**\n\nC'est mieux... mais c'est pas assez.\n\n Comment passer d'homophobes à allié.e.s ? Et si nous sommes déjà allié.e.s, comment aller plus loin ?\n\nValentin, jeune homosexuel de 25 ans, propose une remise en question de l'amour, du sexe, de l'amitié. A travers ces expériences, la découverte de sa sexualité, ses agressions il met en lumière nos clichés persistants, nos a priori et nos pensées négatives qui nous freinent.\n\nComment s'en débarrasser ? Et avancer plus sereinement, ensemble, vers un avenir qui nous ressemble ?\n\nSoyons sensibles, solidaires et rebelles. Soyons allié.e.s.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/allie-e-s-et-plus-si-affinites/",
+  "slug": "allie-e-s-et-plus-si-affinites",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/allie-e-s-et-plus-si-affinites/",
+    "en": "https://www.parislgbt.com/en/listing/allie-e-s-et-plus-si-affinites/"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "type": "page",
+  "name": "Mentions Légales • Paris LGBT+ Guide",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": "Mentions légales du site Paris LGBT+ Guide.",
+  "email": "michel@parislgbt.com",
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": "https://www.parislgbt.com",
+  "source_url": "https://www.parislgbt.com/mentions-legales/",
+  "slug": "mentions-legales",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/mentions-legales/",
+    "en": "https://www.parislgbt.com/en/mentions-legales/"
+  }
+}

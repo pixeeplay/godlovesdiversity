@@ -1,0 +1,64 @@
+{
+  "type": "listing",
+  "name": "Krash bar",
+  "categories": [
+    "cruising",
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "handicap",
+    "cruising",
+    "fetichisme",
+    "gay",
+    "hommes-exclusivement",
+    "naturisme"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/87805810_3336495429700713_8272298679306551296_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/72221166_2980226638660929_6993114829938491392_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/68590676_2875239739159620_6899797139195428864_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/67930421_2852504061433188_650199044353687552_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/46891312_2432420923441506_7615448036281417728_o.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75004",
+    "street": "12 Rue Simon le Franc",
+    "lat": 48.86031,
+    "lng": 2.35348
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/46891312_2432420923441506_7615448036281417728_o-1024x646.jpg",
+  "description": "Le Krash c'est au 12 rue Simon Le Franc (entre Beaubourg et la rue du Temple), en plein coeur du Marais (à Paris of course !)",
+  "email": null,
+  "hours": {
+    "friday": "14:00-07:00",
+    "monday": "15:00-05:00",
+    "saturday": "14:00-07:00",
+    "sunday": "15:00-05:00",
+    "thursday": "15:00-05:00",
+    "tuesday": "15:00-05:00",
+    "wednesday": "15:00-05:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/logo-krash-Denis-Crossbow-1024x1024-1.png",
+  "phone": "0981771851",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/Krashbar",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": "https://twitter.com/krashbar"
+  },
+  "subtitle": "Gay cruising bar in Paris... Only for men !!",
+  "transport": "Metro 1,11 : Hotel de Ville / Rambuteau",
+  "website": "http://www.krashbar.com/",
+  "source_url": "https://www.parislgbt.com/listing/krash-bar/",
+  "slug": "krash-bar",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/krash-bar/",
+    "en": "https://www.parislgbt.com/en/listing/krash-bar/"
+  }
+}

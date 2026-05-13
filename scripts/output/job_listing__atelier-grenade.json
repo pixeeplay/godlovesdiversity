@@ -1,0 +1,69 @@
+{
+  "type": "listing",
+  "name": "Atelier Grenade",
+  "categories": [
+    "boutiques"
+  ],
+  "tags": [
+    "handicap",
+    "bi",
+    "gay",
+    "lesbien",
+    "queer",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20250513_101344.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20250412_182956.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20250322_154855.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20250521_171913.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20250522_111935.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20250220_153111-EDIT.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20250218_143652.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20250217_124828.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20240615_124835.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20240611_150515.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/20240609_121652.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75010",
+    "street": "25 bis rue du Château d’Eau",
+    "lat": 48.87101,
+    "lng": 2.35861
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/08/Atelier_Grenade_1296x-1024x768.webp",
+  "description": "Atelier Grenade, c’est Caroline, qui fabrique avec soin ses bijoux et accessoires dans son atelier-boutique à Paris.\n\nCouleurs qui claquent, clins d’œil queer et féminisme joyeux : son univers célèbre la liberté d’être soi et fait pétiller les identités plurielles.\n\nVenez trouver l'élément déco ou le cadeau qui fera pétiller votre quotidien aux couleurs de l'arc en ciel, de la joie et du partage.\n\nAdresse du magasin :\n\n25 bis rue du Château d’Eau, 75010 Paris",
+  "email": null,
+  "hours": {
+    "friday": "11:00-19:00",
+    "monday": null,
+    "saturday": "11:00-19:00",
+    "sunday": null,
+    "thursday": "11:00-19:00",
+    "tuesday": "11:00-19:00",
+    "wednesday": "11:00-19:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/08/Logo-Atelier-Grenade-transp.png",
+  "phone": "0982611875",
+  "registration_url": null,
+  "social": {
+    "facebook": "http://facebook.com/ateliergrenade.paris",
+    "instagram": "https://www.instagram.com/ateliergrenade.paris",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Boutique de bijoux, et décoration queer, féministe et fun !",
+  "transport": "Métro République / Jacques Bonsergent / Château d'Eau",
+  "venue": null,
+  "website": "https://www.ateliergrenade.com/",
+  "source_url": "https://www.parislgbt.com/listing/atelier-grenade/",
+  "slug": "atelier-grenade",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/atelier-grenade/",
+    "en": "https://www.parislgbt.com/en/listing/atelier-grenade/"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "type": "event",
+  "name": "The Brunch And Queen \"all you can eat, all you can see\"",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/41947_image_584961314_1368967198348788_5365831470611150108_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75010",
+    "street": "77 Rue du Faubourg du Temple",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/03/41947_image_584961314_1368967198348788_5365831470611150108_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-17T11:00:00+02:00"
+    },
+    {
+      "start": "2026-05-24T11:00:00+02:00"
+    },
+    {
+      "start": "2026-05-31T11:00:00+02:00"
+    },
+    {
+      "start": "2026-06-07T11:00:00+02:00"
+    },
+    {
+      "start": "2026-06-14T11:00:00+02:00"
+    }
+  ],
+  "description": "**BRUNCH AND QUEEN – Le rendez-vous incontournable du dimanche**\n\nTous les dimanches de 11h à 17h, préparez-vous à vivre une expérience unique mêlant gastronomie et spectacle !\n\nAzemylia vous invite à célébrer vos dimanches avec le légendaire BRUNCH AND QUEEN, le brunch drag le plus festif et extravagant de la capitale. Ce rendez-vous hebdomadaire vous garantit une ambiance haute en couleur et des performances mémorables.\n\n**Au programme :**\n\n ✨ Un show unique – Découvrez des performances spectaculaires des queens les plus en vogue, mêlant humour, glamour et extravagance. Le Brunch est chorégraphié par ceux qui Glow up le show, nos danseurs préféré YOAN et QUENTIN,\n\n ✨ Des animations interactives – Azemylia et ses invités, sauront vous divertir avec leur énergie et leur humour irrésistibles.\n\nUn buffet XXL à volonté, savourez un brunch d’exception composé de :\n\nEntrées variées : Salades, tartines, antipasti…\n\n Plats chauds : Sélections gourmandes et réconfortantes de plats traditionnels Francais twisté pars notre chef, allant des classiques oeufs brouillés, bacon, pancakes jusqu'à nos plats signatures.\n\n Desserts irrésistibles : Pâtisseries, fruits, et douceurs maison.\n\n Boissons chaudes et froides : Café, thé, jus frais, et bien plus encore.\n\n**Tarif : 38 € par personne.**\n\n 12€ à la réservation puis 26€ sur place/personne.\n\n🎟️ [**BILLETS**](https://www.rainboworld.fr/thebrunchandqueen) 🎫\n\nLieu : 77 Rue du Faubourg du Temple, 75010 Paris.\n\n Horaires : Tous les dimanches de 11h à 17h.\n\n✨ Venez bruncher en beauté et laissez-vous porter par l’univers éblouissant de BRUNCH AND QUEEN. Réservez dès maintenant pour un dimanche festif et gourmand ! 🔥",
+  "email": null,
+  "hours": {
+    "friday": null,
+    "monday": null,
+    "saturday": null,
+    "sunday": "11:00-17:00",
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/01/logofondbleu-300x300.jpg",
+  "phone": null,
+  "registration_url": "https://www.rainboworld.fr/thebrunchandqueen",
+  "social": {
+    "facebook": "https://www.facebook.com/events/719197610625372",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Lou Diprey",
+    "slug": "lou-diprey",
+    "url": "https://www.parislgbt.com/listing/lou-diprey/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/the-brunch-and-queen-all-you-can-eat-all-you-can-see/",
+  "slug": "the-brunch-and-queen-all-you-can-eat-all-you-can-see",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/the-brunch-and-queen-all-you-can-eat-all-you-can-see/",
+    "en": "https://www.parislgbt.com/en/listing/the-brunch-and-queen-all-you-can-eat-all-you-can-see/"
+  }
+}

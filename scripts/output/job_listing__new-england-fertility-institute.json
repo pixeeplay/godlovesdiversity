@@ -1,0 +1,58 @@
+{
+  "type": "event",
+  "name": "New England Fertility Institute",
+  "categories": [
+    "associations",
+    "sante"
+  ],
+  "tags": [
+    "gay",
+    "lesbien",
+    "queer",
+    "hommes-exclusivement",
+    "femmes-exclusivement",
+    "bi"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/10/ivf-paris.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/10/ivf-paris-1-1024x1024.jpg",
+  "dates": [
+    {
+      "start": "2025-11-20T00:00:00+02:00"
+    }
+  ],
+  "description": "🌍Paris Talk: IVF, Egg Donation & Assisted Reproductive options - Expanding Your Path to Parenthood👶❤️\n\nAre you considering growing your family and exploring your reproductive options? Whether you’re just starting out or already exploring your path, join us in Paris for an intimate and informative evening designed to help you better understand your next steps. ✨\n\nThis evening is designed to help intended parents explore IVF, egg donation, and other assisted reproductive options, as well as international family-building pathways.\n\nMeet leading experts, ask questions, connect in a warm and supportive setting, and enjoy complimentary drinks and appetizers. 🍹🥂🍹🥂\n\n📅Event Date & Location:\n\n 📍Paris– November 20th, 2025 - Free event\n\n 📩 Final venue details will be shared closer to the event date directly to your email.\n\n 🔎What to Expect?\n\n New England Fertility Institute will provide medical insights into IVF, egg donation, and other advanced family-building treatments options available abroad.\n\n Extraordinary Conceptions will share their expertise on a range of family-building options available abroad.\n\n Surrogacy Law Center will explain the legal considerations involved in cross-border fertility arrangements.\n\n✨Why Attend?\n\n ✅ Learn about different family-building options through IVF and egg donation.\n\n ✅ Hear from top fertility, legal, and support experts.\n\n ✅ Connect with others who share similar dreams of parenthood.\n\n ✅ Enjoy a relaxed atmosphere with complimentary drinks and appetizers.\n\n ✅ Celebrate and inspire hope for growing families. 💕🏡\n\n🔔Register Now!\n\n Don’t miss this opportunity to learn, connect, and explore your family-building options abroad. ✈️✨\n\nSpaces are limited, so secure your spot today!\n\n💌 We look forward to seeing you in Paris! 😊",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://www.eventbrite.com/e/exploring-ivf-egg-donation-other-reproductive-options-paris-talk-tickets-1830320310319?aff=Nov20ParisOrganicNEFI",
+  "social": {
+    "facebook": "https://www.facebook.com/NewEnglandFertility/",
+    "instagram": "https://www.instagram.com/nefertility/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Join us for an informative evening on IVF, egg donation and more to explore the full range of assisted reproductive options abroad. ✨",
+  "transport": "bus, uber",
+  "venue": null,
+  "website": "https://www.eventbrite.com/e/exploring-ivf-egg-donation-other-reproductive-options-paris-talk-tickets-1830320310319?aff=Nov20ParisOrganicNEFI",
+  "source_url": "https://www.parislgbt.com/listing/new-england-fertility-institute/",
+  "slug": "new-england-fertility-institute",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/new-england-fertility-institute/",
+    "en": "https://www.parislgbt.com/en/listing/new-england-fertility-institute/"
+  }
+}

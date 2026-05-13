@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "AYA NAKAMURA AFTER SHOW",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/43281_image_693366723_1283527043987403_6090743119136638488_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": null,
+    "street": "Bastille",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/43281_image_693366723_1283527043987403_6090743119136638488_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-29T23:00:00+02:00"
+    }
+  ],
+  "description": "Soirée Afro Boyz après le concert d’Aya",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/2490276214726906",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/aya-nakamura-after-show-3/",
+  "slug": "aya-nakamura-after-show-3",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/aya-nakamura-after-show-3/",
+    "en": "https://www.parislgbt.com/en/listing/aya-nakamura-after-show-3/"
+  }
+}

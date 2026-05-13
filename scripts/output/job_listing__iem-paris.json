@@ -1,0 +1,53 @@
+{
+  "type": "listing",
+  "name": "IEM Paris",
+  "categories": [
+    "boutiques"
+  ],
+  "tags": [
+    "sex-shop",
+    "gay",
+    "fetichisme"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/46286111_10156888349027148_131455217920114688_o.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "16 Rue Sainte-Croix de la Bretonnerie",
+    "lat": 48.85813,
+    "lng": 2.35682
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/44077943_10156816987072148_8503758547106922496_o-1024x534.jpg",
+  "description": "IEM est à votre service depuis 40 ans, un vrai gage de confiance et de qualité de service.\n\nIEM s'engage à ne vous vendre que des DVD originaux en accord avec la législation française.\n\nIEM vous garanti une totale confidentialité",
+  "hours": {
+    "friday": "12:00-20:00",
+    "monday": "12:00-20:00",
+    "saturday": "12:00-20:00",
+    "sunday": "14:00-20:00",
+    "thursday": "12:00-20:00",
+    "tuesday": "12:00-20:00",
+    "wednesday": "12:00-20:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/logo.png",
+  "phone": "01 42 74 01 61",
+  "social": {
+    "facebook": "https://www.facebook.com/IEMPARIS",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Le n°1 du shopping gay",
+  "transport": "Métro 1,11 : Hôtel de Ville",
+  "website": "https://www.iem.fr/",
+  "source_url": "https://www.parislgbt.com/listing/iem-paris/",
+  "slug": "iem-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/iem-paris/",
+    "en": "https://www.parislgbt.com/en/listing/iem-paris/"
+  }
+}

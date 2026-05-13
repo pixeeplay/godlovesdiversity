@@ -1,0 +1,81 @@
+{
+  "type": "listing",
+  "name": "Freedj",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "gay",
+    "lesbien",
+    "trans",
+    "djs-at-work"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/69844013_2538297203118638_6685352699166195712_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/71088617_2534826753465683_955013320027406336_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/71187173_2542404566041235_9032766018233040896_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/70940601_2535793806702311_924947303414890496_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/FreeDJ-Pride-Month-2025.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "Woopiii reçoit Front Runners",
+      "url": "https://www.parislgbt.com/listing/woopiii-recoit-front-runners-2/"
+    },
+    {
+      "title": "Woopiii reçoit Gare!",
+      "url": "https://www.parislgbt.com/listing/woopiii-recoit-gare-4/"
+    },
+    {
+      "title": "✨ Eurovision en live au Freedj ✨",
+      "url": "https://www.parislgbt.com/listing/%e2%9c%a8-eurovision-en-live-au-freedj-%e2%9c%a8/"
+    },
+    {
+      "title": "La Qonasse S04ep36",
+      "url": "https://www.parislgbt.com/listing/la-qonasse-s04ep36/"
+    },
+    {
+      "title": "Woopiii XXL reçoit le TIP",
+      "url": "https://www.parislgbt.com/listing/woopiii-xxl-recoit-le-tip-2/"
+    },
+    {
+      "title": "La Qonasse XXL - Queen Battle - S04ep35",
+      "url": "https://www.parislgbt.com/listing/la-qonasse-xxl-queen-battle-s04ep35/"
+    },
+    {
+      "title": "La Qonasse S04ep34",
+      "url": "https://www.parislgbt.com/listing/la-qonasse-s04ep34/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "35 Rue Sainte-Croix de la Bretonnerie",
+    "lat": 48.85862,
+    "lng": 2.35487
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/03/Freedj-facade-1024x669.jpg",
+  "description": "Bar-Club sur 2 niveaux avec un DJ tous les soirs et un happy hour généreux le tout dans une ambiance pop et conviviale !\n\nBar-Club on 2 levels with a DJ every night and a generous happy hour all in a pop and friendly atmosphere!",
+  "hours": {
+    "monday": "18:00-03:00",
+    "tuesday": "18:00-03:00",
+    "wednesday": "18:00-03:00, 18:00-03:00, 18:00-03:00, 18:00-03:00, 18:00-04:00, 18:00-04:00, 18:00-03:00"
+  },
+  "phone": "01 48 04 95 14",
+  "social": {
+    "facebook": "https://www.facebook.com/lefreedj/",
+    "instagram": "https://www.instagram.com/lefreedj"
+  },
+  "subtitle": "Bar-Club sur 2 niveaux avec un DJ tous les soirs",
+  "transport": "M° 1 : Hotel de Ville / RER A,B,D Chatelet Les Halles",
+  "website": "http://www.freedj.fr/",
+  "source_url": "https://www.parislgbt.com/listing/freedj/",
+  "slug": "freedj",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/freedj/",
+    "en": "https://www.parislgbt.com/en/listing/freedj/"
+  }
+}

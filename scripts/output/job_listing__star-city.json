@@ -1,0 +1,59 @@
+{
+  "type": "listing",
+  "name": "Star City",
+  "categories": [
+    "saunas",
+    "cruising"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "cruising",
+    "spa",
+    "bi",
+    "gay",
+    "trans",
+    "entree-payante"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/9575cc_510d195e70de4784934577fbf3b74e5d.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/9575cc_579d5d4c307245e580dccc46f7033fb1-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/9575cc_447f7388045a4b939e6d81f00a9722ea.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/IMG_0250.JPG-scaled.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "AFTERWORK KARAOKE AU SUN CITY",
+      "url": "https://www.parislgbt.com/listing/afterwork-karaoke-au-sun-city-2026/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75009",
+    "street": "27 Bd de Clichy",
+    "lat": 48.88258,
+    "lng": 2.33609
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/9575cc_2012b6a1dfb14177982e3c56d8a0bc04-1170x537-1-1024x470-1.jpg",
+  "description": "Un lieu de liberté ouvert à toutes les sexualités ! Avec un sauna, un hammam, un jacuzzi, un bar lounge et de nombreux coins câlins c'est un espace sans tabou ou tous les plaisirs sont permis...\n\nEspace Cruising exclusivement réservé aux hommes.",
+  "hours": {
+    "monday": null,
+    "tuesday": "10:00-02:00",
+    "wednesday": "10:00-02:00, 10:00-02:00, 10:00-02:00, 10:00-02:00, 11:00-02:00, 11:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/LOGO-STARCITY-FB-copie-scaled.jpg",
+  "phone": "09 54 63 52 61",
+  "social": {
+    "instagram": "https://www.instagram.com/starcity_paris/"
+  },
+  "subtitle": "Sauna libertin ouvert à tous-tes",
+  "transport": "Metro 2,12 : Pigalle",
+  "website": "https://www.starcity.fr/",
+  "source_url": "https://www.parislgbt.com/listing/star-city/",
+  "slug": "star-city",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/star-city/",
+    "en": "https://www.parislgbt.com/en/listing/star-city/"
+  }
+}

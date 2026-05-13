@@ -1,0 +1,48 @@
+{
+  "type": "listing",
+  "name": "WorkshoW PARIS",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "HAPPY HOUR DE FOLIE AU WORKSHOW",
+      "url": "https://www.parislgbt.com/listing/happy-hour-de-folie-au-workshow-2/"
+    },
+    {
+      "title": "JUL AFTER SHOW * WorkshoW PARIS",
+      "url": "https://www.parislgbt.com/listing/jul-after-show/"
+    },
+    {
+      "title": "DAVID GUETTA AFTER SHOW * WorkshoW PARIS",
+      "url": "https://www.parislgbt.com/listing/david-guetta-after-show/"
+    },
+    {
+      "title": "DAVID GUETTA AFTER SHOW * WorkshoW PARIS",
+      "url": "https://www.parislgbt.com/listing/david-guetta-after-show-2/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/workshow-paris/",
+  "slug": "workshow-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/workshow-paris/",
+    "en": "https://www.parislgbt.com/en/events-venue/workshow-paris/"
+  }
+}

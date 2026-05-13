@@ -1,0 +1,66 @@
+{
+  "type": "listing",
+  "name": "Le Gibus",
+  "categories": [
+    "clubs"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "entree-payante",
+    "gay",
+    "djs-at-work",
+    "drags",
+    "ethnique"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/89156861_2906849382712277_1575119362489057280_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/88303405_2902757749788107_8792797184564133888_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/88316803_2902754749788407_568740600128471040_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/87805810_2902751349788747_6732098457495928832_o.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "MENERGY - Massimiliano Pagliara All Night Long",
+      "url": "https://www.parislgbt.com/listing/menergy-massimiliano-pagliara-all-night-long/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75011",
+    "street": "18 Rue du Faubourg du Temple",
+    "lat": 48.8683,
+    "lng": 2.36628
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/89778378_2920410874689461_7806193465246613504_o-1024x683.jpg",
+  "description": "Près de la place de la République, le Gibus accueille du vendredi au dimanche pour célébrer ensemble la culture gay parisienne. Chaque semaine, on y retrouve diverses soirées & after parties gay-friendly comme la Bitch Party, la Menergy, la BBB et des événements spéciaux.",
+  "email": null,
+  "hours": {
+    "friday": "23:45-06:00",
+    "monday": null,
+    "saturday": "23:45-12:00",
+    "sunday": "23:00-06:00",
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/52868361_2215543975176158_8460423770199293952_n.jpg",
+  "phone": "01 47 00 59 14",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/gibusclub",
+    "instagram": "https://www.instagram.com/gibusclub/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Le club gay de référence à Paris",
+  "transport": "Metro 3,5,8,9,11 : République",
+  "website": "http://www.gibus.fr/",
+  "source_url": "https://www.parislgbt.com/listing/le-gibus/",
+  "slug": "le-gibus",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-gibus/",
+    "en": "https://www.parislgbt.com/en/listing/le-gibus/"
+  }
+}

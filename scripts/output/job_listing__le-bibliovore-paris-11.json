@@ -1,0 +1,47 @@
+{
+  "type": "listing",
+  "name": "Le Bibliovore Paris 11",
+  "categories": [
+    "boutiques"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/06/R006979-1024x683.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86914,
+    "lng": 2.37754
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/06/R006979-1024x683.jpg",
+  "description": "Le Bibliovore Paris, 11 c'est 10 000 titres disponibles, 1000 nouveautés par semaine !\n\nD'excellentes affaires à 3€ le livre, 10€ les 4, ne demandant qu'à vivre une belle seconde vie dans vos bibliothèques !\n\nOù ? Au 25 rue de Vaucouleurs dans le 11eme, à deux pas du métro Belleville !\n\nQuand ? Mar/Jeu: 14h30-19h, Mer/Ven/Sam: 10h-13h & 14h30-19h.\n\nVive le livre et vive la seconde main ! À très bientôt !",
+  "email": null,
+  "hours": {
+    "monday": null,
+    "tuesday": "14:30-19:00",
+    "wednesday": "10:00-19:00, 14:30-19:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/06/moi.png",
+  "phone": "0666725321",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/lebibliovoreparis11?locale=fr_FR",
+    "instagram": "https://www.instagram.com/lebibliovoreparis11?utm_source=ig_web_button_share_sheet&igsh=MTBhbWF6ZzlhYWN6Yg==",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Librairie de seconde main à prix unique, 3€ le livre, 10€ les 4 !",
+  "transport": "Métro Belleville L2 et L11, Bus Ramponeau L20 et L71",
+  "website": "https://www.lebibliovore.fr/",
+  "source_url": "https://www.parislgbt.com/listing/le-bibliovore-paris-11/",
+  "slug": "le-bibliovore-paris-11",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-bibliovore-paris-11/",
+    "en": "https://www.parislgbt.com/en/listing/le-bibliovore-paris-11/"
+  }
+}

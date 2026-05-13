@@ -1,0 +1,53 @@
+{
+  "type": "listing",
+  "name": "le 20 Prieuré Hôtel***",
+  "categories": [
+    "hebergement"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/Hotel20Prieure_402Double_M19A5232.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/Hotel20Prieure_402Double_M19A5220.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/Hotel20Prieure_505Twin_M19A4944.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "20 Rue du Grand Prieuré",
+    "lat": 48.86606,
+    "lng": 2.36857
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/M19A5119-Modifier-min-683x1024.jpg",
+  "description": "Jouxtant la Place de la République, au carrefour du Marais et du Canal St Martin, dans le quartier branché et populaire Oberkampf, le 20 Prieuré Hôtel est né d’une idée : créer une niche cosy, une alcôve design et contemporaine pour les hôtes de la ville Lumière. En harmonie avec un environnement urbain signé du baron Haussmann, le 20 Prieuré Hôtel se devait d’apparaître comme le repère de l’homme et femme moderne et moderne.\n\nElégance des proportions et des formes, originalité des matériaux, maîtrise de la lumière et souci de fonctionnalité : l’endroit emprunte autant à Paris qu’au design scandinave ou à la chaleur d’un loft barcelonais. Il s’impose comme un havre de quiétude, harmonieuse synthèse de l’effervescence de la ville et de l’envie d’ailleurs.",
+  "email": null,
+  "hours": {
+    "friday": "00:00-23:59",
+    "monday": "00:00-23:59",
+    "saturday": "00:00-23:59",
+    "sunday": "00:00-23:59",
+    "thursday": "00:00-23:59",
+    "tuesday": "00:00-23:59",
+    "wednesday": "00:00-23:59"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/Logo-Hotel-HD.jpg",
+  "phone": "+33 1 47 00 74 14",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/20.prieure.hotel",
+    "instagram": "https://www.instagram.com/le20prieurehotel/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Un boutique Hôtel au cœur du 11ème",
+  "transport": "Metro 3,5,8,9,11 : République",
+  "website": "https://www.hotel20prieure.com/fr",
+  "source_url": "https://www.parislgbt.com/listing/le-20-prieure-hotel/",
+  "slug": "le-20-prieure-hotel",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-20-prieure-hotel/",
+    "en": "https://www.parislgbt.com/en/listing/le-20-prieure-hotel/"
+  }
+}

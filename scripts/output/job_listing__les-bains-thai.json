@@ -1,0 +1,60 @@
+{
+  "type": "listing",
+  "name": "Les Bains Thai",
+  "categories": [
+    "saunas"
+  ],
+  "tags": [
+    "entree-payante",
+    "gay",
+    "hommes-exclusivement",
+    "jeunes-etudiants",
+    "naturisme",
+    "ethnique"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/04.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/03.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/02.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75015",
+    "street": "5 Rue du Dr Jacquemaire-Clemenceau",
+    "lat": 48.84319,
+    "lng": 2.29805
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/03/01-1024x683.jpg",
+  "description": "Les Bains Thai est un établissement exclusivement masculin à ambiance thaïlandaise qui a ouvert ses portes en 2015. Notre espace de détente et de relaxation vous feront voyager dans un univers exotique et authentique haut en couleur. Les couleurs de la Thaïlande sont aux rendez-vous, ainsi que notre sourire pour vous accueillir. Nous sommes le 1er et seul établissement masculin à tendance asiatique de Paris. Nous avons pour but premier de satisfaire notre clientèle et nous mettons surtout un point d'honneur sur l'hygiène et la propreté de notre lieux. Venez également découvrir les performances magiques de nos masseurs 100% thailandais, vous ne serez pas déçu.",
+  "email": null,
+  "hours": {
+    "friday": "12:00-22:00",
+    "monday": "12:00-22:00",
+    "saturday": "12:00-22:00",
+    "sunday": "12:00-22:00",
+    "thursday": "12:00-22:00",
+    "tuesday": "12:00-22:00",
+    "wednesday": "12:00-22:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/12621955_1725148587714313_2303421373041947883_o-1024x625-1.png",
+  "phone": "01 45 32 96 48",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/pages/category/Health-Spa/LES-BAINS-THAI-1622058461356660",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "établissement exclusivement masculin à ambiance thaïlandaise",
+  "transport": "Metro 8 : Commerce ou Vaugirard",
+  "website": "http://www.lesbainsthai.fr/",
+  "source_url": "https://www.parislgbt.com/listing/les-bains-thai/",
+  "slug": "les-bains-thai",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/les-bains-thai/",
+    "en": "https://www.parislgbt.com/en/listing/les-bains-thai/"
+  }
+}

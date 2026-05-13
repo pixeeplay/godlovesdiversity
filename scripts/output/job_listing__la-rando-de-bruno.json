@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "name": "LA RANDO DE BRUNO",
+  "categories": [
+    "visites"
+  ],
+  "tags": [
+    "salle-de-sport",
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/12/23E8540E-AD95-437A-9A86-76CF7D0B4FB7.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/12/5145389A-7E89-4447-9BBC-0BBAED8B85B1.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/12/68199965-5091-4DC5-B104-D131030DABD7.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/12/0A765F61-6E52-491B-B6EA-7BA22374225B-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/12/95D2D510-71EF-4DC7-91C1-D5C62E59C9C7-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/12/6DA614D5-9C93-4EC5-B94D-543F7A4A3ACE-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/12/6CF13158-8B97-4C38-8403-1B66981567D8-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/12/1D849BEF-A0D7-4E61-AAAC-8FEB745A3C8D-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/12/B001E3D2-1EA9-4ADB-8680-C26EFA20379A-scaled.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/12/B321E20C-11C4-4ED4-85DF-DE2B2C92FDE6-1024x768.jpeg",
+  "description": "La rando inclusive de l’IDF 🌈",
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/12/9467FB21-089D-46B5-A628-E2D588BECC58.png",
+  "social": {
+    "instagram": "http://larandodebruno/"
+  },
+  "subtitle": "La rando inclusive de l’IDF 🌈",
+  "transport": "IDF",
+  "source_url": "https://www.parislgbt.com/listing/la-rando-de-bruno/",
+  "slug": "la-rando-de-bruno",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-rando-de-bruno/",
+    "en": "https://www.parislgbt.com/en/listing/la-rando-de-bruno/"
+  }
+}

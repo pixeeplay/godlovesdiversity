@@ -1,0 +1,63 @@
+{
+  "type": "listing",
+  "name": "Cox",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "hommes-exclusivement",
+    "bears",
+    "gay",
+    "djs-at-work",
+    "terrasse"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/87894275_10157605163034504_5400350414652571648_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/87197255_10157588057829504_4190647367923400704_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/84414885_10157498053529504_1728945926887702528_o.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "Apér’Ours",
+      "url": "https://www.parislgbt.com/listing/aperours-2/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "15 Rue des Archives",
+    "lat": 48.85831,
+    "lng": 2.35484
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/56567300_10156757478779504_9145149163292327936_o-1024x576.jpg",
+  "description": "Le Cox est ouvert depuis 1995. Il est situé en plein coeur du Marais dans l'une des rues principales de ce quartier où se concentre la vie et l'activité gay parisienne. Le cox reste l'un des établissements les plus fréquentés et les plus réputés de Paris. Il est surtout connu pour sa Terrasse bondée ... L'happy hour quotidien est devenu un moment incontournable de la vie du marais. Les sets House des Djs résidants officiant chaque jour et les decos qui changent tous les 3 mois font du cox l'une des institutions les plus dynamiques du quartier.",
+  "hours": {
+    "friday": "16:00-02:00",
+    "monday": "16:00-02:00",
+    "saturday": "16:00-02:00",
+    "sunday": "16:00-02:00",
+    "thursday": "16:00-02:00",
+    "tuesday": "16:00-02:00",
+    "wednesday": "16:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/36628351_10156159312609504_3731097841620221952_n.png",
+  "phone": "01 42 72 08 00",
+  "social": {
+    "facebook": "https://www.facebook.com/cafecoxbarparis",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": "https://twitter.com/cafecoxbarparis"
+  },
+  "subtitle": "Véritable institution du Marais",
+  "transport": "Metro 1,11 : Hôtel De Ville",
+  "website": "http://www.cox.fr/",
+  "source_url": "https://www.parislgbt.com/listing/cox/",
+  "slug": "cox",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/cox/",
+    "en": "https://www.parislgbt.com/en/listing/cox/"
+  }
+}

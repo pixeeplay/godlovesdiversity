@@ -1,0 +1,52 @@
+{
+  "type": "event",
+  "name": "POLY PEOPLE - Rencontres Poly Amoureuses au Merci·Marsha !",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/BANNIERES-COM-LARGES6-1-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "8 Rue Richard Lenoir",
+    "lat": 48.85473,
+    "lng": 2.38237
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/BANNIERES-COM-LARGES6-1-1024x354.jpg",
+  "dates": [
+    {
+      "start": "2026-05-19T20:00:00+02:00"
+    },
+    {
+      "start": "2026-06-24T20:00:00+02:00"
+    },
+    {
+      "start": "2026-07-21T20:00:00+02:00"
+    }
+  ],
+  "description": "Claire et Victor proposent une soirée de rencontres conviviales pour personnes queers polyamoureuses et polycurieuses, avec cartes thématiques pour faciliter les échanges.\n\nUn espace bienveillant pour partager expériences, questionnements et découvertes pour des relations alternatives.\n\n🌺 MERCI·MARSHA 🌸\n\nLieu LGBTQ+ au 8 rue richard lenoir Paris 11.\n\n🕕 Horaires d’ouverture ce jour : de 18 à 02h\n\n🕢 Début à 20h environ\n\n🌈 Happy Hour de l'ouverture à 20h.",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/11/LOGO-2000x2000px-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Merci·Marsha",
+    "slug": "merci-marsha-2",
+    "url": "https://www.parislgbt.com/listing/merci%c2%b7marsha-2/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/poly-people-rencontres-poly-amoureuses-au-merci%c2%b7marsha/",
+  "slug": "poly-people-rencontres-poly-amoureuses-au-merci%c2%b7marsha",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/poly-people-rencontres-poly-amoureuses-au-merci%c2%b7marsha/",
+    "en": "https://www.parislgbt.com/en/listing/poly-people-rencontres-poly-amoureuses-au-merci%c2%b7marsha/"
+  }
+}

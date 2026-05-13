@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Naturisme",
+  "categories": [],
+  "tags": [
+    "naturisme"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/naturisme/",
+  "slug": "naturisme",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/naturisme/",
+    "en": "https://www.parislgbt.com/en/tag/naturisme/"
+  }
+}

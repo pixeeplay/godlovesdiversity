@@ -1,0 +1,49 @@
+{
+  "type": "listing",
+  "name": "Le Barlone",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/04/430017643_122124106538199473_8868219903271937531_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/04/421508154_1553320638844677_5151307553570117738_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/04/435583664_802724141754551_333080220017444140_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": "13 rue Bergère",
+    "lat": 48.87218,
+    "lng": 2.3463
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/04/barlone-facade-1024x575.jpg",
+  "description": "Bar inclusif.\n\nKaraoke, DJ set, Cabaret, Expo : programmation à suivre !",
+  "hours": {
+    "monday": "17:00-00:00",
+    "tuesday": "17:00-00:00",
+    "wednesday": "17:00-00:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/04/Barlone-logo.jpg",
+  "phone": "01 42 28 74 71",
+  "social": {
+    "facebook": "https://www.facebook.com/profile.php?id=61555984194339",
+    "instagram": "https://www.instagram.com/lebarlone",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Bar inclusif",
+  "transport": "M° 8,9 Grands Boulevards / Bonne Nouvelle",
+  "source_url": "https://www.parislgbt.com/listing/le-barlone/",
+  "slug": "le-barlone",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-barlone/",
+    "en": "https://www.parislgbt.com/en/listing/le-barlone/"
+  }
+}

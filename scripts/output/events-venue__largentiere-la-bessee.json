@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "L'Argentière-la-Bessée",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Sous la lune s'envole la chouette * L'Argentière-la-Bessée",
+      "url": "https://www.parislgbt.com/listing/sous-la-lune-senvole-la-chouette/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/largentiere-la-bessee/",
+  "slug": "largentiere-la-bessee",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/largentiere-la-bessee/",
+    "en": "https://www.parislgbt.com/en/events-venue/largentiere-la-bessee/"
+  }
+}

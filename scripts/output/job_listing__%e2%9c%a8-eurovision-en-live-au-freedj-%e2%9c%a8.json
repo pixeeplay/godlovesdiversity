@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "✨ Eurovision en live au Freedj ✨",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/43126_image_687032348_1540354544758461_555574056277886595_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "35 rue Sainte-Croix de la Bretonnerie",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/43126_image_687032348_1540354544758461_555574056277886595_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-16T21:00:00+02:00"
+    }
+  ],
+  "description": "**✨ Eurovision en live au Freedj ✨**\n\nViens vibrer, chanter, juger (un peu ) et surtout profiter ✨\n\n Ambiance pop, Et énergie collective comme à la maison… en mieux.\n\nSamedi 16 mai, on passe en mode show\n\n Finale de l’Eurovision diffusée en direct sur tous les écrans\n\n Rez-de-chaussée & club\n\nDès 21h\n\n Freedj – 35 rue Sainte-Croix de la Bretonnerie, Paris 4\n\n❤️ Live Eurovision",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1483341253278494",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Freedj",
+    "slug": "freedj",
+    "url": "https://www.parislgbt.com/listing/freedj/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/%e2%9c%a8-eurovision-en-live-au-freedj-%e2%9c%a8/",
+  "slug": "%e2%9c%a8-eurovision-en-live-au-freedj-%e2%9c%a8",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/%e2%9c%a8-eurovision-en-live-au-freedj-%e2%9c%a8/",
+    "en": "https://www.parislgbt.com/en/listing/%e2%9c%a8-eurovision-en-live-au-freedj-%e2%9c%a8/"
+  }
+}

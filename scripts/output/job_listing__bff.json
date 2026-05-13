@@ -1,0 +1,55 @@
+{
+  "type": "event",
+  "name": "BFF",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/01/RB_SHOTGUN_20FEB25_1920x1080_FR.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "23 rue du Temple",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/01/RB_SHOTGUN_20FEB25_1920x1080_FR-1024x576.jpg",
+  "dates": [],
+  "description": "Elle a rencontré tous tes ex (et ta mère)\n\nElle connaît tous tes secrets (et menace de les révéler après 3 shots)\n\nElle te trouve trop beau (même quand c’est faux)\n\nElle répond toujours à tes messages (même à 3h du mat’)\n\nElle rigole fort à (toutes) tes blagues (même les plus nulles)\n\nElle te ramène toujours un verre quand elle va au bar !\n\nElle t’accompagne en soirée même quand tu reste «qu’une heure» !\n\n💖💖💖\n\nElle c’est la plus bonne de tes copines\n\nTa BFF tous les jeudis\n\nDe 20:00 à 04:00 au Raidd\n\n💖💖💖\n\nAu programme :\n\n🍻 Happy Hour XXL jusqu’à 22:00\n\n💿 Bangers for Pop Lovers with DJ Andrei Olariu\n\n💦 Hot Shower Show\n\n👠 Hosted by Coco Ricard\n\n🍭 Sweet Candies for Good Boys\n\n📱 T’arrives à quelle heure ?",
+  "email": null,
+  "hours": {
+    "friday": null,
+    "monday": null,
+    "saturday": null,
+    "sunday": null,
+    "thursday": "20:00-04:00",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/Raidd_Bar_logo-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Raidd Bar",
+    "slug": "raidd-bar",
+    "url": "https://www.parislgbt.com/listing/raidd-bar/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/bff/",
+  "slug": "bff",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bff/",
+    "en": "https://www.parislgbt.com/en/listing/bff/"
+  }
+}

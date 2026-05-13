@@ -1,0 +1,19 @@
+{
+  "type": "tag",
+  "name": "Sport",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/sport/",
+  "slug": "sport",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/sport/",
+    "en": "https://www.parislgbt.com/en/tag/sport/"
+  }
+}

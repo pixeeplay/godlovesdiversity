@@ -1,0 +1,58 @@
+{
+  "type": "listing",
+  "name": "Duplex Bar",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "drags",
+    "jeunes-etudiants",
+    "djs-at-work",
+    "queer",
+    "bi",
+    "gay"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/81240688_497552660869144_6223062446857256960_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/67295782_393995414558203_1769650946859597824_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/49337467_305289053428840_8081736074214244352_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "25 Rue Michel le Comte",
+    "lat": 48.86237,
+    "lng": 2.35503
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/originale-1024x576-1.jpg",
+  "description": "Premier bar gay de Paris, un peu à l’écart on y vient entre amis ... on entend souvent : convivial, trendy, ....\n\nL’un des plus anciens bars gay du Marais, Le Duplex s’est offert une cure de Jeunesse pour ses 38 ans. Les hauts murs accueillent des accrochages réguliers d’artistes amis du lieu. La population est mixte et a pour réputation d’être l’une des plus “intello” du Marais LGBTQI+.",
+  "hours": {
+    "friday": "19:00-05:00",
+    "monday": "19:00-03:00",
+    "saturday": "19:00-05:00",
+    "sunday": "19:00-03:00",
+    "thursday": "19:00-03:00",
+    "tuesday": "19:00-03:00",
+    "wednesday": "19:00-03:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/29468618_179027512721662_8412271241919219574_n.jpg",
+  "phone": "01 42 72 80 86",
+  "social": {
+    "facebook": "https://www.facebook.com/barparis7",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "L’un des premiers bar gay de Paris",
+  "transport": "Metro 11 : Rambuteau",
+  "source_url": "https://www.parislgbt.com/listing/duplex-bar/",
+  "slug": "duplex-bar",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/duplex-bar/",
+    "en": "https://www.parislgbt.com/en/listing/duplex-bar/"
+  }
+}

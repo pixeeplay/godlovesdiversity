@@ -1,0 +1,46 @@
+{
+  "type": "event",
+  "name": "Global Black Pride",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/10/09-Sept-Global-Black-Pride.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/10/09-Sept-Global-Black-Pride-1024x652.jpg",
+  "dates": [
+    {
+      "start": "2026-09-09T12:00:00+02:00"
+    },
+    {
+      "end": "2026-09-13T23:59:00+02:00",
+      "start": "2026-09-09T12:00:00+02:00"
+    }
+  ],
+  "description": "**The Global Black Queer Assembly**\n\n**Power. Culture. Innovation.**\n\n**A Business, Human Rights, and Health Summit**\n\nDu 9 au 13 septembre 2026, avec une conférence du 10 au 11 septembre, la capitale vibrera au rythme de cinq jours de célébrations mêlant culture, militantisme et fierté.\n\nOrganisée en partenariat avec la Ville et les associations Arc Essentiel, Afrique Arc-en-ciel, Divine LGBTQ+, STOP homophobie et Liquorice, cette édition marquera une première historique en France et une étape majeure pour la visibilité des personnes noires LGBTQIA+.\n\nAprès Atlanta en 2024, Paris devient ainsi la prochaine ville hôte, confirmant sa place dans le mouvement international pour l’égalité des droits et la lutte contre les discriminations.\n\nLe programme s’ouvrira le 9 septembre par une réception inaugurale, un cocktail des partenaires et une conférence de presse.\n\n- 10 septembre : Global Black Queer Assembly, placé sous le thème “Power. Culture. Innovation.”, prendra place au cœur du GBP Village, accompagné d’expositions et de concerts.\n- 11 septembre : Black Excellence Trans Rally et le Black Excellence Awards Gala, qui mettront en lumière les parcours et les talents des personnes noires LGBTQIA+.\n- 12 septembre : la Global Black Pride March traversera la capitale avant un grand festival musical et la soirée officielle.\n- 13 septembre : la célébration se conclura par une Day Party et plusieurs événements partenaires répartis dans la ville.\n\nLa Global Black Pride 2026 à Paris s’inscrit dans une dynamique mondiale de reconnaissance des luttes intersectionnelles et de promotion de la justice sociale. Elle entend affirmer que la visibilité et la représentation des personnes noires LGBTQIA+ sont des leviers essentiels pour construire une société plus juste et inclusive.\n\n🏳️‍🌈[Plus d'infos](https://globalblackpride.org/fr/)🔥",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": "https://globalblackpride.org/fr/",
+  "source_url": "https://www.parislgbt.com/listing/global-black-pride/",
+  "slug": "global-black-pride",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/global-black-pride/",
+    "en": "https://www.parislgbt.com/en/listing/global-black-pride/"
+  }
+}

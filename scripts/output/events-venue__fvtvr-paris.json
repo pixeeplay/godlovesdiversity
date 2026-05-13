@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "FVTVR Paris",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "DI.X.MINUIT.MIDI: ANIBAL, NIGHT OWL, SOMNIAC ONE & more * FVTVR Paris",
+      "url": "https://www.parislgbt.com/listing/di-x-minuit-midi-anibal-night-owl-somniac-one-more/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/fvtvr-paris/",
+  "slug": "fvtvr-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/fvtvr-paris/",
+    "en": "https://www.parislgbt.com/en/events-venue/fvtvr-paris/"
+  }
+}

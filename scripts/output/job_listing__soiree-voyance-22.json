@@ -1,0 +1,57 @@
+{
+  "type": "event",
+  "name": "Soirée Voyance",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/12/insta-voyance-copie-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "7 rue du Trésor",
+    "lat": 48.85701,
+    "lng": 2.35783
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/12/insta-voyance-copie-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-19T18:00:00+02:00"
+    },
+    {
+      "start": "2026-05-26T18:00:00+02:00"
+    },
+    {
+      "start": "2026-06-02T18:00:00+02:00"
+    }
+  ],
+  "description": "Bonjour les ami(e)s,\n\n Le Mardi c'est soirée voyance, plongez dans l’univers mystérieux de la voyance, laissez Jérôme et ses cartes vous dévoiler ce que l’avenir vous réserve.\n\nToute notre équipe est heureuse de vous offrir la consultation",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": "01 42 71 12 36",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/profile.php?id=61554843720936",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Comptoir du Trésor",
+    "slug": "le-comptoir-du-tresor",
+    "url": "https://www.parislgbt.com/listing/le-comptoir-du-tresor/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/soiree-voyance-22/",
+  "slug": "soiree-voyance-22",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/soiree-voyance-22/",
+    "en": "https://www.parislgbt.com/en/listing/soiree-voyance-22/"
+  }
+}

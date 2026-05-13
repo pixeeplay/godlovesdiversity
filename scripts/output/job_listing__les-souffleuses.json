@@ -1,0 +1,45 @@
+{
+  "type": "listing",
+  "name": "Les Souffleuses",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "djs-at-work",
+    "queer",
+    "lesbien"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/07/souff-shot-rose-plat-1-1024x576.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/07/Souff-ig.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8581,
+    "lng": 2.35267
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/07/souff-shot-rose-plat-1-1024x576.jpg",
+  "description": "Queer bar with good music, good cocktails, parties on weekends <3 The other side of Le Marais!",
+  "hours": {
+    "monday": "18:00-02:00",
+    "tuesday": "18:00-02:00",
+    "wednesday": "18:00-02:00, 18:00-02:00, 18:00-02:00, 18:00-02:00, 18:00-02:00, 18:00-02:00, 18:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/07/Souff-ig.jpg",
+  "social": {
+    "instagram": "https://www.instagram.com/lessouffleuses/"
+  },
+  "subtitle": "Queer bar with good music, good cocktails, parties on weekends <3 The other side of Le Marais!",
+  "transport": "Metro ligne 1, 4, 11, 14",
+  "source_url": "https://www.parislgbt.com/listing/les-souffleuses/",
+  "slug": "les-souffleuses",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/les-souffleuses/",
+    "en": "https://www.parislgbt.com/en/listing/les-souffleuses/"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "type": "event",
+  "name": "AYA NAKAMURA AFTER SHOW",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/41844_image_600475967_1268892865275034_3931897393579392269_n-1-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": "173 rue Saint-Martin",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/03/41844_image_600475967_1268892865275034_3931897393579392269_n-1-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-29T23:00:00+02:00"
+    }
+  ],
+  "description": "**AYA NAKAMURA AFTER SHOW**\n\n WorkshoW Paris – 173 rue Saint-Martin\n\n ️ Vendredi 29 mai 2026\n\n 23h – 6h\n\nLe concert s’achève… mais la nuit ne fait que commencer.\n\n POP URBAINE, DIVAS ICONIQUES, et bien sûr les plus grands titres de AYA NAKAMURA pour enflammer le dancefloor.\n\nLa diva ne sera pas présente, mais son feu, ses hymnes, son énergie seront avec nous toute la nuit.\n\n C’est un hommage vibrant, un after show à son image : puissant, sensuel, inoubliable.\n\n️ Entrée gratuite jusqu’à 1h avec ton billet de concert + PASS SHOTGUN\n\n Terrasse XXL, cocktails affûtés, dancefloor incandescent… tout est prêt pour toi.\n\n✨ Une seule adresse pour prolonger la magie : WORKSHOW\n\n THE PLACE TO BE pour les vrais oiseaux de nuit.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "WorkshoW",
+    "slug": "workshow",
+    "url": "https://www.parislgbt.com/listing/workshow/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/aya-nakamura-after-show/",
+  "slug": "aya-nakamura-after-show",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/aya-nakamura-after-show/",
+    "en": "https://www.parislgbt.com/en/listing/aya-nakamura-after-show/"
+  }
+}

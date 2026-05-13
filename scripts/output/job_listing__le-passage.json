@@ -1,0 +1,39 @@
+{
+  "type": "listing",
+  "name": "Le Passage",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/Le-Pasqsage-Visuel-1024x576.webp",
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/Le-Pasqsage-logo.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/03/Le-Pasqsage-Visuel-1024x576.webp",
+  "description": "LE PASSAGE est un projet de café queer populaire dans le 10ème arrondissement de Paris, porté par Astrid Perdrix, qui consiste en un lieu de vie positif et inclusif qui favorise la compréhension des questions de genre et d’orientation sexuelle par le grand public.\n\nNos piliers :\n\n(1) culture - on donne la parole à des artistes / intellectuel.les queer sur une variété de sujets et formats (atelier d’écriture, conférences, quiz culture, ...).\n\n(2) insertion- on insère par l'embauche des jeunes LGBT+ en rupture familiale, en partenariat avec la Fondation Le Refuge, afin de les accompagner dans leur autonomisation.\n\n(3) solidarité- on crée des dynamiques de lien social et d'entraide (consommations suspendues, billetterie à prix libre...)\n\nNotre volonté est co-construire ce lieu avec le maximum d’acteur.ices de l’écosystème LGBT+ et du quartier (Paris 10ème, Grange aux Belles), qu'il s'agisse d'associations, de collectifs, de fournisseurs, et bien sûr de bénévoles, qui seront l'âme de ce lieu.\n\nTon aide nous permettra de donner vie à ce projet, qui nécessite d'importants investissements dans l'équipement et l'aménagement du local.\n\n🔥 [**AIDEZ LE PASSAGE**](https://www.helloasso.com/associations/association-le-passage/formulaires/1) 🔥",
+  "hours": {
+    "monday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous,thursday: Uniquement sur rendez-vous,friday: Uniquement sur rendez-vous,saturday: Uniquement sur rendez-vous,sunday: Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/03/Le-Pasqsage-logo.jpeg",
+  "social": {
+    "instagram": "https://www.instagram.com/lepassage.cafe/"
+  },
+  "subtitle": "PRENDS LE POUVOIR ET CONTRIBUE À CRÉER UN LIEU DE VIE SOLIDAIRE",
+  "website": "https://bio.site/lepassage.cafe",
+  "source_url": "https://www.parislgbt.com/listing/le-passage/",
+  "slug": "le-passage",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-passage/",
+    "en": "https://www.parislgbt.com/en/listing/le-passage/"
+  }
+}

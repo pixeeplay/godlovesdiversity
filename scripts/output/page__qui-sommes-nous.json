@@ -1,0 +1,42 @@
+{
+  "type": "page",
+  "name": "Qui sommes nous • Paris LGBT+ Guide",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2021/02/ILGAWorldMap2017.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/02/Rapport-Romero_couv-300x218.png",
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/VISUEL-ADHESION-2026-819x1024.png",
+    "https://www.parislgbt.com/wp-content/uploads/2025/01/Logo-Paris-LGBT_Paris-LGBT-Couleur-2025.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": "Créée en 2012 à l’initiative de professionnels de la nuit et du tourisme, l’association Paris Diversité (ex Paris Gay Metropole) répond à la volonté des acteurs de la Nuit et de la Fête LGBT de structurer l’offre et mieux répondre aux enjeux de la concurrence internationale. ParisLGBT, bientôt renommé FranceLGBT, a défini une charte d’accueil touristique et des actions requises pour dynamiser la destination France auprès des visiteurs LGBT.\n\nParis Diversité réalise un guide et agenda en français et anglais de l’offre LGBT+ de la destination Paris, Instagram et anime le cluster Tourisme LGBT.",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/02/Logo-Paris-LGBT_Paris-LGBT-Couleur-300x214.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Paris Diversité / FranceLGBT – Qui sommes-nous ?",
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/qui-sommes-nous/",
+  "slug": "qui-sommes-nous",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/qui-sommes-nous/",
+    "en": "https://www.parislgbt.com/en/qui-sommes-nous/"
+  }
+}

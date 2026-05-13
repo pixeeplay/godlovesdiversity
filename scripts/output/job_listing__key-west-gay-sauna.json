@@ -1,0 +1,53 @@
+{
+  "type": "listing",
+  "name": "Key West Gay Sauna",
+  "categories": [
+    "saunas"
+  ],
+  "tags": [
+    "cruising",
+    "entree-payante",
+    "gay",
+    "salle-de-sport",
+    "spa",
+    "hommes-exclusivement"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/02-3-scaled.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/04-1-scaled.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/05-1-scaled.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/07-1-scaled.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/08-1-scaled.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/08/11-1.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.87892,
+    "lng": 2.3554
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/08/01-4-1024x1024.png",
+  "description": "Découvrez un sauna gay entièrement repensé pour la détente et l’abandon de soi. Tout commence dans une ambiance Key West autour du bar et du grand jacuzzi, un espace chaleureux et dépaysant où l’on se retrouve, on échange et on se laisse porter. Le sauna et le hammam invitent à la relaxation avant de plonger dans une atmosphère plus intime : deux étages de playrooms modernes, intenses et joueurs, conçus pour céder à ses envies et provoquer des rencontres sans limite. Nouveau décor, nouvelle énergie, nouvelle équipe : ce lieu est devenu le nouveau rendez-vous gay parisien, où l’on se détend, on séduit et on s’amuse librement. Ouvert du lundi au samedi de 12h à 22h et le dimanche de 12h à minuit.",
+  "hours": {
+    "monday": "12:00-22:00",
+    "tuesday": "12:00-22:00",
+    "wednesday": "12:00-22:00, 12:00-22:00, 12:00-22:00, 12:00-22:00, 12:00-22:00, 12:00-00:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/08/logo-kw-neon-2.jpg",
+  "phone": "0145263174",
+  "social": {
+    "instagram": "https://www.instagram.com/keywestparis"
+  },
+  "subtitle": "Le nouveau spot gay de Paris : détente, séduction et liberté dans une ambiance Key West unique",
+  "transport": "Gare du Nord",
+  "source_url": "https://www.parislgbt.com/listing/key-west-gay-sauna/",
+  "slug": "key-west-gay-sauna",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/key-west-gay-sauna/",
+    "en": "https://www.parislgbt.com/en/listing/key-west-gay-sauna/"
+  }
+}

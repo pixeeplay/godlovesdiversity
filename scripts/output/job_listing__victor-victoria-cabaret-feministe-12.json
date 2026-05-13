@@ -1,0 +1,53 @@
+{
+  "type": "event",
+  "name": "Victor Victoria cabaret féministe",
+  "categories": [
+    "cabarets"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/Victor-Victoria-affuche-verte-theo-martin-400-600.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86414,
+    "lng": 2.39031
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/Victor-Victoria-affuche-verte-theo-martin-400-600.jpg",
+  "dates": [
+    {
+      "start": "2026-07-03T20:30:00+02:00"
+    }
+  ],
+  "description": "Cabaret féministe gender-fluid - **Tarif spécial ParisLGBT : 20% de réduction (solo : 20 euros)**\n\n****\n\n**🌈 Victor Victoria – Cabaret féministe**\n\nVictor Victoria est un cabaret féministe, engagé et inclusif, qui fait vibrer la scène parisienne depuis plus de 3 ans.\n\n Dans un format généreux et collectif, les artistes proposent une soirée mêlant chansons, performances, humour et émotions, portée par une écriture plurielle et une grande liberté de ton.\n\nAvec Robi, Madame, La Bellini et Kahina, un quatuor de drôle, touchant et énergique, au plus proche du public\n\nAu Truc du Père Lachaise, salle reconnue pour ses cabarets intimistes et immersifs, la proximité avec le public fait partie intégrante du spectacle.\n\nUn espace chaleureux et accueillant, où chacun·e est invité·e à prendre part à la soirée.\n\n🌈 Un cabaret vivant, accessible et inclusif, à découvrir ou redécouvrir.\n\n****\n\nOuverture des portes à 19h30. Spectacle à 21h, puis soirée club de 23h à 1h30 environ.\n\n Salle accessible aux personnes à mobilité réduite.\n\nSur place on peut manger (tout fait maison) et boire à petit prix, au bar associatif Les Truculents",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://www.helloasso.com/associations/les-truculents/evenements/victor-victoria-cabaret-vendredi-3-juillet",
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Truc du Père Lachaise",
+    "slug": "le-truc-du-pere-lachaise",
+    "url": "https://www.parislgbt.com/listing/le-truc-du-pere-lachaise/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/victor-victoria-cabaret-feministe-12/",
+  "slug": "victor-victoria-cabaret-feministe-12",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/victor-victoria-cabaret-feministe-12/",
+    "en": "https://www.parislgbt.com/en/listing/victor-victoria-cabaret-feministe-12/"
+  }
+}

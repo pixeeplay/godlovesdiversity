@@ -1,0 +1,67 @@
+{
+  "type": "listing",
+  "name": "Rosa Bonheur",
+  "categories": [
+    "bars",
+    "restaurant"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "queer",
+    "lesbien",
+    "terrasse",
+    "bi",
+    "drags",
+    "gay",
+    "jeunes-etudiants",
+    "djs-at-work",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/80596180_10157808161944509_875556936152514560_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/80432998_10157801248589509_636414531500769280_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/67547469_10157388896109509_5509404783963799552_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/67563802_10157388896094509_4081384005503549440_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75019",
+    "street": "2 Av. de la Cascade",
+    "lat": 48.87996,
+    "lng": 2.3862
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/5aaa2a8c8a9e9eae0423ee02_buttes_jour.jpg",
+  "description": "En 2008, Rosa Bonheur ouvre ses portes et donne un nouveau souffle au pavillon des Buttes Chaumont : en écho aux bistrots d’un Paris oublié côte de Belleville, la guinguette naît !\n\nDepuis, chant, sport, cinéma, soirées électroniques, populaires ou thématiques, chorale (80 choristes), ateliers pédagogiques égayent le parc et les visiteurs en quête de vivre-ensemble et de bonne humeur.\n\nRosa Bonheur est un lieu convivial et tolérant, ouvert aux mélanges, aux âges, aux goûts et où qualité et ambiance se rejoignent chaque jour. Alors… viens chercher bonheur !\n\nOUVERT TOUTE L'ANNÉE (sauf fin d'année).\n\nRosa Bonheur, this causy typical southern venue offers you all the good vibes ans pleasures you would find by the sea : tapas food (kind of nibbles) all day long, warm dishes, freshly squeezed juices and a selection of wines.\n\n But most of all, Rosa Bonheur is a very friendly and tolerant place, open minded to age, sex orientation, various origins and tastes.\n\nSo if you want a taste of Happiness / Bonheur : then come and get it !!!",
+  "email": null,
+  "hours": {
+    "friday": "12:00-00:00",
+    "monday": null,
+    "saturday": "10:00-00:00",
+    "sunday": "10:00-00:00",
+    "thursday": "12:00-00:00",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/LOGO-LGBT-Caroline-Laher-1024x1024-1.png",
+  "phone": "0142000045",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/rosabonheurparis/",
+    "instagram": "https://www.instagram.com/rosabonheurofficie",
+    "tiktok": null,
+    "twitter": "https://twitter.com/RosaBonheur"
+  },
+  "subtitle": "Une guinguette typique de la Camargue, à Paris",
+  "transport": "Metro 7B : Botzaris ou 11 : Jourdain",
+  "venue": null,
+  "website": "https://www.rosabonheur.fr/",
+  "source_url": "https://www.parislgbt.com/listing/rosa-bonheur/",
+  "slug": "rosa-bonheur",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/rosa-bonheur/",
+    "en": "https://www.parislgbt.com/en/listing/rosa-bonheur/"
+  }
+}

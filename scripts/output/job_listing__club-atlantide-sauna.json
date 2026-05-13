@@ -1,0 +1,69 @@
+{
+  "type": "listing",
+  "name": "CLUB Atlantide Sauna",
+  "categories": [
+    "saunas"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "spa",
+    "entree-payante",
+    "trans",
+    "bi"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_08.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_23.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_09.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_18.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_15.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_28.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_12.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_25.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_19.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_24.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_11.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_22.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_29.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/05/ASH_IMG2023_26.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.84708,
+    "lng": 2.37447
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/05/ASH_IMG2023_27-1024x576.jpg",
+  "description": "Atlantide Sauna un espace de liberté, de mixité et de tolérance. Dans ce CLUB réservé, tous les désirs et fantasmes s’expriment dans un cadre respectueux et convivial.\n\nQuelques soient vos origines, votre culture, votre âge ou vos envies, vous serez accueilli.e par un personnel souriant, attentif et bienveillant.\n\nNous veillons au respect de nos règles d’hygiène et de sécurité, aux comportements respectueux et tolérant, indispensables au bon fonctionnement du CLUB.",
+  "email": null,
+  "hours": {
+    "friday": "12:00-22:00",
+    "monday": "12:00-22:00",
+    "saturday": "12:00-22:00",
+    "sunday": "12:00-22:00",
+    "thursday": "12:00-22:00",
+    "tuesday": "12:00-22:00",
+    "wednesday": "12:00-22:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/05/ash-logo_2022-fond-noir_300x300-72dpi-RVB.jpg",
+  "phone": "01 43 42 22 43",
+  "social": {
+    "facebook": "https://www.facebook.com/people/Atlantide-Sauna/100082829877238/",
+    "instagram": "https://www.instagram.com/Atlantide_sauna/",
+    "tiktok": null,
+    "twitter": "https://twitter.com/atlantidesauna"
+  },
+  "subtitle": "CLUB réservé à tous les désirs et fantasmes. Gays, Bi, Trans, Trav, Tgirls, ...",
+  "transport": "Gare de Lyon",
+  "website": "https://atlantide-sauna.com/",
+  "source_url": "https://www.parislgbt.com/listing/club-atlantide-sauna/",
+  "slug": "club-atlantide-sauna",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/club-atlantide-sauna/",
+    "en": "https://www.parislgbt.com/en/listing/club-atlantide-sauna/"
+  }
+}

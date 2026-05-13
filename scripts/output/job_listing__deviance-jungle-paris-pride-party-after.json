@@ -1,0 +1,46 @@
+{
+  "type": "event",
+  "name": "DEVIANCE JUNGLE PARIS PRIDE | Party + After",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/2-COVER.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "173 Rue Saint-Martin",
+    "lat": 48.8626,
+    "lng": 2.35204
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/2-COVER-1024x534.jpg",
+  "dates": [
+    {
+      "start": "2026-06-27T23:00:00+02:00"
+    }
+  ],
+  "description": "🌈 DEVIANCE Jungle Pride Paris\n\n🔥 PARTY + AFTER\n\n⏰ SATURDAY JUNE 27 - 23H/Midi\n\n🎧 INTERNATIONAL ELECTRO DJ’S SET\n\n❤️‍🔥 CLUBBING ROOM - PLAY ROOM\n\n📍WORKSHOW Paris 3\n\n🎟️ [**TICKETS**](https://shotgun.live/events/deviance-pride) 🎫",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/78311733_2208049539296143_629503271991508992_n-300x300.jpg",
+  "phone": null,
+  "registration_url": "https://shotgun.live/events/deviance-pride",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "WorkshoW",
+    "slug": "workshow",
+    "url": "https://www.parislgbt.com/listing/workshow/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/deviance-jungle-paris-pride-party-after/",
+  "slug": "deviance-jungle-paris-pride-party-after",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/deviance-jungle-paris-pride-party-after/",
+    "en": "https://www.parislgbt.com/en/listing/deviance-jungle-paris-pride-party-after/"
+  }
+}

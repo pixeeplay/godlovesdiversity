@@ -1,0 +1,72 @@
+{
+  "type": "event",
+  "name": "Tournoi International de Paris",
+  "categories": [
+    "clubs",
+    "associations"
+  ],
+  "tags": [
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/TIPParis-badges.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "Village TIP 2026",
+      "url": "https://www.parislgbt.com/listing/village-tip-2026/"
+    },
+    {
+      "title": "TIP Party - Légendaire",
+      "url": "https://www.parislgbt.com/listing/tip-party-legendaire/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "43 Rue Beaubourg",
+    "lat": 48.86245,
+    "lng": 2.35411
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/02/TIPParis-banner-2026-1024x379.png",
+  "dates": [
+    {
+      "start": "2026-05-22T00:00:00+02:00"
+    },
+    {
+      "start": "2026-05-24T00:00:00+02:00"
+    }
+  ],
+  "description": "🏳️‍⚧️ La 19ème édition du Tournoi International de Paris se déroulera du 22 au 24 mai 2026. 🏳️‍🌈\n\nLe Tournoi International de Paris (TIP) est un tournoi multisport créé en 2004 sous l’impulsion de la Fédération Sportive LGBT+.\n\nLe TIP a pour mission d’encourager la pratique respectueuse du sport sans discrimination, faire découvrir des sports, faire naître des vocations et lutter contre les LGBT phobies. Le tournoi se déroule durant le week-end de la Pentecôte.\n\nTournoi réunissant plus de 32 sports dans toute la capitale avec plus de 2000 participant·e·s dans 24 sports et de 28 pays (source 2023). Le Hand Mixte débarque comme nouvelle pratique.\n\nToutes les associations organisatrices de la Fédération Sportive LGBT+ ont la joie de vous accueillir au Village du TIP, situé à l'Hôtel de Ville. Merci, Fluctuat Nec Mergitur !\n\n🎟️[**Inscriptions et info**](https://registration.paris-tournament.com/registration/) ⚽️",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/02/TIPParis-visuel-2026.jpg",
+  "phone": null,
+  "registration_url": "https://registration.paris-tournament.com/registration/",
+  "social": {
+    "facebook": "https://www.facebook.com/paris.tournament",
+    "instagram": "http://stagram.com/paris.tournament",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Un tournoi Inclusif",
+  "transport": "M° Rambuteau / Arts & Métiers",
+  "venue": null,
+  "website": "https://www.paris-tournament.com/",
+  "source_url": "https://www.parislgbt.com/listing/tournoi-international-de-paris/",
+  "slug": "tournoi-international-de-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/tournoi-international-de-paris/",
+    "en": "https://www.parislgbt.com/en/listing/tournoi-international-de-paris/"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "type": "event",
+  "name": "Daisy Horse Saloon #2",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42946_image_674298122_1515900607212225_5218317062546086721_n-1-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42946_image_674298122_1515900607212225_5218317062546086721_n-1-1.jpg",
+  "dates": [
+    {
+      "start": "2026-06-11T20:30:00+02:00"
+    }
+  ],
+  "description": "Cabaret queer foutraque, intime & décalé.\n\n Scène ouverte sérieusement pas sérieuse,\n\n 100 % généreuse,\n\n 100 % inclusive,\n\n 100% bienveillante…\n\n Un gros chou à la crème bien réconfortant ! (les calories en moins…)\n\n Good Vibes Only !",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://www.billetreduc.com/spectacle/daisy-horse-saloon-403714",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Tango",
+    "slug": "le-tango",
+    "url": "https://www.parislgbt.com/listing/le-tango/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/daisy-horse-saloon-2/",
+  "slug": "daisy-horse-saloon-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/daisy-horse-saloon-2/",
+    "en": "https://www.parislgbt.com/en/listing/daisy-horse-saloon-2/"
+  }
+}

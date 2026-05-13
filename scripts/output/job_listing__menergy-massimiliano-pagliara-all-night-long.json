@@ -1,0 +1,42 @@
+{
+  "type": "event",
+  "name": "MENERGY - Massimiliano Pagliara All Night Long",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/43217_image_687025109_1593375459058796_8864501974811620508_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/43217_image_687025109_1593375459058796_8864501974811620508_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-30T23:45:00+02:00"
+    }
+  ],
+  "description": "🎟 [BILLETTERIE](https://tinyurl.com/ybmfr8x7) 🎟\n\n15€ (hors frais de loc.) avant 1H\n\n 20€ (hors frais de loc.) après 1H\n\nSur place :\n\n 20€ avant 1H\n\n 25€ après 1H\n\nLINE UP\n\nMASSIMILIANO PAGLIARA (All Night Long Set)\n\n[https://soundcloud.com/massimilianopagliara](https://soundcloud.com/massimilianopagliara \"https://soundcloud.com/massimilianopagliara\")\n\nPLAYROOM OUVERTE\n\n« The boys in the bedroom\n\n Lovin’ it up\n\n Shootin’ off energy,\n\n We all know the feelin’\n\n It’s no misery\n\n Talkin’ about MENERGY » (Patrick Cowley)\n\nSur une idée originale de Babybear (Yannick) et Wonderbear (Oscar),\n\n MENERGY est née à Paris en octobre 2014.\n\n La direction artistique est assurée par Sébastien Coffre.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://tinyurl.com/ybmfr8x7",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Gibus",
+    "slug": "le-gibus",
+    "url": "https://www.parislgbt.com/listing/le-gibus/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/menergy-massimiliano-pagliara-all-night-long/",
+  "slug": "menergy-massimiliano-pagliara-all-night-long",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/menergy-massimiliano-pagliara-all-night-long/",
+    "en": "https://www.parislgbt.com/en/listing/menergy-massimiliano-pagliara-all-night-long/"
+  }
+}

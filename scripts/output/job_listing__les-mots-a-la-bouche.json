@@ -1,0 +1,53 @@
+{
+  "type": "listing",
+  "name": "Les Mots à la Bouche",
+  "categories": [
+    "boutiques"
+  ],
+  "tags": [
+    "handicap",
+    "membre-du-snegco",
+    "arts-culture",
+    "librairies"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Les-Mots-A-La-Bouche-cover.png"
+  ],
+  "linked_events": [
+    {
+      "title": "Parution BD #PMA pour toutes : DAR A LUZ, Vers la maternité, contre vents et marées",
+      "url": "https://www.parislgbt.com/listing/parution-bd-pma-pour-toutes-dar-a-luz-vers-la-maternite-contre-vents-et-marees-2/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "37 Rue Saint-Ambroise",
+    "lat": 48.86301,
+    "lng": 2.37896
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/80215247_3028999200463208_6388555727274770432_o-1024x768-1.jpg",
+  "description": "Sur deux niveaux, la librairie propose littérature, magazines, fanzines, DVD et des beaux livres rangés dans un bel espace de la cave. De nombreuses dédicaces ont lieu avec les auteurs qui font l’actualité.\n\nThis bookshop over two levels stocks fiction, magazines, fanzines and DVDs, with a fine selection of coffee-table books in the large cellar space. It often hosts book signing events featuring authors in the news.",
+  "hours": {
+    "monday": "10:30-19:30",
+    "tuesday": "10:30-19:30",
+    "wednesday": "10:30-19:30, 10:30-19:30, 10:30-19:30, 10:30-19:30, 10:30-19:30, 10:30-19:30, 10:30-19:30"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/80819719_3043627392333722_1561897455992176640_n.jpg",
+  "phone": "+33 (0) 1 42 78 88 30",
+  "social": {
+    "facebook": "https://www.facebook.com/Librairie-Les-Mots--la-Bouche-130302896999534",
+    "instagram": "https://www.instagram.com/les_motsalabouche/"
+  },
+  "subtitle": "Fondée en 1980, la librairie Les Mots à la Bouche est une librairie centrée sur les cultures LGBTQIA++",
+  "transport": "Métro 3 : Rue Saint Maur",
+  "website": "http://www.motsbouche.com/",
+  "source_url": "https://www.parislgbt.com/listing/les-mots-a-la-bouche/",
+  "slug": "les-mots-a-la-bouche",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/les-mots-a-la-bouche/",
+    "en": "https://www.parislgbt.com/en/listing/les-mots-a-la-bouche/"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "category",
+  "name": "Associations",
+  "categories": [
+    "associations"
+  ],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/category/associations/",
+  "slug": "associations",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/category/associations/",
+    "en": "https://www.parislgbt.com/en/category/associations/"
+  }
+}

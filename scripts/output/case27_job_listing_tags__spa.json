@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Spa/Sauna",
+  "categories": [],
+  "tags": [
+    "spa"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/spa/",
+  "slug": "spa",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/spa/",
+    "en": "https://www.parislgbt.com/en/tag/spa/"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "type": "listing",
+  "name": "Queer Tours France",
+  "categories": [
+    "visites"
+  ],
+  "tags": [
+    "accueil-public",
+    "arts-culture",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/Queer-Tours-France-visite.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/Queer-Tours-France-strobo.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/Queer-Tours-France-strobo-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/Queer-Tours-France-strobo-3.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "Visite guidée : Histoire des luttes et résistances queer",
+      "url": "https://www.parislgbt.com/listing/visite-guidee-histoire-des-luttes-et-resistances-queer-2/"
+    },
+    {
+      "title": "Visite guidée : Père Lachaise Queer",
+      "url": "https://www.parislgbt.com/listing/visite-guidee-pere-lachaise-queer-2/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75018",
+    "street": "31 Rue Doudeauville",
+    "lat": 48.88856,
+    "lng": 2.35529
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/02/Queer-Tours-France-banner-1024x599.jpg",
+  "description": "**Qui sont-ils ?**\n\nQueer Tours France est un projet de l'Association \"Mémoires Queer\", fondée et animée par des guides issu·e·s de la communauté LGBTQIA+. Leur mission : proposer des visites guidées de Paris et de ses environs, en mettant en lumière l’histoire, la culture et les figures emblématiques de la communauté queer. Tou·te·s leurs guides sont membres de la communauté LGBTQIA+, garantissant une approche authentique, inclusive et bienveillante.\n\n**Leurs offres**\n\n Visites classiques : Découverte des monuments emblématiques de Paris (Louvre, Notre-Dame, Arc de Triomphe, etc.) avec un·e guide queer.\n\n Visites thématiques LGBTQIA+ : Parcours dans des quartiers historiques comme le Marais ou Saint-Germain, mettant en avant l’évolution des droits LGBTQIA+ et les personnalités queer qui ont marqué l’histoire de la ville.\n\n Visites sur mesure : Adaptées aux groupes privés, aux étudiant·e·s ou aux entreprises, avec la possibilité d’explorer des lieux moins connus ou de privilégier des thèmes spécifiques (art, littérature, militantisme, etc.).\n\n**Leur approche**\n\n Inclusivité : Les visites sont conçues pour créer un « safe space », où chacun·e se sent à l’aise et représenté·e.\n\n Visibilité : L’association s’engage à rendre visible l’histoire et la culture queer, souvent absente des récits traditionnels.\n\n Communauté : Tou·te·s les membres de l’équipe (guides et bureau) font partie de la communauté LGBTQIA+, renforçant l’authenticité et la solidarité du projet.\n\n**Leur mission, selon StroboMag**\n\n D’après l’article de StroboMag (janvier 2026), Queer Tours France se donne pour objectif de « re-queerizer la ville, l’histoire et l’histoire de l’art ». Cela signifie :\n\n- Réappropriation des récits : Mettre en avant les contributions des personnalités LGBTQIA+ dans l’histoire de Paris, souvent effacées ou minimisées.\n\n - Éducation et sensibilisation : Rendre accessible cette histoire à un large public, y compris les allié·e·s, pour favoriser une meilleure compréhension et une plus grande inclusion.\n\n - Expérience immersive : Proposer des visites qui ne se limitent pas à l’aspect touristique, mais qui invitent à une réflexion sur la place des minorités dans l’espace public et culturel.\n\n🧿 [Article complet](https://www.strobomag.com/fr/news/2026-01-26-queer-tours-france-notre-mission-est-de-re-queerizer-la-ville-l-histoire-et-l-histoire-de-l-art)\n\n**Pourquoi les choisir ?**\n\n Expertise locale : Les guides connaissent Paris sur le bout des doigts et partagent des anecdotes et des lieux méconnus.\n\n Engagement militant : En choisissant Queer Tours France, vous soutenez une entreprise qui reverse une partie de ses bénéfices à des associations LGBTQIA+ et participe activement à la visibilité de la communauté.\n\n Flexibilité : Possibilité de réserver des visites privées, adaptées à vos centres d’intérêt et à votre rythme.",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/02/Queer-Tours-France-logo-1.webp",
+  "phone": "06 37 89 17 21",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/queertoursfrance/",
+    "instagram": "https://www.instagram.com/queertoursfrance/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Tours in Paris with a Queer Twist",
+  "transport": "Métro Marx Dormoy ; Métro Chateau Rouge ;",
+  "venue": null,
+  "website": "https://www.queertoursfrance.com/",
+  "source_url": "https://www.parislgbt.com/listing/queer-tours-france/",
+  "slug": "queer-tours-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/queer-tours-france/",
+    "en": "https://www.parislgbt.com/en/listing/queer-tours-france/"
+  }
+}

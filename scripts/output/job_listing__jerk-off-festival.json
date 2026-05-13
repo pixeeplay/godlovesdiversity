@@ -1,0 +1,64 @@
+{
+  "type": "event",
+  "name": "Jerk Off Festival",
+  "categories": [
+    "associations",
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/07/Jerk-Off-benevole.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.88231,
+    "lng": 2.36908
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/07/Jerk-Off-festival-1024x670.jpg",
+  "dates": [
+    {
+      "start": "2025-09-19T00:00:00+02:00"
+    },
+    {
+      "start": "2025-10-03T00:00:00+02:00"
+    }
+  ],
+  "description": "Fondé en 2007, le festival Jerk Off s’attache à protéger, programmer et défendre les diversités de nos communautés queers. Jerk Off célèbre nos identités plurielles, parfois contradictoires, mais toujours unies, afin de montrer l’essentielle nécessité d’une culture libre, ouverte, engagée, inclusive, qui défie l’étroitesse des représentations traditionnelles et dominantes.\n\nArts vivants, arts visuels, tables rondes, workshops, art contemporain, éducation… quelle que soit la forme artistique, Jerk Off est un endroit sûr, où les seules règles sont la bienveillance, l’écoute et le respect de toustes.\n\nCette année pour ses 18 ans Jerk Off investit dix lieux du 19 septembre au 3 octobre 2025. Fières de nos 18 ans passé, venez fêter notre majorité aux Labos d’Aubervilliers, au Regard du Cygne, au Point Éphémère, au Sample, a Artagon, au Klub, à la Mutinerie, aux Aimant.es , au Théâtre 13 ou encore à l’Étoile du Nord.",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/07/Jerk-Off-logo.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/festivaljerkoff",
+    "instagram": "https://www.instagram.com/festivaljerkoff/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "18 ans de festival pluri disciplinaire, de création et de fêtes",
+  "transport": null,
+  "venue": null,
+  "website": "https://www.festivaljerkoff.com/",
+  "source_url": "https://www.parislgbt.com/listing/jerk-off-festival/",
+  "slug": "jerk-off-festival",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/jerk-off-festival/",
+    "en": "https://www.parislgbt.com/en/listing/jerk-off-festival/"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "category",
+  "name": "Visites & Tourisme",
+  "categories": [
+    "visites"
+  ],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/category/visites/",
+  "slug": "visites",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/category/visites/",
+    "en": "https://www.parislgbt.com/en/category/visites/"
+  }
+}

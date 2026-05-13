@@ -1,0 +1,57 @@
+{
+  "type": "listing",
+  "name": "Césure",
+  "categories": [
+    "associations",
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "queer",
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/07/Cesure_expo-queer.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/07/Cesure_expo-queer1.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "Spheres Festival Cesure 2025",
+      "url": "https://www.parislgbt.com/listing/spheres-festival-cesure-2025/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75005",
+    "street": "13 rue Santeuil",
+    "lat": 48.84003,
+    "lng": 2.35426
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/07/Cesure_lgbt-819x1024.jpg",
+  "description": "Tiers lieu formidable\n\nL’ancien campus Censier de l’Université Sorbonne-Nouvelle devient Césure pour quatre ans : un tiers-lieu porté par Plateau Urbain en partenariat avec Yes We Camp, l'Association Aurore, Emmaüs Campüs et ESSpace axé sur la transmission des savoirs et savoir-faire, dans l’attente de sa réhabilitation par l’EPAURIF.\n\nDès l’été 2022, ce site de 25 000m2 accueille chaque jour 200 structures occupantes et 2 000 étudiant·es, devenant ainsi un terrain d’expérimentation afin d’inventer de nouvelles manières d’apprendre les un·es des autres.\n\nDepuis mai 2023, Césure ouvre ses portes au grand public autour d’une programmation culturelle et festive, avec une Cantine, une boutique Emmaüs Campüs, un Grand Plateau de 1 000m2, deux amphithéâtres, une buvette extérieure et bien d’autres espaces à découvrir !\n\n**Infos pratiques :**\n\n13 rue Santeuil, 75005 Paris.\n\n5e étage, salle 520",
+  "hours": {
+    "friday": "10:00-23:00",
+    "monday": null,
+    "saturday": "10:00-23:00",
+    "sunday": null,
+    "thursday": "10:00-23:00",
+    "tuesday": "10:00-23:00",
+    "wednesday": "10:00-23:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/07/Cesure_logo.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/cesure.paris",
+    "instagram": "https://www.instagram.com/cesure.paris",
+    "tiktok": null,
+    "twitter": null
+  },
+  "transport": "M° Censier-Daubenton",
+  "website": "https://cesure.paris/",
+  "source_url": "https://www.parislgbt.com/listing/cesure-paris/",
+  "slug": "cesure-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/cesure-paris/",
+    "en": "https://www.parislgbt.com/en/listing/cesure-paris/"
+  }
+}

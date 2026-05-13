@@ -1,0 +1,39 @@
+{
+  "type": "event",
+  "name": "Éclipse #2",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/ECLIPSE_VISU-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75012",
+    "street": "83 Rue du Charolais",
+    "lat": 48.84361,
+    "lng": 2.38126
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/ECLIPSE_VISU-819x1024.jpg",
+  "dates": [
+    {
+      "start": "2026-05-15T19:30:00+02:00"
+    }
+  ],
+  "description": "Vendredi 15 mai prochain, la soirée Éclipse revient pour une seconde édition à Ground Control.\n\nÉvènement ultra-pluridisciplinaire qui croise des identités artistiques singulières et plurielles, Éclipse se veut être une véritable ode à la singularité, à l’excentricité et à l’expression de soi. Entre curiosité, liberté et engagement, on y célèbre ici les communautés marginalisées et les cultures underground.\n\nÉvènement caritatif, tous les bénéfices sont reversés à l’association **AIDES**, qui lutte contre le VIH/SIDA et les hépatites virales, et qui sera également présente tout le long de l'événement.\n\n🎟️ [**TICKETS SOLIDAIRES**](https://shotgun.live/fr/festivals/eclipse-2) 🔥\n\n**La programmation est composée de plus de 12 artistes renommés :**\n\n*   Podcast live animé par La Bobine.\n*   Performances cabaret et pole dance par le Cabaret des Vénus Noires.\n*   Concert du groupe KLON.\n*   Drag show par Léonie Styx (créature de Madame Arthur), Hego Scorpion et Lana Cotta.\n*   DJ set de Timéa.",
+  "registration_url": "https://shotgun.live/fr/festivals/eclipse-2",
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "source_url": "https://www.parislgbt.com/listing/eclipse-2/",
+  "slug": "eclipse-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/eclipse-2/",
+    "en": "https://www.parislgbt.com/en/listing/eclipse-2/"
+  }
+}

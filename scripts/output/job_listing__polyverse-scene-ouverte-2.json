@@ -1,0 +1,45 @@
+{
+  "type": "event",
+  "name": "POLYVERSE : Scène Ouverte",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/Screenshot-2026-05-01-at-16.30.16.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75006",
+    "street": "8 Rue de Nevers",
+    "lat": 48.85603,
+    "lng": 2.3398
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/Screenshot-2026-05-01-at-16.30.16-1024x504.png",
+  "dates": [
+    {
+      "start": "2026-05-16T20:30:00+02:00"
+    }
+  ],
+  "description": "**La scène drag de demain commence ici ! ✨**\n\n**A la POLYVERSE : Scène Ouverte, viens célébrer la diversité du drag, sous toutes ces formes. 💖**\n\n**KINGS, QUEENS et CREATURES. 👑🌈**\n\nEn mai sur scène : Manon Sauvignon, Moody, Bourgeon de Nuit, Octopussy, Miss Gemonenfer Queer, Alistair Bloodflow, Lulu Divine, Liocha, Thomette, Veranda Morose, Papi Nova et Polydoris !\n\n🗓️ Samedi 16 mai\n\n💃 Drag show de 20h30 à 23h puis 💿 DJ set par Roche jusqu’à 2h\n\n📍 The Highlander - 8 rue de Nevers, Paris 6\n\n📸 Photographie par Timoté Mévellec\n\n🎟️ Entrée gratuite - sur place ou billetterie (shotgun)\n\n(Même si l’entrée est gratuite, la réservation d’un billet nous permet de gérer le nombre de spectateur.ices et d’assurer les meilleures conditions d’accueil 🎉🥰)",
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "The Highlander",
+    "slug": "the-highlander",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=The%20Highlander"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/polyverse-scene-ouverte-2/",
+  "slug": "polyverse-scene-ouverte-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/polyverse-scene-ouverte-2/",
+    "en": "https://www.parislgbt.com/en/listing/polyverse-scene-ouverte-2/"
+  }
+}

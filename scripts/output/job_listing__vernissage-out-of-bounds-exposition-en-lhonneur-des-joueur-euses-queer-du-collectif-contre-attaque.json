@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Vernissage - \"Out of Bounds\" - Exposition en l'honneur des joueur.euses queer du collectif Contre-Attaque",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/bannieere.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75014",
+    "street": "15 Boulevard Jourdan",
+    "lat": 48.81969,
+    "lng": 2.3397
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/bannieere-1024x732.jpeg",
+  "dates": [
+    {
+      "start": "2026-05-20T19:00:00+02:00"
+    }
+  ],
+  "description": "**Out of Bounds est une série d’œuvres qui rend hommage aux joueur·euses queer de Contre-Attaque, une équipe de football trans-féministe et inclusive basée à Paris.**\n\nÀ travers une série de portraits peints à l’huile, ce projet explore comment le sport peut se transformer en un espace de joie, d’expression de soi et de construction collective, en particulier pour celles et ceux qui vivent leur genre et leur sexualité en dehors des normes traditionnelles.\n\nDéveloppé en étroite collaboration avec les joueur·euses, ce travail reflète à la fois la singularité de chaque individu et l’esprit collectif de l’équipe. En intégrant des éléments surréalistes, les portraits cherchent à capturer la fluidité et la complexité des identités, offrant une réflexion et une célébration des expériences queers trop souvent marginalisées.\n\nFondation des Etats Unis, Cité Internationale Universitaire de Paris, 15, bd Jourdan, Paris XIV",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/996215729549847",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Fondation des Etats-Unis",
+    "slug": "fondation-des-etats-unis",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Fondation%20des%20Etats-Unis"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/vernissage-out-of-bounds-exposition-en-lhonneur-des-joueur-euses-queer-du-collectif-contre-attaque/",
+  "slug": "vernissage-out-of-bounds-exposition-en-lhonneur-des-joueur-euses-queer-du-collectif-contre-attaque",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/vernissage-out-of-bounds-exposition-en-lhonneur-des-joueur-euses-queer-du-collectif-contre-attaque/",
+    "en": "https://www.parislgbt.com/en/listing/vernissage-out-of-bounds-exposition-en-lhonneur-des-joueur-euses-queer-du-collectif-contre-attaque/"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "type": "listing",
+  "name": "La Drag School",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "drags",
+    "queer",
+    "arts-culture",
+    "accueil-public",
+    "bi",
+    "gay",
+    "lesbien",
+    "jeunes-etudiants",
+    "mixte",
+    "prevention-sante",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/04/0541c01f-aac8-4916-9dfb-99fbbc068269_rw_1920.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/04/41bd14e9-4aba-46c1-a4fe-ee82cbef9f4f_rw_1920.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/04/791eddfd-6653-4646-81bc-323cca1ebae3_rw_1920.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/04/21af764f-022a-4e2a-a6d6-9d7e1df64b6c_rw_1920.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/04/2e9ce9f7-bad2-4fc2-bbc1-cafdf7503e56_rw_1920.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/04/a34c9dab-8423-4c38-a539-6f6f64f932b1_rw_1920.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/04/eec692ff-a537-4524-a43b-3021227ef17e_rw_1920.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/04/12d7aeab-b55f-4d23-84e9-82a57a202e36_rw_1920.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/04/589fcc31-5c25-4b90-a0c8-c230d8ce82d0_rw_1920.jpeg"
+  ],
+  "linked_events": [
+    {
+      "title": "Cours de Makeup Drag Queen (Express)",
+      "url": "https://www.parislgbt.com/listing/cours-de-makeup-drag-queen-express/"
+    }
+  ],
+  "address": {
+    "city": "paris",
+    "country": null,
+    "postal_code": "75006",
+    "street": "6 rue de l'Hirondelle",
+    "lat": 48.85361,
+    "lng": 2.34295
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/589fcc31-5c25-4b90-a0c8-c230d8ce82d0_rw_1920-1024x683.jpeg",
+  "description": "La Drag School propose des ateliers uniques pour explorer les arts drag : makeup Drag Queen / Drag King / Créature, mise en scène, hosting…\n\nAnimés par des artistes expérimentés, nos cours sont ouverts à tous niveaux. Réserve ton atelier et rejoins-nous !\n\n**Toutes les infos et inscription ici :[https://www.helloasso.com/associations/drag-school](https://www.helloasso.com/associations/drag-school)**",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "15:00-17:00",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/04/White.png",
+  "phone": "0609301790",
+  "registration_url": "https://www.helloasso.com/associations/drag-school",
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/la_dragschool/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "L'école de Drag à Paris !",
+  "transport": "métro Chatelet: lignes 1, 4, 7, 11 et 14",
+  "website": "https://www.helloasso.com/associations/drag-school",
+  "source_url": "https://www.parislgbt.com/listing/la-drag-school/",
+  "slug": "la-drag-school",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-drag-school/",
+    "en": "https://www.parislgbt.com/en/listing/la-drag-school/"
+  }
+}

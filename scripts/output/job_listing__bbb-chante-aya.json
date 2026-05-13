@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "BBB : Chante Aya",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/10/luca-micheli-Q7htkhMW66Y-unsplash-scaled-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": null,
+    "street": null,
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/10/luca-micheli-Q7htkhMW66Y-unsplash-scaled-1-1024x473.jpg",
+  "dates": [
+    {
+      "start": "2026-05-31T23:45:00+02:00"
+    }
+  ],
+  "description": "BBB : CHANTE AYA\n\nDimanche 31 mai - 00H/6H au Club La Nuit Paris 9\n\nBBB AFTER SHOW AYA : PRENDS LE MIC ET GAGNE DES TABLES VIP\n\n️ Free Pass - Tickets - Résas VIP : [https://www.baby-boy.fr](https://www.baby-boy.fr/ \"https://www.baby-boy.fr\")\n\nRESA VIP 120 EUROS :07 66 02 19 50\n\nLa Black Blanc Beur est une soirée inclusive et safe pour toutes et tous dans le respect et la bienveillance de chacun\n\nCLub LA NUIT Paris 9\n\nUne tenue et une attitude correcte est demandée à l’entrée ! \n\nLe club et la direction se réserve de doit d’admission.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": "07 66 02 19 50",
+  "registration_url": "https://www.baby-boy.fr",
+  "social": {
+    "facebook": "https://www.facebook.com/events/1488778279597277",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": "https://www.baby-boy.fr",
+  "source_url": "https://www.parislgbt.com/listing/bbb-chante-aya/",
+  "slug": "bbb-chante-aya",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bbb-chante-aya/",
+    "en": "https://www.parislgbt.com/en/listing/bbb-chante-aya/"
+  }
+}

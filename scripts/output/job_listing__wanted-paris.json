@@ -1,0 +1,55 @@
+{
+  "type": "listing",
+  "name": "Wanted Paris",
+  "categories": [
+    "restaurant"
+  ],
+  "tags": [
+    "terrasse",
+    "handicap"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/05/Wanted-Paris-visuel-1.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": "46 bis rue de Meaux",
+    "lat": 48.88138,
+    "lng": 2.37371
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/05/Wanted-Paris-visuel.jpg",
+  "description": "Un restaurant avec sa propre identité : italienne à la carte, américaine dans l’esprit et LGBT dans ses événements.\n\nUne identité western spaghetti en somme ! Les pizzas cohabitent avec des pâtes fraîches, des produits typiques de l’Italie et des plats originaux.\n\nSitué dans l'ancien marché Secretan, notre établissement est au cœur du quartier des Buttes Chaumont.",
+  "email": null,
+  "hours": {
+    "friday": null,
+    "monday": null,
+    "saturday": "08:00-02:00",
+    "sunday": "11:00-02:00",
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2024/05/Wanted-Paris-logo.jpg",
+  "phone": "01 40 18 33 72",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/WantedParisHalleSecretan/",
+    "instagram": "https://www.instagram.com/wantedparis_19/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "Ligne 3bis Station Bolivar",
+  "venue": null,
+  "website": "https://www.wanted-paris.com/",
+  "source_url": "https://www.parislgbt.com/listing/wanted-paris/",
+  "slug": "wanted-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/wanted-paris/",
+    "en": "https://www.parislgbt.com/en/listing/wanted-paris/"
+  }
+}

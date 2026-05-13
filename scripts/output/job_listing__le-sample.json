@@ -1,0 +1,57 @@
+{
+  "type": "listing",
+  "name": "Le Sample",
+  "categories": [
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2023/04/Le-Sample-couv-1024x683.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2023/04/Le-Sample-logo.png"
+  ],
+  "linked_events": [
+    {
+      "title": "Formation Outils administratifs & pilotage budgétaire d'un projet culturel",
+      "url": "https://www.parislgbt.com/listing/formation-outils-administratifs-pilotage-budgetaire-dun-projet-culturel/"
+    },
+    {
+      "title": "Formation Modèles économiques des tiers-lieux culturels",
+      "url": "https://www.parislgbt.com/listing/formation-modeles-economiques-des-tiers-lieux-culturels/"
+    }
+  ],
+  "address": {
+    "city": "Bagnolet",
+    "country": "France",
+    "postal_code": "93170",
+    "street": "18 Avenue de la République",
+    "lat": 48.86882,
+    "lng": 2.41737
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2023/04/Le-Sample-couv-1024x683.jpg",
+  "description": "Le Sample est une expérience d’urbanisme de transition, sur le site des anciens Ateliers Publison, porté par les agences La Belle Friche et Ancoats, en partenariat avec Ernest sur un bâtiment mis à disposition par SOPIC. Le Sample accueille une trentaine de structures résidentes du champ créatif, un restaurant solidaire, un espace dédié au tissu associatif du territoire, et déploie une programmation artistique et culturelle au sein d’espaces de diffusion polyvalents et d’un jardin de 2000m2.\n\nLieu associatif de travail, de culture et de solidarité, Le Sample est un espace accueillant, ouvert à tous.tes, où les discriminations quelles qu’elles soient n’ont pas leur place. Le respect des publics et des artistes est au cœur de cet espace que nous tentons au quotidien de rendre plus accueillant pour chacun.e.\n\nLe Sample est un projet soutenu par la Région Ile de France, par la Préfecture de Seine Saint-Denis et par Est Ensemble",
+  "hours": {
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2023/04/Le-Sample-logo.png",
+  "social": {
+    "facebook": "https://www.facebook.com/lesamplebagnolet/",
+    "instagram": "https://www.instagram.com/le_sample_bagnolet/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Une expérience d’urbanisme de transition",
+  "transport": "M° Gallieni",
+  "website": "http://www.lesample.fr/",
+  "source_url": "https://www.parislgbt.com/listing/le-sample/",
+  "slug": "le-sample",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-sample/",
+    "en": "https://www.parislgbt.com/en/listing/le-sample/"
+  }
+}

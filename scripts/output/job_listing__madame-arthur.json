@@ -1,0 +1,59 @@
+{
+  "type": "listing",
+  "name": "Madame Arthur",
+  "categories": [
+    "cabarets"
+  ],
+  "tags": [
+    "drags",
+    "entree-payante"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Charly-Voodoo-Retouche-2-Ondine-B-S.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/%C2%A9Teresa-Suarez-tubes-de-lete-Mme-Arthur1-MaudAmour-Bili-Larme-a-loeil-La-Mulette-Mitzi-Phillis.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/%C2%A9Teresa-Suarez-tubes-de-lete-Mme-Arthur-Maud-Amour-Bili-larme-a-loeil-La-Mulette-.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Salon-%C2%A9sophiedelabruyere-Fursy-Von-Colmar-La-Rosee.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Androkill-Bili-Larme-a-Loeil-Charly-Voodoo-La-Briochee-MaudAmour-Odile-de-Mainville-%C2%A9Teresa-Suarez-Mme-Arthur-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/MaudAmour-%C2%A9-Heloise-Blondel-Mme-Arthur-Bjork-7-Scene-1024x683.jpeg",
+  "description": "Un peu d'histoire pour commencer : le cabaret Madame Arthur ouvre ses portes en 1946. Il fut le tout premier cabaret travesti de Paris et a hébergé des vedettes du genre telles que Bambi ou Coccinelle. Le père de Serge Gainsbourg y était pianiste, et son fils l'a même quelquefois remplacé, et y a écrit ses premières compositions !\n\nMais aujourd'hui, Madame Arthur c'est qui ?\n\nC’est tout simplement un lieu qui propose chaque semaine un spectacle différent. Unissant sur scène plusieurs artistes travestis de grand talent, aux maquillages plus fous les uns que les autres, dans des décors toujours surprenants. Au piano, à la voix, à la danse ou à la transe, les shows de Madame Arthur ne laissent pas indifférents.\n\nC'est ouvert toute l'année, du jeudi au samedi de 20h à 06h et le dimanche de 20h à 00h !\n\n​- 21h à 22h : Spectacle inédit sur un thème différent chaque semaine (Fait danser Dalida, Chauffe Abba…)\n\n - 22h45 à 23h45 : French Test de Guigui (Blind Test de musique française le vendredi et samedi)\n\n - 23h à 00h : Tour de chant de nos créatures dans un cadre plus intimiste\n\n - 00h à 06h : Club & Performances, nos créatures de la nuit prennent le contrôle dès 1h du matin",
+  "email": null,
+  "hours": {
+    "friday": "20:00-06:00",
+    "monday": null,
+    "saturday": "20:00-06:00",
+    "sunday": "19:00-00:00",
+    "thursday": "20:00-06:00",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/14232525_1584774855158035_8789103714016062595_n.png",
+  "phone": "0768176930",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/cabaretmadamearthur/",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": "https://twitter.com/madame_arthur"
+  },
+  "subtitle": "Cabaret excentrique",
+  "transport": "Metro 2,12 : Pigalle - Abbesses",
+  "website": "https://madamearthur.fr/",
+  "source_url": "https://www.parislgbt.com/listing/madame-arthur/",
+  "slug": "madame-arthur",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/madame-arthur/",
+    "en": "https://www.parislgbt.com/en/listing/madame-arthur/"
+  }
+}

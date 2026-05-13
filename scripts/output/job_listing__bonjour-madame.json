@@ -1,0 +1,50 @@
+{
+  "type": "listing",
+  "name": "Bonjour.madame",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "lesbien",
+    "gay",
+    "queer",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2021/09/bonjourmadame-monde.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/09/bonjour-madame-facade.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/09/bonjour-madame-nuit.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/09/bonour-madame-interieur.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "40 Rue de Montreuil",
+    "lat": 48.85035,
+    "lng": 2.38708
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2023/12/Bonjour.madame-couv.jpeg",
+  "description": "Bar culturel et militant avec des concerts, des expositions, des débats de société, des rencontres tenu par Karen, Hélène & Esther depuis 2019.\n\nCe bar féministe queer est un lieu très dynamique, qui annonce sa prog sur son Instagram.\n\nLe bar a eu une fer\n\nPas de résa sauf pour les assos et collectifs LGBT.",
+  "hours": {
+    "monday": "18:00-02:00",
+    "tuesday": "14:00-02:00",
+    "wednesday": "14:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2021/09/bonjour.madame.logo_.jpg",
+  "phone": "09 83 51 61 33",
+  "social": {
+    "instagram": "https://www.instagram.com/bonjourmadame_paris/"
+  },
+  "subtitle": "Bar culturel et militant avec des concerts, des expositions, des débats de société, des rencontre",
+  "transport": "M° 8 Faidherbe Chaligny",
+  "website": "https://www.facebook.com/bonjourmadame.paris11/",
+  "source_url": "https://www.parislgbt.com/listing/bonjour-madame/",
+  "slug": "bonjour-madame",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bonjour-madame/",
+    "en": "https://www.parislgbt.com/en/listing/bonjour-madame/"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Hole (veille de jour férié)",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42936_image_674819085_989226703789789_2399113227482848711_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "14 Rue Saint-Merri",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42936_image_674819085_989226703789789_2399113227482848711_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-13T23:00:00+02:00"
+    }
+  ],
+  "description": "Hole fait son grand retour à Paris pour des nuits où le son, l’énergie et les corps ne feront plus qu’un :\n\nAu Saint Merri,\n\nUn refuge nocturne où les corps dansent sans masque,\n\noù les regards se croisent sans filtre,\n\noù le désir circule librement entre les kicks et la sueur.\n\nIci, pas de compromis : une programmation pointue, une énergie électrique et un dancefloor où la liberté prend le dessus. Chaque édition réunit artistes et initiés pour une nuit intense, portée par la musique et l’abandon collectif.\n\nPrépare-toi à descendre dans un espace où le temps disparaît et où la nuit prend le contrôle.\n\nLes places sont limitées.\n\nPrends ton accès avant qu’il ne soit trop tard.\n\n*Enter the Hole. *\n\nLine up T.B.A\n\n3 Ambiances :\n\n* Dancefloor\n\n* zone Chill\n\n* zone\n\nDistribution sucettes\n\nsurprise\n\n-------------------------------------------------------------------------------\n\nPAS DE\n\nDRESSCODE OBLIGATOIRE, MAIS SOIT INVENTIF, SEXY ET DEBRIDE...\n\nLIBERE TOI DE TES COMPLEX…\n\n----------------------------------------------------------------------------------\n\nVESTIAIRE\n\nLe cintre = 3€ par articles (ex 2 articles 6€)\n\nSac, Sac à dos (perso) = 5€\n\nSac plastique (fournie par l’orga) = 8€ (Plusieurs personnes possible par sac)\n\nPour te simplifier la dépose et le retrait de tes affaires et aussi pour plus de rapidité, nous te conseillons de venir un ton sac à dos afin de pouvoir y mettre toute ta garde-robe non acceptée dans la soirée.\n\nPetit sac a mains, banane etc sont acceptés un l’intérieur pour garder tes petites affaires (CB, téléphone …)\n\n-------------------------------------------------------------------------------\n\n⛔️ Photos et vidéos totalement interdites sous peine d'expulsion immédiate\n\nInterdit au moins de 21 ans\n\nStaff bienveillant pour votre sécurité.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/981681774300632",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "Metro : 1, 4, 7, 11, 14 arrêt Chatelet RER : A, B, D arrêt Chatelet - Les Halles BUS : 38, 75, 29, N12 arrêt Centre Georges Pompidou 75, 72, 76 arrêt Hôtel de ville",
+  "venue": {
+    "name": "Le Saint Merri",
+    "slug": "le-saint-merri",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Le%20saint%20merri%2014%20rue%20saint%20merri,%2075004%20Paris,%20France,%2075004%20Paris,%20France"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/hole-veille-de-jour-ferie/",
+  "slug": "hole-veille-de-jour-ferie",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/hole-veille-de-jour-ferie/",
+    "en": "https://www.parislgbt.com/en/listing/hole-veille-de-jour-ferie/"
+  }
+}

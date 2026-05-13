@@ -1,0 +1,45 @@
+{
+  "type": "listing",
+  "name": "Hôtel François 1er ****",
+  "categories": [
+    "hebergement"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/890291.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/890191.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/1405334.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75008",
+    "street": "7 Rue Magellan",
+    "lat": 48.8702,
+    "lng": 2.29985
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/1405337-1024x682.jpg",
+  "description": "L’hôtel François 1er est un prestigieux boutique-hôtel haut de gamme situé dans le secteur le plus prisé de Paris, le Triangle d’Or, entre les Champs-Élysées, l’avenue George V et l’avenue Montaigne. Bénéficiant d’une somptueuse décoration raffinée signée par le célèbre architecte d’intérieur français Pierre-Yves Rochon, notre établissement 4 étoiles possède également des installations prestigieuse pour journées d'études et petits séminaires résidentiels en quête de luxe et de convivialité.",
+  "hours": {
+    "friday": "00:00-23:59",
+    "monday": "00:00-23:59",
+    "saturday": "00:00-23:59",
+    "sunday": "00:00-23:59",
+    "thursday": "00:00-23:59",
+    "tuesday": "00:00-23:59",
+    "wednesday": "00:00-23:59"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/loog-francois-1er.jpg",
+  "phone": "+33 1 47 23 44 04",
+  "subtitle": "Votre maison parisienne à deux pas des Champs Elysées",
+  "transport": "Metro 1,2,6 / RER A Charles de Gaulle-Etoile",
+  "website": "https://the-paris-hotel.com/",
+  "source_url": "https://www.parislgbt.com/listing/hotel-francois-1er/",
+  "slug": "hotel-francois-1er",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/hotel-francois-1er/",
+    "en": "https://www.parislgbt.com/en/listing/hotel-francois-1er/"
+  }
+}

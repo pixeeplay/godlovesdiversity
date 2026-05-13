@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Get ready to vogue",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/09/IMG_1116.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75010",
+    "street": "200 quai Valmy",
+    "lat": 48.88183,
+    "lng": 2.36892
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/09/IMG_1116.png",
+  "dates": [
+    {
+      "start": "2025-10-12T17:00:00+02:00"
+    }
+  ],
+  "description": "🏳️‍🌈🏳️‍🌈**Salut les amis ! La Get ready to vogue est de retour venez vous amuser**\n\nComme D’habitude c’est JUSTE BRINGIT !!!!\n\nDate 12 Octobre 2025\n\n Lieux : point éphémère\n\n 200 quai Valmy 75010 Paris\n\nPrix en ligne : 12€\n\nPrix Sur place : 15€\n\nHeure : Dés 17h\n\nLes catégories :\n\n🏆OTA FACE💶\n\n🏆OLD WAY💶\n\n🏆OTA RUNWAY💶\n\n🏆BABY VOGUE\n\n🏆OTA BODY💶\n\n🏆OTA REALNESS💶\n\n🏆DANCE OFF\n\n🏆COM VS COM\n\n🏆OTA SEX SIREN💶\n\n🏆OTA PERFORMANCE💶\n\nDj :FRANDY VINE YARD\n\nMC: SHENRON CDG\n\nBy Legendary Kendrick",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/get-ready-to-vogue/",
+  "slug": "get-ready-to-vogue",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/get-ready-to-vogue/",
+    "en": "https://www.parislgbt.com/en/listing/get-ready-to-vogue/"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "type": "listing",
+  "name": "Hôtel Keppler ****",
+  "categories": [
+    "hebergement"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/bg-main4.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/1231661.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/1231721.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75116",
+    "street": "10 Rue Kepler",
+    "lat": 48.8699,
+    "lng": 2.29731
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/1253791-1024x683.jpg",
+  "description": "Ce havre d'élégance au coeur d'un immeuble Haussmanien du 19ème siècle propose 39 chambres magnifiques dont 5 suites prestigieuses. Certaines d'entre elles s'ouvrent sur une terrasse privative qui offre une vue époustouflante de Paris et de la Tour Eiffel.",
+  "email": null,
+  "hours": {
+    "monday": "00:00-23:59",
+    "tuesday": "00:00-23:59",
+    "wednesday": "00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/72646445_3098971543462879_2064061639216332800_n.jpg",
+  "phone": "+33 1 47 20 65 05",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://fr-fr.facebook.com/Kepplerhotel/",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": "https://twitter.com/hotelkeppler"
+  },
+  "subtitle": "Unique boutique hotel few steps from the Champs Elysees.",
+  "transport": "Metro 1,2,6 /RER A : Charles de Gaulle-Etoile",
+  "website": "https://keppler.fr/",
+  "source_url": "https://www.parislgbt.com/listing/hotel-keppler/",
+  "slug": "hotel-keppler",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/hotel-keppler/",
+    "en": "https://www.parislgbt.com/en/listing/hotel-keppler/"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "type": "listing",
+  "name": "Atomic Cat",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/09/Atomic-Cat-couverture.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2024/09/Atomic-Cat-Logo.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "6, passage thiéré",
+    "lat": 48.85364,
+    "lng": 2.37439
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/09/Atomic-Cat-couverture.jpg",
+  "description": "**ATOMIC CAT**\n\nLe bar Post-Apocalyptique de Paris.\n\n●Bar alternatif ●Events costumés ●Tournages ●Privatisations",
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2024/09/Atomic-Cat-Logo.jpg",
+  "social": {
+    "instagram": "https://www.instagram.com/direct/t/17843304527673222"
+  },
+  "transport": "M° Bastille",
+  "website": "https://linktr.ee/atomiccat",
+  "source_url": "https://www.parislgbt.com/listing/atomic-cat/",
+  "slug": "atomic-cat",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/atomic-cat/",
+    "en": "https://www.parislgbt.com/en/listing/atomic-cat/"
+  }
+}

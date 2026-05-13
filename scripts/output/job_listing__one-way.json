@@ -1,0 +1,61 @@
+{
+  "type": "listing",
+  "name": "One Way",
+  "categories": [
+    "bars",
+    "cruising"
+  ],
+  "tags": [
+    "bears",
+    "fetichisme",
+    "cruising",
+    "gay",
+    "hommes-exclusivement"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2021/12/33167885_1582873221810407_6380639879209943040_n.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "AFTER WORK HIRSUTE",
+      "url": "https://www.parislgbt.com/listing/after-work-hirsute/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "28 Rue Charlot",
+    "lat": 48.86238,
+    "lng": 2.36204
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2021/12/47685768_1851504741613919_568164705143619584_n.jpg",
+  "description": "Connu internationalement, constitué d’un bar au rez-de-chausée, d’une backroom au sous sol et d’un grand fumoir, il vous accueille tous les soirs dans une ambiance conviviale de 17h00 à 2h00 du matin.\n\nVous serez accueillis chaleureusement au zinc par les patrons, Fabrice et Jeff.\n\nDepuis une vintaine d’années le one Way est aussi connu sous le nom « le bar à casquettes » par notre clientèle étrangère. Effectivement son plafond s’orne de casquettes de collection ainsi que celles offertes par les clients. Le pourquoi des casquettes ? Demandez à Jeff ou à Fabrice",
+  "hours": {
+    "friday": "18:00-02:00",
+    "monday": "18:00-02:00",
+    "saturday": "18:00-02:00",
+    "sunday": "18:00-02:00",
+    "thursday": "18:00-02:00",
+    "tuesday": "18:00-02:00",
+    "wednesday": "18:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2021/12/index_r1_c2.jpg",
+  "phone": "01 48 87 46 10",
+  "social": {
+    "facebook": "https://www.facebook.com/Bar-Oneway-1323664041064661",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Ouvert depuis 1991 cet établissement atypique anime la nuit gay parisienne.",
+  "transport": "Metro 8 Filles du Calvaire",
+  "website": "http://www.oneway-paris.fr/",
+  "source_url": "https://www.parislgbt.com/listing/one-way/",
+  "slug": "one-way",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/one-way/",
+    "en": "https://www.parislgbt.com/en/listing/one-way/"
+  }
+}

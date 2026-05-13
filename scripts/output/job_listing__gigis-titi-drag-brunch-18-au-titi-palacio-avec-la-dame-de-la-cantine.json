@@ -1,0 +1,52 @@
+{
+  "type": "event",
+  "name": "Gigi's Titi Drag Brunch #18 au Titi Palacio avec La Dame de la Cantine!",
+  "categories": [],
+  "tags": [
+    "dragrace",
+    "dragfrance",
+    "dragbrunch",
+    "localdrag",
+    "dragparis"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/BRUNCH-18-BANNIERE-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "17 Boulevard Morland",
+    "lat": 48.84996,
+    "lng": 2.3632
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/BRUNCH-18-BANNIERE-1024x536.jpg",
+  "dates": [
+    {
+      "start": "2026-07-05T12:00:00+02:00"
+    }
+  ],
+  "description": "**🥐 EN 2026, GIGI’S TITI DRAG BRUNCH TOUTES LES DEUX SEMAINES 💕☕**\n\n📅 On se retrouve le dimanche 05 juillet de 12h00 à 16h00 au @titi.palacio !\n\n✨ Pour cette édition, Gigi accueille la plus parisienne de Versailles : @ladamedelacantine !\n\n🌿 Une expérience unique et ultra gourmande vous attend dans une véritable jungle urbaine de 500 m², en plein cœur du Marais !\n\nDrag shows, jeux, surprises, hostings et performances s’enchaînent autour d’un buffet géant et coloré, installé sur l’un des plus longs bars de Paris !\n\n📌 INFOS PRATIQUES\n\n🕛 Horaires : 12h00 - 16h00\n\n📍 Adresse : Titi Palacio – 17 Boulevard Morland, 75004 Paris\n\n🍽️ Buffet à volonté – sucré & salé\n\n💶 Tarifs : 38 € adulte // 19 € enfant (-12 ans)\n\n📞 Réservation recommandée sur :\n\n👉 https://www.titipalacio.com/o/brunch/\n\n👉 ou au 01 81 22 40 89\n\n🔗 Lien Shotgun :\n\nhttps://shotgun.live/events/gigi-s-titi-drag-brunch-18-au-titi-palacio-dame-cantine",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/06/images.png",
+  "phone": "01 81 22 40 89",
+  "registration_url": "https://www.titipalacio.com/o/brunch/",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Titi Palacio",
+    "slug": "titi-palacio",
+    "url": "https://www.parislgbt.com/listing/titi-palacio/"
+  },
+  "website": "https://shotgun.live/events/gigi-s-titi-drag-brunch-18-au-titi-palacio-dame-cantine",
+  "source_url": "https://www.parislgbt.com/listing/gigis-titi-drag-brunch-18-au-titi-palacio-avec-la-dame-de-la-cantine/",
+  "slug": "gigis-titi-drag-brunch-18-au-titi-palacio-avec-la-dame-de-la-cantine",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/gigis-titi-drag-brunch-18-au-titi-palacio-avec-la-dame-de-la-cantine/",
+    "en": "https://www.parislgbt.com/en/listing/gigis-titi-drag-brunch-18-au-titi-palacio-avec-la-dame-de-la-cantine/"
+  }
+}

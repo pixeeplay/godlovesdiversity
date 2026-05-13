@@ -1,0 +1,59 @@
+{
+  "type": "event",
+  "name": "AFTERWORK KARAOKE AU SUN CITY",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/09/AFTERWORK-KARAOKE-AU-SUN-CITY-2026.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/09/AFTERWORK-KARAOKE-AU-SUN-CITY-2026-1024x576.jpg",
+  "dates": [
+    {
+      "start": "2026-06-01T19:00:00+02:00"
+    },
+    {
+      "start": "2026-07-01T19:00:00+02:00"
+    },
+    {
+      "start": "2026-08-01T19:00:00+02:00"
+    },
+    {
+      "start": "2026-09-01T19:00:00+02:00"
+    },
+    {
+      "start": "2026-10-01T19:00:00+02:00"
+    }
+  ],
+  "description": "**🎉 L'AFTERWORK KARAOKÉ DU SUN CITY 🛁**\n\nDe 19h à Minuit 🪩\n\nAvec la reine du LIVE : Kyssy Bang Bang ️‍🪭\n\nEt le DJ Cyril Kortez et son joli brin de voix ✨️ ️‍\n\nL'Afterwork pas comme les autres vous souhaite une bonne année 2026 🧿\n\nAlors viens chanter avec nous.\n\nC'est l'heure de la détente, de l'amusement et bien sûr du FUN\n\nViens te chauffer la voix, les micros t'attendent 🎙️ 🧭\n\nAfterwork karaoké du Sun City\n\nChaque premier mercredi",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1943783416346673",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Star City",
+    "slug": "star-city",
+    "url": "https://www.parislgbt.com/listing/star-city/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/afterwork-karaoke-au-sun-city-2026/",
+  "slug": "afterwork-karaoke-au-sun-city-2026",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/afterwork-karaoke-au-sun-city-2026/",
+    "en": "https://www.parislgbt.com/en/listing/afterwork-karaoke-au-sun-city-2026/"
+  }
+}

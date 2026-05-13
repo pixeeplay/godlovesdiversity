@@ -1,0 +1,62 @@
+{
+  "type": "listing",
+  "name": "Le Bears'Den",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "bears",
+    "hommes-exclusivement",
+    "gay",
+    "terrasse",
+    "cruising"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/13012660_1113127642077088_3319174304332687103_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/88218216_2992290880827412_5205006218174660608_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/86374665_2967957276594106_5441322508575834112_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/83445019_2938054736251027_32428824150933504_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75004",
+    "street": "6 Rue des Lombards",
+    "lat": 48.8592,
+    "lng": 2.35004
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/89942853_3031290503594116_2838356805740920832_n.jpg",
+  "description": "La “tanière des ours” (comprendre les gays bien en chair et à la pilosité développée) est le rendez-vous incontournable de l’apéro. Avis aux visiteurs : le dimanche soir est très sympa et international !\n\nLe bar bear de Paris a réussi son pari et conquis une clientèle de plus en plus nombreuse. Est ce le mélange entre l’exiguïté des lieux et la corpulence des clients ? Où que l'on aille, on est obliger de se frotter aux autres et c'est peut-être ce qui en fait le succès ! A l'extérieur, la Terrasse sur la rue piétonne devient le soir totalement inaccessible. A l'intérieur, le bar, la minuscule back room et les deux sous-sols sombres vous attendent pour draguer, observer ou vous relaxer. On peut aussi, sur la petite piste de danse tout en bas, se déhancher le soir sur les derniers dance-hits. Certains soirs, la piste de danse se transforme en dark room.",
+  "email": null,
+  "hours": {
+    "friday": "16:00-05:00",
+    "monday": "16:00-02:00",
+    "saturday": "16:00-05:00",
+    "sunday": "16:00-02:00",
+    "thursday": "16:00-02:00",
+    "tuesday": "16:00-02:00",
+    "wednesday": "16:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/Bearsden_logo.jpg",
+  "phone": "0142710820",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/pages/category/Pub/Bearsden-Paris-306571042732756",
+    "instagram": "https://www.instagram.com/bearsden_bearbar_paris/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "The international bear bar in Paris",
+  "transport": "Metro 1,4,7,11,14 : Chatelet",
+  "venue": null,
+  "website": "https://www.facebook.com/profile.php?id=100064666480783#",
+  "source_url": "https://www.parislgbt.com/listing/le-bearsden/",
+  "slug": "le-bearsden",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-bearsden/",
+    "en": "https://www.parislgbt.com/en/listing/le-bearsden/"
+  }
+}

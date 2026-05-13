@@ -1,0 +1,21 @@
+{
+  "type": "category",
+  "name": "Boutiques",
+  "categories": [
+    "boutiques"
+  ],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/category/boutiques/",
+  "slug": "boutiques",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/category/boutiques/",
+    "en": "https://www.parislgbt.com/en/category/boutiques/"
+  }
+}

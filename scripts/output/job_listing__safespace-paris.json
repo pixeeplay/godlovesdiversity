@@ -1,0 +1,61 @@
+{
+  "type": "listing",
+  "name": "Safespace Paris",
+  "categories": [
+    "sante"
+  ],
+  "tags": [
+    "bears",
+    "bi",
+    "gay",
+    "hommes-exclusivement",
+    "naturisme",
+    "queer",
+    "spa"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/03/IMG_2250.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/03/IMG_2143-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/03/IMG_2745-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/03/typorama.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/03/IMG_2142-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/03/IMG_2125.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/03/6E11A530-DDB7-401F-A62A-4D5C2C9B69B9.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/03/CA951E07-5A3E-4093-B824-F9493393D82E.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/03/IMG_2572-scaled.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75010",
+    "street": "39 Boulevard de Magenta",
+    "lat": 48.87247,
+    "lng": 2.35922
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/03/IMG_2991-683x1024.jpeg",
+  "description": "Safe Space, comme son nom l’indique peopose un espace de bien-être & de détente dédié au massage masculin & médiations corporelles.\n\nmon massage est un massage signature mélange de massage détente type californien, Chi Nei Tsang, énergétique Tantra\n\nApproche à la méditation & accompagnement possible à travers des séances régulières : massages ou massage + méditation",
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "24h/24",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/03/059B7406-5292-4D40-8C4F-6B3E32873CFA.png",
+  "phone": "0626382410",
+  "social": {
+    "instagram": "https://www.instagram.com/safespace_paris?igsh=Mm9kam02Y3Fma214&utm_source=qr"
+  },
+  "subtitle": "Bien-être lgbt (massage, méditation) & Médiations Corporelles",
+  "transport": "Gare de l’est",
+  "source_url": "https://www.parislgbt.com/listing/safespace-paris/",
+  "slug": "safespace-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/safespace-paris/",
+    "en": "https://www.parislgbt.com/en/listing/safespace-paris/"
+  }
+}

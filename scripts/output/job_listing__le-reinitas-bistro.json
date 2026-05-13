@@ -1,0 +1,49 @@
+{
+  "type": "listing",
+  "name": "Le Reinitas Bistro",
+  "categories": [
+    "restaurant"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2021/07/reinitas-4.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/07/reinitas-3.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/07/reinitas-2.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "32 Rue du Temple",
+    "lat": 48.85935,
+    "lng": 2.35411
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2021/07/le-reinitas-photo.jpg",
+  "description": "Le nouveau bistro du Marais : brunch, déjeuner, dîner... avec des produits frais !",
+  "hours": {
+    "friday": "09:00-23:00",
+    "monday": "09:00-23:00",
+    "saturday": "09:00-23:00",
+    "sunday": "09:00-23:00",
+    "thursday": "09:00-23:00",
+    "tuesday": "09:00-23:00",
+    "wednesday": "09:00-23:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2021/07/Le-Reinitas-Bistro-logo.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/reinitasbistro",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Le nouveau bistro du Marais",
+  "transport": "M° 11 Hôtel de Ville",
+  "source_url": "https://www.parislgbt.com/listing/le-reinitas-bistro/",
+  "slug": "le-reinitas-bistro",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-reinitas-bistro/",
+    "en": "https://www.parislgbt.com/en/listing/le-reinitas-bistro/"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "type": "event",
+  "name": "Attention à la Drag #9",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/03/AALD-9-Horizontal.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75010",
+    "street": "200 Quai de Valmy",
+    "lat": 48.88146,
+    "lng": 2.36854
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/03/AALD-9-Horizontal-1024x576.jpg",
+  "dates": [
+    {
+      "start": "2026-05-13T20:00:00+02:00"
+    },
+    {
+      "start": "2026-06-17T20:00:00+02:00"
+    }
+  ],
+  "description": "**Où donc est passé le Talon d’Or ?!**\n\nMes chatons, l’heure est grave. Le Talon d’Or, l’objet de toutes les convoitises, a été dérobé. Plus de paillettes, plus de gloire, juste un vide sidéral dans mon dressing et une enquête qui s'annonce... chaotique.\n\nLe mercredi 11 mars, Jessica Triss troque sa perruque de gala pour celle de Game Mistress impitoyable.\n\nSa mission ? Guider (ou perdre, c'est selon son humeur) trois comparses dans une quête moderne où le moindre faux pas se paie en punchlines.\n\n**LE CASTING DES ENQUÊTEURICES (LA \"PARTY\")**\n\n - Miroslav Toi Les Mains : Le King clownesque venu du froid. Il apporte son gras, ses névroses et ses poils de chat. Sera-t-il l’atout propreté ou le grain de sable dans l'engrenage ?\n\n- Oona : La vision graphique. Mi-Bob l’Éponge, mi-Bella Hadid. Un glitch visuel capable de résoudre une énigme sur un simple battement de cils (ou de la saboter avec panache).\n\n- Sciatique : La barde aux lombaires fragiles. Danseuse et actrice, elle se cambrera jusqu'au bout pour la victoire. Dommage qu'elle ne sache pas viser droit, mais l'intention est là.\n\n**LE PROGRAMME**\n\n 100% Jeu & Impro : Pas de filet, pas de script.\n\n 100% Chaos : Parce que l'ordre, c'est ennuyeux (sauf dans mes comptes).\n\n 0% Lipsync : On garde les micros, on sort les neurones.\n\nRendez-vous le mercredi 11 mars à 20h au Point Éphémère.\n\n💃🏻 Avec :\n\n 👩🏻‍🏫 Jessica Triss\n\n 💖 Miroslav Toi Les Mains\n\n 💖 Oona\n\n 💖 Sciatique\n\n🎟️ [**TICKETS Tarif 9,50 €**](https://dice.fm/event/2w8m67-attention-la-drag-9-11th-mar-point-ephmre-paris-tickets)🎟️",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://dice.fm/event/2w8m67-attention-la-drag-9-11th-mar-point-ephmre-paris-tickets",
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Point Éphémère",
+    "slug": "point-ephemere",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Point%20%C3%89ph%C3%A9m%C3%A8re"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/attention-a-la-drag-9/",
+  "slug": "attention-a-la-drag-9",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/attention-a-la-drag-9/",
+    "en": "https://www.parislgbt.com/en/listing/attention-a-la-drag-9/"
+  }
+}

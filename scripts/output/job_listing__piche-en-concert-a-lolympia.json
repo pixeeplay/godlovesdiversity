@@ -1,0 +1,43 @@
+{
+  "type": "event",
+  "name": "PICHE en concert à l'Olympia",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/39357_image_594318646_1124292319891401_3076030002838563081_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/01/39357_image_594318646_1124292319891401_3076030002838563081_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-11-24T20:00:00+02:00"
+    }
+  ],
+  "description": "https://pichecometrue.lnk.to/OlympiaFa\n\nPICHE est une artiste unique en France : chanteur, danseur, rappeur et…drag queen ! Après une participation à la saison 2 de Drag Race France, PICHE veut conquérir le game en tant que Drag Queen, et histoire de corser le tout, elle le fera en rappant.\n\nAprès 3 concerts complets à Paris (Les Étoiles, l’Élysée Montmartre, La Cigale) et une première tournée en 2025, PICHE se prépare à monter sur la scène mythique de l’Olympia le 24 novembre 2026.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1000432852303675",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/piche-en-concert-a-lolympia/",
+  "slug": "piche-en-concert-a-lolympia",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/piche-en-concert-a-lolympia/",
+    "en": "https://www.parislgbt.com/en/listing/piche-en-concert-a-lolympia/"
+  }
+}

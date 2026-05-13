@@ -1,0 +1,58 @@
+{
+  "type": "listing",
+  "name": "The Labo",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "handicap",
+    "jeunes-etudiants",
+    "drags",
+    "terrasse",
+    "djs-at-work",
+    "gay"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/79011695_2603023916440761_8315138899319980032_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/7791_933926920017144_6909657751866495593_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/72553587_2465757096834111_4092181570465562624_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75001",
+    "street": "37 Rue des Lombards",
+    "lat": 48.85974,
+    "lng": 2.3476
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/generiqueLABO.jpg",
+  "description": "Ce bar-club avec terrasse propose un happy hour, des cocktails, des shows, des soirées à thème et un DJ live.\n\nEn plein coeur de la capitale, votre nouveau lieu branché où vos jours sont plus doux et vos nuits encore plus folles…",
+  "email": null,
+  "hours": {
+    "monday": "15:00-04:00",
+    "tuesday": "11:00-03:00",
+    "wednesday": "11:00-03:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/04/thelabo_logo.jpg",
+  "phone": "01 40 28 02 52",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/teamlabobarclubparis",
+    "instagram": "https://www.instagram.com/thelabobarclubparis/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "The LABO Bar Club Paris, THE NEW PLACE TO BE !!",
+  "transport": "Metro 1,4,14 / RER A,B,D Chatelet Les Halles",
+  "venue": null,
+  "website": "http://thelabo.fr/",
+  "source_url": "https://www.parislgbt.com/listing/the-labo/",
+  "slug": "the-labo",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/the-labo/",
+    "en": "https://www.parislgbt.com/en/listing/the-labo/"
+  }
+}

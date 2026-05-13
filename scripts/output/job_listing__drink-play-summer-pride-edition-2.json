@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "DRINK & PLAY : SUMMER PRIDE EDITION",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/SUMMER-PRIDE.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75007",
+    "street": "48 rue de Lille",
+    "lat": 48.85882,
+    "lng": 2.32947
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/SUMMER-PRIDE-709x1024.jpg",
+  "dates": [
+    {
+      "start": "2026-06-20T19:30:00+02:00"
+    }
+  ],
+  "description": "En l'honneur du mois des fiertés et du retour de l'été, Curious Creature Productions organise DRINK & PLAY : SUMMER PRIDE EDITION.\n\nCinq courtes pièces inédites en anglais sur des thèmes LGBT+ seront présentées sous forme de lecture mise en scène. Ensuite, un généreux apéro-buffet permettra d'échanger entre l'équipe et les spectateurs de manière informelle.\n\nQuand : ouverture des portes à 19h30, samedi 20 juin.\n\nOù : Le Pavé d'Orsay, 48 rue de Lille, 75007 Paris.\n\nModalités pratiques :\n\n🎟️ [**TICKETS**](https://subdomain-159945.placeminute.com/) 🎫\n\nLes billets coûtent 15€ et peuvent être achetés via prévente ou directement à l'entrée.\n\nLe billet inclut le spectacle et l'apéro-buffet.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://subdomain-159945.placeminute.com/",
+  "social": {
+    "facebook": "https://www.facebook.com/events/3452650328243843",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Pavé d'Orsay",
+    "slug": "le-pave-dorsay",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Le%20Pav%C3%A9%20d%27Orsay"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/drink-play-summer-pride-edition-2/",
+  "slug": "drink-play-summer-pride-edition-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/drink-play-summer-pride-edition-2/",
+    "en": "https://www.parislgbt.com/en/listing/drink-play-summer-pride-edition-2/"
+  }
+}

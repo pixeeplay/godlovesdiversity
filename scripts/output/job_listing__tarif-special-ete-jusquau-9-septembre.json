@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "TARIF SPECIAL ETE JUSQU'AU 9 SEPTEMBRE",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/05/TribuM-Artishow0525-X4_page-0001-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "3 cité souzy",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/05/TribuM-Artishow0525-X4_page-0001-1-1024x691.jpg",
+  "dates": [
+    {
+      "start": "2025-09-09T00:00:00+02:00"
+    }
+  ],
+  "description": "Comme chaque année, tarif spécial été 89,00 (hors boissons) au lieu de 119,00",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/Artishow_logo2024-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Cabaret Artishow",
+    "slug": "artishow-cabaret",
+    "url": "https://www.parislgbt.com/listing/artishow-cabaret/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/tarif-special-ete-jusquau-9-septembre/",
+  "slug": "tarif-special-ete-jusquau-9-septembre",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/tarif-special-ete-jusquau-9-septembre/",
+    "en": "https://www.parislgbt.com/en/listing/tarif-special-ete-jusquau-9-septembre/"
+  }
+}

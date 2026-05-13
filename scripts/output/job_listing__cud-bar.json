@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "name": "Cud Bar",
+  "categories": [
+    "bars",
+    "clubs"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "djs-at-work",
+    "gay",
+    "drags",
+    "jeunes-etudiants",
+    "lesbien",
+    "queer",
+    "bi",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/85029573_3322875844394233_6037573520991453184_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/88241852_3322875691060915_6172606459554037760_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/87189132_3305149696166848_5794211998166155264_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/86702534_3285162351498916_250010943948324864_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "12 Rue des Haudriettes",
+    "lat": 48.86186,
+    "lng": 2.35724
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/03/69499139_2903151449700010_8919731262210441216_o-1024x768.jpg",
+  "description": "Le Cud Bar est l'un des établissements phares du quartier du Marais.\n\nSitué au cœur de Paris, ce bar de nuit est ouvert tous les jours de 23h à l'aube.\n\nC'est le repère des noctambules avertis qui aime se retrouver dans un lieu chaleureux et tout à la fois intimiste.\n\nUne clientèle de tout âge et de tout style s'y donne rendez vous tous les soirs, ouvertement Gay Friendly, le Cud Bar attire des amoureux de la fête du monde entier.",
+  "hours": {
+    "monday": null,
+    "tuesday": "23:00-06:00",
+    "wednesday": "23:00-06:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/28954414_2059432044071959_763498208139092552_o.jpg",
+  "phone": "01 42 77 44 12",
+  "social": {
+    "facebook": "https://www.facebook.com/cudbar",
+    "instagram": "https://instagram.com/cudofficiel"
+  },
+  "subtitle": "Le temple de la nuit du Marais",
+  "transport": "Metro 11 : Rambuteau",
+  "source_url": "https://www.parislgbt.com/listing/cud-bar/",
+  "slug": "cud-bar",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/cud-bar/",
+    "en": "https://www.parislgbt.com/en/listing/cud-bar/"
+  }
+}

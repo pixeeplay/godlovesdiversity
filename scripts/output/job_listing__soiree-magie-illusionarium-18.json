@@ -1,0 +1,49 @@
+{
+  "type": "event",
+  "name": "Soirée Magie \"ILLUSIONARIUM\"",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/01/samedi-magie-scaled-1-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "7 rue du Trésor",
+    "lat": 48.85701,
+    "lng": 2.35783
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/01/samedi-magie-scaled-1-1-1024x1024.jpg",
+  "dates": [
+    {
+      "start": "2026-05-22T20:00:00+02:00"
+    },
+    {
+      "start": "2026-06-05T20:00:00+02:00"
+    }
+  ],
+  "description": "Bonjour les ami(e)s,\n\nvenez découvrir notre soirée illusionarium : une soirée dédiée à la magie et à l’illusion. Mathias notre talentueux magicien vas vous surprendre, ouvrez bien vos yeux, restez concentré-e, car tout peut arriver !\n\nDRINK, EAT, ENJOY",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/04/carte-reto-last--300x300.png",
+  "phone": "01 42 71 12 36",
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Comptoir du Trésor",
+    "slug": "le-comptoir-du-tresor",
+    "url": "https://www.parislgbt.com/listing/le-comptoir-du-tresor/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/soiree-magie-illusionarium-18/",
+  "slug": "soiree-magie-illusionarium-18",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/soiree-magie-illusionarium-18/",
+    "en": "https://www.parislgbt.com/en/listing/soiree-magie-illusionarium-18/"
+  }
+}

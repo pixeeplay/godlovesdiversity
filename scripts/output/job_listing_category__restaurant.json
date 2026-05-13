@@ -1,0 +1,19 @@
+{
+  "type": "category",
+  "name": "Restaurants",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/category/restaurant/",
+  "slug": "restaurant",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/category/restaurant/",
+    "en": "https://www.parislgbt.com/en/category/restaurant/"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "AFTER WORK HIRSUTE",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/43205_image_680960907_1632054551741502_6604585444829740516_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/43205_image_680960907_1632054551741502_6604585444829740516_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-14T18:00:00+02:00"
+    }
+  ],
+  "description": "Venez découvrir le nouvel événement au ONEWAY, un after work plein de poil !",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/26851474904476306",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "One Way",
+    "slug": "one-way",
+    "url": "https://www.parislgbt.com/listing/one-way/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/after-work-hirsute/",
+  "slug": "after-work-hirsute",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/after-work-hirsute/",
+    "en": "https://www.parislgbt.com/en/listing/after-work-hirsute/"
+  }
+}

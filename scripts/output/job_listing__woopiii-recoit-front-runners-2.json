@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Woopiii reçoit Front Runners",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42940_image_679461389_1574947754632051_394697288696277075_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42940_image_679461389_1574947754632051_394697288696277075_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-20T18:00:00+02:00"
+    }
+  ],
+  "description": "Une petite bière après le boulot ou une grosse soirée en vue ? Direction le Freedj, en plein cœur du Marais, pour la soirée WOOPIII qui réveille tes mercredis soirs ! ️‍ Profite d’un Happy Hour non-stop jusqu’à 22h et d’une distribution de frites offerte en début de soirée par nos amis Les Marronniers . WOOPIII est une soirée gay et engagée qui met en lumière chaque semaine une ou plusieurs associations LGBT+ pour promouvoir la visibilité, le vivre-ensemble et la lutte contre les discriminations ✊ . Au programme : musique pop et festive, tubes internationaux, variété française et une ambiance bon enfant ✨ . Tonya et Lola, nos animatrices de choc, t’accueillent avec toute leur énergie pour une soirée pleine de joie, de rires et de fierté !",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1280443004238181",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Freedj",
+    "slug": "freedj",
+    "url": "https://www.parislgbt.com/listing/freedj/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/woopiii-recoit-front-runners-2/",
+  "slug": "woopiii-recoit-front-runners-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/woopiii-recoit-front-runners-2/",
+    "en": "https://www.parislgbt.com/en/listing/woopiii-recoit-front-runners-2/"
+  }
+}

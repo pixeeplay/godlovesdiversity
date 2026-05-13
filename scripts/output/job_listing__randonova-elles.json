@@ -1,0 +1,49 @@
+{
+  "type": "listing",
+  "name": "Randonova Elles",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "femmes-exclusivement",
+    "lesbien"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/09/Velo.jpg",
+  "description": "Qui sommes-nous ?\n\n Des amoureuses de nature, de sport et de tolérance. Créée par des femmes pour des femmes, de tous âges, Randonova vous propose des balades à vélo de 1 et 7 jours en France et en Espagne. Nos pratiques sportives, activités culturelles favorisent la rencontre entre femmes, l’échange et l’ouverture d’esprit tout en visant à renforcer des liens de solidarité.\n\n**Nous proposons des balades, des séjours à vélo, à ski, en kayak, ainsi que des stages de chant et de danse dans le but de :**\n\nFavoriser aux cours de ces balades loisirs en pleine nature en France et à l’étranger, la rencontre, l’échange et l’ouverture d’esprit et visant à renforcer des liens de solidarité.\n\n Promouvoir le bien-être sous toutes ses formes en associant les séjours vélo à d’autres pratiques sportives, culturelles, artistiques et diverses approches de développement personnel.\n\n Transmettre les savoir-faire des activités entrant dans le champ de l’association par des ateliers, des formations, des stages.\n\n permettre à toute personne, quelque soit son orientation sexuelle, la pratique des sports et d’activités de loisirs.\n\n Favoriser l'intégration et la visibilité des minorités au sein de la société, par une pratique commune du sport dans un esprit de convivialité, de tolérance et d’épanouissement personnel\n\n L'association s'engage à respecter l'anonymat de ses membres, tant au sein qu'à l'extérieur du groupe selon les informations fournies par ses membres tels que mentionnés sur le bulletin d’adhésion. En cas de modifications de ses choix, l’adhérent devra informer l’association par lettre recommandée avec accusé de réception.\n\n L’association n’a d’engagement ni sur le plan politique, ni sur le plan syndical, ni sur le plan religieux. De la même façon, un adhérent ne peut engager l’association au service de ses convictions personnelles.",
+  "email": null,
+  "hours": {
+    "monday": "Uniquement sur rendez-vous",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/08/logo.jpg",
+  "phone": "+33744712323",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/profile.php?id=61550089062327",
+    "instagram": "https://www.instagram.com/randonova_elles?igsh=OGdyZDg4YmdwZGtr&utm_source=qr",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Créée par des femmes pour des femmes, vous propose des balades à vélo à la journée et en séjours de 2 à 7 jours en France et en Espagne. Nos pratiques sportives, activités culturelles favorisant la rencontre entre femmes, l’échange et l’ouverture d’esprit en visant à renforcer des liens de solidarité.",
+  "transport": "ligne 1 saint paul",
+  "website": "https://www.randonova.com/",
+  "source_url": "https://www.parislgbt.com/listing/randonova-elles/",
+  "slug": "randonova-elles",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/randonova-elles/",
+    "en": "https://www.parislgbt.com/en/listing/randonova-elles/"
+  }
+}

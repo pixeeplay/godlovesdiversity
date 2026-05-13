@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Visite guidée : Père Lachaise Queer",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/42-1-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/03/42-1-1024x683.jpg",
+  "dates": [
+    {
+      "start": "2026-05-24T15:00:00+02:00"
+    }
+  ],
+  "description": "Venez à la découverte du plus Queer des cimetières parisiens. Votre guide vous emmène, au cours d'une balade de 2 heures, au coeur de cet incroyable havre de paix pour aller à la rencontre de nombreuses personalités Queer aussi riches que variées.\n\nL'occasion d'en savoir plus sur les célèbres Oscar Wilde, Marcel Proust, Colette ou Isadora Duncan, mais aussi de découvrir d'autres vies et destins marquants pour l'histoire Queer de Paris également.\n\n**Merci de vous présenter à 14h50, 10 minutes avant le départ de la visite.**\n\n**Ticket non échangeable et non remboursable.**\n\nCes visites sont un safe space pour toutes les personnes de la communauté LGBTQIA+. Nos guides se réservent le droit de refuser tout.e participant.e tenant des propos haineux au cours des visites.\n\n🎟️**RESERVATIONS ICI :** 🎟️\n\nhttps://www.billetweb.fr/pere-lachaise-queer5",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/02/Queer-Tours-France-logo-1-300x300.webp",
+  "phone": null,
+  "registration_url": "https://www.billetweb.fr/pere-lachaise-queer5",
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Queer Tours France",
+    "slug": "queer-tours-france",
+    "url": "https://www.parislgbt.com/listing/queer-tours-france/"
+  },
+  "website": "https://www.billetweb.fr/pere-lachaise-queer5",
+  "source_url": "https://www.parislgbt.com/listing/visite-guidee-pere-lachaise-queer-2/",
+  "slug": "visite-guidee-pere-lachaise-queer-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/visite-guidee-pere-lachaise-queer-2/",
+    "en": "https://www.parislgbt.com/en/listing/visite-guidee-pere-lachaise-queer-2/"
+  }
+}

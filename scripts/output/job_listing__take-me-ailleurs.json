@@ -1,0 +1,30 @@
+{
+  "type": "event",
+  "name": "TAKE ME AILLEURS",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/wp-content/uploads/listing-uploads/cover/2026/04/TakeMeAilleurs_Instagram.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "street": "1 Place De La Pointe, 93500 Pantin, France",
+    "lat": 48.89486,
+    "lng": 2.41547
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/TakeMeAilleurs_Instagram-819x1024.png",
+  "dates": [
+    {
+      "start": "2026-05-15T20:00:00+02:00"
+    }
+  ],
+  "description": "Dans les montagnes reculées qui bordent la pas-si-lointaine contrée de Pantin, on raconte qu’un mythique club se cache au plus haut des sommets. On y trouve une fête infinie et interlope où le nectar et l’ambroisie coulent à flots, où les backstage sont des espaces démocratiques et ouverts à toustes (surtout aux artistes !), où les drag sont prêt.e.s à l’heure et où les groupes électrogènes ne s’éteignent jamais sans prévenir. Mais pour l’atteindre, il ne suffit pas d’être un simple fêtard, non ! Seule une expédition fabuleuse composée de drags, de DJs et de performeureuses vous permettra de réussir l’impossible ascension vers l’El Dorado d’altitude.\n\n**Rejoins-nous au Dock B pour la TAKE ME AILLEURS : une soirée qui réunit cabaret, performances et teuf clubbing le vendredi 15 Mai prochain de 20h à 6h !**\n\nPour cette date, plusieurs collectifs regroupent leur force :\n\n*   Les premiers de cordée, le Bal Surprise, nous attendent au refuge pour la première partie de soirée. Avec leur cabaret dansant iels sauront vous réchauffer avant de chausser les crampons.\n*   Pour traverser les crevasses inter-fessières les plus profondes, on compte sur Trou Terrible / Terrible Trou qui sortiront leur drag le plus elevated pour l’occasion.\n*   Enfin, pour s’ambiancer entre le camp de base et le pic de deuxième partie de soirée, la team Fausse Sceptique habituée des free(ze) party amènera thermos techno et doudounes hard house.\n*   Pour garder l’équilibre sur les crêtes, on invite l’indispensable Oreille Interne pour déclencher des avalanches de kicks.\n*   On raconte aussi qu’on peut parfois croiser dans la teuf l’incroyable Power Pouf, une espèce mythique disparue depuis peu mais dont les remix pop font trembler les foules.\n\n**Au programme :**\n\n*   20h-0h : Cabaret dansant par Bal Surprise et la Trou Terrible / Terrible Trou\n*   0h - 6h : sur la main stage, Fausse Sceptique invite Oreille Interne et sur la petite scène, une contre-soirée par la Powerpouf et la Trou Terrible / Terrible Trou.\n\n🎟️ [**BILLETS**](https://shotgun.live/fr/events/take-me-ailleurs-cabaret-club) 🎫\n\n**NO HOMOPHOBIA NO FOLLOPHOBIA NO TRANSPHOBIA NO FASCISM NO RACISM NO SEXISM. En cas de problèmes de VHSS, une équipe sera présente tout au long de la soirée.**",
+  "registration_url": "https://shotgun.live/fr/events/take-me-ailleurs-cabaret-club",
+  "source_url": "https://www.parislgbt.com/listing/take-me-ailleurs/",
+  "slug": "take-me-ailleurs",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/take-me-ailleurs/",
+    "en": "https://www.parislgbt.com/en/listing/take-me-ailleurs/"
+  }
+}

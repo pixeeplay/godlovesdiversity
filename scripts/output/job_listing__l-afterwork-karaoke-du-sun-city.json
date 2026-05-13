@@ -1,0 +1,42 @@
+{
+  "type": "event",
+  "name": "L'AFTERWORK KARAOKÉ DU SUN CITY",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/08/20-Mai-LAFTERWORK-KARAOKE-DU-SUN-CITY.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/08/20-Mai-LAFTERWORK-KARAOKE-DU-SUN-CITY-726x1024.jpg",
+  "dates": [
+    {
+      "start": "2026-05-20T19:00:00+02:00"
+    }
+  ],
+  "description": "🎉**L'AFTERWORK KARAOKÉ DU SUN CITY 🛁**\n\nDe 19h à Minuit 🪩\n\nAvec la reine du LIVE : Kyssy Bang Bang ️‍🪭\n\nEt le DJ Cyril Kortez et son joli brin de voix ✨️ ️‍\n\nAlors rejoins-nous à L' AFTERWORK KARAOKÉ du SUN CITY 🍆\n\nViens te chauffer la voix, les micros t'attendent 🎙️ 🧭\n\nC'est l'heure de la détente, de l'amusement et bien sûr du FUN ️‍ ✨️\n\nBien sur sans oublier bière et softs ✨",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/1377203_327458094126440_6064299126558260337_n-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Sun City",
+    "slug": "sun-city",
+    "url": "https://www.parislgbt.com/listing/sun-city/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/l-afterwork-karaoke-du-sun-city/",
+  "slug": "l-afterwork-karaoke-du-sun-city",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/l-afterwork-karaoke-du-sun-city/",
+    "en": "https://www.parislgbt.com/en/listing/l-afterwork-karaoke-du-sun-city/"
+  }
+}

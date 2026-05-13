@@ -1,0 +1,63 @@
+{
+  "type": "listing",
+  "name": "La Bellevilloise",
+  "categories": [
+    "clubs",
+    "bars"
+  ],
+  "tags": [
+    "terrasse",
+    "djs-at-work"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/02/la-bellevilloise-terrasse.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/02/la-bellevilloise-club.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/02/Le_Sens_De_La_Fete_Insta-1536x1536-1.webp"
+  ],
+  "linked_events": [
+    {
+      "title": "LA MONA NYC SPECIAL : Musclecars, Pal Joey, Nick V, Kakashi, André ... Hustle Dance Class",
+      "url": "https://www.parislgbt.com/listing/la-mona-nyc-special-musclecars-pal-joey-nick-v-kakashi-andre-hustle-dance-class/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86833,
+    "lng": 2.39212
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/02/Le_Sens_De_La_Fete_Insta-1536x1536-1-1024x1024.webp",
+  "description": "Un lieu indépendant, artistique, festif ! Fondée en 1877 aux lendemains de la Commune, La Bellevilloise, première coopérative parisienne, avait pour projet de permettre aux gens modestes l’accès à l’éducation politique et à la culture.\n\nLieu de résistance, des premiers échanges commerciaux « du producteur au consommateur », commerce équitable avant l’heure, et de spectacle, La Bellevilloise à joué de 1910 à 1949 un rôle de premier plan dans la vie économique et culturelle de l’Est Parisien.\n\nDepuis 2005, Renaud Barillet, Fabrice Martinez et Philippe Jupin, un trio d’agitateurs venu du spectacle vivant, de la production et des médias ont rouvert aux Parisiens ce lieu de mémoire de l’histoire de Paris avec un projet fort : redonner vie à l’esprit de La Bellevilloise en créant un grand lieu indépendant d’activités artistiques et évènementielles pour le public, les entreprises et les médias, unique à Paris.\n\nMalgré cette frénésie ambiante, on se sent immédiatement chez soi dans cet espace atypique de 2000 m2. Sans doute parce que ce haut lieu de résistance fondée en 1877 et repris par la fine équipe de Cultplace a su garder son ADN et défend toujours un esprit frondeur et innovant.\n\nAujourd'hui, La Bellevilloise dédie ses 2000m2 à toutes les formes d’expressions de d’expérimentations :\n\n• Pour tous : spectacles, festivals, concerts, clubbing, salons, expositions, défilés, cours et stages, débats, représentation cinématographique, rassemblements thématiques…\n\nPour réserver au café-restaurant : 01 46 36 07 07\n\n• Pour ceux qui entreprennent : séminaires, team building, conférences, réunions, congrès, colloques, lancement de produits, cocktails, anniversaires…\n\nPour réserver nos espaces : 01 53 27 35 75",
+  "email": null,
+  "hours": {
+    "friday": "18:30-05:30",
+    "monday": null,
+    "saturday": "18:30-05:30",
+    "sunday": "11:30-16:00",
+    "thursday": "18:30-01:00",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/02/la-bellevilloise-logo.jpg",
+  "phone": "01 46 36 07 07",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/labellevilloiseparis",
+    "instagram": "https://www.instagram.com/labellevilloise/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Depuis sa création en 1877, La Bellevilloise a pour projet de permettre à tous l’accès à la culture.",
+  "transport": "Métro : Ménilmontant - Ligne 2 Gambetta - Ligne 3 Bus : 26, 61, 69, 96 Noctilien : N16 et N34",
+  "venue": null,
+  "website": "http://www.labellevilloise.com/",
+  "source_url": "https://www.parislgbt.com/listing/la-bellevilloise/",
+  "slug": "la-bellevilloise",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-bellevilloise/",
+    "en": "https://www.parislgbt.com/en/listing/la-bellevilloise/"
+  }
+}

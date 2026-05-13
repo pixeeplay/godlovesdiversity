@@ -1,0 +1,53 @@
+{
+  "type": "listing",
+  "name": "Coq à l'âne",
+  "categories": [
+    "bars"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/01/62595712_2316701475264425_3644568312328749056_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/01/45030890_2171318973136010_2749310648952291328_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": "28 rue Croix des Petits Champs",
+    "lat": 48.86401,
+    "lng": 2.3402
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/01/49056749_2211741202427120_40948986999209984_n-1024x1024.jpg",
+  "description": "Bar parisien engagé au cœur du 1er arrondissement, véritable lieu de vie et de diffusion culturelle avec des dédicaces, drags shows et humour. Le bar accueille de nombreuses associations sportives LGBT.",
+  "email": null,
+  "hours": {
+    "friday": "16:00-02:00",
+    "monday": "16:00-00:00",
+    "saturday": "16:00-02:00",
+    "sunday": null,
+    "thursday": "16:00-02:00",
+    "tuesday": "16:00-00:00",
+    "wednesday": "16:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/01/coqalane_logo.png",
+  "phone": "01 42 36 74 10",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/coqalaneparis",
+    "instagram": "https://www.instagram.com/coqalaneparis/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Bistrot Parisien - Paris 1er",
+  "transport": "M°1 Louvres",
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/coq-a-lane/",
+  "slug": "coq-a-lane",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/coq-a-lane/",
+    "en": "https://www.parislgbt.com/en/listing/coq-a-lane/"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "type": "listing",
+  "name": "La Bouche Cabaret",
+  "categories": [
+    "cabarets",
+    "clubs"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Posts-La-Bouche.002.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Posts-La-Bouche.004.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Posts-La-Bouche.003.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Posts-La-Bouche.086-show.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Posts-La-Bouche.088-show.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Posts-La-Bouche.005.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Posts-La-Bouche.085-show.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Posts-La-Bouche.087-show.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Posts-La-Bouche.001.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2026/01/Posts-La-Bouche.084-show.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/09/La-Bouche-Cabaret.jpg-copie.jpg",
+  "description": "Fondé en février 2022 et autogéré par quatre artistes - Mascare, Soa de Muse, Bili Bellegarde et Grand Soir - La Bouche est un cabaret queer aux identités multiples et complémentaires, né dans un sous-sol en béton près de la Porte de Clignancourt, à Paris.\n\nFier héritier de la scène cabaret queer et underground, le spectacle est multidisciplinaire, festif et subversif, mêlant piano, voix, cagoules, archives LGBT, spoken word, néons, lipsync et récits personnels.\n\nDe Monique Wittig à Céline Dion ou Sexy Sushi, en passant par Michel Berger et Malavoi, les performances se renouvellent constamment selon l’actualité, les hommages et les inspirations propres à chaque artiste; pourtant, toutes restent liées par une essence commune : une imagination sexy, punk, pop, sincère, poétique et toujours politique.\n\nLe Cabaret La Bouche se positionne comme une archive joyeuse et vivante des histoires collectives, animée par le besoin, le devoir et le désir de transmettre les mémoires des luttes intersectionnelles et des droits des minorités.\n\nSur scène, les artistes chantent et parlent d’hier et de demain, de lesbiennes, de racisme, de queerness, de classes sociales et de violences systémiques ; mais surtout, d’espoir et d’amour.\n\nAvec tendresse et sincérité, ils invitent le public à reprendre son souﬀle et à revendiquer sa liberté. C’est, à tous égards, cathartique.",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/01/logo-la-bouche.png",
+  "phone": "06 42 68 42 92",
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/labouche_cabaret",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "En trourné à Paris et en France",
+  "website": "https://www.la-bouche-cabaret.com/",
+  "source_url": "https://www.parislgbt.com/listing/la-bouche-cabaret/",
+  "slug": "la-bouche-cabaret",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-bouche-cabaret/",
+    "en": "https://www.parislgbt.com/en/listing/la-bouche-cabaret/"
+  }
+}

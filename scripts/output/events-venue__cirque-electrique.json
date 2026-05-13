@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "Cirque Electrique",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Velu.e Cabaret & Afterwork - Le Cirque Electrique * Cirque Electrique",
+      "url": "https://www.parislgbt.com/listing/velu-e-cabaret-afterwork-le-cirque-electrique-7/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/cirque-electrique/",
+  "slug": "cirque-electrique",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/cirque-electrique/",
+    "en": "https://www.parislgbt.com/en/events-venue/cirque-electrique/"
+  }
+}

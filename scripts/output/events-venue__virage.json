@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "Virage",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Opening DISCO DISCO x Virage : Deborah Aime La Bagarre B2B Herr Krank, Joe Lewandowski, Mon Cher Guy * virage",
+      "url": "https://www.parislgbt.com/listing/opening-disco-disco-x-virage-deborah-aime-la-bagarre-b2b-herr-krank-joe-lewandowski-mon-cher-guy/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/virage/",
+  "slug": "virage",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/virage/",
+    "en": "https://www.parislgbt.com/en/events-venue/virage/"
+  }
+}

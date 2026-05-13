@@ -1,0 +1,52 @@
+{
+  "type": "event",
+  "name": "Bingo Drag de Gigi Von Dredee à la Folie! - Avec Poisseuse Ivy!",
+  "categories": [],
+  "tags": [
+    "dragrace",
+    "dragfrance",
+    "bingodrag",
+    "dragparis",
+    "queerparis"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/BINGO-BANNIERE_00000-4.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75019",
+    "street": "26 Avenue Corentin Cariou",
+    "lat": 48.89596,
+    "lng": 2.38457
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/BINGO-BANNIERE_00000-4-1024x576.jpg",
+  "dates": [
+    {
+      "start": "2026-06-28T18:00:00+02:00"
+    }
+  ],
+  "description": "**Vous l’attendiez… et c’est est enfin là : Gigi Von Dredee débarque les dimanches à A la Folie avec son Bingo Drag !**\n\nRendez-vous pour “Le Bingo Drag de Gigi” le **dimanche 28 juin de 18h à 22h** accompagné de la plus piquante des poisseuses:**Poisseuse Ivy!** 💋\n\nLe Bingo Drag c’est : des performances musicales, un DJ Set, du hosting et des lots encore plus fun à gagner!\n\n📍 Tout se passe à @alafolie.paris, chaque dimanche soir !\n\n Attendez-vous à du fun, des performances drag et des lots encore plus fun!\n\n🎟️ Entrée libre\n\n 💸 4€ le carton / 10€ les trois (CB, CASH, APPLE PLAY)\n\nℹ️ Infos pratiques\n\n 🕕 18h – 22h\n\n 📍 A la Folie. 26 avenue Corentin Cariou, 75019 Paris",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/A-la-folie-logo-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "A La Folie",
+    "slug": "a-la-folie",
+    "url": "https://www.parislgbt.com/listing/a-la-folie/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/bingo-drag-de-gigi-von-dredee-a-la-folie-avec-poisseuse-ivy/",
+  "slug": "bingo-drag-de-gigi-von-dredee-a-la-folie-avec-poisseuse-ivy",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bingo-drag-de-gigi-von-dredee-a-la-folie-avec-poisseuse-ivy/",
+    "en": "https://www.parislgbt.com/en/listing/bingo-drag-de-gigi-von-dredee-a-la-folie-avec-poisseuse-ivy/"
+  }
+}

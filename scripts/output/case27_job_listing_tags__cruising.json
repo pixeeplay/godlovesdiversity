@@ -1,0 +1,34 @@
+{
+  "type": "tag",
+  "name": "Cruising",
+  "categories": [],
+  "tags": [
+    "cruising"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/tag/cruising/",
+  "slug": "cruising",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/cruising/",
+    "en": "https://www.parislgbt.com/en/tag/cruising/"
+  }
+}

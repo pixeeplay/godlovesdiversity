@@ -1,0 +1,55 @@
+{
+  "type": "listing",
+  "name": "DS Galerie",
+  "categories": [
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture",
+    "accueil-public"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/Capture-decran-2026-04-01-a-16.28.32.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "15 Rue Béranger",
+    "lat": 48.86609,
+    "lng": 2.36361
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/Capture-decran-2026-04-01-a-16.28.32.png",
+  "description": "DS Galerie est une galerie d’art contemporain basée à Paris.\n\nInstallée dans le Marais depuis 2023, elle s’inscrit dans la continuité de Double Séjour, projet curatorial nomade conçu en 2016, qui investit des lieux atypiques pendant six ans.\n\nThomas Havet | Fondateur & Directeur\n\n Ulysse Feuvrier | Gallery Manager",
+  "email": null,
+  "hours": {
+    "friday": "14:00-19:00",
+    "monday": null,
+    "saturday": "14:00-19:00",
+    "sunday": null,
+    "thursday": "14:00-19:00",
+    "tuesday": null,
+    "wednesday": "14:00-19:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/04/Capture-decran-2026-04-01-a-16.28.32.png",
+  "phone": "06.70.87.95.02",
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": "http://ds_galerie/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "galerie d’Art Contemporain",
+  "transport": "Métro République",
+  "venue": null,
+  "website": "https://dsgalerie.com/fr",
+  "source_url": "https://www.parislgbt.com/listing/ds-galerie/",
+  "slug": "ds-galerie",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/ds-galerie/",
+    "en": "https://www.parislgbt.com/en/listing/ds-galerie/"
+  }
+}

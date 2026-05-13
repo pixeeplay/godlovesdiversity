@@ -1,0 +1,54 @@
+{
+  "type": "listing",
+  "name": "Little Café",
+  "categories": [
+    "bars",
+    "restaurant"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/45646429_2331551833525122_6431196549136515072_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/34385986_2096370320376609_7629886749962928128_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "62 Rue du Roi de Sicile",
+    "lat": 48.85698,
+    "lng": 2.35596
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/76258125_2962582293755403_8197161692501639168_n.jpg",
+  "description": "A deux pas de l’Hôtel de ville et en plein coeur du Marais, Le Little Café, propose une cuisine française traditionnelle mais aussi ses incontournables Burgers Maison. Passage obligé lors de journées shopping dans le marais, venez agrémenter vos promenades du week-end d’un Brunch maison. La Terrasse ensoleillée, idéalement située à l’angle de la rue du roi de Sicile et de la rue du Bourg Tibourg est le lieu de rendez-vous idéal pour un déjeuner.",
+  "email": null,
+  "hours": {
+    "friday": "09:00-02:00",
+    "monday": "09:00-02:00",
+    "saturday": "09:00-02:00",
+    "sunday": "09:00-02:00",
+    "thursday": "09:00-02:00",
+    "tuesday": "09:00-02:00",
+    "wednesday": "09:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/10659403_1063886093625042_8911013788241588984_n.png",
+  "phone": "01 48 87 43 36",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/Little-Caf%C3%A9-206419239371736/",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Happy & Friendly People",
+  "transport": "Métro 1,11 : Hôtel de Ville",
+  "venue": null,
+  "website": "http://www.littlecafeparis.fr/",
+  "source_url": "https://www.parislgbt.com/listing/little-cafe/",
+  "slug": "little-cafe",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/little-cafe/",
+    "en": "https://www.parislgbt.com/en/listing/little-cafe/"
+  }
+}

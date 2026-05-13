@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Cocktail-Game LGBT",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/02/ChatGPT-Image-26-fevr.-2026-14_50_53.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75018",
+    "street": "8 Cité Germain Pilon",
+    "lat": 48.88418,
+    "lng": 2.33635
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/02/ChatGPT-Image-26-fevr.-2026-14_50_53-1024x683.png",
+  "dates": [
+    {
+      "start": "2026-06-12T00:00:00+02:00"
+    },
+    {
+      "start": "2026-07-12T00:00:00+02:00"
+    },
+    {
+      "start": "2026-08-12T00:00:00+02:00"
+    },
+    {
+      "start": "2026-09-12T00:00:00+02:00"
+    },
+    {
+      "start": "2026-10-12T00:00:00+02:00"
+    }
+  ],
+  "description": "Cocktail-Game: Faites des rencontres LGBT en créant votre cocktail selon votre profil sensoriel!\n\nEnvie de rencontrer de nouvelles personnes LGBT+ dans un cadre original, ludique et élégant ?\n\nLe Cocktail-Game LGBT est une expérience immersive qui mélange jeu d’aventure Fantastic LGBT+, atelier cocktail, exploration sensorielle et rencontres en duo.\n\n🔥 Comment ça fonctionne ?\n\n 🎭 1. Exploration sensorielle scénarisée (spécial LGBT+)\n\n Plongez dans un jeu immersif où, les yeux bandés, vous dégustez spiritueux et liqueurs que vous devez deviner.\n\n Différentes énigmes et défis sensoriels sont là pour vous guider et à découvrir quel est votre profil olfactif et gustatif.\n\n💫 2. Rencontre en duo\n\n Une fois votre profil olfactif et gustatif, decouvrez les partenaires avec qui vous êtes compatibles et avec qui vous allez créer vos cocktails (2 matchs par atelier)\n\n Pas de pression, pas de malaise : la connexion se fait naturellement à travers le jeu. Vous apprenez à vous découvrir en créant ensemble un cocktail qui vous ressemble.\n\n🍸 3. Création de votre cocktail signature\n\n Initiez-vous aux bases de la mixologie et cherchez l’équilibre parfait entre vos saveurs et celle de votre match\n\n Chaque duo crée sa propre recette personnalisée.\n\n🎁 Et après ?\n\n Vous repartez avec :\n\n • votre livret de recettes personnalisées\n\n • votre fiche “création cocktail”\n\n • et surtout… de nouveaux amis (et peut-être plus 😉)\n\n✨ Une activité conviviale, élégante et inclusive pour élargir votre cercle, partager un moment inoubliable et vivre une soirée LGBT+ différente des applis et des bars classiques.",
+  "registration_url": "https://www.cocktailfantasia.com/lgbt",
+  "social": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/cocktail-game-lgbt/",
+  "slug": "cocktail-game-lgbt",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/cocktail-game-lgbt/",
+    "en": "https://www.parislgbt.com/en/listing/cocktail-game-lgbt/"
+  }
+}

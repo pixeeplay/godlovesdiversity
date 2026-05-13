@@ -1,0 +1,68 @@
+{
+  "type": "listing",
+  "name": "La Mutinerie",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "lesbien",
+    "queer",
+    "bi",
+    "trans",
+    "jeunes-etudiants",
+    "prevention-sante",
+    "handicap"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/74589543_2754031474627090_5906344123861827584_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/76678002_2754028207960750_2914118508423938048_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/67649259_2543811782315728_8127356697141313536_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Mutinerie-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Mutinerie-2.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Mutinerie-3.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Mutinerie-4.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Mutinerie-5.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Mutinerie-6.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Mutinerie-7.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Mutinerie-8.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/Mutinerie-9.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/La-Mut_horaires-ete-2025-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75003",
+    "street": "176-178 Rue Saint-Martin",
+    "lat": 48.86248,
+    "lng": 2.35222
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/La-Mut_cover.avif",
+  "description": "**La Mutinerie est un bar féministe par et pour les meufs, gouines, bies, queers et/ou trans. Le lieu est en danger de fermture suite à des choix de gestion, le Covid, le PGE, des travaux de mise aux normes.**\n\n1. La Mutinerie est dans la merde absolue, mais cela va mieux grâce à la mobilisation qui a permis le succès de la première levée de fonds,\n\n 2. Si vous voulez nous soutenir, la première urgence, c’est de nous aider à traverser les 3 prochains mois en venant trinquer chez nous avec toustes vos copaines, vos familles choisies, vos cercles élargis, vos fanfares, votre club de bridge woke, etc...\n\n[Plus d'infos ici](https://www.lamutinerie.eu/copie-de-contact)\n\nNous nous efforçons de faire vivre le lieu en nous assurant qu'il reste toujours le plus accessible possible (prix bas, aucune soirée payante, etc..), tout en essayant continuellement d’améliorer nos conditions de travail. Il n’y a pas de rapports hiérarchiques à la Mutinerie, le fonds de commerce et l’argent produit par le bar sont collectivisés et les décisions (petites ou grosses) sont toutes prises par vote.\n\nAutant qu’un espace festif communautaire ou un lieu de réflexion politique et culturel, la Mutinerie est aussi un outil de redistribution du pognon des queers au sein de la communauté ; notamment en collaborant exclusivement avec des artistes et intervenant.e.s meufs et/ou queers, ou en reversant fréquemment 10 à 15% du chiffre d'affaire à des collectifs et associations lors de soirées de soutien.\n\nNous espérons arriver à ce que ce lieu soit plus inclusif que ce qui existe déjà à Paris. Nous refusons d'ignorer le racisme, le sexisme, la transphobie et le classisme, qui existent même à l'intérieur de nos communautés. Nous voulons créer des espaces de réflexion et de luttes collectives contre ces oppressions.",
+  "email": null,
+  "hours": {
+    "monday": "17:00-00:00",
+    "tuesday": "17:00-00:00",
+    "wednesday": "15:00-01:30,15:00-01:30,15:00-01:30,15:00-01:30,15:00-00:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/Logo_La-Mut.jpg",
+  "phone": "01 42 72 70 59",
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/lamutinerieparis/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "lieu engagé et féministe",
+  "transport": "Metro 4,11 : Rambuteau / Etienne Marcel / Chatelet",
+  "venue": null,
+  "website": "http://www.lamutinerie.eu/",
+  "source_url": "https://www.parislgbt.com/listing/la-mutinerie/",
+  "slug": "la-mutinerie",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-mutinerie/",
+    "en": "https://www.parislgbt.com/en/listing/la-mutinerie/"
+  }
+}

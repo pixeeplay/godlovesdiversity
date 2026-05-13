@@ -1,0 +1,46 @@
+{
+  "type": "event",
+  "name": "Bad Biches cabaret",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/A13A3209-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86414,
+    "lng": 2.39031
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/A13A3209-1024x683.jpg",
+  "dates": [
+    {
+      "start": "2026-06-05T19:30:00+02:00"
+    }
+  ],
+  "description": "Cabaret gender-fluid - **Tarif spécial ParisLGBT : 20% de réduction**\n\n****\n\n_Les Bad Biches sont une famille de créatures qui arpentent les nuits de France et de Navarre en offrant chaque soir un spectacle nouveau dans la tradition du Cabaret. Explorant la Chanson Française, l'adrénaline du RNB, la force de l'Opéra, le drame Italien et les morsures du Punk, elles vous traînent la patte dans leurs histoires avec une impertinence qui leur est propre._\n\nAu programme ce début juin : **L'origine des Biches**\n\n****\n\nOuverture des portes ce vendredi 5 à 19h30. Spectacle à 21h, puis soirée club jusqu'à minuit. Sur place, on peut boire et manger à petit prix (bar associatif Les Truculents, adhésion : 1 euro)\n\n_Au Truc nous veillons tout particulièrement à l'inclusivité des personnes LGBTQIAA+._\n\n🎟️[Billetterie](https://www.helloasso.com/associations/les-truculents/evenements/bad-biches-cabaret-vendredi-5-juin) Pour obtenir la réduction, mentionner le code PARISLGBT lors du paiement\n\nPhoto : Susy Lagrange",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/12/IMG_1406-242x300.jpeg",
+  "phone": null,
+  "registration_url": "https://www.helloasso.com/associations/les-truculents/evenements/bad-biches-cabaret-vendredi-5-juin",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Truc du Père Lachaise",
+    "slug": "le-truc-du-pere-lachaise",
+    "url": "https://www.parislgbt.com/listing/le-truc-du-pere-lachaise/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/bad-biches-cabaret-5/",
+  "slug": "bad-biches-cabaret-5",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bad-biches-cabaret-5/",
+    "en": "https://www.parislgbt.com/en/listing/bad-biches-cabaret-5/"
+  }
+}

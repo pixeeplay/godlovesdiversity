@@ -1,0 +1,42 @@
+{
+  "type": "event",
+  "name": "Apér’Ours",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42777_image_661981754_1389919216511044_6005232031248138367_n-1-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42777_image_661981754_1389919216511044_6005232031248138367_n-1-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-14T18:30:00+02:00"
+    }
+  ],
+  "description": "Le COX est très heureux de retrouver une nouvelle fois la Fierté Ours Paris 2026 et de se mettre aux couleurs des Ours.\n\nJeudi 14 mai dès 18h30, c’est Apér’Ours !\n\n**Mise en rythme par CYRIL KORTEZ, avec la présence de l’équipe des Ours de Paris et des candidats à l’élection de Monsieur Ours 2026,**",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Cox",
+    "slug": "cox",
+    "url": "https://www.parislgbt.com/listing/cox/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/aperours-2/",
+  "slug": "aperours-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/aperours-2/",
+    "en": "https://www.parislgbt.com/en/listing/aperours-2/"
+  }
+}

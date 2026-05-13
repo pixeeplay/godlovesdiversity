@@ -1,0 +1,46 @@
+{
+  "type": "event",
+  "name": "Les Voisins du Père-Lachaise cabaret",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/Cabaret-du-Pere-Lachaise-format-paysage.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86414,
+    "lng": 2.39031
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/Cabaret-du-Pere-Lachaise-format-paysage-1024x683.png",
+  "dates": [
+    {
+      "start": "2026-07-04T20:30:00+02:00"
+    }
+  ],
+  "description": "Cabaret féministe gender-fluid - **Tarif spécial ParisLGBT : 20% de réduction**\n\n****\n\n**🌈 Les Voisins – Cabaret immersif au Père Lachaise**\n\nLes Voisins est un cabaret fait maison, né au cœur d’un lieu ouvertement LGBTQIA+ friendly, où se croisent identités, récits et imaginaires pluriels.\n\nInspiré des figures célèbres et oubliées du cimetière du Père Lachaise, le spectacle fait dialoguer passé et présent, vivants et morts, dans une grande liberté de ton.\n\nÀ chaque édition, de nouvelles voix prennent vie sur scène : chansons, poésie, humour et clins d’œil composent un cabaret intimiste, inclusif et profondément humain.\n\nUn espace bienveillant où chacun·e est invité·e à venir tel·le qu’iel est, pour partager un moment de fête, de mémoire et de liberté.\n\n****\n\nOuverture des portes à 19h30. Spectacle à 21h, puis soirée club de 23h à 2h environ.\n\nSur place on peut manger (tout fait maison) et boire à petit prix au bar associatif Les Truculents",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/12/IMG_1406-242x300.jpeg",
+  "phone": null,
+  "registration_url": "https://www.helloasso.com/associations/les-truculents/evenements/les-voisins-4-juillet-cabaret-du-pere-lachaise",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Truc du Père Lachaise",
+    "slug": "le-truc-du-pere-lachaise",
+    "url": "https://www.parislgbt.com/listing/le-truc-du-pere-lachaise/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/les-voisins-du-pere-lachaise-cabaret/",
+  "slug": "les-voisins-du-pere-lachaise-cabaret",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/les-voisins-du-pere-lachaise-cabaret/",
+    "en": "https://www.parislgbt.com/en/listing/les-voisins-du-pere-lachaise-cabaret/"
+  }
+}

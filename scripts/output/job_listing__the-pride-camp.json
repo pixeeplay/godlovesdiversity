@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "THE PRIDE CAMP",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/01/BANNER_2307x1033.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Torreilles Plage",
+    "country": null,
+    "postal_code": "66",
+    "street": "Camping Calypso",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/01/BANNER_2307x1033-1024x459.jpg",
+  "dates": [
+    {
+      "start": "2026-08-30T09:00:00+02:00"
+    }
+  ],
+  "description": "**🌈 THE PRIDE CAMP 2026 : Le village 100% gay sous le soleil ! 🌞**\n\nEnvie d’une semaine entre amis dans un camping 5 étoiles, privatisé rien que pour nous, au bord de la Méditerranée ?\n\nThe Pride Camp, c’est un vrai village gay, en France, où tout est pensé pour favoriser les rencontres et le fun !\n\nAu programme :\n\n 🏘️ Des bungalows avec terrasse pour partager des apéros et rencontrer tes voisins\n\n 🔥 Jeux, défis, shows Queer et fêtes.\n\n ✨ Piscine, transats, plage (et même une plage naturiste à côté !) pour se détendre\n\nIci, tu te fais de nouveaux amis en un clin d’œil, entre deux plongeons ou autour d’un verre !\n\n📍 Camping Calypso, Torreilles Plage\n\n 📅 Du 30 août au 6 septembre 2026\n\nViens vivre une expérience unique avec nous ! 🌈✨\n\nToutes les infos sur :\n\n[https://www.thepridecamp.com/](https://www.thepridecamp.com/)\n\net suivez-nous sur :\n\nhttps://www.instagram.com/thepridecamp/",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/thepridecamp/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": "https://www.thepridecamp.com/",
+  "source_url": "https://www.parislgbt.com/listing/the-pride-camp/",
+  "slug": "the-pride-camp",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/the-pride-camp/",
+    "en": "https://www.parislgbt.com/en/listing/the-pride-camp/"
+  }
+}

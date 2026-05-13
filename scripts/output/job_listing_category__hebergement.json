@@ -1,0 +1,21 @@
+{
+  "type": "category",
+  "name": "Hébergements",
+  "categories": [
+    "hebergement"
+  ],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/category/hebergement/",
+  "slug": "hebergement",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/category/hebergement/",
+    "en": "https://www.parislgbt.com/en/category/hebergement/"
+  }
+}

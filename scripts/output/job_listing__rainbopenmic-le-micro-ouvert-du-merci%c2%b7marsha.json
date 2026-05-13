@@ -1,0 +1,52 @@
+{
+  "type": "event",
+  "name": "RAINB'OPENMIC - le micro ouvert du Merci·Marsha",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/BANNIERES-COM-LARGES4-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "8 Rue Richard Lenoir",
+    "lat": 48.85473,
+    "lng": 2.38237
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/BANNIERES-COM-LARGES4-1024x354.jpg",
+  "dates": [
+    {
+      "start": "2026-05-21T19:00:00+02:00"
+    },
+    {
+      "start": "2026-06-18T19:00:00+02:00"
+    },
+    {
+      "start": "2026-07-23T19:00:00+02:00"
+    }
+  ],
+  "description": "Un open mic animé par Aliénor, Audrey et Samantha, vous pouvez vous inscrire pour vous exprimer au micro.\n\nMusique, poème, stand-up, tout est possible ! On ouvre vers 18h, les passages commencent vers 19h.\n\nTu peux t’inscrire directement sur place ou en avance via l’insta @rainbopenmic.\n\n⭐️ HOSTS : Aliénor, Audrey et Samantha !\n\n___\n\n🌺 MERCI·MARSHA 🌸\n\nLieu LGBTQ+ au 8 rue richard lenoir Paris 11.\n\n🕕 Horaires d’ouverture ce jour : de 18 à 02h\n\n🕢 Début à 19h environ\n\n🌈 Happy Hour de l'ouverture à 20h.",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/11/LOGO-2000x2000px-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Merci·Marsha",
+    "slug": "merci·marsha-2",
+    "url": "https://www.parislgbt.com/listing/merci%c2%b7marsha-2/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/rainbopenmic-le-micro-ouvert-du-merci%c2%b7marsha/",
+  "slug": "rainbopenmic-le-micro-ouvert-du-merci%c2%b7marsha",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/rainbopenmic-le-micro-ouvert-du-merci%c2%b7marsha/",
+    "en": "https://www.parislgbt.com/en/listing/rainbopenmic-le-micro-ouvert-du-merci%c2%b7marsha/"
+  }
+}

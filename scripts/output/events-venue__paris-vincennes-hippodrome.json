@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "Paris-Vincennes Hippodrome",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Brunch Electronik Paris 2026 w/ Solomun, Paul Kalkbrenner, WhoMadeWho, Rivo & more * Paris-Vincennes Hippodrome",
+      "url": "https://www.parislgbt.com/en/listing/brunch-electronik-paris-2026-w-solomun-paul-kalkbrenner-whomadewho-rivo-more/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/paris-vincennes-hippodrome/",
+  "slug": "paris-vincennes-hippodrome",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/paris-vincennes-hippodrome/",
+    "en": "https://www.parislgbt.com/en/events-venue/paris-vincennes-hippodrome/"
+  }
+}

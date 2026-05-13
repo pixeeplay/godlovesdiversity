@@ -1,0 +1,51 @@
+{
+  "type": "listing",
+  "name": "Bar balcon de l'Alcazar",
+  "categories": [
+    "bars",
+    "restaurant",
+    "cabarets"
+  ],
+  "tags": [
+    "djs-at-work",
+    "gay",
+    "drags"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/06/Alcazar-restaurant-salle-1024x1024.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2024/06/Alcazar-logo.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75006",
+    "street": "62, rue Mazarine",
+    "lat": 48.85475,
+    "lng": 2.3379
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/06/Alcazar-restaurant-salle-1024x1024.jpg",
+  "description": "Ce Bar à cocktails · DJ · Restaurant est une adresse de Saint Germain depuis des décennies, Marie France y menait grand train et la revue dans les années 70 et 80. Depuis plusieurs années, le balcon brille avec élégance dans le monde des musiques électroniques comme un acteur de référence, avec le succès mondial de ses compilations, qui se sont vendues dans le monde entier.\n\nAujourd'hui, Fabrice Gilberdy, le directeur, anime avec brio et glamour ce haut lieu de la nuit parisienne.\n\nVenez aux fêtes du Balcon, comme Le Privé, avec les drags et créatures les plus glamour de la Capitale. La Madame Klaude est la proposition festive et itinérante dans plusieurs lieux de la capitale plusieurs fois par an par la bande.\n\nSaint Germain style !\n\nLe jeudi et le vendredi à partir de 21 H nos DJ sets transforment progressivement le balcon en une piste de danse jusqu'à 2H du matin.\n\nVenez savourer des cocktails exquis et danser au rythme de la nuit dans cet espace intime.\n\nAdresse : 62, rue Mazarine, 75006 Paris.",
+  "hours": {
+    "monday": null,
+    "tuesday": null,
+    "wednesday": "19:00-02:00, 00:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2024/06/Alcazar-logo.jpg",
+  "phone": "01 53 10 19 99",
+  "social": {
+    "facebook": "https://www.facebook.com/Alcazarparis75006",
+    "instagram": "http://alcazar_paris/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "transport": "M° Saint Germain des Près, Odéon",
+  "website": "https://alcazar.fr/",
+  "source_url": "https://www.parislgbt.com/listing/bar-balcon-de-lalcazar/",
+  "slug": "bar-balcon-de-lalcazar",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bar-balcon-de-lalcazar/",
+    "en": "https://www.parislgbt.com/en/listing/bar-balcon-de-lalcazar/"
+  }
+}

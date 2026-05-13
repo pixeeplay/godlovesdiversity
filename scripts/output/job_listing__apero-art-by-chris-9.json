@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Apéro Art By Chris",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/10-Avril-Apero-Art-By-Chris.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "141 Rue Saint-Martin",
+    "lat": 48.86145,
+    "lng": 2.35146
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/03/10-Avril-Apero-Art-By-Chris-987x1024.jpg",
+  "dates": [
+    {
+      "start": "2026-06-05T20:30:00+02:00"
+    }
+  ],
+  "description": "Party Time\n\n Avec Dj Doods & Dj ChrisR\n\n Découverte d’une artiste ‍\n\n Le Cirque, face au Centre Pompidou, Paris 4",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1814189769949334",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Cirque",
+    "slug": "le-cirque",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Le%20Cirque"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/apero-art-by-chris-9/",
+  "slug": "apero-art-by-chris-9",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/apero-art-by-chris-9/",
+    "en": "https://www.parislgbt.com/en/listing/apero-art-by-chris-9/"
+  }
+}

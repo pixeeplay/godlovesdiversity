@@ -1,0 +1,45 @@
+{
+  "type": "listing",
+  "name": "Paris Gay Village",
+  "categories": [
+    "associations",
+    "visites"
+  ],
+  "tags": [
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/Paris-Gay-Village-banner.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/Paris-Gay-Village-guide.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/Paris-Gay-Village-visite-pere-lachaise.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/Paris-Gay-Village-visite.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/01/Paris-Gay-Village-banner.jpg",
+  "description": "Paris Gay Village est une association loi 1901 qui réunit celles et ceux, qui souhaitent s'impliquer dans la promotion et le développement du tourisme LGBT à Paris.\n\nC'est l)association de guides LGBT historique à Paris !\n\nDes parisiens amoureux de leur ville vous renseignent, lors d'accueils personnalisés, sur toutes les questions que vous vous posez sur le Paris gay & lesbien insolite, culturel et convivial.\n\n**Gay Tours In English**\n\nLes Visites de ParisGayVillage, imaginées en mai 2005, révèlent l’histoire et les cultures du Paris homosexuel du XVIIe siècle aux années 80.\n\nParisGayVillage offre le plus grand programme de visites guidées sur l’histoire des homosexuel(le)s et des homosexualités. Si San-Francisco, Londres ou Berlin proposent un Gay Guided Tour, ParisGayVillage propose un catalogue de plus d'une trentaine d’itinéraires qui ne cesse de s’agrandir… Le public est lui aussi de plus en plus nombreux d’année en année.\n\nCes visites guidées d'environ deux heures renversent le regard habituel sur Paris et ses environs. Elles mettent en lumière les destins d’homosexuel(le)s célèbres ou inconnu(e)s et redessinent la géographie des lieux homos de Paris (boîtes, bars, etc). Mais elles évoquent aussi les répressions qui ont touché les «bougres» et les «tribades» au cours des siècles, tout comme leurs luttes pour acquérir des droits et devenir des citoyen(ne)s comme les autres.\n\nD’autres visites proposent de voir les grands musées parisiens et certaines expositions temporaires... avec un regard gay et lesbien, bien évidemment.\n\n🧿 [**Plus d'info / More info**](https://parisgayvillage.com/catalogue/)\n\n**Un guide papier**\n\nPas de problème pour vivre pleinement son homosexualité à Paris mais quelques clés et idées sont toujours les bienvenues.\n\nC’est dans cet esprit que l’association Paris Gay Village a écrit et édité en 2018 le premier guide bilingue français-anglais dédié aux touristes gays et lesbiens.\n\nIl a été conçu comme un outil pour ouvrir la voie à un séjour où chacun pourra doser la part de gayttitude qu’il veut donner à ses moments passés à Paris au coeur d’une vie LGBT intense et variée.\n\nIl recense les principales adresses des lieux gays et lesbiens et explique comment fonctionne la ville et la sociabilité gay et lesbienne. Après une partie dédiée aux sorties, le guide propose des focus pour visiter Paris avec un regard LGBT (oeuvres homo érotiques dans les musées parisiens, balades thématiques gay et lesbienne, tombes d'homosexuel(le)s célèbres dans les grands cimetières parisiens).\n\nCe guide gratuit est disponible en version papier à l’[Office du Tourisme et au Centre LGBT Paris-Ile-de-France](http://parisjetaime.com/).\n\nGuide téléchargeable sur le site [parisgayvillage.com](https://parisgayvillage.com/)",
+  "hours": {
+    "monday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous, thursday: Uniquement sur rendez-vous, friday: Uniquement sur rendez-vous, saturday: Uniquement sur rendez-vous, sunday: Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/01/PGV-logo2.jpeg",
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Paris est un village sensible",
+  "website": "https://parisgayvillage.com/",
+  "source_url": "https://www.parislgbt.com/listing/paris-gay-village/",
+  "slug": "paris-gay-village",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/paris-gay-village/",
+    "en": "https://www.parislgbt.com/en/listing/paris-gay-village/"
+  }
+}

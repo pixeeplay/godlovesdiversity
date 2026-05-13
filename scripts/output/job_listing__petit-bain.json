@@ -1,0 +1,43 @@
+{
+  "type": "listing",
+  "name": "Petit Bain",
+  "categories": [
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture",
+    "terrasse",
+    "djs-at-work"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2023/01/Couv-Petit-Bain-1024x478.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2023/01/Logo-Petit-Bain.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "street": "7 Port de la Gare, 75013 Paris",
+    "lat": 48.83548,
+    "lng": 2.37654
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2023/01/Couv-Petit-Bain-1024x478.jpg",
+  "description": "Véritable arche de Noë des musiques actuelles, des cultures alternatives, des arts et pratiques fluviales, mais surtout une salle de musiques actuelles dédiée à l'émergence et à la FETE.\n\nVous ne le savez sans doute pas mais Petit Bain a vu le jour grâce à l’association LA GUINGUETTE PIRATE qui a fêté ses 25 ans en 2020, la même association qui a créé le Batofar en 1999.\n\nDepuis plusieurs années, Petit Bain accueille des soirées LGBT.",
+  "hours": {
+    "monday": "Uniquement sur rendez-vous",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2023/01/Logo-Petit-Bain.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/petitbain/?"
+  },
+  "subtitle": "Petit Bain est un projet sociétal, culturel mais aussi un lieu atypique.",
+  "transport": "M° Bibliotheque",
+  "website": "https://petitbain.org/",
+  "source_url": "https://www.parislgbt.com/listing/petit-bain/",
+  "slug": "petit-bain",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/petit-bain/",
+    "en": "https://www.parislgbt.com/en/listing/petit-bain/"
+  }
+}

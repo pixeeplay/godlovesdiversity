@@ -1,0 +1,45 @@
+{
+  "type": "listing",
+  "name": "Atelier de Montmartre",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "arts-culture",
+    "terrasse"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/01/L-Atelier-Montmartre-couverture-jpg-1024x682.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/01/Capture-decran-2025-01-02-182405.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.88598,
+    "lng": 2.33619
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/01/L-Atelier-Montmartre-couverture-jpg-1024x682.jpg",
+  "description": "une salle au rez-de-chaussée proposant des expositions et un lieu de restauration\n\nune salle en sous-sol proposant des événements réguliers : dessin vivant, soirée cabaret, comedy club, soirées littéraires queer & féministes...",
+  "hours": {
+    "monday": "00:00-23:59",
+    "tuesday": "00:00-23:59",
+    "wednesday": "00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59,00:00-23:59"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/01/Capture-decran-2025-01-02-182405.jpg",
+  "social": {
+    "instagram": "https://www.instagram.com/ateliermontmartre18/"
+  },
+  "subtitle": "Bar de quartier avec programmation culturelle, LGBTQIA+ friendly",
+  "transport": "Blanche",
+  "website": "https://ateliermontmartre18.fr/",
+  "source_url": "https://www.parislgbt.com/listing/atelier-de-montmartre/",
+  "slug": "atelier-de-montmartre",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/atelier-de-montmartre/",
+    "en": "https://www.parislgbt.com/en/listing/atelier-de-montmartre/"
+  }
+}

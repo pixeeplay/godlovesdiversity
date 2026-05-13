@@ -1,0 +1,61 @@
+{
+  "type": "listing",
+  "name": "Lou Queernaval",
+  "categories": [
+    "cabarets"
+  ],
+  "tags": [
+    "arts-culture",
+    "accueil-public",
+    "drags",
+    "entree-payante",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/2026-Lou-Queernaval-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/2026-Lou-Queernaval-2.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/2026-Lou-Queernaval-3.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/2026-Lou-Queernaval-4.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Nice",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 43.69918,
+    "lng": 7.26291
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/02/2026-Lou-Queernaval-1024x576.jpg",
+  "description": "**🏳️‍⚧️ LOUQUEERNAVAL 👑**\n\n**Unique carnaval LGBT en France 🇫🇷**\n\nPremier carnaval LGBT de France, ancré dans la tradition niçoise des festivités carnavalesques, c'est un événement populaire ouvert à tous. Il s'attache à promouvoir des valeurs de partage, d'inclusion et de vivre ensemble !\n\nQuel autre événement peut réunir dans un même show les plus talentueuses batucadas niçoises, les drag queens les plus éblouissantes et autant d'artistes porteurs d'un grand message universel de partage et de bienveillance ?\n\nDepuis son lancement en 2015, Lou Queernaval attire des spectateurs de toutes les régions de France et des quatre coins du monde. Lou Queernaval signe le lancement d’un week-end de festivités exceptionnelles. Suivez le programme de chaque année, il y a du lourd !\n\nGratuit, cet événement unique en France est proposé par la communauté LGBTQIA+ niçoise en lien étroit avec les services de la Ville de Nice et de la Métropole Nice Côte d’Azur.\n\nOuvert à toutes et tous, Lou Queernaval, premier carnaval LGBT de France, s’engage avec humilité et avec sa touche de folie en plus pour faire vivre avec modernité toute la grande tradition populaire du Carnaval de Nice.\n\nDu 11 février au 1er mars 2026, venez vivre les corsos illuminés, les batailles de fleurs, Lou Queernaval et pleins d'autres surprises...\n\nVive la Reine ! 👸🏽\n\n☀️ [PLUS D'INFO SUR LE CARNAVAL DE NICE](https://www.nicecarnaval.com/)\n\n🎟️ [BILLETTERIE](https://my.weezevent.com/lou-queernaval-3) 🎟️",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/02/Lou-Queernaval-logo.png",
+  "phone": "06 08 77 39 87",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/LouQueernaval",
+    "instagram": "https://www.instagram.com/louqueernaval/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Unique carnaval LGBT en France 🇫🇷",
+  "transport": null,
+  "venue": null,
+  "website": "https://www.nicecarnaval.com/evenements/lou-queernaval/",
+  "source_url": "https://www.parislgbt.com/listing/lou-queernaval/",
+  "slug": "lou-queernaval",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/lou-queernaval/",
+    "en": "https://www.parislgbt.com/en/listing/lou-queernaval/"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "type": "listing",
+  "name": "Le Bouledogue",
+  "categories": [
+    "restaurant"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/bouledogue-cuisine-plat-003.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/bouledogue-cuisine-plat-002.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/le-bouledogue-brasserie-restaurant-paris-05.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/le-bouledogue-brasserie-restaurant-paris-05-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "20 Rue Rambuteau",
+    "lat": 48.86096,
+    "lng": 2.35461
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/brasserie-de-paris-le-1024x683.jpg",
+  "description": "La meilleure brasserie dans le Marais, tenu par un couple LGBT qui à fêté ses 20 ans d’union.\n\nA la carte on y trouve des plats simples et traditionnels qui font la renommée des grandes brasseries parisiennes. De l'œuf mayonnaise ou du poireau vinaigrette, à la sole meunière en passant par la bavette à l'échalote. Il y en a pour tous les goûts. Le Bouledogue est un mélange de qualité, de nourriture et d'ambiance.",
+  "email": null,
+  "hours": {
+    "monday": "09:30-23:30",
+    "tuesday": "09:30-23:30",
+    "wednesday": "09:30-23:30, 09:30-23:30, 09:30-23:30, 09:30-23:30, 09:30-23:30, 09:30-23:30, null"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/le-bouledogue-logo.png",
+  "phone": "01 40 27 90 90",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/le.bouledogue/",
+    "instagram": "https://www.instagram.com/bouledogue.paris/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Café brasserie où l’art et la culture sont les deux mots d’ordre",
+  "transport": "Métro 11 : Rambuteau",
+  "website": "http://www.lebouledogue.fr/",
+  "source_url": "https://www.parislgbt.com/listing/le-bouledogue/",
+  "slug": "le-bouledogue",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-bouledogue/",
+    "en": "https://www.parislgbt.com/en/listing/le-bouledogue/"
+  }
+}

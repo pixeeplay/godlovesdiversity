@@ -1,0 +1,54 @@
+{
+  "type": "event",
+  "name": "Circulation(s) 2026 - Festival de la jeune photographie européenne",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/03/c0100313831787-cr1380720-q85-39c92d.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75019",
+    "street": "5 Rue Curial",
+    "lat": 48.89009,
+    "lng": 2.37155
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/03/c0100313831787-cr1380720-q85-39c92d-1024x534.jpg",
+  "dates": [
+    {
+      "start": "2026-03-21T14:00:00+02:00"
+    },
+    {
+      "end": "2026-05-17T19:00:00+02:00"
+    }
+  ],
+  "description": "Festival Circulation(s) de la jeune photographie européenne\n\nTremplin pour les artistes et révélateur de tendances, Circulation(s) s’impose comme un observatoire privilégié de la création photographique européenne contemporaine, mettant en lumière les nouvelles écritures et enjeux artistiques d’aujourd’hui.\n\nFestival de référence, Circulation(s) reflète l’effervescence de la jeune photographie européenne. Pour sa 16e édition, l'exposition au CENTQUATRE-PARIS présente des séries de 26 artistes de 15 nationalités différentes.\n\nChaque année dans le cadre de son focus, le festival Circulation(s) met en lumière une scène photographique européenne particulière. En 2026, après l’Ukraine et la Lituanie, l’invitation est donnée à l’Irlande, à la veille de sa Présidence du Conseil de l’Union Européenne.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Centquatre-Paris",
+    "slug": "centquatre-paris",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Centquatre-Paris"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/circulations-2026-festival-de-la-jeune-photographie-europeenne/",
+  "slug": "circulations-2026-festival-de-la-jeune-photographie-europeenne",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/circulations-2026-festival-de-la-jeune-photographie-europeenne/",
+    "en": "https://www.parislgbt.com/en/listing/circulations-2026-festival-de-la-jeune-photographie-europeenne/"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "IDAHOBIT",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/01/40402_image_622814427_1452865193297023_5814041182648397252_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "89 rue Réaumur",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/01/40402_image_622814427_1452865193297023_5814041182648397252_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-17T00:00:00+02:00"
+    }
+  ],
+  "description": "Chaque 17 mai, célébrons IDAHOBIT International Day Against Homophobia, Transphobia, and Biphobia\n\nVous organisez un événement, un débat, un hommage, ajoutez le à notre guide communautaire ParisLGBT\n\n[https://www.parislgbt.com/listing/idahobit/](https://www.parislgbt.com/listing/idahobit/)\n\nThe International Day Against Homophobia, Transphobia, and Biphobia (IDAHOBIT) is a global moment of solidarity and visibility for LGBTQIA+ individuals and communities. It is observed every year on 17 May, and brings together individuals, organisations, and governments from around the world to raise awareness about the issues facing LGBTQIA+ people, and to advocate for policies and laws that protect their rights.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1583188093024834",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/idahobit-2/",
+  "slug": "idahobit-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/idahobit-2/",
+    "en": "https://www.parislgbt.com/en/listing/idahobit-2/"
+  }
+}

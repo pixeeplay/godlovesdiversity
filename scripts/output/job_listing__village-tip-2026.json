@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Village TIP 2026",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/TIPParis-visuel-2026.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "4 Rue de Lobau",
+    "lat": 48.85651,
+    "lng": 2.3535
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/02/TIPParis-visuel-2026.jpg",
+  "dates": [
+    {
+      "start": "2026-05-22T15:00:00+02:00"
+    }
+  ],
+  "description": "🏳️‍🌈**Village TIP 🏳️‍⚧️**\n\n**Ouverture officielle du tournoi**\n\nDe 15h à 21h\n\nToutes les associations organisatrices de la Fédération Sportive LGBT+ ont la joie de vous accueillir pour un verre au Village du TIP, dans les prestigieux Salons de l'Hôtel de Ville.\n\nAnimations\n\nUn show vous sera présenté par la troupe Laissez-nous danser, Outcheers et Dancing Queer.​\n\nÀ partir de 18h",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": "https://www.paris-tournament.com/tip-village",
+  "source_url": "https://www.parislgbt.com/listing/village-tip-2026/",
+  "slug": "village-tip-2026",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/village-tip-2026/",
+    "en": "https://www.parislgbt.com/en/listing/village-tip-2026/"
+  }
+}

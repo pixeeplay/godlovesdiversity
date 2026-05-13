@@ -1,0 +1,53 @@
+{
+  "type": "listing",
+  "name": "Volare Restaurant",
+  "categories": [
+    "restaurant"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/05/01-40-09-03-01.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/05/Volare_Cerchio1.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": "75003",
+    "street": "12 Rue Réaumur",
+    "lat": 48.86495,
+    "lng": 2.35884
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/05/01-40-09-03-01.jpg",
+  "description": "Volare Restaurant\n\nLes Soirées Chez VOLARE\n\n Les Ailes de Paris\n\nRestaurant Apéritif Italien\n\n Le plaisir dans l’assiette accompagne le plaisir du spectacle du soir :\n\n Magie, Musique, Humour, Drag Queen, Chanteurs, autant d’Artistes qui sauront vous emmener dans leur univers enchanté, féérique ou drôle !",
+  "email": null,
+  "hours": {
+    "friday": "12:00-14:30, 17:00-02:00",
+    "monday": null,
+    "saturday": "12:00-02:00",
+    "sunday": "12:00-16:30",
+    "thursday": "12:00-14:30, 17:00-00:00",
+    "tuesday": "12:00-14:30, 17:00-00:00",
+    "wednesday": "12:00-14:30, 17:00-00:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/05/Volare_Cerchio1.png",
+  "phone": "0140090301",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/profile.php?id=100092344050424",
+    "instagram": "https://www.instagram.com/volare_restaurant2023/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Les Soirées Chez VOLARE Les Ailes de Paris",
+  "transport": "Metro 3 Arts et Métiers",
+  "venue": null,
+  "website": "https://www.volarerestaurant.fr/",
+  "source_url": "https://www.parislgbt.com/listing/volare-restaurant/",
+  "slug": "volare-restaurant",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/volare-restaurant/",
+    "en": "https://www.parislgbt.com/en/listing/volare-restaurant/"
+  }
+}

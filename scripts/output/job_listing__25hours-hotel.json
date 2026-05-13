@@ -1,0 +1,53 @@
+{
+  "type": "listing",
+  "name": "25hours Hotel",
+  "categories": [
+    "hebergement"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/25h_paris_steveherud_sape_bar_2880px_2-4_f60b406864732945c08e0e2.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/25h_paris_steveherud_rooms_l_2880px_3-5_7f0b406864732945c08e0bf.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/25h_paris_steveherud_rooms_l_2880px_7-7_8c0b406874732945c08e0d4.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75010",
+    "street": "12 Bd de Denain",
+    "lat": 48.8796,
+    "lng": 2.35509
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/25h_paris_steveherud_rooms_m_2880px_5-2_830b406844732945c08e0f2-1024x593.jpg",
+  "description": "25hours Hotels are sexy, cheeky, bold, innovative, cosmopolitan, unique, charismatic, a little crazy, and locally connected.",
+  "email": null,
+  "hours": {
+    "friday": "00:00-23:59",
+    "monday": "00:00-23:59",
+    "saturday": "00:00-23:59",
+    "sunday": "00:00-23:59",
+    "thursday": "00:00-23:59",
+    "tuesday": "00:00-23:59",
+    "wednesday": "00:00-23:59"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/25hours-hotel-logo.jpg",
+  "phone": "+33 1 42 80 20 00",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/25hoursHotels/",
+    "instagram": "https://www.instagram.com/25hourshotels/",
+    "tiktok": null,
+    "twitter": "https://twitter.com/25hourshotels"
+  },
+  "subtitle": "Let's spend the night together.",
+  "transport": "RER D + Métro 4,5 : Gare du Nord",
+  "website": "https://www.25hours-hotels.com/fr/hotels/paris/terminus-nord",
+  "source_url": "https://www.parislgbt.com/listing/25hours-hotel/",
+  "slug": "25hours-hotel",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/25hours-hotel/",
+    "en": "https://www.parislgbt.com/en/listing/25hours-hotel/"
+  }
+}

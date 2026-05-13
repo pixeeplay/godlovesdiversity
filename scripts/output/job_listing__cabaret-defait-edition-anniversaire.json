@@ -1,0 +1,46 @@
+{
+  "type": "event",
+  "name": "Cabaret Défait - Édition Anniversaire",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/IMG_0246.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "11-13 Rue au Maire",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/IMG_0246-1024x576.png",
+  "dates": [
+    {
+      "start": "2026-05-21T20:00:00+02:00"
+    }
+  ],
+  "description": "C’est la soirée ALL STARS du Cabaret Défait ! Un an, ça se fête, alors on débarque au Tango pour swinguer ensemble et se rappeler des bons souvenirs. 9 éditions, une vingtaine d’artistes invités qui reviennent pour un cabaret démentiel et des surprises. Venez célébrer l'ascension du cabaret avec nos guests stars pour une soirée inoubliable et unique. Magique, poétique et surtout m*rdique, évidemment.\n\nStarring : Couleur & The Faeries · Dame Lylybeth · Framboise Rendez-vous · Hedera · Io · Janet Schwarz · Josephine · La Grande Zoa · La Tia Mohosa · La Vulvette · Mad Faith & The Many · Roberta Mirabilis · Miss G · Muxu · Pussi Ferrari · Rita Stone · Soupir · Stilou · Vega\n\n📍@letangoparis– 11-13 Rue au Maire, 75003 Paris\n\n Entrée : 15 euros sur place ou sur Shotgun",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/02/Logo-Tango.png",
+  "phone": null,
+  "registration_url": "https://shotgun.live/fr/events/cabaret-defait-au-tango",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Tango",
+    "slug": "le-tango",
+    "url": "https://www.parislgbt.com/listing/le-tango/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/cabaret-defait-edition-anniversaire/",
+  "slug": "cabaret-defait-edition-anniversaire",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/cabaret-defait-edition-anniversaire/",
+    "en": "https://www.parislgbt.com/en/listing/cabaret-defait-edition-anniversaire/"
+  }
+}

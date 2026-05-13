@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "Mia Mao",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "MODEL · Richie Hawtin, Electric Rescue, Lea Occhi * Mia Mao",
+      "url": "https://www.parislgbt.com/en/listing/model-%c2%b7-richie-hawtin-electric-rescue-lea-occhi/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/mia-mao/",
+  "slug": "mia-mao",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/mia-mao/",
+    "en": "https://www.parislgbt.com/en/events-venue/mia-mao/"
+  }
+}

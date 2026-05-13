@@ -1,0 +1,21 @@
+{
+  "type": "category",
+  "name": "Clubs",
+  "categories": [
+    "clubs"
+  ],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/category/clubs/",
+  "slug": "clubs",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/category/clubs/",
+    "en": "https://www.parislgbt.com/en/category/clubs/"
+  }
+}

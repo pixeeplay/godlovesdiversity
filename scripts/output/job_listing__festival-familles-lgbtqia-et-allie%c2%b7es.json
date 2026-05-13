@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "LE FESTIVAL DES FAMILLES LGBTQIA+ ET LEURS ALLIÉ·ES",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/23-Mai-FESTIVAL-DES-FAMILLES-LGBT-copie.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75012",
+    "street": "83 Rue du Charolais",
+    "lat": 48.84391,
+    "lng": 2.38168
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/03/23-Mai-FESTIVAL-DES-FAMILLES-LGBT-copie-1024x461.png",
+  "dates": [
+    {
+      "start": "2026-05-23T12:00:00+02:00"
+    },
+    {
+      "end": "2026-05-24T23:00:00+02:00",
+      "start": "2026-05-23T12:00:00+02:00"
+    }
+  ],
+  "description": "🏳️‍⚧️**LE FESTIVAL DES FAMILLES LGBTQIA+ ET LEURS ALLIÉ·ES 🏳️‍🌈**\n\nUn week-end festif, culturel et familial pour célébrer toutes les familles.\n\n23 & 24 Mai 2026 | Ground control - Paris\n\nThème 2026 ENSEMBLE, SOYONS VISIBLES\n\nDans un contexte marqué par la montée des discours haineux et les tentatives d’effacement des minorités, le Family Pride Festival 2026 est une invitation à affirmer notre présence.Nos familles existent, contribuent à la société et doivent avoir toute leur place dans l’espace public.\n\nPendant deux jours, familles LGBTQIA+, enfants, allié·es et associations se réunissent pour se rencontrer, s’entraider, célébrer et affirmer leur visibilité.\n\n**Programmation :**\n\nMarin Baousson, Humoriste et podcasteuse\n\n Tahnee, Humoriste\n\n Eve Simonet, Co-fondatrice on.suzane\n\n Nelson d'Araujo, DJ\n\n Marie-Clémence Bordet, Autrice et membre du Collectif Famille.s\n\n Christine Bard, Historienne\n\n Jessé, Humoriste et auteur\n\n Margaux Gandelon, Association Mam'en solo\n\n Paillettes, Make up artists pour les kids\n\n Fanny Guedj Abadia, Psychologue clinicienne\n\n Camille Decrozant, Bam Badam Editions\n\n Thomas Pawlowski, Auteur\n\n Nadia Morand, Sexologue\n\n Marion Milloir, Membre du Collectif Famille.s\n\n Lydie Raër, Les Dévalideuses\n\n Emilie Duret, Avocate\n\n Constance Démettre, Podcasteuse et membre du Collectif Famille.s\n\n Nathan Wartelle, Membre du Collectif Famille.s\n\n Marie Durand, Présidente du Collectif Famille.s\n\n Nathan, Nos enfants trans\n\n Emilie Morand, Sociologue\n\n Cléo Carastro, Anthropologue\n\n Mathieu Gomel, Membre du Collectif Famille.s\n\n Mona Biloba, Drag queen\n\n Elise Doctogouine, Sage Femme\n\n Emilie Biland, Sociologue",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://www.helloasso.com/associations/collectif-familles",
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": "https://www.familypridefestival.com/",
+  "source_url": "https://www.parislgbt.com/listing/festival-familles-lgbtqia-et-allie%c2%b7es/",
+  "slug": "festival-familles-lgbtqia-et-allie%c2%b7es",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/festival-familles-lgbtqia-et-allie%c2%b7es/",
+    "en": "https://www.parislgbt.com/en/listing/festival-familles-lgbtqia-et-allie%c2%b7es/"
+  }
+}

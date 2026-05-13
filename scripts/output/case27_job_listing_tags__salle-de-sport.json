@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Salle de sport",
+  "categories": [],
+  "tags": [
+    "salle-de-sport"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/salle-de-sport/",
+  "slug": "salle-de-sport",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/salle-de-sport/",
+    "en": "https://www.parislgbt.com/en/tag/salle-de-sport/"
+  }
+}

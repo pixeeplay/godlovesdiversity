@@ -1,0 +1,42 @@
+{
+  "type": "listing",
+  "name": "Bar Le Bric à Brac",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "accueil-public"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/11/1744933927592-scaled.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/11/IMG_20251120_133440.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/11/IMG-20241122-WA0011.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/11/IMG_20241219_232025.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "108 rue Oberkampf",
+    "lat": 48.86596,
+    "lng": 2.3789
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/11/IMG_20250417_195733-461x1024.jpg",
+  "description": "Le Bric à Brac, sous la responsabilité de Dylan, est un bar de quartier très sympathique. C'est une safe place\n\nVous trouverez, à l'étage, un espace où discuter tranquillement.\n\nVous y trouverez également une proposition d'événements :\n\nConcerts, DJs set, stand up, moments queer...",
+  "hours": {
+    "monday": null,
+    "tuesday": "17:30-02:00",
+    "wednesday": "17:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/11/IMG_20250417_201403_518.webp",
+  "subtitle": "Petit bar de quartier avec des prix tres abordables",
+  "transport": "Parmentier",
+  "source_url": "https://www.parislgbt.com/listing/bar-le-bric-a-brac/",
+  "slug": "bar-le-bric-a-brac",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bar-le-bric-a-brac/",
+    "en": "https://www.parislgbt.com/en/listing/bar-le-bric-a-brac/"
+  }
+}

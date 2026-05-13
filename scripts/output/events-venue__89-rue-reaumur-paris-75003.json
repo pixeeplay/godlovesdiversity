@@ -1,0 +1,45 @@
+{
+  "type": "listing",
+  "name": "89 rue Réaumur Paris , 75003",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "IDAHOBIT * 89 rue Réaumur Paris , 75003",
+      "url": "https://www.parislgbt.com/listing/idahobit-2/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "89 rue Réaumur",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/89-rue-reaumur-paris-75003/",
+  "slug": "89-rue-reaumur-paris-75003",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/89-rue-reaumur-paris-75003/",
+    "en": "https://www.parislgbt.com/en/events-venue/89-rue-reaumur-paris-75003/"
+  }
+}

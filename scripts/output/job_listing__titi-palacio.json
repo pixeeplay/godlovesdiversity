@@ -1,0 +1,87 @@
+{
+  "type": "event",
+  "name": "Titi Palacio",
+  "categories": [
+    "bars",
+    "cabarets",
+    "clubs",
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "handicap",
+    "djs-at-work",
+    "gay",
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/06/491812b5cd2c1ad900bdb09b12f1ab6b.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/06/00223552e15d1c3cfd25fa410013024f.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/06/39c8612212c590a94b2bbe1da0a950b2.png",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/06/3b5ae4186e4b350acd2d41ec273c2422.png"
+  ],
+  "linked_events": [
+    {
+      "title": "Gigi's Titi Drag Brunch #17 au Titi Palacio avec Miss Renée!",
+      "url": "https://www.parislgbt.com/listing/gigis-titi-drag-brunch-17-au-titi-palacio-avec-miss-renee/"
+    },
+    {
+      "title": "Gigi's Titi Drag Brunch #18 au Titi Palacio avec La Dame de la Cantine!",
+      "url": "https://www.parislgbt.com/listing/gigis-titi-drag-brunch-18-au-titi-palacio-avec-la-dame-de-la-cantine/"
+    },
+    {
+      "title": "Gigi's Titi Drag Brunch #16 au Titi Palacio avec Laurage Mirage!",
+      "url": "https://www.parislgbt.com/listing/gigis-titi-drag-brunch-16-au-titi-palacio-avec-laurage-mirage/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.84996,
+    "lng": 2.3632
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/06/500-metres-carre-de-jungle.jpg",
+  "dates": [
+    {
+      "start": "2025-06-07T00:00:00+02:00"
+    },
+    {
+      "start": "2025-06-20T00:00:00+02:00"
+    },
+    {
+      "start": "2025-07-05T00:00:00+02:00"
+    }
+  ],
+  "description": "Accueillant la Vondredingue, les Gigi's Titi Drag Brunch & Gigi's VIewing Party - Drag Race France All stars, le Titi Palacio est une véritable jungle urbaine au cœur du Marais!\n\nUne jungle urbaine immense, étonnante et colorée pour les gourmands, les curieux et les gens heureux.\n\nUn lieu de food et de fête à deux pas du Marais.\n\nCafé, coworking de rêve, cantine du midi, bar à tapas, spot à cocktails, restaurant gourmand, brunch du dimanche, les propositions et la programmation évoluent en fonction des heures de la journée, des envies et des fluctuations de la ville lumière.",
+  "email": null,
+  "hours": {
+    "friday": "07:30-23:30",
+    "monday": null,
+    "saturday": "07:30-00:30",
+    "sunday": "07:30-00:30",
+    "thursday": "07:30-23:30",
+    "tuesday": "07:30-23:30",
+    "wednesday": "07:30-23:30"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/06/images.png",
+  "phone": "01 81 22 40 89",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/titipalacioparis",
+    "instagram": "https://www.instagram.com/titi.palacio/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Accueillant la Vondredingue, les Gigi's Titi Drag Brunch & Gigi's VIewing Party - Drag Race France All stars, le Titi Palacio est une véritable jungle urbaine au coeur du Marais!",
+  "transport": "Sully-Morland (Ligne 7)",
+  "venue": null,
+  "website": "https://www.titipalacio.com/",
+  "source_url": "https://www.parislgbt.com/listing/titi-palacio/",
+  "slug": "titi-palacio",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/titi-palacio/",
+    "en": "https://www.parislgbt.com/en/listing/titi-palacio/"
+  }
+}

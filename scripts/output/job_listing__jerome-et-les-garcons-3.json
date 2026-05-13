@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "«Jerome et les garçons»",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/IMG_9572.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75009",
+    "street": "6 rue Frochot",
+    "lat": 48.88132,
+    "lng": 2.33765
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/IMG_9572-773x1024.jpeg",
+  "dates": [
+    {
+      "start": "2026-06-06T20:00:00+02:00"
+    }
+  ],
+  "description": "**Jérôme, était destiné à aimer le foot. Pourtant, petit, il jouait à la poupée Barbie.**\n\nDepuis, ça n’a pas changé … sauf qu’il s’est tourné vers Ken !\n\nEntre quête d’identité et quête de l’amour ou plan d’un soir…\n\nDu bébé éprouvette à l'adulte qui découvre son véritable test ADN, Jérome revendique avec fierté sa place dans le monde.\n\nD'anecdotes croustillantes en vérités intelligentes, Jérôme distille avec humour et justesse, un regard positif et rieur sur lui-même, la famille, et nos contemporains.\n\nChaque jeudi à 21h, retrouvez « Jérôme et les garçons » mis en scène par Yoan Chabaud au théâtre Le Bout.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://www.billetreduc.com/spectacle/jerome-leroi-dans-jerome-et-les-garcons-364692",
+  "social": {
+    "facebook": "https://www.facebook.com/events/604214078943409",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/jerome-et-les-garcons-3/",
+  "slug": "jerome-et-les-garcons-3",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/jerome-et-les-garcons-3/",
+    "en": "https://www.parislgbt.com/en/listing/jerome-et-les-garcons-3/"
+  }
+}

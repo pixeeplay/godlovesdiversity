@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "name": "Virage",
+  "categories": [
+    "clubs"
+  ],
+  "tags": [
+    "queer",
+    "lesbien"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/05/Virage-photo-1.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "Opening DISCO DISCO x Virage : Deborah Aime La Bagarre B2B Herr Krank, Joe Lewandowski, Mon Cher Guy",
+      "url": "https://www.parislgbt.com/listing/opening-disco-disco-x-virage-deborah-aime-la-bagarre-b2b-herr-krank-joe-lewandowski-mon-cher-guy/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75017",
+    "street": "26 Rue Hélène et François Missoffe",
+    "lat": 48.90025,
+    "lng": 2.32179
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/05/Virage-couverture-1-1024x342.png",
+  "description": "Leur mantra :\n\n\"Prendre un virage c’est acter une transition : celle qui amène plus de liberté, de tolérance et de communion. Peut-on savoir véritablement ce qu’il y a derrière ? En tout cas, on brûle de le découvrir.\"\n\nCe club est un ancien parking de camion transformé en club sous le périphérique à la lisière de Clichy par l'équipe du Badaboum (club de Bastille). La DA est assurée par Rag, fondatrice du collectif Wet For Me.\n\nIl y a une exigence indéniable dans la programmation, qui peut offrir un plateau de Grrrr Girls Hip Hop comme des créatures sauvages plus technoïdes. Plusieurs collectifs queer ont leur habitude dans cette caverne aux mille délices.\n\nAdresse :\n\n26 Rue Hélène et François Missoffe, Paris 17.",
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": null,
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/05/Virage-logo.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/virage17",
+    "instagram": "https://www.instagram.com/virage.paris/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Lieu de vie et fêtes inclusives 🫶",
+  "transport": "T3B Epinettes - Bouchet - Ligne 14 station Clichy",
+  "website": "https://shotgun.live/fr/venues/virage",
+  "source_url": "https://www.parislgbt.com/listing/virage/",
+  "slug": "virage",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/virage/",
+    "en": "https://www.parislgbt.com/en/listing/virage/"
+  }
+}

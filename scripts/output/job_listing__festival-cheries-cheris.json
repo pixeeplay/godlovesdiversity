@@ -1,0 +1,51 @@
+{
+  "type": "listing",
+  "name": "Festival Chéries-Chéris",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/10/15-26-Nov-Cheries-Cheris-affiche.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2024/10/Cheries-Cheris-histo.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86237,
+    "lng": 2.35404
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/10/15-26-Nov-Cheries-Cheris-affiche-801x1024.jpg",
+  "description": "Premier festival de cinéma à Paris et premier festival de cinéma LGBT de France en termes de fréquentation et volume de programmation, le Festival international du film lesbien, gay, bi, trans et ++++ de Paris Chéries-Chéris est depuis de nombreuses années un événement culturel incontournable. Inauguré en 1994, Chéries-Chéris propose en effet chaque année à son public le meilleur de la production cinématographique - fictions, documentaires et courts-métrages inédits - traitant des homosexualités et des transidentités. Fort d’une maturité acquise au fil de ses éditions précédentes et de sa renommée internationale croissante, Chéries-Chéris est aujourd’hui l’un des festivals de référence pour le genre cinématographique qu’il défend. La 30e édition du Festival aura lieu du 15 au 26 novembre 2024 dans les salles MK2 (Bibliothèque, Beaubourg, Quai de Seine).",
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/10/Logo-Cheries-Cheris.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/FFLGBTQP",
+    "instagram": "https://www.instagram.com/cheriescherisparis/",
+    "tiktok": null,
+    "twitter": "https://x.com/CheriesCheris"
+  },
+  "subtitle": "Festival international du film #LGBT+ #GSRM de #PARIS - 30e éd. du 15 au 26 nov. 2023 chez @mk2 Bibliothèque (13e)/ Beaubourg (3e) et Quai de Seine (19e)",
+  "transport": "M° Hotel de Ville, Rambuteau, Saint Paul",
+  "website": "https://cheries-cheris.com/festival/",
+  "source_url": "https://www.parislgbt.com/listing/festival-cheries-cheris/",
+  "slug": "festival-cheries-cheris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/festival-cheries-cheris/",
+    "en": "https://www.parislgbt.com/en/listing/festival-cheries-cheris/"
+  }
+}

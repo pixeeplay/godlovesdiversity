@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "name": "Raidd Bar",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "gay",
+    "djs-at-work",
+    "drags",
+    "jeunes-etudiants"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/89454077_875396746243974_534623282599559168_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/88302141_873027016480947_8254883274116038656_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/87455613_872465919870390_3884979407370059776_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/89112615_870389800078002_3356805207144005632_o.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "BFF",
+      "url": "https://www.parislgbt.com/listing/bff/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "23 Rue du Temple",
+    "lat": 48.85895,
+    "lng": 2.35344
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/Le_Raidd_cover-1024x672.jpg",
+  "description": "Le Raidd Bar est un spot incontournable du Marais. Connu pour ses barmans torse nu, tout droit sortis d’une agence de mannequins et pour son shooter show incroyablement sexy où de beaux garçons prennent leur douche au milieu des touristes armés de leur portable !",
+  "hours": {
+    "monday": "18:00-04:00",
+    "tuesday": "18:00-04:00",
+    "wednesday": "18:00-04:00, 18:00-04:00, 18:00-04:00, 18:00-04:00, 18:00-05:00, 18:00-05:00, 18:00-04:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/Raidd_Bar_logo.jpg",
+  "phone": "01 42 77 04 88",
+  "social": {
+    "facebook": "https://www.facebook.com/RAIDDBARPARIS",
+    "instagram": "https://www.instagram.com/raidd_paris"
+  },
+  "subtitle": "Bar avec son célèbre shower-show",
+  "transport": "Métro 1,11 : Hôtel de Ville",
+  "source_url": "https://www.parislgbt.com/listing/raidd-bar/",
+  "slug": "raidd-bar",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/raidd-bar/",
+    "en": "https://www.parislgbt.com/en/listing/raidd-bar/"
+  }
+}

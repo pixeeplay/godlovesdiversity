@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "JUL AFTER SHOW",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/10/luca-micheli-Q7htkhMW66Y-unsplash-scaled-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": null,
+    "postal_code": null,
+    "street": null,
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/10/luca-micheli-Q7htkhMW66Y-unsplash-scaled-1-1024x473.jpg",
+  "dates": [
+    {
+      "start": "2026-05-15T23:00:00+02:00"
+    }
+  ],
+  "description": "JUL AFTER SHOW — VENDREDI 15 MAI — 23H > 6H Le Stade de France va s’éteindre… Le WorkshoW, lui, va s’allumer encore plus fort. Le vendredi 15 mai, on prolonge la nuit avec un after show 100% dédié à l’univers de JUL : ses sons, son énergie, ses codes, ses vibes sudistes et cette ambiance unique qui retourne les foules. (Jul ne sera pas présent dans l’établissement.)\n\nAU PROGRAMME\n- DJ set XXL avec remix, classiques, bangers et pépites du J\n- Une ambiance Marseille–Paris qui glisse toute la nuit\n- Sélection spéciale autour des artistes de son univers : SCH – Naps – Soso Maness – Alonzo – Kofs – Zola – Gambi – Heuss L’Enfoiré – Timal – Maes\n\n️ L’EXPÉRIENCE WORKSHOW\nNéons, basses, chaleur collective, scénographie immersive… On transforme l’établissement en temple du J, version after show, version Paris, version jusqu’au lever du soleil.\n\nINFOS\n23h — 6h\nLe WorkshoW — Paris\n️ After show officiel du vendredi soir\nDress code : casquette vissée, bonne humeur vissée",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/78311733_2208049539296143_629503271991508992_n-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1202299585411799",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "WorkshoW",
+    "slug": "workshow",
+    "url": "https://www.parislgbt.com/listing/workshow/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/jul-after-show/",
+  "slug": "jul-after-show",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/jul-after-show/",
+    "en": "https://www.parislgbt.com/en/listing/jul-after-show/"
+  }
+}

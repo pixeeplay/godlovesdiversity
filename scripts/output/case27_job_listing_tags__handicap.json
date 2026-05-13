@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Accessibilité handicapé-es",
+  "categories": [],
+  "tags": [
+    "handicap"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/handicap/",
+  "slug": "handicap",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/handicap/",
+    "en": "https://www.parislgbt.com/en/tag/handicap/"
+  }
+}

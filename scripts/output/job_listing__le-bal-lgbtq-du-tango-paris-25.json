@@ -1,0 +1,63 @@
+{
+  "type": "event",
+  "name": "Le Bal LGBTQ+ du Tango Paris",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/Couverture-MARS-2026-2.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "11 rue au Maire",
+    "lat": 48.86448,
+    "lng": 2.35675
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/Couverture-MARS-2026-2-1024x576.png",
+  "dates": [
+    {
+      "start": "2026-06-12T22:30:00+02:00"
+    },
+    {
+      "start": "2026-06-19T22:30:00+02:00"
+    },
+    {
+      "start": "2026-06-26T22:30:00+02:00"
+    },
+    {
+      "start": "2026-07-03T22:30:00+02:00"
+    },
+    {
+      "start": "2026-07-10T22:30:00+02:00"
+    }
+  ],
+  "description": "**Le Bal LGBTQ+ au Tango Paris, c’est :**\n\nDe 22h30 à 00h30, le bal musette !\n\n Tous en piste sur le parquet pour danser à deux (valse, tango, paso, etc.). C’est l’occasion d’essayer de faire ses premiers pas de danse. On se parle, on se sourit, des filles dansent avec des filles, des garçons avec des garçons, des filles guident des garçons et réciproquement ! Ou alors, vous pouvez simplement observer un instant qui vous transporte dans un autre temps…\n\n00h30 : Le Madison\n\n Après une valse de minuit, le Madison (danse collective) commence ! Il lance la soirée Club…\n\nDe 00h30 à 5h\n\n La soirée se poursuit jusqu’au petit matin ! On se trémousse sur Britney Spears, on casse la voix sur Abba ou Céline Dion, on se révèle sur Rihanna, puis on se rassemble autour d’Aznavour. Tous les genres musicaux sauf la techno, et titres à la demande (dans la mesure du possible). Mais surtout, on se voit, on s'entend, on se sourit. Il y a des filles, des garçons, et autres. Des butchs, des queens, des créatures, des jeunes, des vieux, des danseurs ou des chanteurs, et même quelques hétéros, tous rassemblés dans un même but : s’amuser !\n\nSi vous vous reconnaissez dans cette quête d’amusement, alors le bal LGBTQ+ du Tango Paris deviendra rapidement pour vous un incontournable !",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/02/Logo-Tango.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/446014428456741",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Le Tango",
+    "slug": "le-tango",
+    "url": "https://www.parislgbt.com/listing/le-tango/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/le-bal-lgbtq-du-tango-paris-25/",
+  "slug": "le-bal-lgbtq-du-tango-paris-25",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-bal-lgbtq-du-tango-paris-25/",
+    "en": "https://www.parislgbt.com/en/listing/le-bal-lgbtq-du-tango-paris-25/"
+  }
+}

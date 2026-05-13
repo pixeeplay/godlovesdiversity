@@ -1,0 +1,54 @@
+{
+  "type": "event",
+  "name": "BEBE A TOUT PRIX",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/BB-a-tout-prix-Marais-web.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "37 Rue Volta",
+    "lat": 48.86629,
+    "lng": 2.35778
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/BB-a-tout-prix-Marais-web-695x1024.jpg",
+  "dates": [
+    {
+      "start": "2026-05-14T19:30:00+02:00"
+    },
+    {
+      "start": "2026-05-19T21:00:00+02:00"
+    }
+  ],
+  "description": "**Envie d'une comédie pétillante, rythmée et pleine de folie ?**\n\n Après The Marabout Show, Nicolas Huan et Jérémy Boutier reviennent avec une nouvelle pièce aussi drôle qu'originale **: \"Bébé à tout prix\"**\n\nGabriel et Léo n'ont plus qu'un rêve à réaliser pour vivre leur vie parfaite : avoir un enfant !\n\n Cependant, ils ont épuisé toutes les options : l'adoption prend trop de temps et la coparentalité est un vrai casse-tête.\n\n Alors, ils décident de se tourner vers la solution ultime : une mère porteuse. Clara est leur dernier espoir ! Mais comment être sûr de choisir la candidate parfaite ?\n\n Rien de plus simple : une période d'essai s'impose ! Mais voilà que débarque Catherine, la mère de Gabriel, qui ne sait pas que son fils préfère les garçons... Et c'est là que les ennuis commencent !\n\nLe saviez-vous ?\n\n Fait historique : La première gestation pour autrui a eu lieu il y a 2000 ans.\n\n De l'action : Une chute de 19 étages - 22 avec les sous-sols !\n\n Des vérités : Il est certainement sur une île déserte avec Elvis, Michael Jackson et Michel Sardou !\n\n Du clash : Les mères porteuses, ça choque surtout ceux qui n'en ont pas besoin.\n\n Des prévisions : Dans 50 ans, quand 60% de la population sera stérile, on reconsidérera la place des mères porteuses dans la société.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://www.billetreduc.com/spectacle/un-bebe-a-tout-prix-395919",
+  "social": {
+    "facebook": null,
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "théâtre du Marais",
+    "slug": "theatre-du-marais",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=th%C3%A9%C3%A2tre%20du%20Marais"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/bebe-a-tout-prix-2/",
+  "slug": "bebe-a-tout-prix-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bebe-a-tout-prix-2/",
+    "en": "https://www.parislgbt.com/en/listing/bebe-a-tout-prix-2/"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "pic nic dandys a vincennes",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/10/luca-micheli-Q7htkhMW66Y-unsplash-scaled-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/10/luca-micheli-Q7htkhMW66Y-unsplash-scaled-1-1024x473.jpg",
+  "dates": [
+    {
+      "start": "2026-06-14T13:00:00+02:00"
+    }
+  ],
+  "description": "grand rendez vous de juin ! rendez vous devant le chateau , sur la grande pelouse. amenez de quoi manger svp.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/3710012819129553",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Bois de Vincennes",
+    "slug": "bois-de-vincennes",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=Bois%20de%20Vincennes"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/pic-nic-dandys-a-vincennes/",
+  "slug": "pic-nic-dandys-a-vincennes",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/pic-nic-dandys-a-vincennes/",
+    "en": "https://www.parislgbt.com/en/listing/pic-nic-dandys-a-vincennes/"
+  }
+}

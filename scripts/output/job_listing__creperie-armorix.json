@@ -1,0 +1,65 @@
+{
+  "type": "listing",
+  "name": "Crêperie Armorix",
+  "categories": [
+    "restaurant"
+  ],
+  "tags": [
+    "terrasse"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/02-creperie-bretonne-armorix-galette-sarrasin-apero-copyright-loic-chauve.jpg.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/03-creperie-bretonne-armorix-galette-sarrasin-vegetarien-copyright-loic-chauve.jpg.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/04-creperie-armorix-galette-sarrasin-creation-different-copyright-loic-chauve.jpg.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/05-creperie-bretonne-armorix-galette-sarrasin-unique-copyright-loic-chauve.jpg.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/06-creperie-bretonne-armorix-galertte-sarrasin-andouille-classique-copyright-loic-chauve.jpg.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/07-creperie-bretonne-armorix-ambiance-chaleureux-unique-copyright-loic-chauve-OTP07.jpg.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/08-creperie-bretonne-armorix-crepe-froment-creatif-paspareil-copyright-loic-chauve-OTP08.jpg.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/09-creperie-bretonne-armorix-crepe-froment-caramel-copyright-loic-chauve.jpg.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/12/10-creperie-bretonne-armorix-crepe-froment-banane-caramelisee-chocolat-different-copyright-loic-chauve.jpg.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/06/07-armrix-bretagne-crepes-gaette-sarrasin-cidres-huitres-yster-gbt-paris10-brunch-gay-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/06/00-armorix-creperie-lgbtparis-paris10-different-huitres-bleues-blue-oysters-brittany-crepes-buckwheat-different.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/06/01-creperie-bretonne-armorix-creatif-unique-meilleurs-cidres-copyright-loic-chauve.jpg.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75010",
+    "street": "23, rue Sainte Marthe",
+    "lat": 48.87411,
+    "lng": 2.37225
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/06/07-armrix-bretagne-crepes-gaette-sarrasin-cidres-huitres-yster-gbt-paris10-brunch-gay-1024x1024.jpg",
+  "description": "👠👠 Véritable crêperie Bretonne où savourer crêpes & galettes (farines bio) issues des grands classiques et de leur créativité sans limites 🪄🪄Rencontres inattendues dans une ambiance et une déco bien à eux (la canopée d’huitres bleues est étonante) 🫎 Carte et addition inimittables 🌈🌈 Happy huitre (1€ l’huitre tous les jours de 19 à 20h) !",
+  "email": null,
+  "hours": {
+    "friday": "12:00-23:00",
+    "monday": null,
+    "saturday": "12:00-23:00",
+    "sunday": "12:00-22:00",
+    "thursday": "12:00-23:00",
+    "tuesday": null,
+    "wednesday": "12:00-23:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/12/logoJo-1.png",
+  "phone": "+33 980447330",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/Armorix.bzh/",
+    "instagram": "https://www.instagram.com/armorix.bzh/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "🌈 Chaleureux 🧔🏻‍♂️Surprenant 🐡 Unique et pas pareil",
+  "transport": "M° Belleville",
+  "venue": null,
+  "website": "https://www.armorix.bzh/",
+  "source_url": "https://www.parislgbt.com/listing/creperie-armorix/",
+  "slug": "creperie-armorix",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/creperie-armorix/",
+    "en": "https://www.parislgbt.com/en/listing/creperie-armorix/"
+  }
+}

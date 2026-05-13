@@ -1,0 +1,42 @@
+{
+  "type": "event",
+  "name": "Course des Fiertés",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/03/Course-des-Fiertes_Samedi-20-Juin-2026.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Pantin",
+    "country": "France",
+    "postal_code": "93500",
+    "street": "Place De La Pointe",
+    "lat": 48.89493,
+    "lng": 2.417
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/03/Course-des-Fiertes_Samedi-20-Juin-2026-819x1024.jpeg",
+  "dates": [
+    {
+      "start": "2026-06-20T09:00:00+02:00"
+    }
+  ],
+  "description": "**Le samedi 20 juin, venez courir dans un ambiance festive LGBTQIA+ avec La Course des Fiertés !**\n\nChoisir votre distance 4km, 7km ou 10km au départ de la place de la Point à Pantin, avec un parcours aux berges du canal, avec plein d'animations, de musique et des couleurs.\n\nUn temps fort sportif et solidaire organisé à Pantin dans le cadre de la Semaine des Fiertés. Elle s’inscrit dans la continuité des mobilisations portées par l’Inter-LGBT pour la visibilité des personnes LGBTQI+ et la défense de l’égalité des droits.\n\nOuverte à toustes, la course se veut accessible, inclusive et conviviale. Elle est avant tout un moment de rassemblement collectif, où courir, marcher et participer devient un acte de visibilité et de soutien aux luttes portées par les associations LGBTQI+.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://www.course.inter-lgbt.org/",
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/course-des-fiertes/",
+  "slug": "course-des-fiertes",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/course-des-fiertes/",
+    "en": "https://www.parislgbt.com/en/listing/course-des-fiertes/"
+  }
+}

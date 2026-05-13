@@ -1,0 +1,32 @@
+{
+  "type": "page",
+  "name": "My account",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/my-account/",
+  "slug": "my-account",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/my-account/",
+    "en": "https://www.parislgbt.com/en/my-account/"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "La Qonasse S04ep36",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/43132_image_680969863_997260419311393_8065429069270346089_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/43132_image_680969863_997260419311393_8065429069270346089_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-28T18:00:00+02:00"
+    }
+  ],
+  "description": "**Tous les jeudis au Freedj**\n\n**c'est La Qonasse !**\n\n - Ambiance décontractée,\n\n - sons qui claquent,\n\n - verres qui s'entrechoquent\n\n - high vibes comme tu les aimes\n\nLa reine de la soirée, Kyssy Bang Bang\n\n sera évidemment présente : Trash glam imprévisible et délicieusement insolente !\n\n le piment qui manquait à ta soirée pour qu'elle devienne explosive !\n\nCôté musiques ? une playlist “Qonasse certified” comme tu en as désormais l'habitude :\n\n - du kitsch,\n\n - du nostalgique,\n\n - des remix improbables…\n\nTout pour vous surprendre à chaque instant !!!\n\n Côté musiques ? une playlist “Qonasse certified” comme tu en as désormais l'habitude :\n\n - du kitsch,\n\n - du nostalgique,\n\n - des remix improbables…\n\nDJ set : Cyril Kortez / Little Némo",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1355393166415793",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Freedj",
+    "slug": "freedj",
+    "url": "https://www.parislgbt.com/listing/freedj/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/la-qonasse-s04ep36/",
+  "slug": "la-qonasse-s04ep36",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-qonasse-s04ep36/",
+    "en": "https://www.parislgbt.com/en/listing/la-qonasse-s04ep36/"
+  }
+}

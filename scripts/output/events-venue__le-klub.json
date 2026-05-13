@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "Le Klub",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "MENTAL QUEER / 29 - 05 - 2026",
+      "url": "https://www.parislgbt.com/listing/mental-queer-29-05-2026/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/le-klub/",
+  "slug": "le-klub",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/le-klub/",
+    "en": "https://www.parislgbt.com/en/events-venue/le-klub/"
+  }
+}

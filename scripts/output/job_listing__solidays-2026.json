@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Solidays 2026",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42789_image_629462041_1310628894425787_376793801223194546_n-1-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75116",
+    "street": "28 Route des Tribunes",
+    "lat": 48.85771,
+    "lng": 2.23272
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42789_image_629462041_1310628894425787_376793801223194546_n-1-1.jpg",
+  "dates": [
+    {
+      "start": "2026-06-26T15:00:00+02:00"
+    },
+    {
+      "end": "2026-06-28T23:30:00+02:00",
+      "start": "2026-06-26T15:00:00+02:00"
+    }
+  ],
+  "description": "**✨ Solidays 2026 du 26 au 28 juin !**\n\nC’est vrai,\n\n le monde aime diviser.\n\n Séparer. Classer. Opposer.\n\n Générations, genres, croyances, idées.\n\n Comme si tout devait être binaire.\n\n Pour ou contre. Nous ou eux.\n\n À Solidays on essaye autre chose.\n\nLe rendez-vous musical et solidaire de l’été est de retour avec des artistes incontournables : Zara Larsson, Gims, Orelsan, BigFlo & Oli, Mosimann, Ino Casablanca et bien d’autres...\n\nSolidays n’est pas un festival comme les autres. Construit sur des valeurs de partage et d’entraide, il (ré)enchante le monde à sa manière en donnant du sens à la fête et des couleurs à la solidarité. C’est un lieu unique de circulation des idées et d’éveil des consciences. Chaque année, les vocations sociales et solidaires y naissent par milliers.\n\n3 jours de partage, de love et de solidarité !\n\nPrêt.e.s à donner du sens à la fête ?\n\n🎟️ [**TICKET**](https://solidays.seetickets.com/content/ticket-options) 🎫",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://solidays.seetickets.com/content/ticket-options",
+  "social": {
+    "facebook": "https://www.facebook.com/events/1173308368207972",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/solidays-2026/",
+  "slug": "solidays-2026",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/solidays-2026/",
+    "en": "https://www.parislgbt.com/en/listing/solidays-2026/"
+  }
+}

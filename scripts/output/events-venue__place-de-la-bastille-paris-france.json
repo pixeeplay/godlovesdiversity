@@ -1,0 +1,40 @@
+{
+  "type": "listing",
+  "name": "Place de la Bastille, Paris, France",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Bal de l'amour",
+      "url": "https://www.parislgbt.com/listing/bal-de-lamour/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/place-de-la-bastille-paris-france/",
+  "slug": "place-de-la-bastille-paris-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/place-de-la-bastille-paris-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/place-de-la-bastille-paris-france/"
+  }
+}

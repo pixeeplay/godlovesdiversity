@@ -1,0 +1,53 @@
+{
+  "type": "listing",
+  "name": "Péniche le Marcounet",
+  "categories": [
+    "bars",
+    "cabarets",
+    "restaurant"
+  ],
+  "tags": [
+    "terrasse"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/54220391_1290829477708800_7510243495265697792_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/84068527_1802778429847233_4425015482633945088_o.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "Port des Célestins, Quai de l'Hôtel de ville",
+    "lat": 48.85336,
+    "lng": 2.35686
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/11890012_429247457200344_7328959113343977701_o1-1024x683.jpg",
+  "description": "Une péniche authentique et pleine de charme, construite en 1925 et transformée à la fin du siècle dernier en un lieu culturel et festif reconnu du public parisien. La Seine est étroite à cet endroit. La notion de temps est altérée, le tempo parisien aussi.\n\nL'emplacement situé entre le Pont Marie et le Pont Louis Philippe dans le 4ème arrondissement de Paris, en fait une des péniches les plus accessibles de Paris.\n\nTerrasse ouverte de Mai à Octobre.",
+  "hours": {
+    "friday": "10:00-00:00",
+    "monday": "10:00-00:00",
+    "saturday": "10:00-00:00",
+    "sunday": "10:00-00:00",
+    "thursday": "10:00-00:00",
+    "tuesday": "10:00-00:00",
+    "wednesday": "10:00-00:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/Logo-Marcounet.jpg",
+  "phone": "06 60 47 38 52",
+  "social": {
+    "facebook": "https://www.facebook.com/PenicheLeMarcounet",
+    "instagram": "https://www.instagram.com/peniche_marcounet/",
+    "twitter": "https://twitter.com/PMarcounet"
+  },
+  "subtitle": "un club de jazz, une table de qualité",
+  "transport": "Metro 7 : Pont Marie",
+  "website": "http://www.peniche-marcounet.fr/?fbclid=IwAR2YpcvPnQHk6joqO3PYSjcASRCx_79yXmYPSAurPHSa4Lh__yHhnJdf5ZE",
+  "source_url": "https://www.parislgbt.com/listing/peniche-le-marcounet/",
+  "slug": "peniche-le-marcounet",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/peniche-le-marcounet/",
+    "en": "https://www.parislgbt.com/en/listing/peniche-le-marcounet/"
+  }
+}

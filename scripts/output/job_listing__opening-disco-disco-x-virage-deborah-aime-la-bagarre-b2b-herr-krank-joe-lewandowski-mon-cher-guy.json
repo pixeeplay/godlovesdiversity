@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Opening DISCO DISCO x Virage : Deborah Aime La Bagarre B2B Herr Krank, Joe Lewandowski, Mon Cher Guy",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42872_image_658815269_1449338426984680_3049932215564936295_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75017",
+    "street": "26 Rue Hélène et François Missoffe",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42872_image_658815269_1449338426984680_3049932215564936295_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-21T19:00:00+02:00"
+    }
+  ],
+  "description": "Jeudi 21 mai - 19h00/05h00\n\nOPENING DISCO DISCO à Virage\n\nL’incontournable rendez-vous parisien des amoureux de disco, funk, soul et house fait son grand opening à Virage !\n\n⭐️ LINE UP\n\nDeborah Aime La Bagarre B2B Herr Krank (italo set) \n\nJoe Lewandowski \n\nMon Cher Guy \n\nRaviolis de Nuit B2B Sacrebleu\n\n26 Rue Hélène et François Missoffe, 75017 Paris, France\n\nMETRO : Porte de Saint-Ouen\n\nBUS : 341 (Touzet – Gaillard) / 66 (Bois Le Prêtre)\n\nRER C : St-Ouen\n\nVIRAGE EST UN LIEU QUI PRÔNE LE RESPECT ET LA BIENVEILLANCE ENVERS TOUSTES\n\nL’établissement se réserve le droit d’admission.\n\nArtwork : Kyoka Eguchi",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/05/Virage-logo-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1244393467859824",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "METRO : Porte de Saint-Ouen, BUS : 341 (Touzet – Gaillard) / 66 (Bois Le Prêtre), RER C : St-Ouen",
+  "venue": {
+    "name": "Virage",
+    "slug": "virage",
+    "url": "https://www.parislgbt.com/listing/virage/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/opening-disco-disco-x-virage-deborah-aime-la-bagarre-b2b-herr-krank-joe-lewandowski-mon-cher-guy/",
+  "slug": "opening-disco-disco-x-virage-deborah-aime-la-bagarre-b2b-herr-krank-joe-lewandowski-mon-cher-guy",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/opening-disco-disco-x-virage-deborah-aime-la-bagarre-b2b-herr-krank-joe-lewandowski-mon-cher-guy/",
+    "en": "https://www.parislgbt.com/en/listing/opening-disco-disco-x-virage-deborah-aime-la-bagarre-b2b-herr-krank-joe-lewandowski-mon-cher-guy/"
+  }
+}

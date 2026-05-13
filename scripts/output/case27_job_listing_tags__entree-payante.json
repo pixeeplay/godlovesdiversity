@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Entrée payante",
+  "categories": [],
+  "tags": [
+    "entree-payante"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/entree-payante/",
+  "slug": "entree-payante",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/entree-payante/",
+    "en": "https://www.parislgbt.com/en/tag/entree-payante/"
+  }
+}

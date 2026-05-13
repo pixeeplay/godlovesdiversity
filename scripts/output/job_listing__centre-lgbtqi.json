@@ -1,0 +1,65 @@
+{
+  "type": "listing",
+  "name": "Centre LGBTQI+",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "prevention-sante",
+    "handicap",
+    "lesbien",
+    "gay",
+    "bi",
+    "trans",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/74789933_2575128009237737_7415622363552677888_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/65220699_2279798808770660_1326538771499319296_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/CentreLGBTParis_ateliers.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/CentreLGBTParisIDF_Logo1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/CentreLGBTParis_programme.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2020/03/CentreLGBTParis_equipe.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86313,
+    "lng": 2.35447
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/CentreLGBTParis_facade-1024x729.jpg",
+  "description": "Le Centre LGBTQI+ Paris Île-de-France est une association loi 1901, qui lutte pour l’égalité des droits et contre les discriminations liées à l’orientation sexuelle et/ou à l’identité de genre.\n\nIl accueille, informe et soutient les personnes et leur offre un espace de convivialité (activités, débats, expositions, spectacles, bibliothèque…), de santé (prévention, documentation…), de soutien (juridique, social, emploi, psy…) et de bien-être (sophrologie, yoga…).\n\nIl constitue un espace de visibilité et un lieu de ressources documentaires sur les questions LGBTQI+ et appuie ses 80 associations membres en favorisant leurs initiatives. Il initie également de nombreux projets hors les murs en Ile-de-France.\n\nSon histoire ? Le 18 janvier 1993, une cinquantaine de représentant·es d’associations gaies ou de lutte contre le sida se réunissent à Paris, en Assemblée Générale Constituante. Les Amis de Bonneuil, l’ACGLSF, les Caramels Fous, les Gais Retraités, le MAG, Rando’s IDF, Le Gai Moto Club, Act Up-Paris, Arcat Sida, le CRIPS, le groupe David Girard, le SNEG, l’Association des Médecins Gais, David & Jonathan IDF, SOS Ecoute Gaie, et tant d'autres, créent le Centre Gai et Lesbien(CGL). Les statuts déposés à la Préfecture de Police de Paris, le 22 mars 1993, démarre alors une véritable aventure, faite d’espoirs, de travail, d’engagement et de solidarité, menée par et pour les personnes LGBTQI+.\n\nAujourd'hui, c'est à vous tous.tes de le développer et de la faire vivre. C'est le lieu le plus communautaire qui soit.",
+  "email": null,
+  "hours": {
+    "friday": "15:30-20:00",
+    "monday": "15:30-20:00",
+    "saturday": "13:00-19:00",
+    "sunday": null,
+    "thursday": "15:30-20:00",
+    "tuesday": "15:30-20:00",
+    "wednesday": "15:30-20:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2020/03/CentreLGBTParisIDF_Logo1.jpg",
+  "phone": "01 43 57 21 47",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/centrelgbtparisidf",
+    "instagram": "https://www.instagram.com/centrelgbtparisidf/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "service des personnes, accueil, soutien et informations.",
+  "transport": "Metro 11 : Rambuteau",
+  "venue": null,
+  "website": "http://www.centrelgbtparis.org/",
+  "source_url": "https://www.parislgbt.com/listing/centre-lgbtqi/",
+  "slug": "centre-lgbtqi",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/centre-lgbtqi/",
+    "en": "https://www.parislgbt.com/en/listing/centre-lgbtqi/"
+  }
+}

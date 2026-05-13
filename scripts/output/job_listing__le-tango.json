@@ -1,0 +1,101 @@
+{
+  "type": "listing",
+  "name": "Le Tango",
+  "categories": [
+    "clubs"
+  ],
+  "tags": [
+    "handicap",
+    "drags",
+    "membre-du-snegco",
+    "arts-culture",
+    "entree-payante",
+    "gay",
+    "lesbien",
+    "queer",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Photo-Tango-4.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Photo-Tango-7.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Photo-Tango-2.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Photo-Tango-5.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Photo-Tango-6.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Photo-Tango-3.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Photo-Tango-8.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "Le Bal LGBTQ+ du Tango Paris",
+      "url": "https://www.parislgbt.com/listing/le-bal-lgbtq-du-tango-paris-22/"
+    },
+    {
+      "title": "Le Bal LGBTQ+ du Tango Paris",
+      "url": "https://www.parislgbt.com/listing/le-bal-lgbtq-du-tango-paris-23/"
+    },
+    {
+      "title": "Darladi Dalida",
+      "url": "https://www.parislgbt.com/listing/darladi-dalida-5/"
+    },
+    {
+      "title": "Le Bal LGBTQ+ du Tango Paris",
+      "url": "https://www.parislgbt.com/listing/le-bal-lgbtq-du-tango-paris-25/"
+    },
+    {
+      "title": "Le Bal LGBTQ+ du Tango Paris",
+      "url": "https://www.parislgbt.com/listing/le-bal-lgbtq-du-tango-paris-24/"
+    },
+    {
+      "title": "Cabaret Défait - Édition Anniversaire",
+      "url": "https://www.parislgbt.com/listing/cabaret-defait-edition-anniversaire/"
+    },
+    {
+      "title": "La Spéciale France Gall",
+      "url": "https://www.parislgbt.com/listing/la-speciale-france-gall/"
+    },
+    {
+      "title": "Daisy Horse Saloon #2",
+      "url": "https://www.parislgbt.com/listing/daisy-horse-saloon-2/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "11 rue au Maire",
+    "lat": 48.86451,
+    "lng": 2.35679
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/02/Photo-Tango-1.jpg",
+  "description": "Le Tango Paris est un lieu emblématique de la nuit LGBT+ parisienne. Situé au cœur du Marais, ce dancing historique mêle tradition et modernité, offrant un espace festif, chaleureux et inclusif où toutes les générations et identités se croisent.\n\nChaque vendredi et samedi, la soirée débute avec des danses à deux ouvertes à toutes et tous, animées par des associations partenaires. À 00h30, la piste s’embrase avec le Madison collectif, avant de laisser place à un clubbing unique: tous les tubes en version originale, des classiques intemporels aux hits actuels, sans oublier les disques à la demande. Ici, pas de techno ni d’électro, mais une ambiance éclectique où la variété française, le disco et la dance règnent en maîtres.\n\nGéré par une Société Coopérative d’Intérêt Collectif (SCIC), le Tango est plus qu’une discothèque : c’est un projet collectif où les bénéfices sont réinvestis pour préserver ce lieu mythique et soutenir des événements non lucratifs au service de la communauté LGBT+.\n\nUn nouveau directeur, Fabien alias Ivresse, nouvelle artiste à la perruque écarlate, s'occupe désormais de coordonner cette boîte à frissons devenue le phare de la nuit du Marais.",
+  "email": null,
+  "hours": {
+    "friday": "22:30-05:00",
+    "monday": null,
+    "saturday": "22:30-05:00",
+    "sunday": "18:00-23:00",
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/02/Logo-Tango.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/letangoparis",
+    "instagram": "https://www.instagram.com/letangoparis/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Dancing historique et festif depuis 1997, lieu incontournable de la nuit LGBT+ parisienne.",
+  "transport": "Métro Arts & Métiers, ligne 3 et 11",
+  "venue": null,
+  "website": "https://www.tangoparis.com/",
+  "source_url": "https://www.parislgbt.com/listing/le-tango/",
+  "slug": "le-tango",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-tango/",
+    "en": "https://www.parislgbt.com/en/listing/le-tango/"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "type": "listing",
+  "name": "La Nuit",
+  "categories": [
+    "clubs"
+  ],
+  "tags": [
+    "djs-at-work"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2023/11/La-Nuit-2.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/2023/11/La-Nuit-3.png"
+  ],
+  "linked_events": [
+    {
+      "title": "TÊTU FANTASMA PRIDE CLUB",
+      "url": "https://www.parislgbt.com/listing/tetu-fantasma-pride-club/"
+    }
+  ],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86988,
+    "lng": 2.32735
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2023/11/La-Nuit-couverture-1024x536.png",
+  "description": "Situé sur le prestigieux boulevard de la Madeleine, La Nuit se veut un pont entre les mondes, entre l'Est et l'Ouest, l'underground et le populaire, le clubbing pur et le live.\n\nCe lieu, d'une capacité de 700 personnes, existe depuis des années et a eu plusieurs vies. Aujourd'hui le club alterne soirées tout public et privatisations en semaine et offre des soirées LGBT le we, comme la Lolita.",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2023/11/logo-La-Nuit.jpeg",
+  "phone": "06 14 38 36 83",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/LANUITPAR",
+    "instagram": "https://www.instagram.com/clublanuit",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "M° Madeleine",
+  "venue": null,
+  "website": "https://lanuit.club/",
+  "source_url": "https://www.parislgbt.com/listing/la-nuit/",
+  "slug": "la-nuit",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-nuit/",
+    "en": "https://www.parislgbt.com/en/listing/la-nuit/"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Femmes exclusivement",
+  "categories": [],
+  "tags": [
+    "femmes-exclusivement"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/femmes-exclusivement/",
+  "slug": "femmes-exclusivement",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/femmes-exclusivement/",
+    "en": "https://www.parislgbt.com/en/tag/femmes-exclusivement/"
+  }
+}

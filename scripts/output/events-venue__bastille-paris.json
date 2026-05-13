@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "Bastille, Paris",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "AYA NAKAMURA AFTER SHOW * Bastille, Paris",
+      "url": "https://www.parislgbt.com/listing/aya-nakamura-after-show-3/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/bastille-paris/",
+  "slug": "bastille-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/bastille-paris/",
+    "en": "https://www.parislgbt.com/en/events-venue/bastille-paris/"
+  }
+}

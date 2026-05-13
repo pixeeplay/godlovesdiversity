@@ -1,0 +1,58 @@
+{
+  "type": "listing",
+  "name": "Space Hair Paris",
+  "categories": [
+    "boutiques"
+  ],
+  "tags": [
+    "lesbien",
+    "gay",
+    "bi",
+    "bears",
+    "queer",
+    "trans"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2021/02/Space-Hair-1.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/02/Space-Hair-2.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/02/Space-Hair-3.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2021/02/Space-Hair-4.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "8 Rue Rambuteau",
+    "lat": 48.86046,
+    "lng": 2.35623
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2021/02/spacehairparis-1024x461.jpg",
+  "description": "Si vous avez besoin d'une coupe, une nouvelle couleur, un brushing ou de se faire tailler la barbe, Space Hair Paris Marais est l'endroit idéal. Venez pour notre expertise de coiffeur et barbier… Profitez de notre atmosphère unique.\n\nSpace Hair est plus qu'un simple salon de coiffure, c'est un univers, un lieu inscrit dans l'ADN du Marais et de la Fête !\n\nDans notre salon, ressentez la bonne ambiance en écoutant de la bonne musique.\n\nAvec ou sans rendez-vous, notre équipe vous accueille avec le sourire et la bonne humeur, tout en vous apportant son expertise et ses bons conseils.\n\nSpace Hair Paris, le coiffeur ouvre tard, fait des nocturnes quotidiennes jusqu’à 22h, rythmées par la musique que nos coiffeurs sélectionnent avec soin. La coiffure, cela s'écoute aussi ! Le coiffeur rock de Paris !\n\n​Un salon gay-friendly\n\nSpace Hair Paris est le coiffeur du Marais. Nous accueillons toute type de clientèle.\n\nNous utilisons les meilleurs produits de grandes marques de soins capillaires telles que Wella, Sebastian, Moroccanoil et Goldwell.\n\nSalon de coiffure Masculin / Féminin, en plein cœur du Marais à Paris.",
+  "email": null,
+  "hours": {
+    "monday": "11:00-21:00",
+    "tuesday": "10:00-21:00",
+    "wednesday": "10:00-21:00, 10:00-21:00, 10:00-21:00, 10:00-21:00, 10:00-20:00, null"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2021/02/Logo-gold.jpg",
+  "phone": "01 48 87 28 51",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/Space-Hair-Paris-404670136237307",
+    "instagram": "https://www.instagram.com/space_hair_paris/",
+    "tiktok": null,
+    "twitter": "https://twitter.com/spacehairparis1"
+  },
+  "subtitle": "Coiffure & Barbe - Masculin & Féminin",
+  "transport": "M° 11 - Rambuteau",
+  "venue": null,
+  "website": "https://www.space-hair-paris-marais.com/",
+  "source_url": "https://www.parislgbt.com/listing/space-hair-paris/",
+  "slug": "space-hair-paris",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/space-hair-paris/",
+    "en": "https://www.parislgbt.com/en/listing/space-hair-paris/"
+  }
+}

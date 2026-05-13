@@ -1,0 +1,19 @@
+{
+  "type": "page",
+  "name": "Claim listing",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/claim-listing/",
+  "slug": "claim-listing",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/claim-listing/",
+    "en": "https://www.parislgbt.com/en/claim-listing/"
+  }
+}

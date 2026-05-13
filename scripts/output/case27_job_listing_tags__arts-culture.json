@@ -1,0 +1,21 @@
+{
+  "type": "tag",
+  "name": "Arts & Culture",
+  "categories": [],
+  "tags": [
+    "arts-culture"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/arts-culture/",
+  "slug": "arts-culture",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/arts-culture/",
+    "en": "https://www.parislgbt.com/en/tag/arts-culture/"
+  }
+}

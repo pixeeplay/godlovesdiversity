@@ -1,0 +1,55 @@
+{
+  "type": "event",
+  "name": "L'apéro du Mardi au Merci·Marsha !",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/7-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "8 rue richard lenoir",
+    "lat": 48.85471,
+    "lng": 2.38232
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/7-1024x354.jpg",
+  "dates": [
+    {
+      "start": "2026-05-26T18:00:00+02:00"
+    }
+  ],
+  "description": "En gros, on vous a fait un récap des jours sans prog juste pour que vous puissiez venir papoter entre vous, organiser votre anniversaire, des pots d’assos ou de potes.\n\nÇa fait du bien aussi de profiter du bar à 100 % ^^\n\n___\n\n🌺 MERCI·MARSHA 🌸\n\n Lieu LGBTQ+ au 8 rue richard lenoir Paris 11.\n\n 🌈 Happy Hour tlj de l’ouverture à 20h\n\n 🕕 Mardi au Samedi de 18h à 02h",
+  "email": null,
+  "hours": {
+    "monday": null,
+    "tuesday": "18:00-02:00",
+    "wednesday": "18:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/11/LOGO-2000x2000px-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "MERCI·MARSHA",
+    "slug": "merci·marsha-2",
+    "url": "https://www.parislgbt.com/listing/merci%c2%b7marsha-2/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/lapero-du-mardi-au-merci%c2%b7marsha/",
+  "slug": "lapero-du-mardi-au-merci%c2%b7marsha",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/lapero-du-mardi-au-merci%c2%b7marsha/",
+    "en": "https://www.parislgbt.com/en/listing/lapero-du-mardi-au-merci%c2%b7marsha/"
+  }
+}

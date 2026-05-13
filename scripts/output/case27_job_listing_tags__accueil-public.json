@@ -1,0 +1,19 @@
+{
+  "type": "tag",
+  "name": "Accueil Public",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/accueil-public/",
+  "slug": "accueil-public",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/accueil-public/",
+    "en": "https://www.parislgbt.com/en/tag/accueil-public/"
+  }
+}

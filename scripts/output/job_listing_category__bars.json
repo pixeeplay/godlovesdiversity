@@ -1,0 +1,19 @@
+{
+  "type": "category",
+  "name": "Bars",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/category/bars/",
+  "slug": "bars",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/category/bars/",
+    "en": "https://www.parislgbt.com/en/category/bars/"
+  }
+}

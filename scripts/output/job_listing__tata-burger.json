@@ -1,0 +1,45 @@
+{
+  "type": "listing",
+  "name": "Tata Burger",
+  "categories": [
+    "restaurant"
+  ],
+  "tags": [
+    "membre-du-snegco",
+    "terrasse"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/48246063_2000365340056737_2179026656620969984_n.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/82531564_2704557902970807_4423982469984813056_n.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "54 Rue Sainte-Croix de la Bretonnerie",
+    "lat": 48.85906,
+    "lng": 2.35396
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2020/03/tataburger4-Julien-Gambert-1024x768-1.jpg",
+  "description": "Burgers servis dans un cadre festif aux chaises transparentes et aux murs blancs, éclairé aux néons roses.",
+  "hours": {
+    "monday": "11:00-02:00",
+    "tuesday": "11:00-02:00",
+    "wednesday": "11:00-02:00, 11:00-02:00, 11:00-02:00, 11:00-02:00, 11:00-02:00, 11:00-02:00, 11:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/50632851_2057478841012053_8038412524351127552_n.png",
+  "phone": "01 48 87 48 71",
+  "social": {
+    "facebook": "https://www.facebook.com/tataburgerparis/"
+  },
+  "subtitle": "Restaurant Burger du Marais à Paris",
+  "transport": "Métro 1,11 : Hôtel de Ville",
+  "source_url": "https://www.parislgbt.com/listing/tata-burger/",
+  "slug": "tata-burger",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/tata-burger/",
+    "en": "https://www.parislgbt.com/en/listing/tata-burger/"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Nuit Blanche 2026",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/06-Juin-Nuit-Blanche-2026-1-1.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "Place de l'Hôtel de Ville",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/06-Juin-Nuit-Blanche-2026-1-1.png",
+  "dates": [
+    {
+      "start": "2026-06-06T19:00:00+02:00"
+    }
+  ],
+  "description": "Nuit Blanche samedi 6 juin 2026 avec DA Barbara Butch.\n\nNouvelle égérie lesbienne portée par la fameuse cène de la cérémonie des Jo aux côtés du chanteur et chroniqueur Philippe Katerine et de bien d'autres artistes burlesques et LGBT, Barbara Butch est une DJ qui s'est d'abord faite connaître avec sa résidence La Patchole au Rosa Bonheur de Zouzou Auzou (la directrice) avant de développer ses talents dans toute la France et affirmer ses choix artistiques avec la programmation de cette édition.\n\nAvec **On s’aime**, imaginé par Barbara Butch, on a tous et toutes rendez-vous sur la place de l’Hôtel de Ville (Paris Centre) pour partager en vidéo nos déclarations d’amour. Mots, visages, émotions seront filmés durant plusieurs jours, puis toutes ces contributions formeront une fresque vivante, projetée partout dans la ville le 6 juin prochain. Une œuvre collective, sensible et profondément humaine.\n\nAutre expérience immersive? Grâce à notre téléphone portable, on va pouvoir enregistrer un message où nos voix donneront vie à une cartographie poétique, imaginée par l’artiste **Marie-Luce Nadal,** comme une trace lumineuse dans la nuit. Le résultat unique et sonore sera à découvrir le 6 juin.\n\nPlus qu’un parcours artistique, Nuit Blanche 2026 devient un terrain d’expression où chacun peut laisser son empreinte.\n\nNuit Blanche, créée en 2002, est une manifestation co-organisée avec la Métropole du Grand Paris et en partenariat avec les villes du Havre, de Rouen et de la Métropole de Rouen – Normandie.\n\nDéclinée à travers le monde, la manifestation porte haut les valeurs de démocratisation culturelle, donnant à voir et à vivre la création artistique sur l’espace public, dans des lieux insolites ou d’exception, gratuitement.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1156960189669148",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": "https://www.paris.fr/nuit-blanche",
+  "source_url": "https://www.parislgbt.com/listing/nuit-blanche-2026-2/",
+  "slug": "nuit-blanche-2026-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/nuit-blanche-2026-2/",
+    "en": "https://www.parislgbt.com/en/listing/nuit-blanche-2026-2/"
+  }
+}

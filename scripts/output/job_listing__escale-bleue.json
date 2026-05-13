@@ -1,0 +1,50 @@
+{
+  "type": "listing",
+  "name": "ESCALE BLEUE",
+  "categories": [
+    "restaurant",
+    "bars"
+  ],
+  "tags": [
+    "terrasse",
+    "cruising"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Zenchef_EscaleBleue_Paris003_0-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Zenchef_EscaleBleue_Paris011_0-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Zenchef_EscaleBleue_Paris004_0-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Zenchef_EscaleBleue_Paris002_0-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/IMG_2466-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/paris-6657443_1920.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2025/02/Escale-Bleue-15.png"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86137,
+    "lng": 2.32482
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/02/Zenchef_EscaleBleue_Paris005_0-1024x683.jpg",
+  "description": "La double terrasse-patio offre une vue imprenable sur les reflets miroitants de la Seine et les monuments du Paris historique.\n\nÀ l‘Escale Bleue, la cuisine est raffinée et ensoleillée. L'assiette, imaginée par notre Cheffe, offre une cuisine contemporaine d'inspiration française, agrémentée de touches aromatiques venues d'ailleurs. Les produits utilisés sont frais, de saison, et proviennent de l'agriculture biologique ainsi que de l'élevage raisonné.Ces délices sont à découvrir entre amis ou en famille, tous les jours pour le déjeuner et les week-ends pour un brunch estival et généreux.\n\nEn terrasse, le confort d’un mobilier estival, une atmosphère unique entre transparence de jour par une structure formée de baies vitrées et végétalisées, et une intimité sans pareille lorsque vient le soir. Une offre culinaire raffinée et un espace équipé pour célébrer, jouer, danser à loisir et selon vos désirs.\n\nL’Escale Bleue c’est le lieu de réception idéal pour vos événements professionnels et privés. Ses volumes peuvent être modulés en fonction de vos envies.L‘Escale Bleue peut accueillir jusqu’à 200 convives pour un cocktail, et 80 convives pour un dîner assis. Nos services sont là pour répondre à toutes vos demandes.Contactez-nous!",
+  "hours": {
+    "monday": null,
+    "tuesday": null,
+    "wednesday": "11:30-16:30,11:30-16:30,11:30-16:30,11:30-16:30,11:30-16:30,11:30-16:30,11:30-16:30"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/02/EB_BCB_TL.png",
+  "phone": "0153867282",
+  "social": null,
+  "subtitle": "Découvrez l’une des plus belles terrasses flottantes de Paris, amarrée au pied du Musée d’Orsay. Plus qu’un restaurant, L’Escale Bleue est la promesse de vivre un moment inoubliable et déguster une cuisine de haut vol dans le cadre idyllique de la Rive Gauche parisienne.",
+  "transport": "Métro Solférino",
+  "website": "https://www.escalebleuerestaurant.com/",
+  "source_url": "https://www.parislgbt.com/listing/escale-bleue/",
+  "slug": "escale-bleue",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/escale-bleue/",
+    "en": "https://www.parislgbt.com/en/listing/escale-bleue/"
+  }
+}

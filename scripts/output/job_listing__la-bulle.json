@@ -1,0 +1,58 @@
+{
+  "type": "listing",
+  "name": "La Bulle",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "handicap",
+    "trans",
+    "queer",
+    "bi",
+    "lesbien"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/10/la-bulle-image-1-1024x683.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.85652,
+    "lng": 2.36142
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/10/la-bulle-image-1-1024x683.jpg",
+  "description": "Espace interassociatif, inauguré le 16 mai 2023 au 22, rue Malher, dans le Marais, est dédié à l'entraide et au soutien des personnes LGBTQI+ les plus stigmatisées, notamment les migrants, les victimes de violences et les personnes transgenres.\n\nSitué en plein cœur du quartier historique du Marais (Paris Centre), l'espace du 22, rue Malher est dédié aux personnes les plus vulnérables, les plus invisibilisées au sein de la minorité LGBTQI+, celles et ceux qui requièrent davantage de soutien: les personnes économiquement précarisées, exilées, racisées, trans, séropositives, victimes de violences…\n\nCe local appartenant à la Ville de Paris permet de créer un nouveau lieu d'accueil, d'accompagnement et d'échanges.\n\nSept associations mutualisent espaces, compétences et permanences :\n\n - l’ARDHIS, association pour la reconnaissance des droits des personnes homosexuelles et trans à l’immigration et au séjour ;\n\n - OUTrans, structure pour l’autosupport des personnes trans et la lutte contre la transphobie ;\n\n - ANKH défend la communauté LGBTQI+ issue des pays arabes ;\n\n - Wassla, association visant à créer un espace d’expression, de partage et d'entraide pour les personnes LGBTQI+ et alliées originaires des pays du monde arabe, tout en restant ouverte à toute nationalité ou origine.\n\n - Espace santé trans, association de promotion de la santé des personnes transidentitaires située en Île-de-France ;\n\n - Le FLIRT - Front de libération transfem, collectif d’aide mutuelle entre jeunes femmes trans ;\n\nL’année 2023, en quelques chiffres...\n\n 1300 demandeur·ses d’asile reçu·es\n\n 14 184 € d’aide financière pour les femmes trans en situation de précarité\n\n Près de 200 actions de formation et de sensibilisation à destination des professionnels (santé, asile, interprètes...)\n\n Environ 110 permanences d’accueil (psy, social, admin, en accès libre ou sur rdv)\n\n Plus de 700 accompagnements individuels (première écoute ou suivi), dont 534 entretiens psy\n\n Plus de 300 groupes de parole ou ateliers collectifs\n\n Une centaine d’événements festifs et culturels\n\n 77.6K abonné·es à XY Média\n\n 1800 fils de discussion/échanges de mails avec des personnes trans et en questionnement\n\n 4000 brochures imprimées",
+  "email": null,
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2024/10/Logo-La-Bulle-2023.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ArdhisLGBT",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "La bulle – maison des solidarités lgbtqi+",
+  "transport": "M° Hotel de Ville, Rambuteau, Saint Paul",
+  "venue": null,
+  "website": "https://www.la-bulle.net/",
+  "source_url": "https://www.parislgbt.com/listing/la-bulle/",
+  "slug": "la-bulle",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-bulle/",
+    "en": "https://www.parislgbt.com/en/listing/la-bulle/"
+  }
+}

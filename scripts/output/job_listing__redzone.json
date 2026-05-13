@@ -1,0 +1,57 @@
+{
+  "type": "listing",
+  "name": "REDZONE",
+  "categories": [
+    "cruising"
+  ],
+  "tags": [
+    "cruising",
+    "gay",
+    "hommes-exclusivement"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/12/dji_mimo_20241214_181854_20241214181847_1734276116764_pano-2.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/12/dji_mimo_20241214_181952_20241214181952_1734276116352_photo-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/12/dji_mimo_20241214_182014_20241214182014_1734276116232_photo-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/12/dji_mimo_20241214_182432_20241214182432_1734276107901_photo-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/12/dji_mimo_20241214_182548_20241214182548_1734276107382_photo-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/12/dji_mimo_20241214_182622_20241214182622_1734276107209_photob-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/12/dji_mimo_20241214_182304_20241214182304_1734276108469_photo-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75001",
+    "street": "9, Rue du Pélican",
+    "lat": 48.86292,
+    "lng": 2.33952
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/12/header-1024x384.jpg",
+  "description": "REDZONE est un cruising bar pour les hommes gay situé à deux pas de Palais Royal, sur deux niveaux.\n\n Le dress code pour venir au REDZONE est simple : en sous vêtements ou naturiste.\n\nPour un afterwork juste après le bureau, ou une soirée torride, notre bienveillante équipe vous accueille du lundi au dimanche jusque 4h du matin !\n\nHAPPY-HOURS DU LUNDI AU VENDREDI\n\n De 18H à 20H :\n\n 13€ avec 1 boisson incluse (alcool premium, bière ou soft)",
+  "hours": {
+    "friday": "18:00-04:00",
+    "monday": "18:00-04:00",
+    "saturday": "18:00-04:00",
+    "sunday": "15:00-04:00",
+    "thursday": "18:00-04:00",
+    "tuesday": "18:00-04:00",
+    "wednesday": "18:00-04:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/10/redzone_logo_rvb_web_ok_bcg.png",
+  "social": {
+    "facebook": "https://www.facebook.com/redzonebarparis/",
+    "instagram": "https://www.instagram.com/redzonebarparis/",
+    "twitter": "https://x.com/redzonebarparis"
+  },
+  "subtitle": "Gentlemen’s Club Bar Gay & Cruising à Paris",
+  "transport": "Metro Palais Royal",
+  "website": "https://redzone-bar.com/",
+  "source_url": "https://www.parislgbt.com/listing/redzone/",
+  "slug": "redzone",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/redzone/",
+    "en": "https://www.parislgbt.com/en/listing/redzone/"
+  }
+}

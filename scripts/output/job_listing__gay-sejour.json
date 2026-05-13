@@ -1,0 +1,46 @@
+{
+  "type": "listing",
+  "name": "Gay Sejour",
+  "categories": [
+    "hebergement",
+    "restaurant",
+    "saunas",
+    "visites",
+    "bars"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/11/Alp-Gay-Ski-Week.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Marseille",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 43.29424,
+    "lng": 5.37709
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2025/11/466016779_9147765848588646_7207714347774238804_n-1024x379.jpg",
+  "description": "Le site Gay Sejour fait la promotion d'une offre touristique de qualité dédiée aux communautés gay, lesbienne et à leurs amis. Hôtels, maisons d'hôtes, locations de vacances, restaurants, bars gay, massages, spas, saunas, plages gays... Avec Gay Sejour, découvrez les meilleures adresses gay, lesbienne et gay friendly pour vos voyages et vos loisirs en France et dans le monde.",
+  "email": null,
+  "hours": {
+    "monday": "Uniquement sur rendez-vous",
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/11/longo-rond.jpg",
+  "phone": "+33 4 91 84 08 96",
+  "registration_url": null,
+  "social": null,
+  "subtitle": "Guide du voyage gay et lesbien depuis 2001. Hotels, gites, maison d'hêtes, bars, restaurants et bien +.",
+  "transport": "Marseille",
+  "website": "https://www.gay-sejour.com/",
+  "source_url": "https://www.parislgbt.com/listing/gay-sejour/",
+  "slug": "gay-sejour",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/gay-sejour/",
+    "en": "https://www.parislgbt.com/en/listing/gay-sejour/"
+  }
+}

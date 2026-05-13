@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "name": "Le Bicolore, Maison du Danemark",
+  "categories": [
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/08/Flags-of-Freedom-Mette-Winckelmann.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/08/Ditte-Hammerstrom.-Side-by-Side-Low-Mohair-2014.-Mohair-ash-foam.-Courtesy-of-Galerie-Maria-Wettergren.-Photo-F_Kleinefenn.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/08/Installation-view-In-a-Slow-Manner.-Photo-F_Kleinefenn.jpeg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/08/In-A-slow-Manner-_PhotoF_Kleinefenn-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86886,
+    "lng": 2.31053
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/08/Flags-of-Freedom-Mette-Winckelmann.jpeg",
+  "description": "L’espace culturel et sa plateforme digitale mettent la polémique, la liberté de pensée et l’actualité à l’honneur.\n\nLe Bicolore est curieux, s’interroge, vous interroge et vous invite à un dialogue entre les scènes culturelles danoises et françaises.\n\nVous y découvrirez en accès libre :\n\n -Des expositions couvrant un large spectre – depuis l’interaction et la réalité virtuelle, au design et à l’architecture, jusqu’à la peinture et au textile.\n\n -Des concerts\n\n -Des soirées littéraires\n\n -Des projections de films\n\n -Des conférences et débats\n\n -Des performances artistiques et inédites\n\n -Des podcasts à écouter\n\n et surtout un espace convivial d'échange et de découvertes.",
+  "email": null,
+  "hours": {
+    "friday": "12:00-18:00",
+    "monday": null,
+    "saturday": "12:00-18:00",
+    "sunday": "12:00-18:00",
+    "thursday": "12:00-18:00",
+    "tuesday": "12:00-18:00",
+    "wednesday": "12:00-18:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/08/Frame-8-3.png",
+  "phone": "01 56 59 17 44",
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/lebicoloredk/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Plateforme de l'art contemporain danois",
+  "transport": "Charles de Gaulle",
+  "website": "https://lebicolore.dk/expositions",
+  "source_url": "https://www.parislgbt.com/listing/le-bicolore-maison-du-danemark/",
+  "slug": "le-bicolore-maison-du-danemark",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-bicolore-maison-du-danemark/",
+    "en": "https://www.parislgbt.com/en/listing/le-bicolore-maison-du-danemark/"
+  }
+}

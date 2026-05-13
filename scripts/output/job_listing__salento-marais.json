@@ -1,0 +1,54 @@
+{
+  "type": "listing",
+  "name": "Salento Marais",
+  "categories": [
+    "restaurant"
+  ],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/d64cf1536f5592757f7931a77222583e-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/301dc2206ee92afc86028b2993a6f34a-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/04/d87d6128d6ccdb876be2ffcb539f9ed0-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75004",
+    "street": "6 Rue de Jarente",
+    "lat": 48.8558,
+    "lng": 2.36298
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/04/0195a7cbbafbf18c94860e7e11f13549-1024x683.jpg",
+  "description": "Situé face à la très belle place Sainte Catherine, ce restaurant revisite la cuisine italienne avec des plats copieux pour les plus gourmands.\n\nFruit du déménagement de notre restaurant historique de la rue du temple, nous avons ouvert en février 2018. Plus grand, plus spacieux, avec une décoration moderne et décalée nous voulons y proposer une nouvelle expérience à nos clients fidèles et faire découvrir à d'autres le sérieux de notre cuisine traditionnelle familiale du Sud de l'Europe. Les murs de ce restaurant sont aussi offerts à l'expression de professionnels de la photographie. Situé idéalement sur la place du Marché Sainte Catherine, tout le charme du Marais typique s'y trouve présent. Notre service de qualité sera à même de ravir tous nos clients.",
+  "email": null,
+  "hours": {
+    "friday": "12:00-14:30, 19:00-22:30",
+    "monday": "12:00-14:30, 19:00-22:30",
+    "saturday": "12:00-14:30, 19:00-22:30",
+    "sunday": "12:00-14:30, 19:00-22:30",
+    "thursday": "12:00-14:30, 19:00-22:30",
+    "tuesday": "12:00-14:30, 19:00-22:30",
+    "wednesday": "12:00-14:30, 19:00-22:30"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/28168251_2090459604303648_4396969315203860599_n.jpg",
+  "phone": "01 40 29 03 03",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/Salento-Marais-480199318663026",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Cuisine traditionelle italienne",
+  "transport": "Metro Saint-Paul",
+  "venue": null,
+  "website": "https://www.salentomarais.com/",
+  "source_url": "https://www.parislgbt.com/listing/salento-marais/",
+  "slug": "salento-marais",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/salento-marais/",
+    "en": "https://www.parislgbt.com/en/listing/salento-marais/"
+  }
+}

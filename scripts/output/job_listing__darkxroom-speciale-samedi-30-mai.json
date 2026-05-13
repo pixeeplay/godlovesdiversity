@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "DARKXROOM spéciale SAMEDI 30 mai",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/04/42874_image_677833163_1458007516121779_5374413021883096342_n-1-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75001",
+    "street": "14 rue Saint-Denis",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/04/42874_image_677833163_1458007516121779_5374413021883096342_n-1-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-30T23:55:00+02:00"
+    }
+  ],
+  "description": "⚡️DARK❌ROOM aura lieu exceptionnellement le SAMEDI 30 mai au Klub de 0H à 6H ⚡️\n\nRetrouvez l'ambiance Clubbing/Cruising toujours avec 2 salles et 2 sons :\n\nla TECHNO ROOM (0H30-4H30) avec comme invité : JOCKEY NARVAL\n\n[https://soundcloud.com/jockeynarval](https://soundcloud.com/jockeynarval \"https://soundcloud.com/jockeynarval\")\n\nla PSYTRANCE ROOM (0H-6H) avec JOHN DIXON\n\n[https://soundcloud.com/johndixonparis](https://soundcloud.com/johndixonparis \"https://soundcloud.com/johndixonparis\")\n\nCLUBBING / CRUISING à tous les étages\n\n Pas d'obligation, pas d'interdiction. Open dress code (cuir, fetish, latex, puppy, kinky ..) : laisse libre cours à ton imagination et à tes envies\n\n️ Préventes à partir de 15 € (hors frais) - Sur place (quantité limitée) : 20 €\n\n Prévoir CASH pour vestiaire\n\nLe Klub\n\n 14 rue Saint-Denis - Paris 1er\n\n Métro (1) (4) (7) Châtelet\n\nℹ️ Plus d'infos : www.fluidparty.com\n\n ⭐NOUVEAU⭐ Rejoignez-nous sur Telegram : [https://t.me/+i5V9-8X3hgZhZTM8](https://t.me/+i5V9-8X3hgZhZTM8 \"https://t.me/+i5V9-8X3hgZhZTM8\")",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2021/07/12647172_912481265494450_710072952813421971_n.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/JohnDixon.FluidParty",
+    "instagram": "https://www.instagram.com/underparty.paris/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "Métro (1) (4) (7) Châtelet",
+  "venue": {
+    "name": "Le Klub",
+    "slug": "le-klub",
+    "url": "https://www.parislgbt.com/listing/le-klub/"
+  },
+  "website": "http://www.fluidparty.com",
+  "source_url": "https://www.parislgbt.com/listing/darkxroom-speciale-samedi-30-mai/",
+  "slug": "darkxroom-speciale-samedi-30-mai",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/darkxroom-speciale-samedi-30-mai/",
+    "en": "https://www.parislgbt.com/en/listing/darkxroom-speciale-samedi-30-mai/"
+  }
+}

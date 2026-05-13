@@ -1,0 +1,37 @@
+{
+  "type": "listing",
+  "name": "14 Rue Saint-Merri, 75004 Paris, France",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "HEAVEN BACK TO BASICS",
+      "url": "https://www.parislgbt.com/listing/heaven-back-to-basics-2/"
+    }
+  ],
+  "address": {
+    "street": "14 Rue Saint-Merri, 75004 Paris, France",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/14-rue-saint-merri-75004-paris-france/",
+  "slug": "14-rue-saint-merri-75004-paris-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/14-rue-saint-merri-75004-paris-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/14-rue-saint-merri-75004-paris-france/"
+  }
+}

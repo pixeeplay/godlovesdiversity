@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Soirée KONPA & KIZOMBA Queer",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/3.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "45 Rue de Montreuil",
+    "lat": 48.85051,
+    "lng": 2.38821
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/3-1024x576.jpg",
+  "dates": [
+    {
+      "start": "2026-06-12T19:00:00+02:00"
+    }
+  ],
+  "description": "**✨Cours + soirée KIZOMBA**\n\n19H30 cours initiation KONPA avec Marie -Linda\n\n20h40 cours de KIZOMBA avec Marillon et Marie Linda\n\n**Tous les cours sont en role rotation\n\n21h40 SOIREE KIZOMBA\n\nKizomba, Urban kiz, Semba, Tarraxo , Konpa..\n\nOn fini sur du konpa comme toujours\n\nInfos sur le bar :\n\n 🍶Verre d'eau donné généreusement\n\n 🍸 Cocktails d'exception à prix abordables\n\n 🌭 Petits snacks\n\n 🫶 Equipe incroyable 🫶\n\nInfos pratiques :\n\n Ouverture du bar à 18h\n\n 🕖Rdv à 19h\n\n (début des cours 19h30 )\n\n 🕖Début de la soirée après les cours autour de 21h40\n\n 🕑 Fermeture du bar à 1h\n\nTarif au choix\n\n💵 6€ ou 11€ OU 15€\n\n( possibilité de payer sur place en cash aussi )\n\n🎟️ [**Billetterie Shotgun**](https://shotgun.live/fr/venues/le-rassemblement-queer-kiz) 🎟️\n\n📍 Speechless – 45 rue de Montreuil, Paris 11e\n\n**Événement LGBT+**\n\n Réservé a la communauté LGBT+\n\n Bar à cocktails végétaux LGBT+\n\n La direction se réserve le droit de refuser l'entrée / exclure toute personne hors cadre, ou ayant une attitude dérangeante",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/03/SPCHLS_SIGLE_FINAL-300x300.jpg",
+  "phone": null,
+  "registration_url": "https://shotgun.live/fr/venues/le-rassemblement-queer-kiz",
+  "social": {
+    "facebook": "https://www.facebook.com/profile.php?id=61578895006088",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Speechless",
+    "slug": "speechless",
+    "url": "https://www.parislgbt.com/listing/speechless/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/soiree-konpa-kizomba-queer/",
+  "slug": "soiree-konpa-kizomba-queer",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/soiree-konpa-kizomba-queer/",
+    "en": "https://www.parislgbt.com/en/listing/soiree-konpa-kizomba-queer/"
+  }
+}

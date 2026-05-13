@@ -1,0 +1,19 @@
+{
+  "type": "page",
+  "name": "Provence-Alpes-Côte d'Azur",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/region/paca-corse/",
+  "slug": "paca-corse",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/region/paca-corse/",
+    "en": "https://www.parislgbt.com/en/region/paca-corse/"
+  }
+}

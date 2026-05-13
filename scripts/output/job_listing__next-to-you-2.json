@@ -1,0 +1,49 @@
+{
+  "type": "listing",
+  "name": "NEXT TO YOU",
+  "categories": [
+    "salle-de-sport"
+  ],
+  "tags": [
+    "gay",
+    "salle-de-sport",
+    "naturisme"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/08/IMG_20220903_173853-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/08/IMG_20221013_130827-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/08/IMG_20221013_131410-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/08/IMG_20230815_180409-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/08/IMG_20230815_180501-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2023/08/IMG_20230815_181155-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.85175,
+    "lng": 2.40006
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/09/IMG_20230815_180344-1024x576.jpg",
+  "description": "Next To You est un centre unique, intimiste pour prendre soin de soi.\n\nNous proposons tous les services autour de la forme, la beauté et le bien-être. Coaching Sportif, Yoga, Pilates, Stretching, Epilations toutes zones, soins visage, gommage corporels, massages détente, sportif, tantrique.\n\nNotre équipe entièrement masculine composée de 5 coachs, 8 masseurs, 2 esthéticiens vous accueillent 7 jours sur 7 jusqu'à 21h30.\n\nTous nos services peuvent être réalisés en version naturiste.\n\nPrenez vite rendez vous!",
+  "hours": {
+    "monday": "09:00-21:30",
+    "tuesday": "09:00-21:30",
+    "wednesday": "09:00-21:30, 09:00-21:30, 09:00-21:30, 09:00-21:30, 09:00-21:30, 10:00-21:30, 11:00-21:30"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2023/08/logo-sans-texte-copie-1.jpg",
+  "phone": "0782075129",
+  "social": null,
+  "subtitle": "A TES COTÉS POUR LA FORME, BEAUTÉ ET BIEN-ÊTRE",
+  "transport": "Buzenval 9 - Avron 2 - Nation 1,2,6, RER A",
+  "website": "https://www.nextto-you.com/",
+  "source_url": "https://www.parislgbt.com/listing/next-to-you-2/",
+  "slug": "next-to-you-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/next-to-you-2/",
+    "en": "https://www.parislgbt.com/en/listing/next-to-you-2/"
+  }
+}

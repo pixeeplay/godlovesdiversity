@@ -1,0 +1,21 @@
+{
+  "type": "listing",
+  "name": "Prévention & santé",
+  "categories": [],
+  "tags": [
+    "prevention-sante"
+  ],
+  "gallery": [],
+  "linked_events": [],
+  "source_url": "https://www.parislgbt.com/tag/prevention-sante/",
+  "slug": "prevention-sante",
+  "region": null,
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/tag/prevention-sante/",
+    "en": "https://www.parislgbt.com/en/tag/prevention-sante/"
+  }
+}

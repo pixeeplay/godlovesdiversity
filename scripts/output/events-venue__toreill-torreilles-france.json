@@ -1,0 +1,40 @@
+{
+  "type": "listing",
+  "name": "toreill, Torreilles, France",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "The Pride Camp - Gay Summer Week 2026",
+      "url": "https://www.parislgbt.com/listing/the-pride-camp-gay-summer-week-2026/"
+    }
+  ],
+  "address": {
+    "city": "Torreilles",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/toreill-torreilles-france/",
+  "slug": "toreill-torreilles-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/toreill-torreilles-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/toreill-torreilles-france/"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Woopiii XXL reçoit le TIP",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/42935_image_679385563_1574946934632133_8561977806622326820_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/42935_image_679385563_1574946934632133_8561977806622326820_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-13T18:00:00+02:00"
+    }
+  ],
+  "description": "**Une petite bière après le boulot ou une grosse soirée en vue pour soutenir le TIP ?**\n\n[Le Tournoi International de Paris (TIP) est un tournoi multisport créé en 2004 sous l’impulsion de la Fédération Sportive LGBT+.](https://www.parislgbt.com/listing/tournoi-international-de-paris/)\n\nDirection le Freedj, en plein cœur du Marais, pour la soirée WOOPIII qui réveille tes mercredis soirs ! ️‍\n\nProfite d’un Happy Hour non-stop jusqu’à 22h et d’une distribution de frites offerte en début de soirée par nos amis Les Marronniers . WOOPIII est une soirée gay et engagée qui met en lumière chaque semaine une ou plusieurs associations LGBT+ pour promouvoir la visibilité, le vivre-ensemble et la lutte contre les discriminations ✊\n\nAu programme : musique pop et festive, tubes internationaux, variété française et une ambiance bon enfant ✨ .\n\nTonya et Lola, nos animatrices de choc, t’accueillent avec toute leur énergie pour une soirée pleine de joie, de rires et de fierté !",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/2110128946496129",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "Freedj",
+    "slug": "freedj",
+    "url": "https://www.parislgbt.com/listing/freedj/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/woopiii-xxl-recoit-le-tip-2/",
+  "slug": "woopiii-xxl-recoit-le-tip-2",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/woopiii-xxl-recoit-le-tip-2/",
+    "en": "https://www.parislgbt.com/en/listing/woopiii-xxl-recoit-le-tip-2/"
+  }
+}

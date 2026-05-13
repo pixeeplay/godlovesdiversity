@@ -1,0 +1,43 @@
+{
+  "type": "listing",
+  "name": "MONTVENUS",
+  "categories": [
+    "bars"
+  ],
+  "tags": [
+    "lesbien",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/02/5a35ce86-d68c-4f0f-85eb-31fbb7012604.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Montreuil",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86408,
+    "lng": 2.44202
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/02/trame-logo-1024x1024.png",
+  "description": "Bar à cocktails à Montreuil, créé par deux femmes lesbiennes, petite restauration de tapas végétariennes.\n\nBar Queer hétéro friendly 😊",
+  "hours": {
+    "monday": null,
+    "tuesday": null,
+    "wednesday": "15:00-23:45,15:00-23:45,15:00-23:45,15:00-23:45,11:00-23:45,11:00-23:45,11:00-19:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/02/5a35ce86-d68c-4f0f-85eb-31fbb7012604.jpeg",
+  "social": {
+    "instagram": "https://www.instagram.com/montvenus.montreuil/"
+  },
+  "subtitle": "Bar à cocktails LGBTQIA+ à Montreuil",
+  "transport": "Métro 9 Mairie de Montreuil",
+  "source_url": "https://www.parislgbt.com/listing/montvenus/",
+  "slug": "montvenus",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/montvenus/",
+    "en": "https://www.parislgbt.com/en/listing/montvenus/"
+  }
+}

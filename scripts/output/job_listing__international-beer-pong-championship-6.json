@@ -1,0 +1,71 @@
+{
+  "type": "event",
+  "name": "INTERNATIONAL BEER PONG CHAMPIONSHIP",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/03/42096_image_646379986_1330995719064748_8575399637039032554_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75003",
+    "street": "173 Rue Saint-Martin",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/03/42096_image_646379986_1330995719064748_8575399637039032554_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-13T17:00:00+02:00"
+    },
+    {
+      "start": "2026-05-20T17:00:00+02:00"
+    },
+    {
+      "start": "2026-05-27T17:00:00+02:00"
+    },
+    {
+      "start": "2026-06-03T17:00:00+02:00"
+    },
+    {
+      "start": "2026-06-10T17:00:00+02:00"
+    }
+  ],
+  "description": "**INTERNATIONAL BEER PONG CHAMPIONSHIP 🍻**\n\n**EVERY WEDNESDAY @WORKSHOW 🍻**\n\nDes étudiantes et étudiants venus d’Espagne, d’Allemagne, d’Italie, du Brésil, du Canada (et bien plus !) se sont déjà affrontés sur nos tables. Ce soir, c’est peut-être ton tour.\n\n Quel pays dominera ce mercredi ? Quelle équipe fera vibrer la salle ?\n\nToi et tes potes êtes prêts ? Alors venez. On s’occupe de tout.\n\nINTERNATIONAL BEER PONG CHAMPIONSHIP\n\nTous les mercredis de 18h à 2h\n\n173 Rue Saint-Martin, Paris 3e\n\n**️Entrée libre – vibes internationales garanties**\n\nHAPPY HOUR jusqu’à 22h\n\n➡️ Chope d’1L dès 6 €\n\n➡️ Cocktails, DJ sets, dancefloor\n\n➡️ Ambiance survoltée, public en feu\n\nViens avec tes amis, représente ton pays, affronte les meilleures équipes étudiantes de Paris et fais vibrer le WorkshoW.\n\nC’est LE tournoi de beer pong parisien. Et ce soir, c’est peut-être toi qui soulèveras la coupe",
+  "email": null,
+  "hours": {
+    "friday": null,
+    "monday": null,
+    "saturday": null,
+    "sunday": null,
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": "18:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/78311733_2208049539296143_629503271991508992_n-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1431447731271596/?event_time_id=1431447737938262",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "WorkshoW",
+    "slug": "workshow",
+    "url": "https://www.parislgbt.com/listing/workshow/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/international-beer-pong-championship-6/",
+  "slug": "international-beer-pong-championship-6",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/international-beer-pong-championship-6/",
+    "en": "https://www.parislgbt.com/en/listing/international-beer-pong-championship-6/"
+  }
+}

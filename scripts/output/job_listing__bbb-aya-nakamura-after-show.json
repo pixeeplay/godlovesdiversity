@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "BBB : Aya Nakamura After Show",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2024/10/luca-micheli-Q7htkhMW66Y-unsplash-scaled-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2024/10/luca-micheli-Q7htkhMW66Y-unsplash-scaled-1-1024x473.jpg",
+  "dates": [
+    {
+      "start": "2026-05-29T23:45:00+02:00"
+    }
+  ],
+  "description": "BBB : AYA NAKAMURA AFTER SHOW\n\nVendredi 29 Mai - 00H/6H au Club La Nuit Paris 9\n\n️ Free Pass - Tickets - Résas VIP : [https://www.baby-boy.fr](https://www.baby-boy.fr/ \"https://www.baby-boy.fr\")\n\nLa Black Blanc Beur est une soirée inclusive et safe pour toutes et tous dans le respect et la bienveillance de chacun\n\nCLub LA NUIT Paris 9\n\nUne tenue et une attitude correcte est demandée à l’entrée !\n\nLe club et la direction se réserve de doit d’admission.",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": "https://www.baby-boy.fr",
+  "social": {
+    "facebook": null,
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "La Nuit Paris",
+    "slug": "la-nuit-paris",
+    "url": "https://www.parislgbt.com/explore/?type=event&search_keywords=La%20Nuit%20Paris"
+  },
+  "website": "https://www.baby-boy.fr",
+  "source_url": "https://www.parislgbt.com/listing/bbb-aya-nakamura-after-show/",
+  "slug": "bbb-aya-nakamura-after-show",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bbb-aya-nakamura-after-show/",
+    "en": "https://www.parislgbt.com/en/listing/bbb-aya-nakamura-after-show/"
+  }
+}

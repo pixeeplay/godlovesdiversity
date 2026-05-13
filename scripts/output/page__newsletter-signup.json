@@ -1,0 +1,32 @@
+{
+  "type": "page",
+  "name": "Newsletter • Paris LGBT+ Guide",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": "Enregistrez-vous pour recevoir notre Bulletin",
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/newsletter-signup/",
+  "slug": "newsletter-signup",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/newsletter-signup/",
+    "en": "https://www.parislgbt.com/en/newsletter-signup/"
+  }
+}

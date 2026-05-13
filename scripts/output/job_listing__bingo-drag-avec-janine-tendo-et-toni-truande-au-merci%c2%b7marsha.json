@@ -1,0 +1,62 @@
+{
+  "type": "event",
+  "name": "BINGO DRAG ! Avec Janine Tendo et Toni Truande au Merci·Marsha !",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/BANNIERES-COM-LARGES2-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75011",
+    "street": "8 rue richard lenoir",
+    "lat": 48.85471,
+    "lng": 2.38233
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/04/BANNIERES-COM-LARGES2-1024x354.jpg",
+  "dates": [
+    {
+      "start": "2026-05-30T20:00:00+02:00"
+    },
+    {
+      "start": "2026-06-13T20:00:00+02:00"
+    }
+  ],
+  "description": "Elles sont folles et elles manient les boules avec dextérité ainsi que douceur pour vous offrir des cadeaux insane, c’est les sœurs Janine et Toni ! Parfois sympatchiques, elles organisent un grand classique du Merci·Marsha : le Bingo Drag !\n\n💶 Grille à 2€ / Des cadeaux à Gogo ! 🎁\n\n⚠️ NOUVELLES RÈGLES ANGE & DÉMONE POUR CETTE ÉDITION : Choisirez-vous de faire le bien 🪽 ou le mal 😈 ?\n\n___\n\n🌺 MERCI·MARSHA 🌸\n\n Lieu LGBTQ+ au 8 rue richard lenoir Paris 11.\n\n 🌈 Happy Hour tlj de l’ouverture à 20h\n\n 🕕 Mardi au Samedi de 18h à 02h",
+  "email": null,
+  "hours": {
+    "friday": "18:00-02:00",
+    "monday": null,
+    "saturday": "18:00-02:00",
+    "sunday": null,
+    "thursday": "18:00-02:00",
+    "tuesday": "18:00-02:00",
+    "wednesday": "18:00-02:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2025/11/LOGO-2000x2000px-300x300.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": null,
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "MERCI·MARSHA",
+    "slug": "merci-marsha-2",
+    "url": "https://www.parislgbt.com/listing/merci%c2%b7marsha-2/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/bingo-drag-avec-janine-tendo-et-toni-truande-au-merci%c2%b7marsha/",
+  "slug": "bingo-drag-avec-janine-tendo-et-toni-truande-au-merci%c2%b7marsha",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bingo-drag-avec-janine-tendo-et-toni-truande-au-merci%c2%b7marsha/",
+    "en": "https://www.parislgbt.com/en/listing/bingo-drag-avec-janine-tendo-et-toni-truande-au-merci%c2%b7marsha/"
+  }
+}

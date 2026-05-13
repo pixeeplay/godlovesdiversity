@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "name": "Les Adelphes De la Nuit",
+  "categories": [
+    "associations",
+    "cabarets"
+  ],
+  "tags": [
+    "arts-culture",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/Photo-AMOURS-CHIMIQUES-PARIS-ANIM-2.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/Photo-AMOURS-CHIMIQUES-PARIS-ANIM-4.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/AMOURS_CHIMIQUES_TAO-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/COMPO_02-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/AMOURS_CHIMIQUES_DYLAN-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/plg_Propulsion_Corentin_Hennebert-0334-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/AMOURS_CHIMIQUES_CORENTIN-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/AMOURS_CHIMIQUES_MAEL-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/AMOURS_CHIMIQUES_FRED-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/COMPO_01-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/AMOURS_CHIMIQUES_JOSEPH-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/AMOURS_CHIMIQUES_WEDIA-scaled.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2024/03/Photo-AMOURS-CHIMIQUES-PARIS-ANIM-6-scaled.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.8535,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — à enrichir."
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/03/COMPO_03-819x1024.jpg",
+  "description": "Créée en 2022, la compagnie Les Adelphes de la Nuit est née de la volonté de faire converger les univers de Corentin Hennebert et de Joseph Wolfsohn.\n\nCette compagnie est à l’image de son premier projet : queer. Ce qu’elle défend à travers cette première pièce veut être la vitrine de ses valeurs que sont : l’inclusivité, la lutte contre les discriminations sous toutes leurs formes, l’engagement, les forces de propositions initiées par le collectif.\n\nSon théâtre est un théâtre du présent, qui s’inscrit dans la réalité en la dépeignant via les canaux qu’elle juge utile et pertinent d’utiliser.",
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/03/LOGO_page-0001.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/lesadelphesdelanuit",
+    "instagram": "https://www.instagram.com/lesadelphesdelanuit/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": "Compagnie de théâtre queer s'inspirant porteuse de sujets sociétaux actuels par le corps et par les mots",
+  "transport": "Marcadet",
+  "website": "https://lesadelphesdelanui.wixsite.com/lesadelphesdelanuit",
+  "source_url": "https://www.parislgbt.com/listing/les-adelphes-de-la-nuit/",
+  "slug": "les-adelphes-de-la-nuit",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/les-adelphes-de-la-nuit/",
+    "en": "https://www.parislgbt.com/en/listing/les-adelphes-de-la-nuit/"
+  }
+}

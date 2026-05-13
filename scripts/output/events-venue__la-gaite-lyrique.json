@@ -1,0 +1,36 @@
+{
+  "type": "listing",
+  "name": "La Gaîté Lyrique",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "WOLFANG VOIGT presents GAS live • La Gaîté Lyrique, Paris • 15 mai 2026 * La Gaîté Lyrique",
+      "url": "https://www.parislgbt.com/en/listing/wolfang-voigt-presents-gas-live-la-gaite-lyrique-paris-15-mai-2026/"
+    }
+  ],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/la-gaite-lyrique/",
+  "slug": "la-gaite-lyrique",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/la-gaite-lyrique/",
+    "en": "https://www.parislgbt.com/en/events-venue/la-gaite-lyrique/"
+  }
+}

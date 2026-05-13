@@ -1,0 +1,41 @@
+{
+  "type": "listing",
+  "name": "Le 7e Genre Ciné Club",
+  "categories": [
+    "etablissement-culturel"
+  ],
+  "tags": [
+    "arts-culture",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/Le-7e-Genre-film-1930.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2026/02/Le-7e-Genre-film-Pigalle.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/02/Le-7e-Genre-Brady-1024x768.jpeg",
+  "description": "🎥**Le 7e Genre, qui organise un ciné-club depuis 2013, se diversifie en 2025 avec un autre ciné-club, Retour à l'écran, toujours au Brady, pour continuer à explorer le patri/matrimoine du 7e art dans toute sa diversité. 🎞️**\n\n🍿L'idée du ciné club est née d'une envie personnelle d'Anne Delabre, qu'elle avait eue lors de ses années étudiantes.\n\nTetu : \"À l’époque, elle collabore avec le festival Chéries Chéris et a publié quelques années auparavant un essai, Le Cinéma français et l’homosexualité (Editions Danger Public), coécrit avec Didier Roth-Bettoni, journaliste et historien du cinéma, auteur notamment de L’Homosexualité au cinéma, un livre-somme de plus de 750 pages publié en 2007 chez La Musardine. Alors que les ciné-clubs mensuels ou réguliers avaient plus ou moins disparu des salles de la capitale, la journaliste à ressentir un manque. \"\n\nAnne Delabre : \"Les représentations LGBT – même si on ne les appelait pas ainsi à l’époque – sont presque aussi anciennes que le cinéma lui-même. Si l’on pense à Charlot et ses travestissements, on joue déjà sur la transgression des normes… Il y avait également les « sissies », ces personnages très efféminés dans le cinéma muet américain, ou les garçonnes des années 1930.\".\n\nQue fait le ciné club ? \"Il s’agit d’un ciné-club de films de patrimoine ; nous ne cherchons donc pas à coller à l’actualité ou à faire concurrence à des festivals et avant-premières. Pour autant, « de patrimoine » inclut tous les films anciens d’au moins dix ans.\"\n\n🔥[Adhérez et soutenez 🔥](https://www.helloasso.com/associations/le-7e-genre/adhesions/campagne-d-adhesion-2025-2026)",
+  "hours": {
+    "monday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous,00:00-00:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2026/02/Le-7e-Genre-logo.jpg",
+  "social": {
+    "facebook": "https://www.facebook.com/leseptiemegenre",
+    "instagram": "https://www.instagram.com/le7egenre"
+  },
+  "subtitle": "Le Ciné Club qui défie les normes",
+  "website": "https://le7egenre.fr/",
+  "source_url": "https://www.parislgbt.com/listing/le-7e-genre-cine-club/",
+  "slug": "le-7e-genre-cine-club",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-7e-genre-cine-club/",
+    "en": "https://www.parislgbt.com/en/listing/le-7e-genre-cine-club/"
+  }
+}

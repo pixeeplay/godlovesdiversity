@@ -1,0 +1,37 @@
+{
+  "type": "listing",
+  "name": "Listings • Paris LGBT+ Guide",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [],
+  "address": {
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "dates": [],
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/02/Logo-Paris-LGBT_Paris-LGBT-Couleur-300x214.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listings/",
+  "slug": "listings",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listings/",
+    "en": "https://www.parislgbt.com/en/listings/"
+  }
+}

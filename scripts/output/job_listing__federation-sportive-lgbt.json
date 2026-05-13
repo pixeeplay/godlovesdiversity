@@ -1,0 +1,51 @@
+{
+  "type": "listing",
+  "name": "Fédération Sportive LGBT+",
+  "categories": [
+    "associations"
+  ],
+  "tags": [
+    "salle-de-sport"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/08/TIP-sport-logo.png",
+    "https://www.parislgbt.com/wp-content/uploads/2025/08/FS-LGBT-campagne-homophobie-sport.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/08/FS-LGBT-campagne-homophobie-sport-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": null,
+    "lat": 48.86315,
+    "lng": 2.35449
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/08/FS-LGBT-banner-1024x381.jpg",
+  "description": "La Fédération Sportive LGBT+ est reconnue d’utilité publique par le Ministère des Sports. C’est une fédération multisports centrée sur l’humain et le développement de soi. Elle structure le sport inclusif français au travers de ses associations sportives LGBT+ cela rassemble 10 000 personnes sportives.\n\n**Nos valeurs**\n\n Chaque personne physique ou morale, membre de la Fédération Sportive LGBT+ s’engage à respecter, défendre et promouvoir nos valeurs.\n\nRespect\n\n Le sport demande la tolérance et le respect de l’adversaire et de l’arbitre – sans lesquels le jeu sportif ne pourrait exister – ainsi que de l’environnement ; et qu’il exige d’accepter de la même manière victoires et défaites. Le respect du jeu, des règles, de soi-même, des autres et des institutions, sportives et publiques sont les conditions sine qua non d’une pratique sportive vertueuse.\n\nInclusion\n\n Accessible à toute personne, quelle que soit la forme de pratique ou la discipline, le sport nous amène à adopter une démarche bienveillante et favoriser l’égalité des chances. Avec honnêteté et loyauté, c’est s’assurer d’une pratique sportive intègre.\n\nSolidarité\n\n Favoriser la cohésion et le lien dans le monde sportif, être altruiste et faire preuve de fraternité, c’est encourager ses partenaires à s’entraider et se soutenir tant dans les moments difficiles comme la défaite et la fatigue que jusqu’à la victoire et la joie.\n\nDépassement\n\n Le dépassement de ses propres limites, mentales, physiques et morales est une des composantes importantes du sport. Le dépassement de soi se réalise par le partage avec les autres.\n\n**Nos rendez-vous**\n\nLa Fédération Sportive LGBT+ organise ses propres événements ou participe à des événements publics : manifestations sportives, salons d’échanges et d’informations, tables rondes ou convivialités.",
+  "hours": {
+    "friday": "Uniquement sur rendez-vous",
+    "monday": "Uniquement sur rendez-vous",
+    "saturday": "Uniquement sur rendez-vous",
+    "sunday": "Uniquement sur rendez-vous",
+    "thursday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/08/Forum-Sports-logo.png",
+  "social": {
+    "facebook": "https://www.facebook.com/fs.lgbt",
+    "instagram": "https://www.instagram.com/fs.lgbt/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "transport": "M° Rambuteau",
+  "website": "https://www.sports-lgbt.fr/",
+  "source_url": "https://www.parislgbt.com/listing/federation-sportive-lgbt/",
+  "slug": "federation-sportive-lgbt",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/federation-sportive-lgbt/",
+    "en": "https://www.parislgbt.com/en/listing/federation-sportive-lgbt/"
+  }
+}

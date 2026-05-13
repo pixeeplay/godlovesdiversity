@@ -1,0 +1,71 @@
+{
+  "type": "event",
+  "name": "POP OF STREET",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2019/09/tout-blanc-fond-noir@3x-100-WorkShow-Paris.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": "Rue Saint-Martin",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2019/09/tout-blanc-fond-noir@3x-100-WorkShow-Paris-1024x414.jpg",
+  "dates": [
+    {
+      "start": "2026-05-15T17:00:00+02:00"
+    },
+    {
+      "start": "2026-05-22T17:00:00+02:00"
+    },
+    {
+      "start": "2026-05-29T17:00:00+02:00"
+    },
+    {
+      "start": "2026-06-05T17:00:00+02:00"
+    },
+    {
+      "start": "2026-06-12T17:00:00+02:00"
+    }
+  ],
+  "description": "**✨ POP OF STREET –**\n\n**Le nouveau temple de la Pop à Paris ! ✨**\n\n LES VENDREDIS\n\n 17h – 2h\n\n WorkshoW PARIS – Rue Saint-Martin\n\n**Fans de Pop Music, préparez-vous à une nuit légendaire !**\n\nDe **Dua lipa** à **Madonna**, en passant par **Whitney Houston, Prince, Beyoncé et Rihanna**, nous célébrons les icônes qui ont marqué l’histoire de la pop !\n\n**Dansez, chantez et vibrez** sur les plus grands hits !\n\nProfitez de notre **Happy Hour de folie** jusqu'à **22h** !\n\nSavourez l’ambiance estivale sur notre **belle terrasse** !\n\n**Rejoignez-nous pour une soirée magique dans l’univers de la pop music !** ✨\n\nRéservez votre place et invitez vos amis dès maintenant !\n\nINFOS ET RÉSERVATIONS :\n\nAppelez le 06 63 78 06 21",
+  "email": null,
+  "hours": {
+    "friday": "17:00-02:00",
+    "monday": null,
+    "saturday": null,
+    "sunday": null,
+    "thursday": null,
+    "tuesday": null,
+    "wednesday": null
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/04/78311733_2208049539296143_629503271991508992_n-300x300.jpg",
+  "phone": "06 63 78 06 21",
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/1084566293876668",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "WorkshoW",
+    "slug": "workshow",
+    "url": "https://www.parislgbt.com/listing/workshow/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/pop-of-street/",
+  "slug": "pop-of-street",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/pop-of-street/",
+    "en": "https://www.parislgbt.com/en/listing/pop-of-street/"
+  }
+}

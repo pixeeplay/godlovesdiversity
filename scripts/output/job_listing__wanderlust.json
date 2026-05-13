@@ -1,0 +1,46 @@
+{
+  "type": "listing",
+  "name": "Wanderlust",
+  "categories": [
+    "clubs",
+    "bars",
+    "restaurant"
+  ],
+  "tags": [
+    "djs-at-work"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/06/WANDERLUST-20_05-08-1024x819.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2023/06/Logo-Fvtvr.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75013",
+    "street": "32, quai d'Austerlitz",
+    "lat": 48.8593,
+    "lng": 2.34258
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2023/06/WANDERLUST-20_05-08-1024x819.jpg",
+  "description": "Niché au coeur de la Cité de la Mode et du Design, le Wanderlust aka FVTVR est le nouveau lieu parisien hybride et underground dédié aux musiques électroniques. le Wanderlust aka FVTVR tend à faire converger les esprits créatifs et les amateurs de musique avec une programmation artistique audacieuse qui transcende les frontières musicales. Le club offre une scène ouverte à la diversité de genres, de la techno pulsante au hip-hop enflammé.",
+  "hours": {
+    "monday": null,
+    "tuesday": "23:00-06:00",
+    "wednesday": "23:00-06:00, 19:00-06:00, 23:00-06:00, 23:00-06:00, 16:00-01:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2023/06/Logo-Fvtvr.jpg",
+  "social": {
+    "instagram": "https://www.instagram.com/fvtvr_paris/?hl=fr"
+  },
+  "subtitle": "Lieu de fête et de vie mettant à l'honneur les cultures populaires, urbaines & LGBT.",
+  "transport": "ligne 5, 10 arrêt : Quai d'Austerlitz",
+  "website": "https://dice.fm/venue/fvtvr-pvlk?lng=fr",
+  "source_url": "https://www.parislgbt.com/listing/wanderlust/",
+  "slug": "wanderlust",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/wanderlust/",
+    "en": "https://www.parislgbt.com/en/listing/wanderlust/"
+  }
+}

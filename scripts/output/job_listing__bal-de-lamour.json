@@ -1,0 +1,47 @@
+{
+  "type": "event",
+  "name": "Bal de l'amour",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2026/05/43279_image_677775618_1451177340376398_6458134075918084807_n-1.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": null,
+    "street": "Place de la Bastille",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2026/05/43279_image_677775618_1451177340376398_6458134075918084807_n-1.jpg",
+  "dates": [
+    {
+      "start": "2026-05-15T18:00:00+02:00"
+    }
+  ],
+  "description": "Parce que Paris est une ville attachée à l'égalité, retrouvons-nous pour célébrer l'amour sous toutes ces formes !\n\nLe Bal de l'amour, qui a fêté en 2023 les 10 ans du mariage pour tous, revient le 15 mai pour une 4ème édition sur la place de la Bastille. Ouvert à toutes et tous, cet évènement gratuit se veut musical, festif, joyeux et profondément engagé",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/01/Logo-Paris-LGBT_Paris-LGBT-Couleur-2025.png",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/events/800211362846648",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/bal-de-lamour/",
+  "slug": "bal-de-lamour",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/bal-de-lamour/",
+    "en": "https://www.parislgbt.com/en/listing/bal-de-lamour/"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "type": "listing",
+  "name": "L'Etage Chéri Chéri",
+  "categories": [
+    "clubs",
+    "cabarets"
+  ],
+  "tags": [
+    "djs-at-work",
+    "gay",
+    "queer"
+  ],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/03/EtageCherieCheris_banner.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/03/Logo-Cheri-Cheri.jpg"
+  ],
+  "linked_events": [],
+  "address": {
+    "street": "77 rue du Faubourg du Temple 75010 Paris",
+    "lat": 48.87019,
+    "lng": 2.37152
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/03/EtageCherieCheris_banner.jpg",
+  "description": "Ce lieu accueille soirées et brunch chaque semaine à Belleville, le quartier populaire qu'a connu Momo et sa voisine trans dans La Vie devant Soi de Romain Gary.\n\nInitié par Thibaud, créateur des soirées Rainbow Power, et Lucille, propriétaire du Wanted, ce lieu pluriel allie restaurant, cabaret et club, redéfinissant l'expérience nocturne avec une ambiance festive et une programmation des plus singulières.\n\nAu programme, le Showtime Cabaret, animé par la drag Lolita Banana, participante de Drag Race France #2, promet un spectacle immersif autour d'un dîner gastronomique à 75 €.\n\nLes vendredis, la soirée One more Time vous fera vibrer au son des tubes des années 90/2000, mixés par DJ Holly White.\n\nLes dimanches, le Brunch and Queen transforme votre brunch en un festin drag spectaculaire.\n\nAvec un décor glamour et une capacité de 100 places pour les dîners spectacles, Chéri Chéri est la nouvelle sensation de la capitale, mettant en lumière les artistes de la scène queer et alternative. Incontournable !",
+  "email": null,
+  "hours": {
+    "monday": "Uniquement sur rendez-vous",
+    "tuesday": "Uniquement sur rendez-vous",
+    "wednesday": "Uniquement sur rendez-vous, 11:00-17:00"
+  },
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/03/Logo-Cheri-Cheri.jpg",
+  "phone": null,
+  "registration_url": null,
+  "social": {
+    "facebook": "https://www.facebook.com/Rainboworldtheparty",
+    "instagram": "https://www.instagram.com/chericheriparis/",
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": "Metro GONCOURT (Ligne 11) ou BELLEVILLE (Lignes 2, 11)",
+  "website": "http://chericheriparis.fr/",
+  "source_url": "https://www.parislgbt.com/listing/letage-cheri-cheri/",
+  "slug": "letage-cheri-cheri",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/letage-cheri-cheri/",
+    "en": "https://www.parislgbt.com/en/listing/letage-cheri-cheri/"
+  }
+}

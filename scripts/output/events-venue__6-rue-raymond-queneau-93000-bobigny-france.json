@@ -1,0 +1,37 @@
+{
+  "type": "listing",
+  "name": "6 Rue Raymond Queneau, 93000 Bobigny, France",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "HORDE FAMILY AU BARBOTEUR - FREE OPEN AIR",
+      "url": "https://www.parislgbt.com/en/listing/horde-family-au-barboteur-free-open-air/"
+    }
+  ],
+  "address": {
+    "street": "6 Rue Raymond Queneau, 93000 Bobigny, France",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/6-rue-raymond-queneau-93000-bobigny-france/",
+  "slug": "6-rue-raymond-queneau-93000-bobigny-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/6-rue-raymond-queneau-93000-bobigny-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/6-rue-raymond-queneau-93000-bobigny-france/"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "type": "event",
+  "name": "Cours de Makeup Drag Queen (Express)",
+  "categories": [],
+  "tags": [],
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/WhatsApp-Image-2026-04-15-at-19.11.51-1.jpeg"
+  ],
+  "linked_events": [],
+  "address": {
+    "city": "Paris",
+    "country": "France",
+    "postal_code": "75006",
+    "street": "25 Rue de l'Hirondelle",
+    "lat": 48.8536,
+    "lng": 2.34285
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/WhatsApp-Image-2026-04-15-at-19.11.51-1-819x1024.jpeg",
+  "dates": [
+    {
+      "start": "2026-05-30T15:00:00+02:00"
+    }
+  ],
+  "description": "**La Drag School** invite **Dolly Mortelle** pour diriger un cours de **Makeup Drag Queen** !\n\nInscription ici :**[Je m'inscris !](https://www.helloasso.com/associations/drag-school/evenements/makeup-drag-queen-express)**\n\n_\"Je suis Dolly Mortelle, baddie reine de la nuit… et reine du retard._\n\n_À force de me préparer à la dernière minute, j’ai développé des skills pour être la plus belle, même dans le rush._\n\n_Dans ce cours, je partage mes astuces pour construire un visage de Queen qui slay sans y passer 3 heures.\"_\n\n**Matériel à apporter pour le cours**\n\n_A titre indicatif. Si tu n'as pas tout, ce n'est pas grave, on se prêtera du matériel :_\n\n*   Ton miroir, même celui de ta palette - si possible, rétroéclairé\n*   De la colle à sourcil type colle violette Elmers\n*   Mascara\n*   Eye-liner\n*   Faux cils\n*   Rouge ou noir à lèvres (ou autre couleur)\n*   Crayon à lèvres rouge / marron foncé ou noir\n*   De la poudre libre translucide + powder puffs (2 si possible)\n*   Cache barbe pêche / orange (au pire rouge à lèvres)\n*   Une base\n*   Stick kryolan à ta teinte\n*   Stick kryolan blanc / crème\n*   Palette de fard gras type Athena UcanBe\n*   Palette ombre à paupières colorée\n*   Palette ombre à paupière « smoky eye »\n*   Highlighter (si possible pas liquide)\n*   Wig cap ou serre-tête (pratique si cheveux longs)\n*   Pinceaux : Pinceaux biseautés (2 ou 3) \n    *   Pinceaux estompeurs (2 ou 3)\n    *   1 Pinceau crayon\n    *   2 pinceaux à fond de teint\n    *   1 pinceau à blush\n\n*   Ta perruque si tu en as une (optionnel pour t’admirer à la fin)",
+  "email": null,
+  "hours": null,
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2026/04/White-300x300.png",
+  "phone": null,
+  "registration_url": "https://www.helloasso.com/associations/drag-school/evenements/makeup-drag-queen-express",
+  "social": {
+    "facebook": "https://www.facebook.com/ParisLGBT.fr",
+    "instagram": null,
+    "tiktok": null,
+    "twitter": null
+  },
+  "subtitle": null,
+  "transport": null,
+  "venue": {
+    "name": "La Drag School",
+    "slug": "la-drag-school",
+    "url": "https://www.parislgbt.com/listing/la-drag-school/"
+  },
+  "website": null,
+  "source_url": "https://www.parislgbt.com/listing/cours-de-makeup-drag-queen-express/",
+  "slug": "cours-de-makeup-drag-queen-express",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/cours-de-makeup-drag-queen-express/",
+    "en": "https://www.parislgbt.com/en/listing/cours-de-makeup-drag-queen-express/"
+  }
+}

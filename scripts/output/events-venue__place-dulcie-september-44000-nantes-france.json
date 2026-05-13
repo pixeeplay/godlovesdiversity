@@ -1,0 +1,44 @@
+{
+  "type": "listing",
+  "name": "Place Dulcie September, 44000 Nantes, France",
+  "categories": [],
+  "tags": [],
+  "gallery": [],
+  "linked_events": [
+    {
+      "title": "Formation Outils administratifs et pilotage budgétaire d'un projet culturel",
+      "url": "https://www.parislgbt.com/listing/formation-outils-administratifs-et-pilotage-budgetaire-dun-projet-culturel/"
+    },
+    {
+      "title": "Formation Recherche de mécénat",
+      "url": "https://www.parislgbt.com/listing/formation-recherche-de-mecenat-2/"
+    }
+  ],
+  "address": {
+    "city": "Nantes",
+    "country": "France",
+    "postal_code": "44000",
+    "street": "Place Dulcie September",
+    "lat": null,
+    "lng": null
+  },
+  "cover_image": null,
+  "description": null,
+  "email": null,
+  "hours": null,
+  "logo": null,
+  "phone": null,
+  "registration_url": null,
+  "social": null,
+  "subtitle": null,
+  "transport": null,
+  "venue": null,
+  "website": null,
+  "source_url": "https://www.parislgbt.com/events-venue/place-dulcie-september-44000-nantes-france/",
+  "slug": "place-dulcie-september-44000-nantes-france",
+  "region": null,
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/events-venue/place-dulcie-september-44000-nantes-france/",
+    "en": "https://www.parislgbt.com/en/events-venue/place-dulcie-september-44000-nantes-france/"
+  }
+}
