@@ -46,24 +46,44 @@ type RawEvent = {
   registration_url?: string;
 };
 
-// ─── Source 1 : Pride 2026 (officielles, hardcoded) ──────────────────────
-const PRIDE_2026: RawEvent[] = [
-  // Source : datesdesprides.fr + sites officiels (à actualiser chaque année)
-  { source: 'pride-officiel', name: 'Marche des Fiertés Paris', city: 'Paris', postal_code: '75001', lat: 48.8566, lng: 2.3522, start: '2026-06-27T14:00:00+02:00', description: 'La Marche des Fiertés de Paris défile du Châtelet à République, suivie d\'un grand concert place de la République.', registration_url: 'https://www.inter-lgbt.org', price: 'Gratuit', cover_image: undefined },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Lyon', city: 'Lyon', postal_code: '69002', lat: 45.7640, lng: 4.8357, start: '2026-06-13T14:00:00+02:00', description: 'La Marche LGBT+ de Lyon, organisée par le LGBTI Centre de Lyon.', registration_url: 'https://www.facebook.com/MarcheDesFiertesLyon' },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Marseille', city: 'Marseille', postal_code: '13001', lat: 43.2965, lng: 5.3698, start: '2026-07-04T14:00:00+02:00', description: 'La Pride de Marseille traverse le Vieux-Port jusqu\'aux plages du Prado.' },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Toulouse', city: 'Toulouse', postal_code: '31000', lat: 43.6047, lng: 1.4442, start: '2026-06-13T14:00:00+02:00' },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Bordeaux', city: 'Bordeaux', postal_code: '33000', lat: 44.8378, lng: -0.5792, start: '2026-06-06T14:00:00+02:00' },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Lille', city: 'Lille', postal_code: '59000', lat: 50.6292, lng: 3.0573, start: '2026-06-06T14:00:00+02:00' },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Nantes', city: 'Nantes', postal_code: '44000', lat: 47.2184, lng: -1.5536, start: '2026-06-13T14:00:00+02:00' },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Rennes', city: 'Rennes', postal_code: '35000', lat: 48.1173, lng: -1.6778, start: '2026-06-13T14:00:00+02:00' },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Strasbourg', city: 'Strasbourg', postal_code: '67000', lat: 48.5734, lng: 7.7521, start: '2026-06-13T14:00:00+02:00' },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Montpellier', city: 'Montpellier', postal_code: '34000', lat: 43.6108, lng: 3.8767, start: '2026-06-13T14:00:00+02:00' },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Nice', city: 'Nice', postal_code: '06000', lat: 43.7102, lng: 7.2620, start: '2026-07-25T14:00:00+02:00' },
-  { source: 'pride-officiel', name: 'Marche des Fiertés Grenoble', city: 'Grenoble', postal_code: '38000', lat: 45.1885, lng: 5.7245, start: '2026-06-06T14:00:00+02:00' },
-  { source: 'pride-officiel', name: 'Pride de Nuit Paris', city: 'Paris', postal_code: '75011', lat: 48.8632, lng: 2.3792, start: '2026-06-21T19:00:00+02:00', description: 'Marche nocturne radicale, point de départ habituel place de la Bastille.' },
-  { source: 'pride-officiel', name: 'Existrans (Paris)', city: 'Paris', postal_code: '75001', lat: 48.8566, lng: 2.3522, start: '2026-10-17T14:00:00+02:00', description: 'Marche pour les droits des personnes trans, intersexes et non-binaires.' }
-];
+// ─── Source 1 : Pride 2026 (single source of truth : src/lib/pride-data.ts) ──
+// Importée via fonction pour éviter le couplage Prisma↔frontend lib.
+function getPrideEventsRaw(): RawEvent[] {
+  // Date corrigées 2026 (utilisateur + datesdesprides.fr) — synchronisée avec src/lib/pride-data.ts
+  const evts = [
+    { id: 'paris-2026', name: 'Marche des Fiertés Paris', city: 'Paris', cp: '75001', lat: 48.8566, lng: 2.3522, date: '2026-06-27', desc: 'Marche officielle Inter-LGBT, Châtelet → République, concert final. ~500 000 personnes.' },
+    { id: 'lille-2026', name: 'Marche des Fiertés Lille', city: 'Lille', cp: '59000', lat: 50.6292, lng: 3.0573, date: '2026-05-30', desc: 'Première Pride de la saison française. Vieux-Lille.' },
+    { id: 'rennes-2026', name: 'Pride Rennes', city: 'Rennes', cp: '35000', lat: 48.1173, lng: -1.6778, date: '2026-06-06', desc: 'Marche festive du centre de Rennes.' },
+    { id: 'toulouse-2026', name: 'Marche des Fiertés Toulouse', city: 'Toulouse', cp: '31000', lat: 43.6047, lng: 1.4442, date: '2026-06-06', desc: 'Pride toulousaine, l\'une des plus anciennes de France.' },
+    { id: 'bordeaux-2026', name: 'Marche des Fiertés Bordeaux', city: 'Bordeaux', cp: '33000', lat: 44.8378, lng: -0.5792, date: '2026-06-06', desc: 'Marche sur les quais de la Garonne.' },
+    { id: 'grenoble-2026', name: 'Marche des Fiertés Grenoble', city: 'Grenoble', cp: '38000', lat: 45.1885, lng: 5.7245, date: '2026-06-06', desc: 'Pride alpine.' },
+    { id: 'lyon-2026', name: 'Marche des Fiertés Lyon', city: 'Lyon', cp: '69002', lat: 45.7640, lng: 4.8357, date: '2026-06-13', desc: 'La 2e Pride de France. ~50 000 personnes.' },
+    { id: 'strasbourg-2026', name: 'Festigays — Pride Strasbourg', city: 'Strasbourg', cp: '67000', lat: 48.5734, lng: 7.7521, date: '2026-06-13', desc: 'Festival Festigays de 10 jours + marche.' },
+    { id: 'metz-2026', name: 'Marche des Fiertés Metz', city: 'Metz', cp: '57000', lat: 49.1193, lng: 6.1757, date: '2026-06-13', desc: 'Pride mosellanne.' },
+    { id: 'caen-2026', name: 'Marche des Fiertés Caen-Normandie', city: 'Caen', cp: '14000', lat: 49.1829, lng: -0.3707, date: '2026-06-13', desc: 'Pride normande.' },
+    { id: 'reims-2026', name: 'Marche des Fiertés Reims', city: 'Reims', cp: '51100', lat: 49.2583, lng: 4.0317, date: '2026-06-20', desc: 'Marche champenoise.' },
+    { id: 'nantes-2026', name: 'Marche des Fiertés Nantes', city: 'Nantes', cp: '44000', lat: 47.2184, lng: -1.5536, date: '2026-06-20', desc: 'Pride le long de l\'Erdre.' },
+    { id: 'pride-nuit-2026', name: 'Pride de Nuit Paris', city: 'Paris', cp: '75011', lat: 48.8532, lng: 2.3692, date: '2026-06-21', time: '19:00', desc: 'Marche radicale autogérée, Bastille. Sans char sponsorisé.' },
+    { id: 'marseille-2026', name: 'Pride Marseille', city: 'Marseille', cp: '13001', lat: 43.2965, lng: 5.3698, date: '2026-07-04', desc: 'Pride méditerranéenne, Vieux-Port → Prado.' },
+    { id: 'montpellier-2026', name: 'Pride Montpellier', city: 'Montpellier', cp: '34000', lat: 43.6108, lng: 3.8767, date: '2026-07-11', desc: 'Comédie → Antigone.' },
+    { id: 'nice-2026', name: 'Pink Parade Nice', city: 'Nice', cp: '06000', lat: 43.7102, lng: 7.2620, date: '2026-07-25', desc: 'Pride niçoise sur la Promenade des Anglais.' },
+    { id: 'existrans-2026', name: 'Existrans', city: 'Paris', cp: '75001', lat: 48.8566, lng: 2.3522, date: '2026-10-17', desc: 'Marche pour les droits trans, intersexes et non-binaires. Depuis 1997.' }
+  ];
+  return evts.map((e) => ({
+    source: 'pride-officiel',
+    name: e.name,
+    city: e.city,
+    postal_code: e.cp,
+    lat: e.lat,
+    lng: e.lng,
+    start: `${e.date}T${(e as any).time || '14:00'}:00+02:00`,
+    description: e.desc,
+    price: 'Gratuit',
+    source_url: 'https://parislgbt.com/fr/pride'
+  }));
+}
+
+const PRIDE_2026: RawEvent[] = getPrideEventsRaw();
 
 // ─── Source 2 : Eventbrite Search API ────────────────────────────────────
 async function fetchEventbrite(): Promise<RawEvent[]> {

@@ -155,8 +155,17 @@ export function LieuxMegaMenu({ locale = 'fr' }: { locale?: string }) {
 
                 <div className="mt-4 pt-4 border-t border-white/5 space-y-1.5">
                   <Link
+                    href={`${prefix}/pride` as any}
+                    className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-pink-500/25 via-violet-500/25 to-cyan-500/25 hover:from-pink-500/40 hover:via-violet-500/40 hover:to-cyan-500/40 text-white font-black text-xs transition group"
+                  >
+                    <span className="flex items-center gap-2">
+                      🌈 Pride 365 — Calendrier 2026
+                    </span>
+                    <ArrowRight size={11} className="group-hover:translate-x-0.5 transition" />
+                  </Link>
+                  <Link
                     href={`${prefix}/lieux` as any}
-                    className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-pink-500/20 to-violet-500/20 hover:from-pink-500/30 hover:to-violet-500/30 text-pink-200 font-bold text-xs transition group"
+                    className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-pink-500/10 hover:bg-pink-500/20 text-pink-200 font-bold text-xs transition group"
                   >
                     <span className="flex items-center gap-2">
                       <MapPin size={12} /> Carte interactive
