@@ -374,7 +374,7 @@ function BannerEditor({ banner, onClose, onSaved }: {
                 className={`bg-fuchsia-500 hover:bg-fuchsia-600 disabled:opacity-50 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 ${aiBusy === 'image' ? 'ai-glow ai-glow-subtle' : ''}`}
               >
                 {aiBusy === 'image' ? <Loader2 size={11} className="animate-spin" /> : '🖼'}
-                {aiBusy === 'image' ? 'Higgsfield Soul génère…' : 'Générer image (Higgsfield Soul)'}
+                {aiBusy === 'image' ? 'IA génère…' : 'Générer image (Higgsfield + Gemini fallback)'}
               </button>
               <button
                 type="button"
@@ -437,7 +437,8 @@ function BannerEditor({ banner, onClose, onSaved }: {
                 </label>
               </div>
               <p className="text-[10px] text-zinc-500 mt-2">
-                💡 Génération vidéo via <b>Higgsfield AI</b>. Clés à configurer dans <code>/admin/settings → 🎬 Higgsfield</code> (API Key ID + Secret).
+                💡 <b>Image</b> : Higgsfield Soul (fal.ai) avec fallback automatique sur <b>Gemini 2.5 Flash Image</b> alias <i>Nano Banana</i> si fal.ai n&apos;est pas configuré.<br />
+                <b>Vidéo</b> : Higgsfield via fal.ai uniquement. Clé à configurer dans <code>/admin/settings → 🎬 Higgsfield</code> (fal.ai API key, 10$ offerts à l&apos;inscription).
               </p>
             </details>
 

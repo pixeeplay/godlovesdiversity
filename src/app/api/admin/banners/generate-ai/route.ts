@@ -20,45 +20,46 @@ export const runtime = 'nodejs';
  * sur 4 images Imagen → carrousel hero (effet "vidéo" cinématique).
  */
 
+// Prompts LGBT-aligned (le projet a pivoté de spirituel→queer, plus de cathédrales/mosquées)
 const PRESETS: Record<string, { prompt: string; ratio: '16:9' | '21:9' | '4:3' }> = {
   pride: {
-    prompt: 'Cinematic ultra wide banner: vibrant rainbow flag waving in slow motion in front of a majestic gothic cathedral, golden hour light, photorealistic, dynamic, hopeful, 8K, hyperdetailed',
+    prompt: 'Ultra-wide cinematic banner: massive Pride march in Paris with thousands of people holding rainbow flags, drag queens, dancers on parade floats, golden hour, neon pink and purple confetti, joyful diverse crowd, photorealistic, 8K, hopeful, dynamic motion',
     ratio: '21:9'
   },
   noel: {
-    prompt: 'Cinematic ultra wide banner: candle-lit cathedral interior at Christmas with pine garlands and gentle snowfall outside, warm gold and red, peaceful, photorealistic, hopeful',
+    prompt: 'Ultra-wide cinematic banner: queer Christmas party with multicolored fairy lights, two femme partners decorating a tree together, vintage neon disco ball, warm pink and gold, photorealistic, cozy and inclusive',
     ratio: '21:9'
   },
   paques: {
-    prompt: 'Cinematic ultra wide banner: spring cathedral with stained glass casting pastel rainbow light on lilies and tulips, soft morning sun, photorealistic, joyful resurrection',
+    prompt: 'Ultra-wide cinematic banner: spring Pride picnic with rainbow Easter eggs and tulips, queer couples lying on grass, soft pastel morning sun, photorealistic, joyful, gentle',
     ratio: '21:9'
   },
   halloween: {
-    prompt: 'Cinematic ultra wide banner: gothic cathedral at twilight with floating purple and orange lights, mystical atmosphere, photorealistic, theatrical',
+    prompt: 'Ultra-wide cinematic banner: drag queen Halloween ball, gothic glamour, neon purple and orange smoke, sequins, jack-o-lanterns, vintage queer cabaret aesthetic, photorealistic, theatrical, mysterious',
     ratio: '21:9'
   },
   valentin: {
-    prompt: 'Cinematic ultra wide banner: chapel filled with rose petals raining slowly, soft pink and red light, two gold rings on altar, photorealistic, romantic',
+    prompt: 'Ultra-wide cinematic banner: two LGBTQ+ couples sharing a tender moment (one couple femme/femme, one masc/masc), neon pink hearts, rose petals slow motion, soft cinematic light, photorealistic, romantic',
     ratio: '21:9'
   },
   ramadan: {
-    prompt: 'Cinematic ultra wide banner: ornate mosque interior at dusk with crescent moon and lit lanterns, warm green and gold, peaceful, photorealistic',
+    prompt: 'Ultra-wide cinematic banner: queer Muslim friends sharing iftar dinner together, candle-lit terrace, crescent moon, warm green and gold, diverse LGBTQ+ community, photorealistic, peaceful, inclusive',
     ratio: '21:9'
   },
   pessah: {
-    prompt: 'Cinematic ultra wide banner: synagogue at sunset with menorah and white linen, soft blue and white light, photorealistic, solemn celebration',
+    prompt: 'Ultra-wide cinematic banner: queer Jewish Seder table with rainbow kippot, diverse LGBTQ+ family laughing, soft blue and white candlelight, photorealistic, joyful celebration',
     ratio: '21:9'
   },
   diwali: {
-    prompt: 'Cinematic ultra wide banner: Hindu temple at night covered in oil lamps (diyas), warm orange and pink light, marigold petals floating, photorealistic, joyful',
+    prompt: 'Ultra-wide cinematic banner: queer South Asian Diwali celebration with oil lamps (diyas), rainbow rangoli on the floor, dancers in vibrant saris and sherwanis, marigold petals floating, photorealistic, joyful',
     ratio: '21:9'
   },
   inclusivite: {
-    prompt: 'Cinematic ultra wide banner: diverse group of people of all genders, ethnicities, ages holding hands inside a cathedral with rainbow stained glass, hopeful, photorealistic',
+    prompt: 'Ultra-wide cinematic banner: diverse LGBTQ+ community of all ages, genders, ethnicities, body types, holding hands in front of a giant rainbow + trans flag + non-binary flag mural, photorealistic, hopeful, dignified',
     ratio: '21:9'
   },
   agenda: {
-    prompt: 'Cinematic ultra wide banner: vibrant outdoor LGBT-friendly event with flags, music, diverse crowd celebrating, golden hour, dynamic, photorealistic',
+    prompt: 'Ultra-wide cinematic banner: vibrant outdoor LGBTQ+ event in Paris, drag performers on stage, dance floor, neon Pride flag light, diverse crowd celebrating, golden hour, dynamic, photorealistic',
     ratio: '21:9'
   }
 };
@@ -79,11 +80,16 @@ export async function POST(req: NextRequest) {
       }, { status: 503 });
     }
 
-    // kind === 'image' : Higgsfield Soul (text-to-image)
+    // kind === 'image' : tente Higgsfield Soul, fallback sur Gemini Nano Banana si fal.ai pas configuré
     const result = await tryHiggsfieldImage(usedPrompt, Math.min(count, 4));
-    if (result.ok) return NextResponse.json(result);
+    if (result.ok) return NextResponse.json({ ...result, provider: 'higgsfield-soul' });
+
+    // Fallback automatique sur Gemini Nano Banana (gemini-2.5-flash-image)
+    const geminiResult = await tryGeminiNanoBanana(usedPrompt, Math.min(count, 4));
+    if (geminiResult.ok) return NextResponse.json({ ...geminiResult, provider: 'gemini-nano-banana' });
+
     return NextResponse.json({
-      error: `Génération image Higgsfield échouée :\n\n${result.reason}\n\n→ Vérifie tes clés Higgsfield dans /admin/settings → 🎬 Higgsfield (API Key ID + Secret).`
+      error: `Génération image échouée :\n\nHiggsfield : ${result.reason}\nGemini Nano Banana : ${geminiResult.reason}\n\n→ Vérifie ta clé fal.ai dans /admin/settings (Higgsfield)\n   OU ta clé Gemini dans /admin/settings → integrations.gemini.apiKey`
     }, { status: 503 });
   } catch (e: any) {
     return NextResponse.json({ error: e?.message }, { status: 500 });
@@ -171,5 +177,54 @@ async function tryHiggsfield(prompt: string, opts: HiggsfieldOpts = {}): Promise
     return { ok: false, reason: 'Pas d\'URL vidéo dans la réponse fal.ai' };
   } catch (e: any) {
     return { ok: false, reason: `fal.ai : ${e?.message || e}` };
+  }
+}
+
+/**
+ * Génère des images via Gemini 2.5 Flash Image (alias "Nano Banana").
+ * Utilise la clé Gemini déjà configurée dans /admin/settings → integrations.gemini.apiKey
+ * Modèle officiel : gemini-2.5-flash-image-preview (renvoie une image inline base64).
+ */
+async function tryGeminiNanoBanana(prompt: string, count: number): Promise<any> {
+  const setting = await prisma.setting.findUnique({ where: { key: 'integrations.gemini.apiKey' } }).catch(() => null);
+  const key = setting?.value || process.env.GEMINI_API_KEY;
+  if (!key) return { ok: false, reason: 'Clé Gemini manquante (integrations.gemini.apiKey)' };
+
+  const model = 'gemini-2.5-flash-image-preview';
+
+  const tasks = Array.from({ length: count }).map(async () => {
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseModalities: ['IMAGE'],
+            temperature: 0.9
+          }
+        })
+      }
+    );
+    if (!r.ok) {
+      const errText = await r.text().catch(() => '');
+      throw new Error(`HTTP ${r.status} ${errText.slice(0, 120)}`);
+    }
+    const j: any = await r.json();
+    const parts = j?.candidates?.[0]?.content?.parts || [];
+    const imagePart = parts.find((p: any) => p.inlineData?.data);
+    if (!imagePart) throw new Error('Pas d\'image dans la réponse Gemini');
+    return {
+      data: imagePart.inlineData.data,
+      mimeType: imagePart.inlineData.mimeType || 'image/png'
+    };
+  });
+
+  try {
+    const images = await Promise.all(tasks);
+    return { ok: true, kind: 'image', images, prompt };
+  } catch (e: any) {
+    return { ok: false, reason: e?.message || String(e) };
   }
 }

@@ -2,15 +2,17 @@ import * as Minio from 'minio';
 
 const endpointUrl = new URL(process.env.S3_ENDPOINT || 'http://minio:9000');
 
+// Defaults alignés sur docker-compose.yml (MINIO_ROOT_USER/PASSWORD + bucket parislgbt)
+// Override via env vars Coolify : S3_ACCESS_KEY / S3_SECRET_KEY / S3_BUCKET
 export const minioClient = new Minio.Client({
   endPoint: endpointUrl.hostname,
   port: Number(endpointUrl.port) || (endpointUrl.protocol === 'https:' ? 443 : 80),
   useSSL: endpointUrl.protocol === 'https:',
-  accessKey: process.env.S3_ACCESS_KEY || 'gldminio',
-  secretKey: process.env.S3_SECRET_KEY || 'gldminio-secret'
+  accessKey: process.env.S3_ACCESS_KEY || 'lgbtminio',
+  secretKey: process.env.S3_SECRET_KEY || 'lgbtminio-secret'
 });
 
-export const BUCKET = process.env.S3_BUCKET || 'godlovesdiversity';
+export const BUCKET = process.env.S3_BUCKET || 'parislgbt';
 
 /**
  * URL d'une ressource pour le navigateur.
