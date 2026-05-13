@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Globe, Sparkles, Newspaper, Play, Loader2, CheckCircle2, AlertTriangle, RefreshCw, ExternalLink, Zap, Trash2, RotateCcw } from 'lucide-react';
+import { Globe, Sparkles, Newspaper, Play, Loader2, CheckCircle2, AlertTriangle, RefreshCw, ExternalLink, Zap, Trash2, RotateCcw, Calendar } from 'lucide-react';
 
-type BoostKey = 'regions' | 'rewrite' | 'top10' | 'import' | 'run-all' | 'reset-articles' | 'reset-rewrites' | 'reset-all';
+type BoostKey = 'regions' | 'rewrite' | 'top10' | 'import' | 'events' | 'run-all' | 'reset-articles' | 'reset-rewrites' | 'reset-all';
 
 type BoostStatus = 'idle' | 'running' | 'success' | 'error';
 
@@ -46,10 +46,20 @@ const BOOSTS: { key: BoostKey; title: string; description: string; icon: any; co
     eta: '~10-15 min',
     cost: '~1-2€ Gemini',
     impact: '+30 articles, +60 URLs (FR+EN)'
+  },
+  {
+    key: 'events',
+    title: 'Agenda events — scraping LGBT auto',
+    description: 'Agrège les events depuis Pride 2026 officielles (14 marches FR), Eventbrite, Têtu, Komitid, Pride.com via Jina + Gemini. Dédupe par hash. Status PUBLISHED direct.',
+    icon: Calendar,
+    color: '#22D3EE',
+    eta: '~3-5 min',
+    cost: '~0.1€ Gemini',
+    impact: '+50-100 events / mois'
   }
 ];
 
-const EMPTY_KEYS: BoostKey[] = ['import', 'regions', 'rewrite', 'top10', 'run-all', 'reset-articles', 'reset-rewrites', 'reset-all'];
+const EMPTY_KEYS: BoostKey[] = ['import', 'regions', 'rewrite', 'top10', 'events', 'run-all', 'reset-articles', 'reset-rewrites', 'reset-all'];
 
 // Pages générées par les boosts SEO — exposées dans le header pour vérif rapide.
 const PAGE_LINKS: { label: string; note: string; path: string }[] = [
@@ -57,6 +67,7 @@ const PAGE_LINKS: { label: string; note: string; path: string }[] = [
   { label: 'Pages régionales', note: '(13 régions)', path: '/fr/region/ile-de-france' },
   { label: 'Catégorie bars', note: '(listings filtrés)', path: '/fr/category/bars' },
   { label: 'Annuaire lieux', note: '(carte + liste)', path: '/fr/lieux' },
+  { label: 'Agenda events', note: '(Pride + scraping)', path: '/fr/agenda' },
   { label: 'Sitemap XML', note: '(soumettre à GSC en prod)', path: '/sitemap.xml' }
 ];
 

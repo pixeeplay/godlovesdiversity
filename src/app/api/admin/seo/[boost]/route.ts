@@ -22,7 +22,8 @@ const SCRIPTS: Record<string, string> = {
   import: 'scripts/import-final.ts',
   regions: '',  // static, no script needed
   rewrite: 'scripts/rewrite-descriptions.ts',
-  top10: 'scripts/generate-top10-articles.ts'
+  top10: 'scripts/generate-top10-articles.ts',
+  events: 'scripts/scrape-events.ts'
 };
 
 // Boosts spéciaux non-script (purges DB ou orchestration)
@@ -205,8 +206,11 @@ function handleSpecial(boost: string, geminiKey: string | undefined): Response {
         const c3 = await spawnScript('scripts/generate-top10-articles.ts', geminiKey, send);
         if (c3 !== 0) send('⚠ top10 a échoué.');
 
+        const c4 = await spawnScript('scripts/scrape-events.ts', geminiKey, send);
+        if (c4 !== 0) send('⚠ scrape-events a échoué.');
+
         send('\n═══════════════════════════════════════════');
-        send('✅ Chaîne terminée — vérifie /sitemap.xml et /fr/blog');
+        send('✅ Chaîne terminée — vérifie /sitemap.xml, /fr/blog, /fr/agenda');
         send('═══════════════════════════════════════════');
       } else {
         send('\n✅ Reset terminé. Relance maintenant les boosts manuellement ou utilise "Tout regénérer".');

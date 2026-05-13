@@ -31,19 +31,6 @@ const TYPE_LABELS: Record<string, { label: string; icon: any }> = {
   OTHER:             { label: 'Autres',      icon: Sparkles }
 };
 
-/**
- * Groupes confessionnels pour le filtre "Par confession" sur /lieux.
- * Chaque groupe rassemble plusieurs VenueType.
- */
-const FAITH_GROUPS: { id: string; label: string; emoji: string; types: string[] }[] = [
-  { id: 'christian',  label: 'Christianisme', emoji: '✝️', types: ['CHURCH', 'CHURCH_CATHOLIC', 'CHURCH_PROTESTANT', 'CHURCH_ORTHODOX', 'CHURCH_ANGLICAN', 'CHURCH_EVANGELICAL'] },
-  { id: 'muslim',     label: 'Islam',         emoji: '☪️', types: ['MOSQUE'] },
-  { id: 'jewish',     label: 'Judaïsme',      emoji: '✡️', types: ['SYNAGOGUE'] },
-  { id: 'buddhist',   label: 'Bouddhisme',    emoji: '☸️', types: ['TEMPLE_BUDDHIST', 'MEDITATION_CENTER'] },
-  { id: 'hindu',      label: 'Hindouisme',    emoji: '🕉️', types: ['TEMPLE_HINDU'] },
-  { id: 'sikh',       label: 'Sikhisme',      emoji: '☬',  types: ['GURDWARA'] },
-];
-
 const RATING_BADGE: Record<string, { color: string; label: string; emoji: string }> = {
   RAINBOW:  { color: 'from-pink-500 via-violet-500 to-cyan-500', label: '100% LGBT', emoji: '🏳️‍🌈' },
   FRIENDLY: { color: 'from-emerald-500 to-cyan-500', label: 'Friendly', emoji: '✨' },
@@ -68,9 +55,6 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
   const [city, setCity] = useState<string>('');
   const [q, setQ] = useState('');
   const [view, setView] = useState<'list' | 'map'>('map');
-  // Filtre par confession (groupe de types)
-  const [faithGroup, setFaithGroup] = useState<string>('');
-
   // Distance mode : géoloc utilisateur + filtre "près de moi"
   const [userLoc, setUserLoc] = useState<{ lat: number; lng: number } | null>(null);
   const [maxDistanceKm, setMaxDistanceKm] = useState<number | null>(null); // null = pas de filtre distance
@@ -131,10 +115,8 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
   const countries = useMemo(() => Array.from(new Set(venues.map(v => v.country).filter(Boolean))).sort() as string[], [venues]);
 
   const filtered = useMemo(() => {
-    const faithTypes = faithGroup ? FAITH_GROUPS.find(g => g.id === faithGroup)?.types || [] : [];
     let arr = venues.filter(v => {
       if (type && v.type !== type) return false;
-      if (faithGroup && !faithTypes.includes(v.type)) return false;
       if (country && v.country !== country) return false;
       if (city && v.city !== city) return false;
       if (q) {
@@ -165,7 +147,7 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
         .sort((a, b) => (a._distanceKm ?? 1e9) - (b._distanceKm ?? 1e9));
     }
     return arr;
-  }, [venues, type, faithGroup, country, city, q, userLoc, maxDistanceKm]);
+  }, [venues, type, country, city, q, userLoc, maxDistanceKm]);
 
   const counts: Record<string, number> = {};
   for (const v of venues) counts[v.type] = (counts[v.type] || 0) + 1;
@@ -180,43 +162,10 @@ export function VenuesDirectory({ initial }: { initial: any[] }) {
           <h1 className="font-display font-bold text-4xl">Lieux LGBTQ+</h1>
         </div>
         <p className="text-zinc-400 max-w-3xl">
-          Annuaire mondial des établissements 100% LGBT et LGBT-friendly · restaurants, bars, lieux de culte inclusifs, centres communautaires, hôtels, boutiques.
-          Géolocalisés et notés par notre communauté.
+          Annuaire des lieux 100% LGBT et LGBT-friendly · bars, clubs, saunas, restaurants, hôtels,
+          boutiques, associations, santé. Géolocalisés et notés par la communauté.
         </p>
       </header>
-
-      {/* Filtre confessionnel — pills couleurs par confession */}
-      <section className="bg-zinc-900 border border-zinc-800 rounded-2xl p-3 mb-3">
-        <div className="text-[10px] uppercase font-bold text-zinc-500 tracking-widest mb-2 flex items-center gap-1.5">
-          🕊 Filtrer par confession
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          <button
-            onClick={() => setFaithGroup('')}
-            className={`text-xs px-3 py-1.5 rounded-full font-bold transition ${
-              !faithGroup ? 'bg-fuchsia-500 text-white shadow shadow-fuchsia-500/30' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
-            }`}
-          >
-            Toutes
-          </button>
-          {FAITH_GROUPS.map((g) => {
-            const groupCount = venues.filter(v => g.types.includes(v.type)).length;
-            const active = faithGroup === g.id;
-            return (
-              <button
-                key={g.id}
-                onClick={() => setFaithGroup(active ? '' : g.id)}
-                className={`text-xs px-3 py-1.5 rounded-full font-bold transition flex items-center gap-1.5 ${
-                  active ? 'bg-violet-500 text-white shadow shadow-violet-500/30' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
-                }`}
-                disabled={groupCount === 0}
-              >
-                <span>{g.emoji}</span> {g.label} <span className={active ? 'text-white/80' : 'text-zinc-500'}>({groupCount})</span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
 
       {/* Catégories tuiles */}
       <section className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2 mb-6">

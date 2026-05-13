@@ -79,7 +79,13 @@ export function LieuxMegaMenu({ locale = 'fr' }: { locale?: string }) {
 
       {open && (
         <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-[100] min-w-[800px]">
-          <div className="bg-zinc-950/98 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+          <div
+            className="rounded-2xl shadow-2xl overflow-hidden border border-white/15"
+            style={{
+              background: '#0a0a0f',
+              boxShadow: '0 25px 80px -10px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.08)'
+            }}
+          >
             <div className="grid grid-cols-3 gap-0">
               {/* Colonne 1 : Catégories */}
               <div className="p-5 border-r border-white/5">
