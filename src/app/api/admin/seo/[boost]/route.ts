@@ -12,6 +12,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { spawn } from 'node:child_process';
 import path from 'node:path';
+import { getSetting } from '@/lib/settings';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -44,6 +45,13 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ boo
   const cwd = process.cwd();
   const scriptPath = path.join(cwd, script);
 
+  // Resolve Gemini API key from DB Setting (override env if defined in BO)
+  let geminiKey = process.env.GEMINI_API_KEY;
+  try {
+    const dbKey = await getSetting('integrations.gemini.apiKey');
+    if (dbKey) geminiKey = dbKey;
+  } catch { /* ignore */ }
+
   const stream = new ReadableStream({
     async start(controller) {
       const enc = new TextEncoder();
@@ -51,10 +59,15 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ boo
 
       send(`▶ Lancement ${script}`);
       send(`  cwd=${cwd}`);
+      if (boost !== 'import') {
+        send(`  gemini_key=${geminiKey ? 'OK (' + geminiKey.slice(0, 6) + '…)' : 'MANQUANTE'}`);
+      }
 
       try {
         const child = spawn('npx', ['tsx', scriptPath], {
-          cwd, env: process.env, shell: false
+          cwd,
+          env: { ...process.env, GEMINI_API_KEY: geminiKey || '' },
+          shell: false
         });
 
         child.stdout.on('data', (data) => {
