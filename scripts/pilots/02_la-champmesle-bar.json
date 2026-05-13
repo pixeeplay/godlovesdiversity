@@ -1,0 +1,39 @@
+{
+  "type": "listing",
+  "source_url": "https://www.parislgbt.com/listing/la-champmesle-bar/",
+  "slug": "la-champmesle-bar",
+  "name": "La Champmeslé - Bar",
+  "subtitle": "Le plus ancien bar lesbien, gay et friendly de Paris. Ouvert toute la nuit.",
+  "description": "La Champmeslé est un bar de nuit ouvert tous les jours sauf dimanche de 16 heures à l'aube. Expositions photos et peintures, soirées voyance, concerts...\n\nCe bar incontournable a fêté ses 40 ans en 2023. La patronne mène ce haut lieu saphique à son firmament derrière le Palais Royal, ancien lieu des amours licencieuses.\n\nConcerts, soirées voyance et expos dans ce bar lesbien ouvert à tous qui est l'un des plus anciens de Paris.",
+  "phone": "01 42 96 85 20",
+  "website": null,
+  "email": null,
+  "address": {
+    "street": null,
+    "postal_code": null,
+    "city": "Paris",
+    "country": "France",
+    "lat": 48.85350,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — adresse non géocodée sur l'original. À enrichir."
+  },
+  "transport": "Métros : Pyramides / Bourse / Quatre-Septembre",
+  "categories": ["bars"],
+  "tags": ["gay", "lesbien", "arts-culture"],
+  "hours": null,
+  "social": {
+    "facebook": "https://www.facebook.com/p/Josy-La-Champmesle-100063738099498/",
+    "instagram": null,
+    "twitter": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2024/03/champmesle-nlle-05-1024x1024.jpg",
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2024/03/Bar-La-Champmesle-Paris.jpg",
+  "gallery": [],
+  "linked_events": [],
+  "languages_available": ["fr", "en"],
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/la-champmesle-bar/",
+    "en": "https://www.parislgbt.com/en/listing/la-champmesle-bar/"
+  },
+  "region": "paris"
+}

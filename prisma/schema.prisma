@@ -1779,3 +1779,264 @@ enum Scope {
   FRANCE
 }
 
+// =========================================================================
+// EXTENSION PRISMA — à AJOUTER au schema.prisma du repo godlovesdiversity
+// =========================================================================
+// Hypothèses :
+//  - PostGIS est activé sur la DB (déjà documenté dans le repo)
+//  - Le datasource provider est "postgresql" (déjà le cas)
+//
+// Pour activer PostGIS :
+//   CREATE EXTENSION IF NOT EXISTS postgis;
+//
+// Migration :
+//   npx prisma migrate dev --name add_lgbt_directory
+// =========================================================================
+
+/// Site = un front (parislgbt | francelgbt). Permet le multi-tenant
+/// avec le MÊME backend / la même DB. Le middleware Next.js route
+/// la requête sur le bon Site selon l'en-tête Host.
+model Site {
+  id          String    @id @default(cuid())
+  domain      String    @unique          // "parislgbt.com" | "francelgbt.com"
+  name        String                     // "Paris LGBT+ Guide" | "France LGBT+ Guide"
+  description String?
+  default_locale String  @default("fr")
+  locales     String[]  @default(["fr", "en"])
+  primary_color String? @default("#E60073")
+  logo_url    String?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  listings    Listing[]
+  events      DirectoryEvent[]
+}
+
+/// Catégorie de listing (bars, restaurants, clubs, saunas, cruising,
+/// associations, hébergements, boutiques, salle-de-sport, sante, etc.).
+/// Slug = même slug que sur le site WordPress actuel pour préserver le SEO.
+model Category {
+  id          String    @id @default(cuid())
+  slug        String    @unique           // "bars", "restaurant", "clubs"...
+  name_fr     String
+  name_en     String?
+  description_fr String? @db.Text
+  description_en String? @db.Text
+  icon        String?
+  display_order Int     @default(0)
+  meta_title_fr String?
+  meta_description_fr String?
+  meta_title_en String?
+  meta_description_en String?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  listings    ListingCategory[]
+}
+
+/// Tag (lesbien, gay, trans, bi, queer, drags, cruising, fetichisme,
+/// piscine, sport, terrasse, sex-shop...).
+model Tag {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name_fr     String
+  name_en     String?
+  description_fr String? @db.Text
+  description_en String? @db.Text
+  icon        String?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  listings    ListingTag[]
+  events      EventTag[]
+}
+
+/// Région (paris, grand-est, occitanie, paca-corse, hauts-de-france...).
+/// Sert au filtrage par zone géographique sur francelgbt.com.
+model Region {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name_fr     String
+  name_en     String?
+  description_fr String? @db.Text
+  description_en String? @db.Text
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  listings    Listing[]
+}
+
+/// Listing = un établissement (bar, restaurant, club, sauna, association,
+/// hébergement, boutique...). Le custom post type "job_listing" de WordPress.
+model Listing {
+  id            String    @id @default(cuid())
+  slug          String                          // ex: "le-mensch", "la-champmesle-bar"
+  site_id       String                          // appartient à parislgbt OU francelgbt
+  region_id     String?
+
+  // Contenu i18n
+  name          String
+  subtitle_fr   String?
+  subtitle_en   String?
+  description_fr String?  @db.Text
+  description_en String?  @db.Text
+
+  // Contact
+  phone         String?
+  website       String?
+  email         String?
+
+  // Adresse (PostGIS)
+  street        String?
+  postal_code   String?
+  city          String?
+  country       String?    @default("France")
+  /// Géométrie PostGIS point (SRID 4326). Indexée pour les requêtes "near me".
+  geom          Unsupported("geometry(Point, 4326)")?
+  lat           Float?     // duplique geom pour requêtes simples
+  lng           Float?
+  transport     String?
+
+  // Médias
+  cover_image   String?
+  logo          String?
+  gallery       String[]   @default([])
+
+  // Réseaux sociaux
+  facebook_url  String?
+  instagram_url String?
+  twitter_url   String?
+  tiktok_url    String?
+
+  // Horaires (JSON : { monday: "21:00-02:00", tuesday: null, ... })
+  hours         Json?
+  special_hours_note String?  // "Uniquement sur rendez-vous", "Fermé en août"
+
+  // SEO
+  meta_title_fr String?
+  meta_description_fr String?
+  meta_title_en String?
+  meta_description_en String?
+
+  // État & modération
+  status        ListingStatus  @default(PENDING)
+  featured      Boolean        @default(false)
+  promoted      Boolean        @default(false)
+  claimed_by_user_id String?
+
+  // Métadonnées
+  source_url    String?    // URL originale parislgbt.com (pour traçabilité migration)
+  imported_at   DateTime?
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+
+  site          Site       @relation(fields: [site_id], references: [id])
+  region        Region?    @relation(fields: [region_id], references: [id])
+  categories    ListingCategory[]
+  tags          ListingTag[]
+  events        DirectoryEvent[]    // événements organisés à ce lieu
+
+  @@unique([site_id, slug])  // unique par site → permet le même slug sur les 2 sites
+  @@index([site_id, status])
+  @@index([region_id])
+  @@index([lat, lng])
+}
+
+/// Event = événement avec dates (soirée, concert, vernissage, marche des fiertés...).
+model DirectoryEvent {
+  id            String    @id @default(cuid())
+  slug          String
+  site_id       String
+  venue_listing_id String?  // FK optionnelle vers un Listing existant
+
+  name          String
+  description_fr String?  @db.Text
+  description_en String?  @db.Text
+  cover_image   String?
+  gallery       String[]   @default([])
+  registration_url String?
+  price         String?    // texte libre : "Gratuit", "10€", "PAF 5€/15€"
+
+  // Adresse pour les événements one-shot (pas attachés à un venue)
+  venue_name    String?
+  street        String?
+  postal_code   String?
+  city          String?
+  lat           Float?
+  lng           Float?
+
+  // SEO
+  meta_title_fr String?
+  meta_description_fr String?
+
+  status        ListingStatus  @default(PENDING)
+  featured      Boolean        @default(false)
+
+  source_url    String?
+  imported_at   DateTime?
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+
+  site          Site       @relation(fields: [site_id], references: [id])
+  venue         Listing?   @relation(fields: [venue_listing_id], references: [id])
+  dates         EventDate[]
+  tags          EventTag[]
+
+  @@unique([site_id, slug])
+  @@index([site_id, status])
+}
+
+/// Occurrence d'un événement (un événement peut avoir plusieurs dates).
+model EventDate {
+  id        String   @id @default(cuid())
+  event_id  String
+  start_at  DateTime
+  end_at    DateTime?
+
+  event   DirectoryEvent    @relation(fields: [event_id], references: [id], onDelete: Cascade)
+
+  @@index([start_at])
+  @@index([event_id])
+}
+
+
+// ─── Tables de jointure (Many-to-Many) ────────────────────────────────
+model ListingCategory {
+  listing_id  String
+  category_id String
+
+  listing     Listing   @relation(fields: [listing_id], references: [id], onDelete: Cascade)
+  category    Category  @relation(fields: [category_id], references: [id], onDelete: Cascade)
+
+  @@id([listing_id, category_id])
+}
+
+model ListingTag {
+  listing_id String
+  tag_id     String
+
+  listing    Listing  @relation(fields: [listing_id], references: [id], onDelete: Cascade)
+  tag        Tag      @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+
+  @@id([listing_id, tag_id])
+}
+
+model EventTag {
+  event_id String
+  tag_id   String
+
+  event   DirectoryEvent    @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  tag      Tag      @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+
+  @@id([event_id, tag_id])
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────
+enum ListingStatus {
+  DRAFT
+  PENDING      // attend modération
+  PUBLISHED
+  ARCHIVED
+  REJECTED
+}
+

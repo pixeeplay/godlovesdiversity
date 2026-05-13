@@ -1,0 +1,56 @@
+{
+  "type": "listing",
+  "source_url": "https://www.parislgbt.com/listing/le-mensch/",
+  "slug": "le-mensch",
+  "name": "Le Mensch",
+  "subtitle": "Bar 100% sexe et fetish",
+  "description": "C'est le bar le plus fetish de Paris. Les mecs en cuir, latex ou uniformes seront toujours les bienvenus !",
+  "phone": "09 53 53 38 84",
+  "website": "http://www.lemensh.com/",
+  "email": null,
+  "address": {
+    "street": "34 rue Charlot",
+    "postal_code": "75003",
+    "city": "Paris",
+    "country": "France",
+    "lat": 48.86252,
+    "lng": 2.36223
+  },
+  "transport": "Metro 8 : Saint Sébastien Froissart ou Filles du Calvaire",
+  "categories": ["cruising", "bars"],
+  "tags": ["membre-du-snegco", "cruising", "fetichisme", "bears", "gay", "hommes-exclusivement", "naturisme"],
+  "hours": {
+    "monday": "21:00-02:00",
+    "tuesday": null,
+    "wednesday": "21:00-02:00",
+    "thursday": "18:00-04:00",
+    "friday": "21:00-04:00",
+    "saturday": "21:00-04:00",
+    "sunday": "18:00-04:00"
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/menschpub",
+    "instagram": null,
+    "twitter": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2020/03/accueil-1024x691.png",
+  "logo": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/logo/2020/03/Mensch-Logo-1.jpg",
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/72809508_1361921683969764_1355383475506511872_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/52165075_1175191339309467_1874135148845334528_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/43788647_1092075050954430_7163390689584087040_o.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/listing-uploads/gallery/2020/03/36137447_992598454235424_7168544057633800192_o.jpg"
+  ],
+  "linked_events": [
+    {
+      "title": "MACHO /// MENSCH HARD-WEEKEND",
+      "url": "https://www.parislgbt.com/listing/macho-mensch-hard-weekend/"
+    }
+  ],
+  "languages_available": ["fr", "en"],
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/le-mensch/",
+    "en": "https://www.parislgbt.com/en/listing/le-mensch/"
+  },
+  "region": "paris"
+}

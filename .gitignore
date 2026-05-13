@@ -38,3 +38,8 @@ CREDENTIALS_LOCAL.md
 /PLAN_LIEUX_SAINTS_FETES_RELIGIEUSES.md
 /IDEES_SPIRITUEL_VIRTUEL.md
 /EVALUATION_ET_PLAN_IA_LOCALE_*.md
+
+# Scraper outputs
+/scripts/output/
+/scripts/node_modules/
+/scripts/.env

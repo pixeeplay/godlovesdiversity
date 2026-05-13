@@ -1,0 +1,22 @@
+{
+  "name": "parislgbt-scraper",
+  "version": "1.0.0",
+  "description": "Scraping de parislgbt.com avec Jina Reader + Gemini 3.1 Flash Lite",
+  "type": "module",
+  "scripts": {
+    "scrape": "node parislgbt-scraper.js",
+    "scrape:listings": "node parislgbt-scraper.js --type=job_listing",
+    "scrape:pages": "node parislgbt-scraper.js --type=page",
+    "scrape:test": "node parislgbt-scraper.js --limit=5",
+    "dry-run": "node parislgbt-scraper.js --dry-run"
+  },
+  "dependencies": {
+    "@google/genai": "^0.21.0",
+    "fast-xml-parser": "^4.5.0",
+    "p-limit": "^6.1.0",
+    "zod": "^3.23.8"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "type": "event",
+  "source_url": "https://www.parislgbt.com/listing/cours-de-makeup-drag-queen-express/",
+  "slug": "cours-de-makeup-drag-queen-express",
+  "name": "Cours de Makeup Drag Queen (Express)",
+  "subtitle": null,
+  "description": "**La Drag School** invite **Dolly Mortelle** pour diriger un cours de **Makeup Drag Queen** !\n\nInscription ici : [Je m'inscris !](https://www.helloasso.com/associations/drag-school/evenements/makeup-drag-queen-express)\n\n\"Je suis Dolly Mortelle, baddie reine de la nuit… et reine du retard. À force de me préparer à la dernière minute, j'ai développé des skills pour être la plus belle, même dans le rush. Dans ce cours, je partage mes astuces pour construire un visage de Queen qui slay sans y passer 3 heures.\"",
+  "registration_url": "https://www.helloasso.com/associations/drag-school/evenements/makeup-drag-queen-express",
+  "phone": null,
+  "website": null,
+  "address": {
+    "street": "25 Rue de l'Hirondelle",
+    "postal_code": "75006",
+    "city": "Paris",
+    "country": "France",
+    "lat": 48.85360,
+    "lng": 2.34285
+  },
+  "dates": [
+    {
+      "start": "2026-05-30T15:00:00+02:00",
+      "end": "2026-05-30T17:00:00+02:00"
+    }
+  ],
+  "venue": {
+    "name": "La Drag School",
+    "slug": "la-drag-school",
+    "url": "https://www.parislgbt.com/listing/la-drag-school/"
+  },
+  "categories": [],
+  "tags": ["drags"],
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/listing-uploads/cover/2026/05/WhatsApp-Image-2026-04-15-at-19.11.51-1.jpeg",
+  "logo": null,
+  "gallery": [],
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/cours-de-makeup-drag-queen-express/",
+    "en": "https://www.parislgbt.com/en/listing/cours-de-makeup-drag-queen-express/"
+  },
+  "region": "paris"
+}

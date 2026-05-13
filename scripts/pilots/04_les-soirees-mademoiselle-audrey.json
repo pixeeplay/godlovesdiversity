@@ -1,0 +1,44 @@
+{
+  "type": "listing",
+  "source_url": "https://www.parislgbt.com/listing/les-soirees-de-mademoiselle-audrey/",
+  "slug": "les-soirees-de-mademoiselle-audrey",
+  "name": "Les Soirées de Mademoiselle Audrey",
+  "subtitle": "Réseau féminin / Evénements Women Only dans des lieux incroyables",
+  "description": "Réseau féminin / Evénements Women Only dans des lieux incroyables !\n\nAfterwork, Clubbing, Dédicaces, Vernissages...\n\n85 lieux partenaires en + de 12 ans.\n\nPrésent à : Paris, Bordeaux, La Rochelle, Biarritz, Toulouse, Rouen",
+  "phone": null,
+  "website": "https://www.soireesdemademoiselleaudrey.com/",
+  "email": null,
+  "address": {
+    "street": null,
+    "postal_code": null,
+    "city": "Paris",
+    "country": "France",
+    "lat": 48.85350,
+    "lng": 2.34839,
+    "_warning": "Coordonnées génériques centre de Paris — listing multi-villes."
+  },
+  "transport": null,
+  "categories": ["associations"],
+  "tags": ["lesbien", "femmes-exclusivement"],
+  "hours": "Uniquement sur rendez-vous",
+  "social": {
+    "facebook": null,
+    "instagram": "https://www.instagram.com/lessoireesdemlleaudrey",
+    "twitter": null
+  },
+  "cover_image": "https://www.parislgbt.com/wp-content/uploads/2025/12/Les-Soirees-de-Mademoiselle-Audrey-banner.jpg",
+  "logo": "https://www.parislgbt.com/wp-content/uploads/2025/12/Les-Soirees-de-Mademoiselle-Audrey-logo.jpg",
+  "gallery": [
+    "https://www.parislgbt.com/wp-content/uploads/2025/12/Les-Soirees-de-Mademoiselle-Audrey-neon.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/12/Les-Soirees-de-Mademoiselle-Audrey-tabouret.jpg",
+    "https://www.parislgbt.com/wp-content/uploads/2025/12/Les-Soirees-de-Mademoiselle-Audrey-verre.jpg"
+  ],
+  "linked_events": [],
+  "linked_cities": ["Paris", "Bordeaux", "La Rochelle", "Biarritz", "Toulouse", "Rouen"],
+  "languages_available": ["fr", "en"],
+  "i18n_urls": {
+    "fr": "https://www.parislgbt.com/listing/les-soirees-de-mademoiselle-audrey/",
+    "en": "https://www.parislgbt.com/en/listing/les-soirees-de-mademoiselle-audrey/"
+  },
+  "region": "multi"
+}
