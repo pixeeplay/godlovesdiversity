@@ -14,6 +14,7 @@ import { PosterThumbnail } from '@/components/PosterThumbnail';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
 import { getScope } from '@/lib/scope';
+import { getScope } from '@/lib/scope';
 import { getSiteConfig } from '@/lib/site-configs';
 
 // SSR : la home appelle Prisma à chaque requête.
@@ -126,8 +127,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   } catch {}
 
   // Scope du front actuel (paris / france / staging / dev) pour filtrer les banners
-  const { getScope } = await import('@/lib/scope');
-  const currentScope = getScope();
+  let currentScope: any = 'staging';
+  try {
+    currentScope = getScope();
+  } catch { /* fallback staging */ }
 
   function isBannerActive(b: any): boolean {
     // Filtre site scope : null = les 2 fronts, "paris" = paris-only, "france" = france-only
