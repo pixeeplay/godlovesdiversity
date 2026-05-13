@@ -51,6 +51,15 @@ const BOOSTS: { key: BoostKey; title: string; description: string; icon: any; co
 
 const EMPTY_KEYS: BoostKey[] = ['import', 'regions', 'rewrite', 'top10', 'run-all', 'reset-articles', 'reset-rewrites', 'reset-all'];
 
+// Pages générées par les boosts SEO — exposées dans le header pour vérif rapide.
+const PAGE_LINKS: { label: string; note: string; path: string }[] = [
+  { label: 'Articles Top 10', note: '(25 articles long-tail)', path: '/fr/blog' },
+  { label: 'Pages régionales', note: '(13 régions)', path: '/fr/region/ile-de-france' },
+  { label: 'Catégorie bars', note: '(listings filtrés)', path: '/fr/category/bars' },
+  { label: 'Annuaire lieux', note: '(carte + liste)', path: '/fr/lieux' },
+  { label: 'Sitemap XML', note: '(soumettre à GSC en prod)', path: '/sitemap.xml' }
+];
+
 export default function SeoBoostsClient({ isProd = false, host = '' }: { isProd?: boolean; host?: string } = {}) {
   const [status, setStatus] = useState<Record<BoostKey, BoostStatus>>(
     Object.fromEntries(EMPTY_KEYS.map((k) => [k, 'idle'])) as Record<BoostKey, BoostStatus>
@@ -122,9 +131,67 @@ export default function SeoBoostsClient({ isProd = false, host = '' }: { isProd?
         </div>
       )}
 
-      <div className="mb-8">
+      <div className="mb-6">
         <h1 className="text-3xl font-display font-black mb-2">SEO Boosts</h1>
-        <p className="text-zinc-400">Pilote les modules d'amplification SEO pour parislgbt.com et lgbtfrance.fr.</p>
+        <p className="text-zinc-400 mb-4">Pilote les modules d'amplification SEO pour parislgbt.com et lgbtfrance.fr.</p>
+
+        {/* Liens rapides vers les pages créées (preprod + prod) */}
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
+          <div className="text-xs uppercase tracking-widest text-zinc-500 mb-2 flex items-center gap-2">
+            <ExternalLink size={11} /> Pages créées par les boosts
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-[180px_1fr_1fr] gap-2 text-xs">
+            <div className="hidden md:block"></div>
+            <div className="hidden md:flex items-center justify-center gap-1 text-emerald-400 font-bold text-[10px] uppercase">
+              <CheckCircle2 size={11} /> PROD
+            </div>
+            <div className="hidden md:flex items-center justify-center gap-1 text-amber-400 font-bold text-[10px] uppercase">
+              <AlertTriangle size={11} /> PRE-PROD
+            </div>
+
+            {PAGE_LINKS.map(p => (
+              <div key={p.label} className="contents">
+                <div className="font-semibold text-zinc-300 flex items-center gap-1 px-2 py-1 md:py-0">
+                  {p.label} <span className="text-zinc-500 font-normal text-[10px]">{p.note}</span>
+                </div>
+                <a
+                  href={`https://parislgbt.com${p.path}`}
+                  target="_blank" rel="noopener"
+                  className="text-emerald-300 hover:text-emerald-200 hover:bg-emerald-500/10 rounded px-2 py-1 transition truncate flex items-center gap-1"
+                >
+                  parislgbt.com{p.path} <ExternalLink size={9} />
+                </a>
+                <a
+                  href={`https://lgbt.pixeeplay.com${p.path}${p.path.includes('?') ? '&' : '?'}preview=paris`}
+                  target="_blank" rel="noopener"
+                  className="text-amber-300 hover:text-amber-200 hover:bg-amber-500/10 rounded px-2 py-1 transition truncate flex items-center gap-1"
+                >
+                  pixeeplay (paris) <ExternalLink size={9} />
+                </a>
+
+                <div className="md:hidden h-px bg-zinc-800 my-1 col-span-full"></div>
+
+                <div className="font-semibold text-zinc-300 flex items-center gap-1 px-2 py-1 md:py-0 md:invisible">
+                  {p.label}
+                </div>
+                <a
+                  href={`https://lgbtfrance.fr${p.path}`}
+                  target="_blank" rel="noopener"
+                  className="text-violet-300 hover:text-violet-200 hover:bg-violet-500/10 rounded px-2 py-1 transition truncate flex items-center gap-1"
+                >
+                  lgbtfrance.fr{p.path} <ExternalLink size={9} />
+                </a>
+                <a
+                  href={`https://lgbt.pixeeplay.com${p.path}${p.path.includes('?') ? '&' : '?'}preview=france`}
+                  target="_blank" rel="noopener"
+                  className="text-amber-300 hover:text-amber-200 hover:bg-amber-500/10 rounded px-2 py-1 transition truncate flex items-center gap-1"
+                >
+                  pixeeplay (france) <ExternalLink size={9} />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {stats && (

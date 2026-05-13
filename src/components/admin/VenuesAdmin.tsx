@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Heart, Plus, Loader2, MapPin, Trash2, Save, X, Calendar, Tag, Star } from 'lucide-react';
+import { Heart, Plus, Loader2, MapPin, Trash2, Save, X, Calendar, Tag, Star, Upload, Zap, FileText } from 'lucide-react';
 
 const TYPES = ['RESTAURANT','BAR','CAFE','CLUB','HOTEL','SHOP','CULTURAL','CHURCH','TEMPLE','COMMUNITY_CENTER','HEALTH','ASSOCIATION','OTHER'];
 const RATINGS = [
@@ -21,6 +21,41 @@ export function VenuesAdmin({ initial }: { initial: any[] }) {
   const [editing, setEditing] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const [filter, setFilter] = useState<string>('all');
+  const [importing, setImporting] = useState(false);
+  const [importLog, setImportLog] = useState<string[]>([]);
+  const [showImport, setShowImport] = useState(false);
+
+  async function importFromListings(opts: { limit?: number; site?: 'paris' | 'france' | 'all' } = {}) {
+    if (!confirm(`Importer ${opts.limit || 'TOUS les'} listings vers la table Venue ?\n\nCeci copie les lieux (BAR/CLUB/CAFE/etc.) avec leurs adresses + descriptions pour les rendre éditables ici.\n\nIdempotent : ne crée que les venues manquantes (slug unique).`)) return;
+    setImporting(true);
+    setImportLog([`▶ Import en cours…`]);
+    try {
+      const r = await fetch('/api/admin/venues/import-from-listings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(opts)
+      });
+      if (!r.body) throw new Error('No stream');
+      const reader = r.body.getReader();
+      const dec = new TextDecoder();
+      let acc: string[] = [];
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        const chunk = dec.decode(value);
+        const lines = chunk.split('\n').filter(Boolean);
+        acc = [...acc, ...lines];
+        setImportLog(acc.slice(-30));
+      }
+      // Refresh venues list
+      const list = await fetch('/api/admin/venues').then(x => x.json()).catch(() => null);
+      if (list?.venues) setVenues(list.venues);
+    } catch (e: any) {
+      setImportLog((l) => [...l, `❌ ${e.message || 'erreur'}`]);
+    } finally {
+      setImporting(false);
+    }
+  }
 
   async function save() {
     if (!editing.name || !editing.type) { alert('Nom et type obligatoires'); return; }
@@ -64,10 +99,91 @@ export function VenuesAdmin({ initial }: { initial: any[] }) {
           </div>
           <p className="text-zinc-400 text-sm">Page publique : <a href="/lieux" className="text-pink-400 hover:underline">/lieux</a></p>
         </div>
-        <button onClick={() => setEditing(empty())} className="bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold px-4 py-2 rounded-full text-sm flex items-center gap-2">
-          <Plus size={14} /> Nouveau lieu
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowImport(!showImport)}
+            className="bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 font-bold px-4 py-2 rounded-full text-sm flex items-center gap-2 transition"
+            title="Importer en masse depuis Listings ou CSV"
+          >
+            <Upload size={14} /> Import en masse
+          </button>
+          <button onClick={() => setEditing(empty())} className="bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold px-4 py-2 rounded-full text-sm flex items-center gap-2">
+            <Plus size={14} /> Nouveau lieu
+          </button>
+        </div>
       </header>
+
+      {/* Panneau import en masse */}
+      {showImport && (
+        <div className="rounded-2xl border-2 border-emerald-500/40 bg-gradient-to-br from-emerald-500/10 via-cyan-500/5 to-transparent p-5">
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-emerald-500/20 text-emerald-400">
+                <Zap size={20} />
+              </div>
+              <div>
+                <h2 className="font-bold text-lg">Import en masse</h2>
+                <p className="text-xs text-zinc-400">Hydrate la table Venue à partir des 3378 Listings importés via les SEO Boosts. Idempotent (slug unique).</p>
+              </div>
+            </div>
+            <button onClick={() => setShowImport(false)} className="text-zinc-500 hover:text-white p-1">
+              <X size={16} />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <button
+              onClick={() => importFromListings({ limit: 20 })}
+              disabled={importing}
+              className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-500/15 p-4 text-left transition disabled:opacity-50 group"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <FileText size={14} className="text-emerald-400" />
+                <strong className="text-sm">Test rapide (20 lieux)</strong>
+              </div>
+              <p className="text-[11px] text-zinc-400">Import des 20 premiers listings Paris. Idéal pour vérifier l'affichage sur /lieux avant un import complet.</p>
+              <div className="mt-2 text-[10px] text-emerald-400 group-hover:text-emerald-300">→ Lancer</div>
+            </button>
+
+            <button
+              onClick={() => importFromListings({ site: 'paris' })}
+              disabled={importing}
+              className="rounded-xl border border-pink-500/30 bg-pink-500/5 hover:bg-pink-500/15 p-4 text-left transition disabled:opacity-50 group"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Upload size={14} className="text-pink-400" />
+                <strong className="text-sm">Tous les Paris (~677)</strong>
+              </div>
+              <p className="text-[11px] text-zinc-400">Tous les listings du site parislgbt.com. Carte + filtres pleinement utilisables.</p>
+              <div className="mt-2 text-[10px] text-pink-400 group-hover:text-pink-300">→ Lancer</div>
+            </button>
+
+            <button
+              onClick={() => importFromListings({})}
+              disabled={importing}
+              className="rounded-xl border border-violet-500/30 bg-violet-500/5 hover:bg-violet-500/15 p-4 text-left transition disabled:opacity-50 group"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Zap size={14} className="text-violet-400" />
+                <strong className="text-sm">Tous (3378)</strong>
+              </div>
+              <p className="text-[11px] text-zinc-400">Paris + France entière. ~30-60s. Peut alourdir l'admin si tu testes des perfs.</p>
+              <div className="mt-2 text-[10px] text-violet-400 group-hover:text-violet-300">→ Lancer</div>
+            </button>
+          </div>
+
+          {importLog.length > 0 && (
+            <div className="mt-3 bg-black/60 rounded-lg p-3 text-[11px] font-mono text-zinc-300 max-h-48 overflow-y-auto">
+              {importLog.map((line, i) => <div key={i}>{line}</div>)}
+            </div>
+          )}
+          {importing && (
+            <div className="mt-2 text-xs text-emerald-400 flex items-center gap-2">
+              <Loader2 size={14} className="animate-spin" /> Import en cours…
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="flex gap-1.5 flex-wrap">
         <button onClick={() => setFilter('all')} className={`px-3 py-1 rounded-full text-xs font-bold ${filter === 'all' ? 'bg-pink-500 text-white' : 'bg-zinc-800 text-zinc-300'}`}>Tous ({venues.length})</button>
