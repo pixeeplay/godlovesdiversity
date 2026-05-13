@@ -2,15 +2,15 @@
  * /category/[slug] — Page catégorie (compat URL WordPress parislgbt.com)
  * Liste tous les Listings rattachés à cette catégorie, filtrés par scope (site).
  * SEO : title + description i18n + JSON-LD CollectionPage.
+ * Filtres : sidebar avec ville, CP, tag, "ouvert maintenant".
  */
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { prisma } from '@/lib/prisma';
 import { getScope } from '@/lib/scope';
 import type { Metadata } from 'next';
+import { CategoryClient } from './CategoryClient';
 
-// Force dynamic — DB queries at request time, not build time
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
 
@@ -49,14 +49,26 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
 
   if (!category) notFound();
 
-  // Filter listings by scope (site_id matches current scope domain)
-  const allListings = category.listings.map(c => c.listing).filter(l => l.status === 'PUBLISHED');
+  const allListings = category.listings.map((c) => c.listing).filter((l) => l.status === 'PUBLISHED');
   const visibleListings = scope === 'paris'
-    ? allListings.filter(l => l.city?.toLowerCase() === 'paris')
+    ? allListings.filter((l) => (l.city?.toLowerCase() === 'paris' || (l.postal_code || '').startsWith('75')))
     : allListings;
 
   const name = locale === 'en' ? (category.name_en ?? category.name_fr) : category.name_fr;
   const description = locale === 'en' ? category.description_en : category.description_fr;
+
+  // Forme légère pour le filtre client
+  const filterListings = visibleListings.map((l) => ({
+    id: l.id,
+    slug: l.slug,
+    name: l.name,
+    subtitle_fr: l.subtitle_fr,
+    city: l.city,
+    postal_code: l.postal_code,
+    cover_image: l.cover_image,
+    tags: l.tags.map((t) => t.tag.name_fr || t.tag.slug),
+    hours: l.hours
+  }));
 
   // JSON-LD CollectionPage
   const jsonLd = {
@@ -64,7 +76,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
     '@type': 'CollectionPage',
     name: `${name} — parislgbt`,
     description: description || `Lieux ${name} LGBT-friendly`,
-    hasPart: visibleListings.slice(0, 20).map(l => ({
+    hasPart: visibleListings.slice(0, 20).map((l) => ({
       '@type': 'LocalBusiness',
       name: l.name,
       address: l.street ? { '@type': 'PostalAddress', streetAddress: l.street, postalCode: l.postal_code, addressLocality: l.city } : undefined,
@@ -75,36 +87,23 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main className="max-w-6xl mx-auto px-6 py-16">
-        <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">{name}</h1>
-        {description && <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-12 max-w-3xl">{description}</p>}
-        <p className="text-sm opacity-70 mb-6">{visibleListings.length} lieu·x dans cette catégorie</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {visibleListings.map(l => (
-            <Link
-              key={l.id}
-              href={`/${locale}/listing/${l.slug}`}
-              className="rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden hover:shadow-lg transition group"
-            >
-              {l.cover_image && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={l.cover_image} alt={l.name} className="w-full h-48 object-cover group-hover:scale-105 transition" />
-              )}
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-1">{l.name}</h3>
-                {l.subtitle_fr && <p className="text-sm opacity-70 line-clamp-2">{l.subtitle_fr}</p>}
-                <p className="text-xs opacity-50 mt-3">{l.city ?? 'Paris'} {l.postal_code ?? ''}</p>
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {l.tags.slice(0, 3).map(t => (
-                    <span key={t.tag.id} className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 opacity-80">{t.tag.name_fr}</span>
-                  ))}
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-        {visibleListings.length === 0 && (
-          <div className="text-center py-16 opacity-60">Aucun lieu pour cette catégorie pour le moment.</div>
+      <main className="max-w-7xl mx-auto px-6 py-12 md:py-16">
+        <header className="mb-10">
+          <nav className="text-xs text-white/40 mb-4 flex items-center gap-1.5 flex-wrap">
+            <a href={`/${locale}`} className="hover:text-white">Accueil</a>
+            <span>›</span>
+            <a href={`/${locale}/lieux`} className="hover:text-white">Lieux</a>
+            <span>›</span>
+            <span className="text-white/60">{name}</span>
+          </nav>
+          <h1 className="text-4xl md:text-5xl font-display font-black gradient-text mb-4">{name}</h1>
+          {description && <p className="text-lg text-white/70 max-w-3xl">{description}</p>}
+        </header>
+
+        {filterListings.length === 0 ? (
+          <div className="text-center py-20 opacity-60">Aucun lieu pour cette catégorie pour le moment.</div>
+        ) : (
+          <CategoryClient listings={filterListings} locale={locale} />
         )}
       </main>
     </>
@@ -112,6 +111,5 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
 }
 
 export async function generateStaticParams() {
-  // Generate ISG paths for known categories
   return [];
 }

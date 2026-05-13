@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, MapPin, ArrowRight, Sparkles } from 'lucide-react';
 import type { Metadata } from 'next';
+import { markdownToHtml, extractBoldNames, fuzzyMatchVenue } from '@/lib/markdown';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
@@ -40,35 +41,6 @@ function extractMarkdown(content: unknown): string {
   return '';
 }
 
-// Convert basic Markdown to HTML
-function md2html(md: string): string {
-  return md
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/^### (.+)$/gm, '<h3 class="font-bold text-xl mt-6 mb-2">$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2 class="font-bold text-2xl mt-8 mb-3 text-brand-pink">$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1 class="font-display text-4xl font-black gradient-text mb-6">$1</h1>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-brand-pink underline">$1</a>')
-    .replace(/\n\n/g, '</p><p class="mb-4">')
-    .replace(/^/, '<p class="mb-4">')
-    .replace(/$/, '</p>');
-}
-
-// Extrait les noms de lieux mentionnés en **bold** dans le markdown
-function extractMentionedVenueNames(md: string): string[] {
-  const names = new Set<string>();
-  const re = /\*\*([^*]+)\*\*/g;
-  let m;
-  while ((m = re.exec(md)) !== null) {
-    const name = m[1].trim().replace(/^\d+\.\s*/, ''); // strip "1. " prefix
-    if (name.length > 2 && name.length < 60) names.add(name);
-  }
-  return Array.from(names).slice(0, 15);
-}
-
 // Devine la ville depuis le slug (top-10-bars-lgbt-paris -> paris)
 function guessCityFromSlug(slug: string): string | null {
   const known = ['paris', 'lyon', 'marseille', 'toulouse', 'nice', 'bordeaux', 'lille', 'strasbourg', 'montpellier', 'nantes', 'rennes', 'grenoble'];
@@ -85,21 +57,34 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
   if (!article) notFound();
 
   const md = extractMarkdown(article.content);
-  const html = md2html(md);
-  const mentionedNames = extractMentionedVenueNames(md);
+  const html = markdownToHtml(md);
+  const mentionedNames = extractBoldNames(md);
   const guessedCity = guessCityFromSlug(slug);
 
-  // Charge les vraies fiches Listing pour les venues mentionnées (match par nom approximatif)
-  const mentionedListings = mentionedNames.length > 0
-    ? await prisma.listing.findMany({
-        where: {
-          status: 'PUBLISHED',
-          OR: mentionedNames.map((n) => ({ name: { equals: n, mode: 'insensitive' as const } }))
-        },
-        select: { id: true, slug: true, name: true, city: true, postal_code: true, cover_image: true, subtitle_fr: true },
-        take: 15
-      })
-    : [];
+  // Fuzzy match : on charge un pool de Listings (par ville si on a deviné) puis on filtre
+  let mentionedListings: any[] = [];
+  if (mentionedNames.length > 0) {
+    const pool = await prisma.listing.findMany({
+      where: {
+        status: 'PUBLISHED',
+        ...(guessedCity ? { city: { equals: guessedCity, mode: 'insensitive' as const } } : {})
+      },
+      select: { id: true, slug: true, name: true, city: true, postal_code: true, cover_image: true, subtitle_fr: true },
+      take: 500
+    });
+    const seen = new Set<string>();
+    for (const mdName of mentionedNames) {
+      for (const l of pool) {
+        if (seen.has(l.id)) continue;
+        if (fuzzyMatchVenue(mdName, l.name)) {
+          mentionedListings.push(l);
+          seen.add(l.id);
+          if (mentionedListings.length >= 12) break;
+        }
+      }
+      if (mentionedListings.length >= 12) break;
+    }
+  }
 
   // Articles related (même ville, autres catégories)
   const relatedArticles = guessedCity
@@ -167,7 +152,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
       </header>
 
       <div
-        className="prose prose-invert max-w-none text-white/90 leading-relaxed prose-headings:font-display prose-h2:text-brand-pink prose-strong:text-white"
+        className="article-body max-w-none text-white/90"
         dangerouslySetInnerHTML={{ __html: html }}
       />
 
