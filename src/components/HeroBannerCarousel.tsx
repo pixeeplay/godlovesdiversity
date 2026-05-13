@@ -81,12 +81,22 @@ export function HeroBannerCarousel({ banners, logoUrl }: { banners: Banner[]; lo
                     {b.eyebrow}
                   </p>
                 )}
-                <h1
-                  className="font-display font-black leading-[0.9] tracking-tight neon-title"
-                  style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}
-                >
-                  {b.title}
-                </h1>
+                {/* Premier slide = h1 SEO. Suivants = h2 (un seul h1 par page = bonne pratique a11y/SEO) */}
+                {i === 0 ? (
+                  <h1
+                    className="font-display font-black leading-[0.9] tracking-tight neon-title"
+                    style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}
+                  >
+                    {b.title}
+                  </h1>
+                ) : (
+                  <h2
+                    className="font-display font-black leading-[0.9] tracking-tight neon-title"
+                    style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}
+                  >
+                    {b.title}
+                  </h2>
+                )}
                 {b.subtitle && (
                   <p className="mt-6 text-lg md:text-xl text-white/85 max-w-lg leading-relaxed">
                     {b.subtitle}

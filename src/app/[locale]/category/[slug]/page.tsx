@@ -70,17 +70,27 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
     hours: l.hours
   }));
 
-  // JSON-LD CollectionPage
+  // JSON-LD CollectionPage avec URLs absolues (Google exige les URLs complètes)
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://parislgbt.com';
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: `${name} — parislgbt`,
     description: description || `Lieux ${name} LGBT-friendly`,
+    url: `${base}/${locale}/category/${slug}`,
     hasPart: visibleListings.slice(0, 20).map((l) => ({
       '@type': 'LocalBusiness',
       name: l.name,
-      address: l.street ? { '@type': 'PostalAddress', streetAddress: l.street, postalCode: l.postal_code, addressLocality: l.city } : undefined,
-      url: `/${locale}/listing/${l.slug}`
+      image: l.cover_image || undefined,
+      telephone: l.phone || undefined,
+      address: l.street ? {
+        '@type': 'PostalAddress',
+        streetAddress: l.street,
+        postalCode: l.postal_code,
+        addressLocality: l.city,
+        addressCountry: 'FR'
+      } : undefined,
+      url: `${base}/${locale}/listing/${l.slug}`
     }))
   };
 

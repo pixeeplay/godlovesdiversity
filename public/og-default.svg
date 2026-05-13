@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#09090b" />
+      <stop offset="40%" stop-color="#1a0a1a" />
+      <stop offset="100%" stop-color="#0a0a1a" />
+    </linearGradient>
+    <linearGradient id="title" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff0018" />
+      <stop offset="25%" stop-color="#FF2BB1" />
+      <stop offset="50%" stop-color="#ffa52c" />
+      <stop offset="75%" stop-color="#22D3EE" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF2BB1" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#FF2BB1" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="600" cy="315" r="400" fill="url(#halo)" />
+  <text x="600" y="280" text-anchor="middle" font-family="-apple-system, system-ui, sans-serif" font-weight="900" font-size="120" fill="url(#title)">parislgbt</text>
+  <text x="600" y="360" text-anchor="middle" font-family="-apple-system, system-ui, sans-serif" font-weight="600" font-size="36" fill="#ffffff">Communauté LGBT à Paris et en France</text>
+  <text x="600" y="430" text-anchor="middle" font-family="-apple-system, system-ui, sans-serif" font-size="26" fill="#a0a0a0">3 300+ lieux · Pride 365j · Santé · Associations</text>
+  <text x="600" y="540" text-anchor="middle" font-family="-apple-system, system-ui, sans-serif" font-size="22" fill="#FF2BB1">🌈 Indépendant · sans publicité</text>
+</svg>

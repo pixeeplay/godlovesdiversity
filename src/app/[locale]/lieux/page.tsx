@@ -74,11 +74,14 @@ export default async function LieuxPage() {
     const where: any = { status: 'PUBLISHED' };
     Object.assign(where, scopedWhere(previewScope));
 
+    // Limite à 300 listings en SSR pour garder le HTML léger (<300 KB)
+    // Les filtres + carte + recherche restent fonctionnels sur ce sous-ensemble.
+    // Pour l'index complet, l'utilisateur utilise les filtres ou navigue par catégorie/région.
     const listings = await prisma.listing.findMany({
       where,
       include: { categories: { include: { category: true } } },
       orderBy: [{ featured: 'desc' }, { lat: { sort: 'desc', nulls: 'last' } }, { name: 'asc' }],
-      take: 1000
+      take: 300
     });
     items = listings.map(listingToVenueShape);
   } catch { /* table missing */ }
@@ -97,5 +100,31 @@ export default async function LieuxPage() {
     items = [...venues, ...items];
   } catch { /* venue table not migrated */ }
 
-  return <VenuesDirectory initial={items} />;
+  // JSON-LD ItemList pour SEO (top 20 lieux)
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://parislgbt.com';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Annuaire LGBT — parislgbt',
+    description: 'Annuaire de lieux LGBT-friendly à Paris et en France.',
+    numberOfItems: items.length,
+    itemListElement: items.slice(0, 20).map((l, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'LocalBusiness',
+        name: l.name,
+        url: `${base}/fr/listing/${l.slug}`,
+        address: l.city ? { '@type': 'PostalAddress', addressLocality: l.city, postalCode: l.postalCode, addressCountry: 'FR' } : undefined,
+        image: l.coverImage || undefined
+      }
+    }))
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <VenuesDirectory initial={items} />
+    </>
+  );
 }

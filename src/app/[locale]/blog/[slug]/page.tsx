@@ -23,10 +23,26 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { locale, slug } = await params;
   const a = await loadArticle(locale, slug);
   if (!a) return { title: 'Article introuvable' };
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://parislgbt.com';
+  const ogImages = a.coverImage ? [{ url: a.coverImage, width: 1200, height: 630 }] : [{ url: '/og-default.svg', width: 1200, height: 630 }];
   return {
-    title: `${a.title} | parislgbt`,
+    title: a.title,
     description: a.excerpt || a.title,
-    openGraph: { title: a.title, description: a.excerpt || a.title, images: a.coverImage ? [a.coverImage] : [] }
+    alternates: { canonical: `${base}/${locale}/blog/${slug}` },
+    openGraph: {
+      title: a.title,
+      description: a.excerpt || a.title,
+      url: `${base}/${locale}/blog/${slug}`,
+      type: 'article',
+      publishedTime: a.publishedAt?.toISOString(),
+      images: ogImages
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: a.title,
+      description: a.excerpt || a.title,
+      images: ogImages.map((i) => i.url)
+    }
   };
 }
 
@@ -111,17 +127,27 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
   const prevArticle = idx > 0 ? allArticles[idx - 1] : null;
   const nextArticle = idx < allArticles.length - 1 ? allArticles[idx + 1] : null;
 
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://parislgbt.com';
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: article.title,
     description: article.excerpt || article.title,
+    image: article.coverImage ? [article.coverImage] : [`${base}/og-default.svg`],
     datePublished: article.publishedAt?.toISOString(),
-    author: { '@type': 'Organization', name: 'parislgbt' },
+    dateModified: article.updatedAt?.toISOString() || article.publishedAt?.toISOString(),
+    author: { '@type': 'Organization', name: 'parislgbt', url: base },
+    publisher: {
+      '@type': 'Organization',
+      name: 'parislgbt',
+      logo: { '@type': 'ImageObject', url: `${base}/og-default.svg`, width: 1200, height: 630 }
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${base}/${locale}/blog/${slug}` },
     mentions: mentionedListings.map((l) => ({
       '@type': 'LocalBusiness',
       name: l.name,
-      address: { '@type': 'PostalAddress', addressLocality: l.city, postalCode: l.postal_code }
+      url: `${base}/${locale}/listing/${l.slug}`,
+      address: { '@type': 'PostalAddress', addressLocality: l.city, postalCode: l.postal_code, addressCountry: 'FR' }
     }))
   };
 

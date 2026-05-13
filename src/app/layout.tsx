@@ -13,15 +13,30 @@ const themeInitScript = `
 `.trim();
 
 export const metadata: Metadata = {
-  title: 'parislgbt',
+  title: {
+    default: 'parislgbt — Communauté LGBT à Paris et en France',
+    template: '%s | parislgbt'
+  },
   description:
-    'Plateforme communautaire LGBTQIA+ — Paris et France. Indépendante, sans publicité.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+    'Annuaire de 3 300+ lieux LGBT-friendly, agenda Pride 365j/an, santé, associations. Indépendant, sans publicité, écrit par et pour la communauté.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://parislgbt.com'),
+  keywords: ['LGBT', 'queer', 'Paris', 'France', 'annuaire', 'bars', 'clubs', 'saunas', 'Pride', 'PrEP', 'associations LGBT'],
+  authors: [{ name: 'parislgbt' }],
   openGraph: {
-    title: 'parislgbt',
-    description: 'Dieu est amour. La foi se conjugue au pluriel.',
-    type: 'website'
-  }
+    title: 'parislgbt — Communauté LGBT à Paris et en France',
+    description: 'Annuaire de 3 300+ lieux LGBT-friendly, agenda, santé, associations.',
+    type: 'website',
+    locale: 'fr_FR',
+    siteName: 'parislgbt',
+    images: [{ url: '/og-default.svg', width: 1200, height: 630, alt: 'parislgbt' }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'parislgbt — Communauté LGBT',
+    description: 'Annuaire de 3 300+ lieux LGBT-friendly.',
+    images: ['/og-default.svg']
+  },
+  robots: { index: true, follow: true }
 };
 
 export const viewport: Viewport = {
