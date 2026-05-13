@@ -10,6 +10,10 @@ import { prisma } from '@/lib/prisma';
 import { getRegionSEO, listRegionsSEO } from '@/lib/region-seo';
 import type { Metadata } from 'next';
 
+// Force dynamic render (DB queries at request time, not build time)
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // ISR : régénère max 1×/heure
+
 type Params = { locale: string; slug: string };
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
@@ -176,6 +180,5 @@ export default async function RegionPage({ params }: { params: Promise<Params> }
   );
 }
 
-export async function generateStaticParams() {
-  return listRegionsSEO().map(r => ({ slug: r.slug }));
-}
+// generateStaticParams removed — page is fully dynamic (relies on Prisma at runtime).
+// Next.js will render on-demand at first request and cache for `revalidate` seconds.

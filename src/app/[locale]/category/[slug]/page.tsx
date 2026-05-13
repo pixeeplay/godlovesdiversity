@@ -10,6 +10,10 @@ import { prisma } from '@/lib/prisma';
 import { getScope } from '@/lib/scope';
 import type { Metadata } from 'next';
 
+// Force dynamic — DB queries at request time, not build time
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
+
 type Params = { locale: string; slug: string };
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
