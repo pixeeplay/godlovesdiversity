@@ -143,16 +143,41 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     banners = altAll.filter(isBannerActive);
   }
   if (banners.length === 0) {
-    banners = [{
-      id: 'default', order: 1, locale, published: true,
-      eyebrow: '🌈 Plateforme LGBTQIA+ · 2026',
-      title: "PARIS LGBT 365",
-      subtitle, accentColor: '#FF2BB1',
-      cta1Text: 'EXPLORER LA CARTE', cta1Url: '/lieux',
-      cta2Text: 'AGENDA PRIDE', cta2Url: '/pride',
-      mediaUrl: null, mediaType: null,
-      createdAt: new Date(), updatedAt: new Date()
-    } as any];
+    // Fallback : 3 bannières par défaut, garanties d'afficher quelque chose même si BDD vide ou théme inactif.
+    banners = [
+      {
+        id: 'default-1', order: 1, locale, published: true,
+        eyebrow: '🌈 Plateforme LGBTQIA+ · 2026',
+        title: "PARIS LGBT 365",
+        subtitle, accentColor: '#FF2BB1',
+        cta1Text: 'EXPLORER LA CARTE', cta1Url: '/lieux',
+        cta2Text: 'AGENDA PRIDE', cta2Url: '/pride',
+        mediaUrl: null, mediaType: null,
+        createdAt: new Date(), updatedAt: new Date()
+      },
+      {
+        id: 'default-2', order: 2, locale, published: true,
+        eyebrow: '🏳️‍🌈 18 Marches en France',
+        title: "PRIDE 2026",
+        subtitle: 'De Lille (30 mai) à Nice (25 juillet), tout le calendrier des Marches.',
+        accentColor: '#8B5CF6',
+        cta1Text: 'VOIR LE CALENDRIER', cta1Url: '/pride',
+        cta2Text: 'AGENDA', cta2Url: '/agenda',
+        mediaUrl: null, mediaType: null,
+        createdAt: new Date(), updatedAt: new Date()
+      },
+      {
+        id: 'default-3', order: 3, locale, published: true,
+        eyebrow: '📍 3 300+ lieux référencés',
+        title: 'L\'ANNUAIRE QUEER',
+        subtitle: 'Bars, clubs, saunas, hôtels, associations, santé. Géolocalisé partout en France.',
+        accentColor: '#22D3EE',
+        cta1Text: 'CARTE INTERACTIVE', cta1Url: '/lieux',
+        cta2Text: 'PAR CATÉGORIE', cta2Url: '/category/bars',
+        mediaUrl: null, mediaType: null,
+        createdAt: new Date(), updatedAt: new Date()
+      }
+    ] as any[];
   }
 
   return (

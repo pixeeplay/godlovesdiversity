@@ -219,17 +219,46 @@ function BannerEditor({ banner, onClose, onSaved }: {
   }
 
   async function uploadMedia(f: File) {
-    setUploadBusy(true);
-    const fd = new FormData();
-    fd.append('files', f);
-    const r = await fetch('/api/admin/media', { method: 'POST', body: fd });
-    const j = await r.json();
-    if (j.ok) {
-      const file = j.files[0];
-      setMediaUrl(file.url);
-      setMediaType(file.mime.startsWith('video/') ? 'video' : 'image');
+    // Pré-check côté client : 100 MB max, avertit pour vidéos > 20 MB
+    const sizeMb = f.size / 1024 / 1024;
+    if (sizeMb > 100) {
+      alert(`Fichier trop volumineux : ${sizeMb.toFixed(1)} MB. Max 100 MB.\n\nConseil pour vidéo hero :\n• H.264 / MP4\n• 720p ou 1080p\n• 5-10 secondes en boucle\n• Bitrate bas (1-2 Mbps)\n• Cible : 5-15 MB\n\nUtilise HandBrake ou ffmpeg : ffmpeg -i input.mov -c:v libx264 -crf 28 -preset slow -vf scale=1280:-2 -an output.mp4`);
+      return;
     }
-    setUploadBusy(false);
+    if (f.type.startsWith('video/') && sizeMb > 20) {
+      if (!confirm(`Vidéo de ${sizeMb.toFixed(1)} MB.\n\nC'est lourd pour un hero — le visiteur attendra avant de voir le site.\n\nRecommandé : < 10 MB. Compresser avec ffmpeg ?\n\nContinuer quand même ?`)) return;
+    }
+    setUploadBusy(true);
+    try {
+      const fd = new FormData();
+      fd.append('files', f);
+      const r = await fetch('/api/admin/media', { method: 'POST', body: fd });
+      if (!r.ok) {
+        let msg = `Upload échoué (HTTP ${r.status})`;
+        try {
+          const j = await r.json();
+          if (j.error) msg = j.error;
+        } catch { /* ignore */ }
+        // Erreur typique 413 reverse proxy
+        if (r.status === 413) {
+          msg = `Body trop gros pour le reverse proxy.\n\nLe serveur (Caddy/Coolify) limite la taille des uploads. Solutions :\n1. Compresse la vidéo (< 10 MB recommandé)\n2. Augmente la limite dans Coolify : Settings → Proxy → request_body_size 100M`;
+        }
+        alert(msg);
+        return;
+      }
+      const j = await r.json();
+      if (j.ok && j.files?.[0]) {
+        const file = j.files[0];
+        setMediaUrl(file.url);
+        setMediaType(file.mime.startsWith('video/') ? 'video' : 'image');
+      } else {
+        alert(j.error || 'Upload échoué (réponse vide)');
+      }
+    } catch (e: any) {
+      alert(`Erreur réseau : ${e.message || 'inconnue'}`);
+    } finally {
+      setUploadBusy(false);
+    }
   }
 
   async function save() {
