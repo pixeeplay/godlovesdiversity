@@ -174,30 +174,31 @@ async function main() {
     const article = await generateArticle(combo.city, combo.label, listings);
     if (!article) { skipped++; continue; }
 
-    // Save as Article (utilise model Article existant si dispo, sinon stocker en JSON)
+    // Save as Article (model Article: content is Json, unique key is [slug, locale])
     const slug = `top-10-${slugify(combo.label)}-${slugify(combo.city)}`;
     try {
       if (!isDryRun) {
-        // Use existing Article model from godlovesdiversity schema
-        // @ts-ignore — Article may have different fields; use upsert pattern
+        // Article.content is Prisma Json — store as { markdown, format }
+        const contentJson = { format: 'markdown', body: article.content };
+        const excerpt = `Notre top 10 des ${combo.label} à ${combo.city} : adresses, ambiance, public. Guide LGBT 2026.`;
         await prisma.article.upsert({
-          where: { slug },
+          where: { slug_locale: { slug, locale: 'fr' } },
           create: {
             slug,
             locale: 'fr',
             title: article.title,
-            content: article.content,
-            excerpt: `Notre top 10 des ${combo.label} à ${combo.city} : adresses, ambiance, public. Guide LGBT 2026.`,
+            content: contentJson as any,
+            excerpt,
             published: true,
             publishedAt: new Date()
           },
-          update: { title: article.title, content: article.content, publishedAt: new Date() }
+          update: { title: article.title, content: contentJson as any, publishedAt: new Date() }
         });
       }
       created++;
       console.log(`  ✓ ${slug}`);
     } catch (e: any) {
-      console.log(`  ⚠️ DB save error ${slug}: ${e.message?.slice(0, 80)}`);
+      console.log(`  ⚠️ DB save error ${slug}: ${e.message?.slice(0, 120)}`);
       skipped++;
     }
   }
