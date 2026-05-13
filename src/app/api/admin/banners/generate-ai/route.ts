@@ -181,50 +181,86 @@ async function tryHiggsfield(prompt: string, opts: HiggsfieldOpts = {}): Promise
 }
 
 /**
- * Génère des images via Gemini 2.5 Flash Image (alias "Nano Banana").
- * Utilise la clé Gemini déjà configurée dans /admin/settings → integrations.gemini.apiKey
- * Modèle officiel : gemini-2.5-flash-image-preview (renvoie une image inline base64).
+ * Génère des images via Google Gemini / Imagen.
+ * Cascade de modèles : essaie chacun jusqu'à ce que ça marche.
+ * - imagen-3.0-fast-generate-002 (Imagen 3 fast, via predict API)
+ * - imagen-3.0-generate-002 (Imagen 3 standard)
+ * - gemini-2.5-flash-image (Nano Banana, generateContent API)
+ * - gemini-2.0-flash-exp (fallback experimental)
  */
 async function tryGeminiNanoBanana(prompt: string, count: number): Promise<any> {
   const setting = await prisma.setting.findUnique({ where: { key: 'integrations.gemini.apiKey' } }).catch(() => null);
   const key = setting?.value || process.env.GEMINI_API_KEY;
   if (!key) return { ok: false, reason: 'Clé Gemini manquante (integrations.gemini.apiKey)' };
 
-  const model = 'gemini-2.5-flash-image-preview';
+  // Optional override : utilise GEMINI_IMAGE_MODEL si défini
+  const envModel = process.env.GEMINI_IMAGE_MODEL;
+  const modelsToTry: { name: string; api: 'predict' | 'generateContent' }[] = [
+    ...(envModel ? [{ name: envModel, api: envModel.startsWith('imagen') ? 'predict' as const : 'generateContent' as const }] : []),
+    { name: 'imagen-3.0-fast-generate-002', api: 'predict' },
+    { name: 'imagen-3.0-generate-002', api: 'predict' },
+    { name: 'gemini-2.5-flash-image', api: 'generateContent' },
+    { name: 'gemini-2.0-flash-exp', api: 'generateContent' }
+  ];
 
-  const tasks = Array.from({ length: count }).map(async () => {
-    const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: {
-            responseModalities: ['IMAGE'],
-            temperature: 0.9
+  const errors: string[] = [];
+
+  for (const { name: model, api } of modelsToTry) {
+    try {
+      const tasks = Array.from({ length: count }).map(async () => {
+        if (api === 'predict') {
+          // Imagen API : POST /v1beta/models/<model>:predict
+          const r = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:predict?key=${key}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                instances: [{ prompt }],
+                parameters: { sampleCount: 1, aspectRatio: '16:9' }
+              })
+            }
+          );
+          if (!r.ok) {
+            const t = await r.text().catch(() => '');
+            throw new Error(`${model} HTTP ${r.status}: ${t.slice(0, 100)}`);
           }
-        })
-      }
-    );
-    if (!r.ok) {
-      const errText = await r.text().catch(() => '');
-      throw new Error(`HTTP ${r.status} ${errText.slice(0, 120)}`);
+          const j: any = await r.json();
+          const pred = j?.predictions?.[0];
+          const b64 = pred?.bytesBase64Encoded || pred?.image?.bytesBase64Encoded;
+          if (!b64) throw new Error(`${model}: pas d'image dans predictions`);
+          return { data: b64, mimeType: pred?.mimeType || 'image/png' };
+        } else {
+          // Gemini Image API : generateContent avec responseModalities IMAGE
+          const r = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: { responseModalities: ['IMAGE'], temperature: 0.9 }
+              })
+            }
+          );
+          if (!r.ok) {
+            const t = await r.text().catch(() => '');
+            throw new Error(`${model} HTTP ${r.status}: ${t.slice(0, 100)}`);
+          }
+          const j: any = await r.json();
+          const parts = j?.candidates?.[0]?.content?.parts || [];
+          const imagePart = parts.find((p: any) => p.inlineData?.data);
+          if (!imagePart) throw new Error(`${model}: pas d'image dans la réponse`);
+          return { data: imagePart.inlineData.data, mimeType: imagePart.inlineData.mimeType || 'image/png' };
+        }
+      });
+      const images = await Promise.all(tasks);
+      return { ok: true, kind: 'image', images, prompt, modelUsed: model };
+    } catch (e: any) {
+      errors.push(e?.message || String(e));
+      // Continue avec le prochain modèle
     }
-    const j: any = await r.json();
-    const parts = j?.candidates?.[0]?.content?.parts || [];
-    const imagePart = parts.find((p: any) => p.inlineData?.data);
-    if (!imagePart) throw new Error('Pas d\'image dans la réponse Gemini');
-    return {
-      data: imagePart.inlineData.data,
-      mimeType: imagePart.inlineData.mimeType || 'image/png'
-    };
-  });
-
-  try {
-    const images = await Promise.all(tasks);
-    return { ok: true, kind: 'image', images, prompt };
-  } catch (e: any) {
-    return { ok: false, reason: e?.message || String(e) };
   }
+
+  return { ok: false, reason: 'Tous les modèles ont échoué :\n' + errors.join('\n').slice(0, 600) };
 }
