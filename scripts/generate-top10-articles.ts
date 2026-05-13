@@ -20,7 +20,6 @@
  *   --limit=N
  */
 import { PrismaClient } from '@prisma/client';
-import { GoogleGenAI } from '@google/genai';
 import fs from 'node:fs';
 
 const prisma = new PrismaClient();
@@ -36,9 +35,9 @@ if (!process.env.GEMINI_API_KEY && fs.existsSync('scripts/.env')) {
   }
 }
 
-const ai = process.env.GEMINI_API_KEY && !isDryRun
-  ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
-  : null;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_MODEL = process.env.GEMINI_TOP10_MODEL || 'gemini-2.5-flash';
+const aiEnabled = !!GEMINI_API_KEY && !isDryRun;
 
 // Top combinations City × Category to generate
 const COMBINATIONS = [
@@ -77,7 +76,7 @@ const COMBINATIONS = [
 ];
 
 async function generateArticle(city: string, label: string, listings: { name: string; subtitle_fr: string | null; street: string | null; postal_code: string | null; description_fr: string | null }[]): Promise<{ title: string; content: string } | null> {
-  if (!ai) {
+  if (!aiEnabled) {
     return {
       title: `[DRY] Top 10 ${label} à ${city}`,
       content: `[DRY-RUN] Article sur les ${label} à ${city}. ${listings.length} venues : ${listings.map(l => l.name).join(', ')}`
@@ -104,16 +103,25 @@ Longueur totale : 600-800 mots.
 Pas de mention religieuse. Pas de promesse commerciale exagérée.`;
 
   try {
-    const r = await ai.models.generateContent({
-      model: 'gemini-flash-lite-latest',
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      config: {
-        systemInstruction: 'Tu es un rédacteur spécialisé dans le tourisme et la nightlife LGBT en France. Tu écris pour un annuaire indépendant.',
-        temperature: 0.7,
-        maxOutputTokens: 2500
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: 'Tu es un rédacteur spécialisé dans le tourisme et la nightlife LGBT en France. Tu écris pour un annuaire indépendant.' }] },
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.7, maxOutputTokens: 2500 }
+        })
       }
-    });
-    const text = r.text?.trim();
+    );
+    if (!r.ok) {
+      const errText = await r.text().catch(() => '');
+      console.log(`  ⚠️ Gemini HTTP ${r.status} ${city}/${label}: ${errText.slice(0, 100)}`);
+      return null;
+    }
+    const j: any = await r.json();
+    const text = j?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
     if (!text) return null;
     const title = `Top 10 ${label} à ${city} : guide 2026`;
     return { title, content: text };

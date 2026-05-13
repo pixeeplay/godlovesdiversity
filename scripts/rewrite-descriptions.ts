@@ -17,7 +17,6 @@
  *   --concurrent=N    requests parallèles (default 3)
  */
 import { PrismaClient } from '@prisma/client';
-import { GoogleGenAI } from '@google/genai';
 import fs from 'node:fs';
 
 const prisma = new PrismaClient();
@@ -39,12 +38,12 @@ if (!GEMINI_API_KEY && !isDryRun) {
   console.error('❌ GEMINI_API_KEY manquante');
   process.exit(1);
 }
-const ai = !isDryRun ? new GoogleGenAI({ apiKey: GEMINI_API_KEY! }) : null;
+const GEMINI_MODEL = process.env.GEMINI_REWRITE_MODEL || 'gemini-2.5-flash';
 
 const SYSTEM = `Tu réécris une description de lieu LGBT pour un site web. Tu ne dois PAS reformuler littéralement, tu dois RÉORIENTER l'angle de présentation tout en gardant les faits exacts. Style : informatif, queer-friendly, ton chaleureux. Pas de markdown. Max 200 mots. Aucune mention religieuse.`;
 
 async function rewriteForFrance(name: string, city: string, region: string, parisDesc: string): Promise<string | null> {
-  if (!ai) return `[DRY] ${name} en ${region}. ${parisDesc.slice(0, 100)}…`;
+  if (isDryRun) return `[DRY] ${name} en ${region}. ${parisDesc.slice(0, 100)}…`;
   const prompt = `Lieu : "${name}" situé à ${city} (région ${region}).
 
 Description originale (style local Paris) :
@@ -60,16 +59,25 @@ Réécris cette description avec un angle RÉGIONAL/NATIONAL (pour un annuaire L
 Garde tous les faits (adresse, horaires, etc. ne sont pas dans la description). Style éditorial, 150-200 mots. Pas de markdown. Pas de listes à puces.`;
 
   try {
-    const r = await ai.models.generateContent({
-      model: 'gemini-flash-lite-latest',
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      config: {
-        systemInstruction: SYSTEM,
-        temperature: 0.7,
-        maxOutputTokens: 800
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: SYSTEM }] },
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.7, maxOutputTokens: 800 }
+        })
       }
-    });
-    const text = r.text?.trim();
+    );
+    if (!r.ok) {
+      const errText = await r.text().catch(() => '');
+      console.log(`  ⚠️ Gemini ${name}: HTTP ${r.status} ${errText.slice(0, 100)}`);
+      return null;
+    }
+    const j: any = await r.json();
+    const text = j?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
     return text || null;
   } catch (e: any) {
     console.log(`  ⚠️ Gemini ${name}: ${e.message?.slice(0, 80)}`);
