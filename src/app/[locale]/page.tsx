@@ -13,7 +13,7 @@ import { ProductsCarousel } from '@/components/ProductsCarousel';
 import { PosterThumbnail } from '@/components/PosterThumbnail';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
-import { getScope } from '@/lib/scope';
+import { headers } from 'next/headers';
 import { getScope } from '@/lib/scope';
 import { getSiteConfig } from '@/lib/site-configs';
 
@@ -126,10 +126,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     if (t) activeThemeSlug = t.slug;
   } catch {}
 
-  // Scope du front actuel (paris / france / staging / dev) pour filtrer les banners
-  let currentScope: any = 'staging';
+  // Scope du front actuel (paris / france / staging / dev) pour filtrer les banners.
+  // Détection inline depuis x-site-scope (injecté par middleware) ou host header.
+  let currentScope: string = 'staging';
   try {
-    currentScope = getScope();
+    const h = headers();
+    const fromHeader = h.get('x-site-scope');
+    if (fromHeader) currentScope = fromHeader;
+    else {
+      const host = (h.get('host') || '').toLowerCase();
+      if (host.includes('parislgbt.com')) currentScope = 'paris';
+      else if (host.includes('lgbtfrance.fr')) currentScope = 'france';
+    }
   } catch { /* fallback staging */ }
 
   function isBannerActive(b: any): boolean {
