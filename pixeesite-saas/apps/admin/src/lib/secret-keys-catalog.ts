@@ -91,6 +91,8 @@ export const ORG_KEYS_CATALOG = [
   { key: 'GA_MEASUREMENT_ID', category: 'analytics', description: 'Google Analytics 4 (G-XXXXX)' },
   { key: 'PLAUSIBLE_DOMAIN', category: 'analytics', description: 'Domaine Plausible' },
   { key: 'POSTHOG_API_KEY', category: 'analytics', description: 'PostHog (analytics + replays)' },
+  { key: 'MICROSOFT_CLARITY_ID', category: 'analytics', description: 'Microsoft Clarity heatmaps + session replay (ID public)' },
+  { key: 'HOTJAR_ID', category: 'analytics', description: 'Hotjar heatmaps + replay (ID numérique public)' },
 ];
 
 export const CATEGORY_LABELS: Record<string, { emoji: string; label: string }> = {

@@ -1,0 +1,31 @@
+services:
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable  # arm64 compatible (M4 Pro)
+    privileged: true
+    network_mode: host  # Required for RTSP/multicast discovery
+    shm_size: "256mb"   # Increase for more cameras (64mb per camera)
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/config.yml:/config/config.yml
+      - ./data/recordings:/media/frigate/recordings
+      - ./data/clips:/media/frigate/clips
+      - ./data/exports:/media/frigate/exports
+      - frigate-db:/tmp/cache  # tmpfs for database performance
+    environment:
+      FRIGATE_RTSP_PASSWORD: "ChangeMoi2026!"  # CHANGE THIS — default camera password
+    ports:
+      - "5000:5000"   # Frigate web UI
+      - "5001:5001"   # Frigate API
+      - "8554:8554"   # RTSP restream
+      - "8555:8555/tcp"  # WebRTC
+      - "8555:8555/udp"  # WebRTC
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  frigate-db:

@@ -51,39 +51,38 @@ export function TickerDonate({ items = DEFAULT_ITEMS, defaultAmounts = [5, 10] }
 
   return (
     <div
-      className="relative overflow-hidden flex items-center min-h-[40px]"
-      style={{ background: 'linear-gradient(90deg, #FF2BB1 0%, #8B5CF6 50%, #22D3EE 100%)' }}
+      className="gld-ticker relative overflow-hidden flex items-center min-h-[36px] border-b border-white/5"
+      style={{ background: '#0a0710' }}
     >
-      {/* Marquee */}
+      {/* Marquee — défilement ralenti (75s) avec pause au hover */}
       <div className="flex-1 overflow-hidden">
-        <div className="flex animate-ticker gap-12 whitespace-nowrap font-bold text-white text-xs tracking-wider px-4">
+        <div className="flex animate-ticker gap-12 whitespace-nowrap font-medium text-white/75 text-[11px] tracking-wider px-4">
           {loop.map((it, i) => (
             <span key={i} className="flex items-center gap-2">
-              <Heart size={11} fill="white" className="shrink-0" />
+              <Heart size={10} className="shrink-0 text-brand-pink" />
               <span>{it}</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* Donation buttons (right side) — fond transparent, juste un léger fade pour lisibilité */}
-      <div className="flex items-center gap-1.5 px-3 py-1.5 shrink-0 relative"
-           style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.25) 100%)' }}>
-        <span className="hidden sm:inline text-white text-[11px] font-bold uppercase tracking-wider mr-1 drop-shadow-sm">Don :</span>
+      {/* Donation buttons (right side) — sobres, sur fond neutre */}
+      <div className="flex items-center gap-1.5 px-3 py-1 shrink-0 relative bg-black/30">
+        <span className="hidden sm:inline text-white/60 text-[10px] font-semibold uppercase tracking-wider mr-1">Don :</span>
         {defaultAmounts.map((amt) => (
           <button
             key={amt}
             onClick={() => donate(amt)}
             disabled={loading !== null}
-            className="px-3 py-1 rounded-full bg-white text-brand-pink font-black text-xs hover:bg-yellow-200 transition disabled:opacity-50 shadow flex items-center gap-1"
+            className="px-2.5 py-0.5 rounded-full bg-white/95 text-brand-pink font-bold text-[11px] hover:bg-white transition disabled:opacity-50 flex items-center gap-1"
           >
-            {loading === amt ? <Loader2 size={11} className="animate-spin" /> : null}
+            {loading === amt ? <Loader2 size={10} className="animate-spin" /> : null}
             {amt}€
           </button>
         ))}
         <button
           onClick={() => setCustomOpen((o) => !o)}
-          className="hidden md:inline px-2.5 py-1 rounded-full bg-black/40 text-white font-semibold text-[11px] hover:bg-black/60 transition"
+          className="hidden md:inline px-2 py-0.5 rounded-full bg-white/10 text-white/80 font-semibold text-[10px] hover:bg-white/20 transition"
         >
           ★
         </button>
@@ -93,12 +92,12 @@ export function TickerDonate({ items = DEFAULT_ITEMS, defaultAmounts = [5, 10] }
               type="number" min={1} max={1000}
               value={customAmount}
               onChange={(e) => setCustomAmount(Math.max(1, Math.min(1000, Number(e.target.value) || 0)))}
-              className="w-14 rounded-full px-2 py-0.5 text-center text-brand-pink font-bold bg-white text-xs focus:outline-none"
+              className="w-14 rounded-full px-2 py-0.5 text-center text-brand-pink font-bold bg-white text-[11px] focus:outline-none"
             />
             <button
               onClick={() => donate(customAmount)}
               disabled={loading !== null}
-              className="px-2 py-0.5 rounded-full bg-white text-brand-pink text-[11px] font-black hover:bg-yellow-200"
+              className="px-2 py-0.5 rounded-full bg-white text-brand-pink text-[10px] font-black hover:bg-white/90"
             >
               OK
             </button>

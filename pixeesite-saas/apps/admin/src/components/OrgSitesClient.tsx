@@ -20,11 +20,12 @@ const STATUS_META: Record<string, { color: string; label: string }> = {
 
 export function OrgSitesClient({ orgSlug, initialSites, canCreateMore }: { orgSlug: string; initialSites: Site[]; canCreateMore: boolean }) {
   const router = useRouter();
-  const [sites] = useState(initialSites);
+  const [sites, setSites] = useState(initialSites);
   const [showNew, setShowNew] = useState(false);
   const [creating, setCreating] = useState(false);
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   async function createBlankSite() {
     if (!name.trim()) return;
@@ -46,6 +47,30 @@ export function OrgSitesClient({ orgSlug, initialSites, canCreateMore }: { orgSl
       alert(e.message);
       setCreating(false);
     }
+  }
+
+  async function deleteSite(s: Site) {
+    const ok = window.confirm(`Supprimer définitivement le site « ${s.name} » ? Cette action est irréversible.`);
+    if (!ok) return;
+    setDeleting(s.id);
+    try {
+      const r = await fetch(`/api/orgs/${orgSlug}/sites/${s.slug}`, { method: 'DELETE' });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) {
+        setSites((arr) => arr.filter((x) => x.id !== s.id));
+      } else {
+        alert('Erreur: ' + (j.error || `HTTP ${r.status}`));
+      }
+    } catch (e: any) {
+      alert(e.message);
+    } finally {
+      setDeleting(null);
+    }
+  }
+
+  function previewUrl(s: Site): string {
+    // Org subdomain on pixeeplay.com. Si l'org a 1 site, /<siteSlug>, sinon idem.
+    return `https://${orgSlug}.pixeeplay.com/${s.slug}`;
   }
 
   if (sites.length === 0) {
@@ -73,20 +98,65 @@ export function OrgSitesClient({ orgSlug, initialSites, canCreateMore }: { orgSl
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
         {sites.map((s) => {
           const meta = STATUS_META[s.status] || STATUS_META.draft;
+          const isDeleting = deleting === s.id;
           return (
-            <Link
-              key={s.id} href={`/dashboard/orgs/${orgSlug}/sites/${s.slug}`}
-              style={{ display: 'block', background: '#18181b', border: '1px solid #27272a', borderRadius: 12, padding: 16, textDecoration: 'none', color: 'inherit' }}
+            <div
+              key={s.id}
+              style={{ background: '#18181b', border: '1px solid #27272a', borderRadius: 12, padding: 16, opacity: isDeleting ? 0.5 : 1, transition: 'opacity .2s' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                <div style={{ fontWeight: 600, fontSize: 15 }}>{s.name}</div>
+                <div style={{ fontWeight: 600, fontSize: 15, color: '#fafafa' }}>{s.name}</div>
                 <span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 4, background: `${meta.color}22`, color: meta.color, fontWeight: 600, textTransform: 'uppercase' }}>{meta.label}</span>
               </div>
               <code style={{ fontSize: 11, opacity: 0.5, display: 'block', marginBottom: 8 }}>/{s.slug}</code>
-              <div style={{ fontSize: 12, opacity: 0.6 }}>
+              <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 12 }}>
                 {s.pageCount} page{s.pageCount > 1 ? 's' : ''} · MAJ {new Date(s.updatedAt).toLocaleDateString('fr-FR')}
               </div>
-            </Link>
+              <div style={{ display: 'flex', gap: 6 }}>
+                <Link
+                  href={`/dashboard/orgs/${orgSlug}/sites/${s.slug}`}
+                  aria-label={`Éditer le site ${s.name}`}
+                  title="Éditer"
+                  style={{
+                    flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
+                    background: 'linear-gradient(135deg, #d946ef, #06b6d4)', color: 'white',
+                    border: 0, padding: '8px 10px', borderRadius: 8, fontWeight: 600,
+                    cursor: 'pointer', fontSize: 12, textDecoration: 'none',
+                  }}
+                >
+                  ✏️ <span>Éditer</span>
+                </Link>
+                <a
+                  href={previewUrl(s)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Prévisualiser le site ${s.name} dans un nouvel onglet`}
+                  title="Preview"
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
+                    background: '#27272a', color: '#fafafa',
+                    border: '1px solid #3f3f46', padding: '8px 10px', borderRadius: 8,
+                    cursor: 'pointer', fontSize: 12, textDecoration: 'none', fontWeight: 600,
+                  }}
+                >
+                  👁 <span>Preview</span>
+                </a>
+                <button
+                  onClick={() => deleteSite(s)}
+                  disabled={isDeleting}
+                  aria-label={`Supprimer le site ${s.name}`}
+                  title="Supprimer"
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: 'transparent', color: '#ef4444',
+                    border: '1px solid #ef444455', padding: '8px 10px', borderRadius: 8,
+                    cursor: isDeleting ? 'wait' : 'pointer', fontSize: 12, fontWeight: 600,
+                  }}
+                >
+                  🗑
+                </button>
+              </div>
+            </div>
           );
         })}
         {canCreateMore && (

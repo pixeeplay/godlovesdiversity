@@ -581,68 +581,182 @@ const labelStyle: React.CSSProperties = {
   display: 'block', fontSize: 10, opacity: 0.5, textTransform: 'uppercase', marginTop: 10, marginBottom: 4, letterSpacing: 1,
 };
 
-/* ─── Effect picker (modal des 100 effets) ────────────────────────── */
+/* ─── Effect picker (popover compact des 100 effets) ─────────────── */
 function EffectPicker({ value, onChange }: { value?: string | null; onChange: (v: string | null) => void }) {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<EffectCategory>('entry');
   const [search, setSearch] = useState('');
+  const wrapRef = useRef<HTMLDivElement>(null);
   const selected = value ? EFFECTS.find((e) => e.id === value) : null;
   const filtered = search
     ? EFFECTS.filter((e) => e.name.toLowerCase().includes(search.toLowerCase()) || e.id.includes(search.toLowerCase()))
     : EFFECTS.filter((e) => e.category === tab);
 
+  // Ferme au ESC et au clic en dehors
+  useEffect(() => {
+    if (!open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false);
+    }
+    function onClickOutside(e: MouseEvent) {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onClickOutside);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onClickOutside);
+    };
+  }, [open]);
+
+  function intensityBadge(intensity?: string) {
+    if (!intensity) return null;
+    const map: Record<string, { bg: string; fg: string; label: string }> = {
+      subtle: { bg: '#3b82f622', fg: '#60a5fa', label: 'subtle' },
+      medium: { bg: '#a78bfa22', fg: '#a78bfa', label: 'medium' },
+      wow:    { bg: '#d946ef33', fg: '#e879f9', label: 'WOW' },
+    };
+    const m = map[intensity] || map.medium;
+    return (
+      <span style={{ fontSize: 9, padding: '1px 4px', background: m.bg, color: m.fg, borderRadius: 3, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>{m.label}</span>
+    );
+  }
+
   return (
-    <>
+    <div ref={wrapRef} style={{ position: 'relative' }}>
       <label style={{ display: 'block' }}>
         <span style={labelStyle}>Effet ✨ (parmi 100)</span>
-        <button type="button" onClick={() => setOpen(true)} style={{ ...inputStyle, textAlign: 'left', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
-          {selected ? <>{selected.emoji} {selected.name} {selected.intensity === 'wow' && <span style={{ fontSize: 9, padding: '1px 4px', background: '#d946ef33', color: '#d946ef', borderRadius: 3 }}>WOW</span>}</> : <span style={{ opacity: 0.5 }}>Aucun</span>}
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-expanded={open}
+          aria-haspopup="listbox"
+          aria-label="Sélectionner un effet visuel"
+          style={{ ...inputStyle, textAlign: 'left', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}
+        >
+          {selected ? (
+            <>
+              <span>{selected.emoji}</span>
+              <span>{selected.name}</span>
+              {intensityBadge(selected.intensity)}
+              <span style={{ marginLeft: 'auto', opacity: 0.5 }}>▾</span>
+            </>
+          ) : (
+            <>
+              <span style={{ opacity: 0.5 }}>Aucun</span>
+              <span style={{ marginLeft: 'auto', opacity: 0.5 }}>▾</span>
+            </>
+          )}
         </button>
       </label>
       {open && (
-        <div onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-          <div onClick={(e) => e.stopPropagation()} style={{ background: '#0a0a0f', border: '1px solid #d946ef40', borderRadius: 16, width: '100%', maxWidth: 720, maxHeight: '85vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <header style={{ padding: 12, borderBottom: '1px solid #27272a', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <strong style={{ fontSize: 14 }}>✨ 100 effets wahoo</strong>
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Rechercher…" style={{ ...inputStyle, marginLeft: 'auto', width: 180 }} />
-              <button onClick={() => { onChange(null); setOpen(false); }} style={{ background: 'transparent', border: 0, color: '#a1a1aa', padding: '6px 8px', fontSize: 12, cursor: 'pointer' }}>Aucun</button>
-              <button onClick={() => setOpen(false)} style={{ background: 'transparent', border: 0, color: '#a1a1aa', fontSize: 16, cursor: 'pointer' }}>✕</button>
-            </header>
-            {!search && (
-              <nav style={{ display: 'flex', flexWrap: 'wrap', gap: 4, padding: 8, borderBottom: '1px solid #27272a' }}>
-                {EFFECT_CATEGORIES.map((c) => {
-                  const count = EFFECTS.filter((e) => e.category === c.id).length;
-                  if (!count) return null;
-                  return (
-                    <button key={c.id} onClick={() => setTab(c.id)} style={{ background: tab === c.id ? '#d946ef' : '#18181b', color: tab === c.id ? 'white' : '#a1a1aa', border: 0, padding: '6px 10px', borderRadius: 6, fontSize: 11, cursor: 'pointer' }}>
-                      {c.emoji} {c.label} ({count})
-                    </button>
-                  );
-                })}
-              </nav>
-            )}
-            <div style={{ flex: 1, overflow: 'auto', padding: 12, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 8 }}>
-              {filtered.map((fx) => (
+        <div
+          role="listbox"
+          aria-label="Effets visuels"
+          style={{
+            position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0,
+            zIndex: 40,
+            background: '#0a0a0f', border: '1px solid #d946ef55',
+            borderRadius: 12, boxShadow: '0 16px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(217,70,239,0.15)',
+            overflow: 'hidden', display: 'flex', flexDirection: 'column',
+            maxHeight: 460,
+            animation: 'pxs-fx-pop .15s ease-out',
+          }}
+        >
+          <header style={{ padding: 8, borderBottom: '1px solid #27272a', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <strong style={{ fontSize: 12, color: '#fafafa' }}>✨ Effets</strong>
+            <input
+              autoFocus
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Rechercher…"
+              aria-label="Rechercher un effet"
+              style={{ ...inputStyle, marginLeft: 'auto', width: 140, padding: 6, fontSize: 11 }}
+            />
+            <button
+              type="button"
+              onClick={() => { onChange(null); setOpen(false); }}
+              aria-label="Désélectionner l'effet"
+              style={{ background: 'transparent', border: '1px solid #3f3f46', color: '#a1a1aa', padding: '4px 8px', fontSize: 11, cursor: 'pointer', borderRadius: 6 }}
+            >Aucun</button>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Fermer le sélecteur"
+              style={{ background: 'transparent', border: 0, color: '#a1a1aa', fontSize: 16, cursor: 'pointer', padding: '0 4px' }}
+            >✕</button>
+          </header>
+          {!search && (
+            <nav style={{ display: 'flex', flexWrap: 'wrap', gap: 4, padding: 6, borderBottom: '1px solid #27272a' }}>
+              {EFFECT_CATEGORIES.map((c) => {
+                const count = EFFECTS.filter((e) => e.category === c.id).length;
+                if (!count) return null;
+                return (
+                  <button
+                    type="button"
+                    key={c.id}
+                    onClick={() => setTab(c.id)}
+                    aria-pressed={tab === c.id}
+                    style={{
+                      background: tab === c.id ? '#d946ef' : '#18181b',
+                      color: tab === c.id ? 'white' : '#a1a1aa',
+                      border: 0, padding: '4px 8px', borderRadius: 6, fontSize: 10, cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {c.emoji} {c.label} ({count})
+                  </button>
+                );
+              })}
+            </nav>
+          )}
+          <div
+            style={{
+              flex: 1, overflow: 'auto', padding: 6,
+              display: 'grid',
+              gridTemplateColumns: 'repeat(6, minmax(0, 1fr))',
+              gap: 4,
+            }}
+          >
+            {filtered.map((fx) => {
+              const isActive = value === fx.id;
+              return (
                 <button
+                  type="button"
+                  role="option"
+                  aria-selected={isActive}
                   key={fx.id}
                   onClick={() => { onChange(fx.id); setOpen(false); }}
+                  title={`${fx.name} — ${fx.desc || ''}${fx.intensity ? ' (' + fx.intensity + ')' : ''}`}
                   style={{
-                    background: value === fx.id ? '#d946ef25' : '#18181b',
-                    border: value === fx.id ? '1px solid #d946ef' : '1px solid #27272a',
-                    borderRadius: 8, padding: 8, cursor: 'pointer', textAlign: 'left',
-                    color: 'inherit',
+                    background: isActive ? 'linear-gradient(135deg, #d946ef33, #06b6d433)' : '#18181b',
+                    border: isActive ? '1px solid #d946ef' : '1px solid #27272a',
+                    borderRadius: 6, padding: '6px 4px', cursor: 'pointer', textAlign: 'center',
+                    color: 'inherit', position: 'relative', minHeight: 60,
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2,
+                    transition: 'transform .12s, border-color .12s',
                   }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.borderColor = '#d946ef88'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = isActive ? '#d946ef' : '#27272a'; }}
                 >
-                  <div style={{ fontSize: 18 }}>{fx.emoji}</div>
-                  <div style={{ fontSize: 12, fontWeight: 600, marginTop: 4 }}>{fx.name}</div>
-                  <div style={{ fontSize: 10, opacity: 0.5 }}>{fx.desc}</div>
+                  <span style={{ fontSize: 16 }}>{fx.emoji}</span>
+                  <span style={{ fontSize: 9, fontWeight: 600, lineHeight: 1.1 }}>{fx.name}</span>
+                  {fx.intensity === 'wow' && (
+                    <span style={{ position: 'absolute', top: 2, right: 2, fontSize: 7, padding: '0 3px', background: '#d946ef', color: 'white', borderRadius: 2, fontWeight: 700 }}>W</span>
+                  )}
                 </button>
-              ))}
-            </div>
+              );
+            })}
+            {filtered.length === 0 && (
+              <div style={{ gridColumn: '1 / -1', padding: 16, textAlign: 'center', opacity: 0.5, fontSize: 12 }}>
+                Aucun effet trouvé
+              </div>
+            )}
           </div>
         </div>
       )}
-    </>
+      <style dangerouslySetInnerHTML={{ __html: `@keyframes pxs-fx-pop { from { opacity: 0; transform: translateY(-4px) scale(.98) } to { opacity: 1; transform: translateY(0) scale(1) } }` }} />
+    </div>
   );
 }
 

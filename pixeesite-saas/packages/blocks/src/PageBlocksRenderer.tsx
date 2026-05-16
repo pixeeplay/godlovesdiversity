@@ -4,6 +4,7 @@ import { EffectWrapper } from './EffectWrapper';
 import { ParallaxHero } from './ParallaxHero';
 import { ParallaxSlider } from './ParallaxSlider';
 import { ThemeProvider, type SiteTheme } from './Theme';
+import { ABBlockWrapper } from './ABBlockWrapper';
 
 export interface Block {
   id?: string;
@@ -15,6 +16,16 @@ export interface Block {
   effect?: string | null;
   effectDelay?: number | null;
   visible?: boolean;
+  /**
+   * A/B experiment optionnel : si présent, le client choisit aléatoirement
+   * un variant (mémorisé en localStorage sous `pxs-exp-<id>`).
+   * Le variant remplace `data` (deep override).
+   * Tracker dans GA/Clarity côté client si besoin (event "pxs:experiment-shown").
+   */
+  experiment?: {
+    id: string;
+    variants: Array<{ data: any; weight?: number; label?: string }>;
+  };
 }
 
 /**
@@ -81,7 +92,7 @@ export function PageBlocksRenderer({ blocks, theme, className = '' }: RendererPr
               style={{ transitionDelay: `${i * 80}ms` }}
             >
               <EffectWrapper effect={b.effect || undefined} delay={b.effectDelay || 0}>
-                <BlockRenderer block={b} />
+                {renderBlockMaybeAB(b)}
               </EffectWrapper>
             </div>
           ))}
@@ -101,7 +112,7 @@ export function PageBlocksRenderer({ blocks, theme, className = '' }: RendererPr
           style={{ transitionDelay: `${(i % 4) * 80}ms` }}
         >
           <EffectWrapper effect={b.effect || undefined} delay={b.effectDelay || 0}>
-            <BlockRenderer block={b} />
+            {renderBlockMaybeAB(b)}
           </EffectWrapper>
         </section>
       );
@@ -147,6 +158,25 @@ export function PageBlocksRenderer({ blocks, theme, className = '' }: RendererPr
   );
 }
 
+/** Si le bloc a `experiment`, on rend le variant choisi côté client. */
+function renderBlockMaybeAB(b: Block): ReactNode {
+  if (b.experiment && Array.isArray(b.experiment.variants) && b.experiment.variants.length > 0) {
+    return (
+      <ABBlockWrapper
+        experimentId={b.experiment.id}
+        variants={b.experiment.variants}
+        fallback={<BlockRenderer block={b} />}
+        render={(idx) => {
+          const v = b.experiment!.variants[idx];
+          const merged: Block = { ...b, data: { ...(b.data || {}), ...(v?.data || {}) } };
+          return <BlockRenderer block={merged} />;
+        }}
+      />
+    );
+  }
+  return <BlockRenderer block={b} />;
+}
+
 function BlockRenderer({ block }: { block: Block }) {
   const d = block.data || {};
 
@@ -172,9 +202,35 @@ function BlockRenderer({ block }: { block: Block }) {
           </figure>
         );
       }
+      // Pipeline AVIF + WebP + lazy + blur SVG placeholder
+      // Si d.src termine par .jpg/.png on tente de dériver .avif/.webp (CDN doit servir ces formats).
+      const ext = String(d.src).split('.').pop()?.toLowerCase() || '';
+      const isRaster = ['jpg', 'jpeg', 'png'].includes(ext);
+      const srcNoExt = isRaster ? d.src.replace(/\.[^.]+$/, '') : d.src;
+      const avifSrc = d.avif || (isRaster ? `${srcNoExt}.avif` : undefined);
+      const webpSrc = d.webp || (isRaster ? `${srcNoExt}.webp` : undefined);
+      // Blur SVG placeholder data-URI (très léger, ~120 bytes)
+      const blur = d.blurDataURL || `data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 11'%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='2'/%3E%3C/filter%3E%3Crect width='20' height='11' fill='%23262630' filter='url(%23b)'/%3E%3C/svg%3E`;
       return (
-        <figure className="pxs-image-wrap">
-          <img src={d.src} alt={d.alt || ''} className="pxs-img" loading="lazy" decoding="async" />
+        <figure className="pxs-image-wrap pxs-image-avif" style={{ position: 'relative' }}>
+          <picture>
+            {avifSrc && <source srcSet={avifSrc} type="image/avif" />}
+            {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
+            <img
+              src={d.src}
+              alt={d.alt || ''}
+              className="pxs-img"
+              loading="lazy"
+              decoding="async"
+              style={{
+                backgroundImage: `url("${blur}")`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+              {...(d.width ? { width: d.width } : {})}
+              {...(d.height ? { height: d.height } : {})}
+            />
+          </picture>
           {d.caption && <figcaption className="pxs-image-caption">{d.caption}</figcaption>}
         </figure>
       );

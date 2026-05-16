@@ -1,0 +1,45 @@
+services:
+  observer-api:
+    build: ./api
+    container_name: observer-api
+    environment:
+      # === Auth ===
+      ADMIN_USERNAME: "arnaud"                        # CHANGE THIS
+      ADMIN_PASSWORD_HASH: ""                         # Run: python api/hash_password.py to generate
+      TOTP_SECRET: ""                                 # Generated on first run via /setup-2fa
+      JWT_SECRET: "ChangeMoiAvecUneLongueChaine2026!" # CHANGE THIS
+
+      # === Coolify API ===
+      COOLIFY_URL: "http://51.75.31.123:8000"         # CHANGE THIS if different
+      COOLIFY_API_TOKEN: ""                           # CHANGE THIS — Coolify → Profile → API Tokens
+
+      # === Tailscale ===
+      TAILSCALE_SUBNET: "100.0.0.0/8"                # Ne pas changer
+      REQUIRE_TAILSCALE: "true"
+
+    restart: unless-stopped
+    networks:
+      - coolify
+
+  observer-ui:
+    image: nginx:alpine
+    container_name: observer-ui
+    volumes:
+      - ./ui:/usr/share/nginx/html:ro
+      - ./ui/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - observer-api
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.observer.rule: "Host(`control.pixeeplay.com`)"
+      traefik.http.routers.observer.entrypoints: "https"
+      traefik.http.routers.observer.tls.certresolver: "letsencrypt"
+      traefik.http.routers.observer.middlewares: "tailscale-only@file"
+      traefik.http.services.observer.loadbalancer.server.port: "80"
+    restart: unless-stopped
+    networks:
+      - coolify
+
+networks:
+  coolify:
+    external: true

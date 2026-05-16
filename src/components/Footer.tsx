@@ -3,16 +3,22 @@ import { useEffect, useState } from 'react';
 import { Link } from '@/i18n/routing';
 import { Instagram, Facebook, Youtube, Twitter, Mail, Heart, FileText, MessageCircle, BookOpen, Sparkles, Send } from 'lucide-react';
 
+type Partner = { id: string; name: string; url: string; logoUrl: string | null };
+
 export function Footer() {
   const [hashtag, setHashtag] = useState('#GodLovesDiversity');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [partners, setPartners] = useState<Partner[]>([]);
 
   useEffect(() => {
     fetch('/api/branding').then((r) => r.json()).then((j) => {
       if (j.hashtag) setHashtag(j.hashtag);
-    });
+    }).catch(() => {});
+    fetch('/api/partners').then((r) => r.json()).then((j) => {
+      setPartners(((j.items || []) as Partner[]).slice(0, 12));
+    }).catch(() => {});
   }, []);
 
   async function subscribe() {
@@ -120,6 +126,40 @@ export function Footer() {
           )}
         </div>
       </div>
+
+      {/* Section Partenaires — logos N&B, retour couleur au hover */}
+      {partners.length > 0 && (
+        <div className="border-t border-white/5">
+          <div className="container-wide py-10">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-white/40 mb-6 text-center">
+              Ils soutiennent le mouvement
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+              {partners.map((p) => (
+                <a
+                  key={p.id}
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={p.name}
+                  className="block"
+                >
+                  {p.logoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={p.logoUrl}
+                      alt={p.name}
+                      className="gld-partner-logo h-10 max-w-[140px] object-contain"
+                    />
+                  ) : (
+                    <span className="gld-partner-logo text-sm font-bold text-white/80">{p.name}</span>
+                  )}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Bas footer */}
       <div className="border-t border-white/5">

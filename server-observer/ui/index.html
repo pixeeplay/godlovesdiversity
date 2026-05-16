@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ PixeePlay Control Center</title>
+<style>
+  :root {
+    --bg: #06060f;
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.08);
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --radius: 16px;
+    --font: 'Inter', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ============ AUTH SCREEN ============ */
+  #auth-screen {
+    position: fixed; inset: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg);
+  }
+
+  .auth-bg {
+    position: absolute; inset: 0; overflow: hidden;
+  }
+  .auth-bg::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%);
+    top: -200px; left: -200px;
+    animation: float 8s ease-in-out infinite;
+  }
+  .auth-bg::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+    bottom: -150px; right: -150px;
+    animation: float 10s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0,0); }
+    50% { transform: translate(30px, 20px); }
+  }
+
+  .auth-card {
+    position: relative; z-index: 1;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 48px 40px;
+    width: 100%; max-width: 400px;
+    box-shadow: 0 0 60px rgba(0,212,255,0.08), 0 24px 64px rgba(0,0,0,0.4);
+  }
+
+  .auth-logo {
+    text-align: center; margin-bottom: 32px;
+  }
+  .auth-logo .icon { font-size: 48px; display: block; margin-bottom: 12px; }
+  .auth-logo h1 { font-size: 22px; font-weight: 700; color: var(--text); }
+  .auth-logo p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: 12px; font-weight: 500;
+    color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .form-group input {
+    width: 100%; padding: 12px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text);
+    font-size: 15px; font-family: var(--font);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+  }
+
+  .totp-input {
+    display: flex; gap: 8px; justify-content: center;
+  }
+  .totp-digit {
+    width: 44px !important; text-align: center;
+    font-size: 22px !important; font-weight: 700 !important;
+    padding: 10px 4px !important; letter-spacing: 0;
+  }
+
+  .btn-primary {
+    width: 100%; padding: 13px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; border-radius: 10px;
+    color: white; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+    font-family: var(--font); margin-top: 8px;
+  }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .auth-error {
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    color: #fca5a5; border-radius: 8px; padding: 10px 14px;
+    font-size: 13px; margin-bottom: 16px; display: none;
+  }
+
+  .tailscale-badge {
+    display: flex; align-items: center; gap: 8px;
+    justify-content: center; margin-top: 24px;
+    font-size: 12px; color: var(--text-muted);
+  }
+  .tailscale-badge .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); animation: pulse-dot 2s infinite;
+  }
+
+  /* ============ MAIN DASHBOARD ============ */
+  #dashboard { display: none; flex-direction: column; min-height: 100vh; }
+
+  /* Top bar */
+  .topbar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 28px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+  }
+
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo span { font-size: 20px; font-weight: 800; }
+  .logo .sub { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+
+  .topbar-divider { width: 1px; height: 28px; background: var(--border); }
+
+  .stat-pill {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px; font-size: 12px;
+  }
+  .stat-pill .label { color: var(--text-muted); }
+  .stat-pill .val { font-weight: 600; color: var(--text); }
+  .stat-pill .bar {
+    width: 40px; height: 4px; background: rgba(255,255,255,0.1);
+    border-radius: 2px; overflow: hidden;
+  }
+  .stat-pill .bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .clock { font-size: 13px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+  .btn-logout {
+    padding: 6px 14px; border-radius: 8px;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-muted); font-size: 12px; cursor: pointer;
+    font-family: var(--font); transition: all 0.2s;
+  }
+  .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+  /* Server info bar */
+  .server-bar {
+    padding: 10px 28px;
+    background: rgba(0,212,255,0.03);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 24px;
+    font-size: 12px;
+  }
+  .server-bar .server-name { font-weight: 600; color: var(--accent); }
+  .server-bar .info-item { color: var(--text-muted); }
+  .server-bar .info-item span { color: var(--text); font-weight: 500; }
+
+  /* Main content */
+  .main { padding: 28px; flex: 1; }
+
+  .section-title {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* Projects grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: all 0.2s; cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .project-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,212,255,0.04), transparent);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .project-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-2px); }
+  .project-card:hover::before { opacity: 1; }
+
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+  .card-icon { font-size: 28px; }
+  .card-title { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+  .card-desc { font-size: 12px; color: var(--text-muted); }
+
+  .status-badge {
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600;
+    white-space: nowrap;
+  }
+  .status-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .status-up { background: rgba(34,197,94,0.12); color: var(--green); }
+  .status-up .dot { background: var(--green); animation: pulse-dot 2s infinite; }
+  .status-down { background: rgba(239,68,68,0.12); color: var(--red); }
+  .status-down .dot { background: var(--red); }
+  .status-unknown { background: rgba(100,116,139,0.2); color: var(--text-muted); }
+  .status-unknown .dot { background: var(--text-muted); }
+
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+    50% { box-shadow: 0 0 0 4px rgba(34,197,94,0); }
+  }
+
+  .card-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+  .link-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 10px; border-radius: 6px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    color: var(--text); font-size: 11px; font-weight: 500;
+    text-decoration: none; transition: all 0.15s;
+  }
+  .link-btn:hover { background: rgba(0,212,255,0.1); border-color: var(--accent); color: var(--accent); }
+
+  .btn-preview {
+    margin-top: 14px; width: 100%; padding: 8px;
+    background: transparent; border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 8px; color: var(--text-muted); font-size: 12px;
+    cursor: pointer; font-family: var(--font); transition: all 0.2s;
+  }
+  .btn-preview:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ============ IFRAME VIEWER ============ */
+  #iframe-overlay {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+    flex-direction: column;
+  }
+  #iframe-overlay.active { display: flex; }
+
+  .iframe-header {
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 20px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid var(--border);
+  }
+  .iframe-title { font-size: 14px; font-weight: 600; flex: 1; }
+  .iframe-url { font-size: 11px; color: var(--accent); font-family: monospace; }
+
+  .btn-icon {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; font-size: 14px;
+  }
+  .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
+
+  #main-iframe {
+    flex: 1; border: none; background: white;
+  }
+
+  /* ============ METRICS PANEL ============ */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .metric-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px;
+  }
+  .metric-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .metric-value { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+  .metric-sub { font-size: 12px; color: var(--text-muted); }
+  .metric-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+  .metric-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+
+  .cpu-color { color: var(--accent); }
+  .cpu-bar { background: var(--accent); }
+  .mem-color { color: #a78bfa; }
+  .mem-bar { background: #a78bfa; }
+  .disk-color { color: #fb923c; }
+  .disk-bar { background: #fb923c; }
+  .net-color { color: var(--green); }
+
+  /* ============ LOADING ============ */
+  .spinner {
+    width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.1);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin 0.7s linear infinite; display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    .topbar { padding: 12px 16px; gap: 8px; flex-wrap: wrap; }
+    .main { padding: 16px; }
+    .stat-pill .label { display: none; }
+    .server-bar { flex-wrap: wrap; gap: 12px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="auth-bg"></div>
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="icon">⚡</span>
+      <h1>PixeePlay Control</h1>
+      <p>Server Observer — Accès sécurisé</p>
+    </div>
+    <div class="auth-error" id="auth-error"></div>
+    <form id="login-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>Identifiant</label>
+        <input type="text" id="username" autocomplete="username" placeholder="arnaud" required>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" id="password" autocomplete="current-password" placeholder="••••••••" required>
+      </div>
+      <div class="form-group">
+        <label>Code TOTP (Authenticator)</label>
+        <div class="totp-input" id="totp-inputs">
+          <input class="totp-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+          <input class="totp-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+          <input class="totp-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+          <input class="totp-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+          <input class="totp-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+          <input class="totp-digit" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        </div>
+      </div>
+      <button type="submit" class="btn-primary" id="login-btn">Se connecter</button>
+    </form>
+    <div class="tailscale-badge">
+      <div class="dot" id="ts-dot"></div>
+      <span id="ts-status">Vérification Tailscale...</span>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="logo">
+      <span>⚡ Control Center</span>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="stat-pill" id="pill-cpu">
+      <span class="label">CPU</span>
+      <span class="val" id="cpu-val">–</span>
+      <div class="bar"><div class="bar-fill cpu-bar" id="cpu-bar" style="width:0"></div></div>
+    </div>
+    <div class="stat-pill" id="pill-mem">
+      <span class="label">RAM</span>
+      <span class="val" id="mem-val">–</span>
+      <div class="bar"><div class="bar-fill mem-bar" id="mem-bar" style="width:0"></div></div>
+    </div>
+    <div class="stat-pill">
+      <span class="label">Disk</span>
+      <span class="val" id="disk-val">–</span>
+      <div class="bar"><div class="bar-fill disk-bar" id="disk-bar" style="width:0"></div></div>
+    </div>
+    <div class="topbar-right">
+      <div class="clock" id="clock"></div>
+      <button class="btn-logout" onclick="logout()">Déconnexion</button>
+    </div>
+  </header>
+
+  <!-- Server info bar -->
+  <div class="server-bar">
+    <span class="server-name">51.75.31.123</span>
+    <span class="info-item">Uptime: <span id="uptime-val">–</span></span>
+    <span class="info-item">Net ↑ <span id="net-up">–</span></span>
+    <span class="info-item">Net ↓ <span id="net-down">–</span></span>
+    <span class="info-item" style="margin-left:auto; color: var(--accent); font-weight:500">🔒 Tailscale</span>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Metrics -->
+    <div class="section-title">Métriques système</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">CPU</div>
+        <div class="metric-value cpu-color" id="m-cpu">–%</div>
+        <div class="metric-sub" id="m-cpu-cores">– cœurs</div>
+        <div class="metric-bar"><div class="metric-bar-fill cpu-bar" id="m-cpu-bar" style="width:0"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Mémoire RAM</div>
+        <div class="metric-value mem-color" id="m-mem">–%</div>
+        <div class="metric-sub" id="m-mem-sub">– / – GB</div>
+        <div class="metric-bar"><div class="metric-bar-fill mem-bar" id="m-mem-bar" style="width:0"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Disque</div>
+        <div class="metric-value disk-color" id="m-disk">–%</div>
+        <div class="metric-sub" id="m-disk-sub">– / – GB</div>
+        <div class="metric-bar"><div class="metric-bar-fill disk-bar" id="m-disk-bar" style="width:0"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Réseau</div>
+        <div class="metric-value net-color" id="m-net-up">–</div>
+        <div class="metric-sub" id="m-net-down">↓ –</div>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="section-title">Services & Projets</div>
+    <div class="projects-grid" id="projects-grid">
+      <div style="grid-column:1/-1; text-align:center; padding:32px; color:var(--text-muted)">
+        <div class="spinner"></div>
+        <div style="margin-top:12px">Chargement des services...</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- IFRAME OVERLAY -->
+<div id="iframe-overlay">
+  <div class="iframe-header">
+    <span id="iframe-icon" style="font-size:20px"></span>
+    <div style="flex:1">
+      <div class="iframe-title" id="iframe-title"></div>
+      <div class="iframe-url" id="iframe-url"></div>
+    </div>
+    <button class="btn-icon" onclick="openInTab()" title="Ouvrir dans un onglet">↗</button>
+    <button class="btn-icon" onclick="prevProject()" title="Précédent">←</button>
+    <button class="btn-icon" onclick="nextProject()" title="Suivant">→</button>
+    <button class="btn-icon" onclick="closeIframe()" title="Fermer">✕</button>
+  </div>
+  <iframe id="main-iframe" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+</div>
+
+<script>
+const API = '/api';
+let token = sessionStorage.getItem('cc_token');
+let projects = [];
+let currentProjectIdx = -1;
+
+// ============ TOTP input UX ============
+document.querySelectorAll('.totp-digit').forEach((input, i, inputs) => {
+  input.addEventListener('input', e => {
+    if (e.target.value && i < inputs.length - 1) inputs[i+1].focus();
+    if (getTotp().length === 6) document.getElementById('login-btn').focus();
+  });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Backspace' && !e.target.value && i > 0) inputs[i-1].focus();
+  });
+  input.addEventListener('paste', e => {
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);
+    text.split('').forEach((c,j) => { if(inputs[j]) inputs[j].value = c; });
+    if(inputs[Math.min(text.length, 5)]) inputs[Math.min(text.length, 5)].focus();
+  });
+});
+
+function getTotp() {
+  return [...document.querySelectorAll('.totp-digit')].map(i=>i.value).join('');
+}
+
+// ============ Tailscale check ============
+async function checkTailscale() {
+  try {
+    const r = await fetch(`${API}/health`);
+    const d = await r.json();
+    const dot = document.getElementById('ts-dot');
+    const st = document.getElementById('ts-status');
+    if (d.tailscale) {
+      dot.style.background = '#22c55e';
+      st.textContent = `Tailscale actif — ${d.client_ip}`;
+    } else {
+      dot.style.background = '#ef4444';
+      st.textContent = `⚠️ Connexion Tailscale requise (${d.client_ip})`;
+    }
+  } catch(e) {
+    document.getElementById('ts-status').textContent = 'API inaccessible';
+  }
+}
+checkTailscale();
+
+// ============ Login ============
+async function handleLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('auth-error');
+  err.style.display = 'none';
+  btn.innerHTML = '<span class="spinner"></span>';
+  btn.disabled = true;
+
+  try {
+    const r = await fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        totp_code: getTotp()
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || 'Erreur de connexion');
+    token = d.token;
+    sessionStorage.setItem('cc_token', token);
+    showDashboard();
+  } catch(ex) {
+    err.textContent = ex.message;
+    err.style.display = 'block';
+    document.querySelectorAll('.totp-digit').forEach(i => i.value = '');
+    document.querySelector('.totp-digit').focus();
+  } finally {
+    btn.textContent = 'Se connecter';
+    btn.disabled = false;
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem('cc_token');
+  token = null;
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+}
+
+// ============ Dashboard ============
+function showDashboard() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'flex';
+  loadProjects();
+  startStatsPolling();
+  startClock();
+}
+
+if (token) showDashboard();
+
+// ============ Clock ============
+function startClock() {
+  const update = () => {
+    document.getElementById('clock').textContent =
+      new Date().toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  };
+  update(); setInterval(update, 1000);
+}
+
+// ============ Stats polling ============
+async function fetchStats() {
+  try {
+    const r = await fetch(`${API}/stats`, { headers: { Authorization: `Bearer ${token}` } });
+    if (r.status === 401) { logout(); return; }
+    const d = await r.json();
+
+    // Top bar
+    document.getElementById('cpu-val').textContent = d.cpu.percent + '%';
+    document.getElementById('cpu-bar').style.width = d.cpu.percent + '%';
+    document.getElementById('mem-val').textContent = d.memory.percent + '%';
+    document.getElementById('mem-bar').style.width = d.memory.percent + '%';
+    document.getElementById('disk-val').textContent = d.disk.percent + '%';
+    document.getElementById('disk-bar').style.width = d.disk.percent + '%';
+
+    // Server bar
+    document.getElementById('uptime-val').textContent = d.uptime_hours + 'h';
+    document.getElementById('net-up').textContent = d.network.bytes_sent_mb + ' MB';
+    document.getElementById('net-down').textContent = d.network.bytes_recv_mb + ' MB';
+
+    // Metrics cards
+    document.getElementById('m-cpu').textContent = d.cpu.percent + '%';
+    document.getElementById('m-cpu-cores').textContent = d.cpu.cores + ' cœurs';
+    document.getElementById('m-cpu-bar').style.width = d.cpu.percent + '%';
+    document.getElementById('m-mem').textContent = d.memory.percent + '%';
+    document.getElementById('m-mem-sub').textContent = `${d.memory.used_gb} / ${d.memory.total_gb} GB`;
+    document.getElementById('m-mem-bar').style.width = d.memory.percent + '%';
+    document.getElementById('m-disk').textContent = d.disk.percent + '%';
+    document.getElementById('m-disk-sub').textContent = `${d.disk.used_gb} / ${d.disk.total_gb} GB`;
+    document.getElementById('m-disk-bar').style.width = d.disk.percent + '%';
+    document.getElementById('m-net-up').textContent = '↑ ' + d.network.bytes_sent_mb + ' MB';
+    document.getElementById('m-net-down').textContent = '↓ ' + d.network.bytes_recv_mb + ' MB';
+  } catch(e) { console.warn('Stats error', e); }
+}
+function startStatsPolling() { fetchStats(); setInterval(fetchStats, 5000); }
+
+// ============ Projects ============
+async function loadProjects() {
+  try {
+    const r = await fetch(`${API}/projects`, { headers: { Authorization: `Bearer ${token}` } });
+    if (!r.ok) throw new Error();
+    projects = await r.json();
+    renderProjects();
+  } catch(e) {
+    document.getElementById('projects-grid').innerHTML =
+      '<div style="color:var(--red);padding:16px">Impossible de charger les projets — vérifier COOLIFY_API_TOKEN</div>';
+  }
+}
+
+function statusBadge(status) {
+  const map = {
+    up: ['status-up', '● En ligne'],
+    down: ['status-down', '● Hors ligne'],
+    degraded: ['status-up', '● Dégradé'],
+    unknown: ['status-unknown', '● Inconnu'],
+  };
+  const [cls, label] = map[status] || map.unknown;
+  return `<span class="status-badge ${cls}"><span class="dot"></span>${label}</span>`;
+}
+
+function renderProjects() {
+  const grid = document.getElementById('projects-grid');
+  if (!projects.length) {
+    grid.innerHTML = '<div style="color:var(--text-muted);padding:16px">Aucun projet configuré</div>';
+    return;
+  }
+  grid.innerHTML = projects.map((p, i) => `
+    <div class="project-card" onclick="openProject(${i})">
+      <div class="card-header">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <span style="font-size:26px">${p.icon || '🔷'}</span>
+            <div>
+              <div class="card-title">${p.name}</div>
+              <div class="card-desc">${p.description || ''}</div>
+            </div>
+          </div>
+        </div>
+        ${statusBadge(p.status)}
+      </div>
+      <div class="card-links">
+        ${p.frontend_url ? `<a class="link-btn" href="${p.frontend_url}" target="_blank" onclick="event.stopPropagation()">🌐 Frontend</a>` : ''}
+        ${p.backend_url ? `<a class="link-btn" href="${p.backend_url}" target="_blank" onclick="event.stopPropagation()">⚙️ Backend</a>` : ''}
+        ${p.repo_url ? `<a class="link-btn" href="${p.repo_url}" target="_blank" onclick="event.stopPropagation()">📦 Repo</a>` : ''}
+      </div>
+      ${p.frontend_url ? `<button class="btn-preview" onclick="event.stopPropagation(); openIframe(${i})">👁 Aperçu iframe</button>` : ''}
+    </div>
+  `).join('');
+}
+
+// ============ Iframe viewer ============
+let currentIframeUrl = '';
+
+function openIframe(idx) {
+  const p = projects[idx];
+  const url = p.frontend_url || p.backend_url;
+  if (!url) return;
+  currentProjectIdx = idx;
+  currentIframeUrl = url;
+  document.getElementById('iframe-icon').textContent = p.icon || '🔷';
+  document.getElementById('iframe-title').textContent = p.name;
+  document.getElementById('iframe-url').textContent = url;
+  document.getElementById('main-iframe').src = url;
+  document.getElementById('iframe-overlay').classList.add('active');
+}
+
+function openProject(idx) { openIframe(idx); }
+function closeIframe() {
+  document.getElementById('iframe-overlay').classList.remove('active');
+  document.getElementById('main-iframe').src = '';
+}
+function openInTab() { window.open(currentIframeUrl, '_blank'); }
+function nextProject() {
+  const next = (currentProjectIdx + 1) % projects.length;
+  openIframe(next);
+}
+function prevProject() {
+  const prev = (currentProjectIdx - 1 + projects.length) % projects.length;
+  openIframe(prev);
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  const overlay = document.getElementById('iframe-overlay');
+  if (!overlay.classList.contains('active')) return;
+  if (e.key === 'Escape') closeIframe();
+  if (e.key === 'ArrowRight') nextProject();
+  if (e.key === 'ArrowLeft') prevProject();
+});
+</script>
+</body>
+</html>

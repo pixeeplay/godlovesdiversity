@@ -1,0 +1,169 @@
+# ============================================================
+# Frigate NVR — Configuration pour Mac Mini M4 Pro
+# Doc: https://docs.frigate.video/configuration/
+# ============================================================
+
+mqtt:
+  enabled: true
+  host: 192.168.1.xx   # CHANGE THIS — IP de ton Raspberry Pi (Home Assistant)
+  port: 1883
+  user: frigate         # CHANGE THIS — user MQTT dans HA
+  password: frigate     # CHANGE THIS — password MQTT dans HA
+  topic_prefix: frigate
+  client_id: frigate_mac
+
+# ============================================================
+# Détecteurs — CPU sur M4 Pro (ajouter Coral USB si >4 caméras)
+# ============================================================
+detectors:
+  cpu1:
+    type: cpu
+    num_threads: 4  # M4 Pro a 12 cœurs, on en alloue 4 à Frigate
+
+# ============================================================
+# Modèle de détection (YOLO nano par défaut — léger et rapide)
+# ============================================================
+model:
+  width: 320
+  height: 320
+
+# ============================================================
+# Configuration globale des caméras (héritage)
+# ============================================================
+cameras:
+  # ---- Caméra 1 : Entrée ----
+  entree:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@192.168.1.10:554/stream1  # CHANGE THIS
+          roles:
+            - detect
+            - record
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@192.168.1.10:554/stream2  # CHANGE THIS (sous-flux basse résolution)
+          roles:
+            - detect
+      output_args:
+        record: preset-record-generic-audio-aac
+    detect:
+      enabled: true
+      width: 1280   # CHANGE THIS selon ta caméra
+      height: 720
+      fps: 5        # 5fps suffisant pour la détection, économise les ressources
+    objects:
+      track:
+        - person
+        - car
+        - package
+        - dog
+        - cat
+      filters:
+        person:
+          min_area: 5000   # Évite les faux positifs sur petits objets
+          max_area: 100000
+          threshold: 0.7
+        car:
+          min_area: 10000
+    motion:
+      mask:
+        - 0,0,1280,50   # CHANGE THIS — masquer les zones à exclure (timestamp, etc.)
+    record:
+      enabled: true
+      retain:
+        days: 14          # Garder 14 jours
+        mode: motion      # Enregistre uniquement quand mouvement détecté
+      events:
+        retain:
+          default: 30     # Garder 30 jours les clips d'événements
+          mode: active_objects
+    snapshots:
+      enabled: true
+      bounding_box: true
+      retain:
+        default: 30
+    zones:
+      zone_porte:
+        coordinates: 0,720,640,720,640,400,0,400  # CHANGE THIS — coordonnées de ta zone
+        objects:
+          - person
+          - package
+
+  # ---- Caméra 2 : Jardin / Extérieur ----
+  jardin:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:{FRIGATE_RTSP_PASSWORD}@192.168.1.11:554/stream1  # CHANGE THIS
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+      width: 1920   # CHANGE THIS
+      height: 1080
+      fps: 5
+    objects:
+      track:
+        - person
+        - car
+        - dog
+      filters:
+        person:
+          threshold: 0.75
+    record:
+      enabled: true
+      retain:
+        days: 7
+        mode: motion
+    snapshots:
+      enabled: true
+      retain:
+        default: 14
+
+  # ---- Ajouter d'autres caméras ici en copiant le bloc ci-dessus ----
+
+# ============================================================
+# Enregistrements globaux
+# ============================================================
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion
+
+# ============================================================
+# Snapshots globaux
+# ============================================================
+snapshots:
+  enabled: true
+  timestamp: true
+  bounding_box: true
+  retain:
+    default: 14
+
+# ============================================================
+# Interface Web Frigate
+# ============================================================
+ui:
+  live_mode: webrtc    # webrtc = latence ultra-faible (~1s), mse = compatible Safari
+  timezone: Europe/Paris
+  use_experimental: false
+
+# ============================================================
+# Notifications — via Home Assistant (MQTT)
+# ============================================================
+notifications:
+  enabled: false  # On délègue à HA + LLM Vision pour les notifs intelligentes
+
+# ============================================================
+# Database (SQLite par défaut)
+# ============================================================
+database:
+  path: /config/frigate.db
+
+# ============================================================
+# Telemetry désactivé (privacy)
+# ============================================================
+telemetry:
+  version_check: false
+  stats: false

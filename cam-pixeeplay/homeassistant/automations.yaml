@@ -1,0 +1,92 @@
+# ============================================================
+# Home Assistant Automations — Surveillance Intelligente
+# À copier dans configuration.yaml ou automations.yaml
+# ============================================================
+
+# ---- Automation 1 : Détection personne → LLM Vision → iPhone ----
+- id: frigate_person_llm_notify
+  alias: "Frigate — Personne détectée → LLM Vision → Notif iPhone"
+  description: "Quand Frigate détecte une personne, analyse avec LLM Vision et notifie"
+  trigger:
+    - platform: mqtt
+      topic: frigate/events
+      payload: "new"
+      value_template: "{{ value_json.type }}"
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.payload_json.after.label == 'person'
+           and trigger.payload_json.after.score > 0.75 }}
+  action:
+    # Appel direct vers l'agent CrewAI sur Coolify
+    - service: rest_command.cam_agent_analyze
+      data:
+        event_id: "{{ trigger.payload_json.after.id }}"
+        camera: "{{ trigger.payload_json.after.camera }}"
+        label: "{{ trigger.payload_json.after.label }}"
+        score: "{{ trigger.payload_json.after.score }}"
+  mode: parallel
+  max: 5
+
+# ---- Automation 2 : Colis détecté ----
+- id: frigate_package_notify
+  alias: "Frigate — Colis détecté → Notif iPhone"
+  trigger:
+    - platform: mqtt
+      topic: frigate/events
+      payload: "new"
+      value_template: "{{ value_json.type }}"
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.payload_json.after.label == 'package'
+           and trigger.payload_json.after.score > 0.70 }}
+  action:
+    - service: notify.mobile_app_iphone  # CHANGE THIS — nom de ton device
+      data:
+        title: "📦 Colis déposé"
+        message: "Colis détecté devant {{ trigger.payload_json.after.camera }}"
+        data:
+          image: "http://192.168.1.xx:5000/api/events/{{ trigger.payload_json.after.id }}/snapshot.jpg"  # CHANGE THIS
+  mode: single
+
+# ---- Automation 3 : Rapport quotidien via CrewAI ----
+- id: cam_daily_report
+  alias: "Surveillance — Rapport quotidien 08h00"
+  trigger:
+    - platform: time
+      at: "08:00:00"
+  action:
+    - service: rest_command.cam_agent_daily_summary
+    - delay: "00:00:30"  # Attendre que le rapport soit généré
+  mode: single
+
+# ---- Automation 4 : Alerte mouvement nuit (23h-6h) ----
+- id: frigate_night_motion
+  alias: "Frigate — Mouvement nocturne → Alerte prioritaire"
+  trigger:
+    - platform: mqtt
+      topic: frigate/events
+      payload: "new"
+      value_template: "{{ value_json.type }}"
+  condition:
+    - condition: template
+      value_template: "{{ trigger.payload_json.after.label == 'person' }}"
+    - condition: time
+      after: "23:00:00"
+      before: "06:00:00"
+  action:
+    - service: notify.mobile_app_iphone  # CHANGE THIS
+      data:
+        title: "🚨 ALERTE — Mouvement nocturne"
+        message: >
+          Personne détectée sur {{ trigger.payload_json.after.camera }}
+          à {{ now().strftime('%H:%M') }}
+        data:
+          push:
+            sound:
+              name: default
+              critical: 1
+              volume: 1.0
+          image: "http://192.168.1.xx:5000/api/events/{{ trigger.payload_json.after.id }}/snapshot.jpg"  # CHANGE THIS
+  mode: single

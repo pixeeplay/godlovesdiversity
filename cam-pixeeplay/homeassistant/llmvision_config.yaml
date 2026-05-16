@@ -1,0 +1,63 @@
+# ============================================================
+# LLM Vision (HACS) — Configuration Ollama local
+# Doc: https://github.com/valentinfrlch/ha-llmvision
+#
+# Installation HACS :
+#   HACS → Intégrations → Rechercher "LLM Vision" → Installer
+#   Puis : Paramètres → Intégrations → Ajouter → LLM Vision
+# ============================================================
+
+llmvision:
+  # Provider : Ollama local sur Mac Mini
+  provider: ollama
+
+  # URL d'accès depuis le Raspberry Pi
+  # Option A — Réseau local direct :
+  ip_address: 192.168.1.xx   # CHANGE THIS — IP du Mac Mini sur ton réseau local
+  port: 11434
+
+  # Option B — Via Tailscale (si Pi et Mac sur Tailscale) :
+  # ip_address: 100.x.x.x    # CHANGE THIS — IP Tailscale du Mac Mini
+  # port: 11434
+
+  # Modèle vision à utiliser
+  model: "qwen2.5vl:7b"     # ou llama3.2-vision:11b (plus précis, plus lent)
+
+  # Timeout en secondes (vision LLM peut être lent sur CPU)
+  timeout: 60
+
+# ============================================================
+# rest_command — Appels vers l'agent CrewAI sur Coolify
+# À ajouter dans configuration.yaml
+# ============================================================
+rest_command:
+  cam_agent_analyze:
+    url: "https://cam.pixeeplay.com/analyze"
+    method: POST
+    headers:
+      x-api-key: "ChangeMoi2026!"   # CHANGE THIS — même valeur que API_SECRET_KEY
+      content-type: "application/json"
+    payload: >
+      {
+        "event_id": "{{ event_id }}",
+        "camera": "{{ camera }}",
+        "label": "{{ label }}",
+        "score": {{ score }}
+      }
+
+  cam_agent_daily_summary:
+    url: "https://cam.pixeeplay.com/summary/daily"
+    method: GET
+    headers:
+      x-api-key: "ChangeMoi2026!"   # CHANGE THIS
+
+# ============================================================
+# MQTT — Broker Mosquitto intégré HA
+# Nécessaire pour recevoir les événements Frigate
+# Paramètres → Intégrations → MQTT → Configurer
+# ============================================================
+mqtt:
+  broker: localhost   # Mosquitto tourne sur le Pi
+  port: 1883
+  # username: mqtt_user    # CHANGE THIS si auth activée
+  # password: mqtt_pass    # CHANGE THIS

@@ -20,37 +20,36 @@ export async function PartnersBand() {
   if (partners.length === 0) return null;
 
   return (
-    <section className="py-16 border-t border-white/5">
+    <section className="py-20 border-t border-[color:var(--border)]" style={{ background: 'var(--bg)' }}>
       <div className="container-wide">
-        <div className="flex items-center gap-3 mb-8">
-          <Handshake className="text-brand-pink" size={28} />
-          <h2 className="text-2xl md:text-3xl font-display font-bold">Nos partenaires</h2>
-          <Link href="/partenaires" className="ml-auto text-sm text-brand-pink hover:underline">
+        <div className="flex items-center gap-3 mb-10">
+          <Handshake className="text-brand-pink" size={22} />
+          <h2 className="text-xs uppercase tracking-[0.4em] text-white/70 font-bold">Nos partenaires</h2>
+          <Link href="/partenaires" className="ml-auto text-xs text-white/60 hover:text-brand-pink transition">
             Voir tous →
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-10 items-center">
           {partners.map((p) => (
             <a
               key={p.id}
               href={p.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative bg-white/5 hover:bg-white/10 rounded-2xl p-6 flex flex-col items-center justify-center text-center gap-2 border border-white/10 hover:border-brand-pink/40 transition aspect-[3/2]"
+              className="flex flex-col items-center justify-center text-center gap-2 aspect-[3/2]"
               title={p.description || p.name}
             >
               {p.logoUrl ? (
                 <img
                   src={p.logoUrl.startsWith('http') ? p.logoUrl : p.logoUrl}
                   alt={p.name}
-                  className="max-h-14 max-w-full object-contain group-hover:scale-105 transition"
+                  className="gld-partner-logo max-h-12 max-w-full object-contain"
                 />
               ) : (
-                <div className="text-lg font-bold text-white/90 group-hover:text-brand-pink">
+                <div className="gld-partner-logo text-base font-bold text-white/90">
                   {p.name}
                 </div>
               )}
-              <div className="text-xs text-white/60 truncate w-full">{p.name}</div>
             </a>
           ))}
         </div>

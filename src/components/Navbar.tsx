@@ -2,24 +2,22 @@
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from '@/i18n/routing';
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, ShoppingCart, MessageCircle, FileText, Image as ImageIcon, ShoppingBag, Sparkles, User, LogIn, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, X, ChevronDown, LogIn, LogOut, LayoutDashboard, User } from 'lucide-react';
 import { NeonHeart } from './NeonHeart';
 import { ThemeToggle } from './ThemeToggle';
 import { CartBadge } from './CartBadge';
-import { MegaMenuTrigger } from './MegaMenu';
 import { DynamicIslandSearch } from './DynamicIslandSearch';
 import { useSession, signOut } from 'next-auth/react';
 
 const LOCALES = ['fr', 'en', 'es', 'pt'] as const;
 
-type MenuItem = {
-  id: string;
-  label: string;
-  href: string;
-  external: boolean;
-  children: MenuItem[];
-};
-
+/**
+ * GLD V1 — Navbar haut de gamme, anti "arbre de Noël"
+ * Desktop : Le Message | La Communauté | La Galerie | Qui sommes-nous ? | [Nous soutenir] | Contact
+ * "Nous soutenir" = CTA principal (bouton plein, glow hover discret)
+ * Autres liens : texte discret + underline subtle au hover
+ * Mobile : burger top-right, drawer full-screen, items ≥ 44px touch
+ */
 export function Navbar() {
   const t = useTranslations('nav');
   const locale = useLocale();
@@ -27,8 +25,6 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState<string>('');
   const [scrolled, setScrolled] = useState(false);
-  const [menu, setMenu] = useState<MenuItem[]>([]);
-  const [openSub, setOpenSub] = useState<string | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { data: session, status } = useSession();
   const role = (session?.user as any)?.role;
@@ -36,160 +32,88 @@ export function Navbar() {
   const isLogged = status === 'authenticated';
 
   useEffect(() => {
-    fetch('/api/branding').then((r) => r.json()).then((j) => setLogoUrl(j.logoUrl || ''));
-    fetch(`/api/menu?locale=${locale}`).then((r) => r.json()).then((j) => {
-      setMenu(j.items || []);
-    });
+    fetch('/api/branding').then((r) => r.json()).then((j) => setLogoUrl(j.logoUrl || '')).catch(() => {});
     const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener('scroll', onScroll);
-    // Ferme le sous-menu si on clique en dehors
-    const onDocClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest('[data-submenu-trigger]') && !target.closest('[data-submenu-panel]')) {
-        setOpenSub(null);
-      }
-    };
-    document.addEventListener('click', onDocClick);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      document.removeEventListener('click', onDocClick);
-    };
+    return () => window.removeEventListener('scroll', onScroll);
   }, [locale]);
 
-  // Menu complet par défaut — inclut toutes les fonctionnalités V2 (forum, lieux, agenda, témoignages)
-  // Les onglets Photos et Boutique sont des mega-menus interactifs séparés (voir <MegaMenuTrigger />)
-  const fallback: MenuItem[] = [
-    { id: 'm', label: t('message'), href: '/message', external: false, children: [] },
-    { id: 'a', label: t('argumentaire'), href: '/argumentaire', external: false, children: [] },
-    {
-      id: 'spiritual', label: '🕊 Spirituel ✨NEW', href: '/cercles-priere', external: false, children: [
-        { id: 'cercles',   label: '🙏 Cercles de prière live',   href: '/cercles-priere',     external: false, children: [] },
-        { id: 'champ',     label: '🕯 Champ de prières mondial', href: '/champ-de-priere',    external: false, children: [] },
-        { id: 'compagnon', label: '✨ Compagnon spirituel IA',   href: '/compagnon-spirituel', external: false, children: [] },
-        { id: 'camino',    label: '🚶 Camino virtuel',           href: '/camino',             external: false, children: [] },
-        { id: 'textes',    label: '📖 Textes sacrés inclusifs',  href: '/textes-sacres',      external: false, children: [] },
-        { id: 'officiants',label: '🤝 Officiants LGBT-friendly', href: '/officiants',         external: false, children: [] },
-        { id: 'calrel',    label: '🌍 Calendrier religieux',     href: '/calendrier-religieux', external: false, children: [] },
-        { id: 'webcams',   label: '📺 Webcams live lieux saints', href: '/webcams-live',         external: false, children: [] },
-        { id: 'journal',   label: '🎙 Journal de prières vocales', href: '/journal',              external: false, children: [] }
-      ]
-    },
-    {
-      id: 'community', label: 'Communauté', href: '/forum', external: false, children: [
-        { id: 'forum',     label: '💬 Forum',           href: '/forum',                   external: false, children: [] },
-        { id: 'temo',      label: '🎥 Témoignages',     href: '/temoignages',             external: false, children: [] },
-        { id: 'lieux',     label: '🏳️‍🌈 Lieux LGBT',     href: '/lieux',                   external: false, children: [] },
-        { id: 'carte',     label: '🗺 Carte mondiale',   href: '/carte',                   external: false, children: [] },
-        { id: 'pro',       label: '🏪 Espace pro',      href: '/admin/pro',               external: false, children: [] },
-        { id: 'fbsync',    label: '🔄 Sync mes events FB', href: '/admin/pro/import-events', external: false, children: [] },
-        { id: 'partager',  label: '✨ Crée ta carte',    href: '/partager',                external: false, children: [] },
-        { id: 'voyage',    label: '✈️ Voyage safe',     href: '/voyage-safe',             external: false, children: [] },
-        { id: 'sosc',      label: '🚨 Mes contacts SOS', href: '/sos/contacts',            external: false, children: [] }
-      ]
-    },
-    { id: 'agenda', label: 'Agenda', href: '/agenda', external: false, children: [] },
-    { id: 'p', label: t('posters'), href: '/affiches', external: false, children: [] }
+  // Bloque le scroll du body quand le drawer mobile est ouvert
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
+  const localePrefix = locale !== 'fr' ? `/${locale}` : '';
+
+  // GLD V1 — Menu exact défini par le brief client
+  const navItems = [
+    { href: '/le-message',      label: t('leMessage') },
+    { href: '/la-communaute',   label: t('laCommunaute') },
+    { href: '/galerie',         label: t('laGalerie') },
+    { href: '/qui-sommes-nous', label: t('quiSommesNous') }
   ];
-  // On préserve TOUJOURS Communauté + Agenda même si menu DB existe
-  const dbHasCommunity = menu.some((m: any) => m.href === '/forum' || m.href === '/lieux' || m.href === '/agenda');
-  const items = menu.length > 0
-    ? (dbHasCommunity ? menu : [...menu, fallback[2], fallback[3]])
-    : fallback;
+
+  const supportHref = `${localePrefix}/don`;
+  const contactHref = `${localePrefix}/contact`;
 
   return (
     <header className={`transition-all duration-300 backdrop-blur-xl bg-[color:var(--bg)]/95 border-b border-[color:var(--border)] ${scrolled ? 'py-2' : 'py-3'}`}>
-      <div className="container-wide flex items-center justify-between">
-        <a href="/" className="flex flex-row items-center gap-3 shrink-0">
-          {/* Cœur battant rainbow — toujours visible, taille fixe */}
-          <span className="block w-12 h-12 flex-none">
-            <NeonHeart size={48} />
+      <div className="container-wide flex items-center justify-between gap-6">
+        {/* Logo */}
+        <a href={`${localePrefix}/`} className="flex flex-row items-center gap-3 shrink-0">
+          <span className="block w-10 h-10 flex-none">
+            <NeonHeart size={40} />
           </span>
           {logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={logoUrl} alt="" className="h-10 max-w-[180px] w-auto object-contain flex-none" />
+            <img src={logoUrl} alt="" className="h-9 max-w-[160px] w-auto object-contain flex-none" />
           ) : (
             <span className="font-display font-black leading-none text-[color:var(--accent)] hidden sm:flex flex-col flex-none">
-              <span className="text-base">GOD</span>
-              <span className="text-base">LOVES</span>
-              <span className="text-base">DIVERSITY</span>
+              <span className="text-sm">GOD</span>
+              <span className="text-sm">LOVES</span>
+              <span className="text-sm">DIVERSITY</span>
             </span>
           )}
         </a>
 
-        <nav className="hidden lg:flex items-center gap-6">
-          {items.map((m) => {
-            const hasChildren = m.children?.length > 0;
-            const localePrefix = locale !== 'fr' ? `/${locale}` : '';
-            const fullHref = m.external ? m.href : `${localePrefix}${m.href}`;
-            // Détection des icônes par label/href
-            const Icon = /message/i.test(m.href) ? MessageCircle :
-                         /argument/i.test(m.href) ? FileText :
-                         /affiche|poster/i.test(m.href) ? ImageIcon : null;
+        {/* Desktop nav */}
+        <nav className="hidden lg:flex items-center gap-7 flex-1 justify-center">
+          {navItems.map((m) => {
+            const fullHref = `${localePrefix}${m.href}`;
+            const isActive = pathname === m.href;
             return (
-              <div key={m.id} className="relative">
-                {hasChildren ? (
-                  <button
-                    type="button"
-                    data-submenu-trigger
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setOpenSub(openSub === m.id ? null : m.id); }}
-                    className={`pill-nav-link inline-flex items-center gap-1.5 ${pathname === m.href ? 'active' : ''}`}
-                  >
-                    {Icon && <Icon size={14} />}
-                    {m.label}
-                    <ChevronDown size={12} className={`transition ${openSub === m.id ? 'rotate-180' : ''}`} />
-                  </button>
-                ) : (
-                  <a
-                    href={fullHref}
-                    target={m.external ? '_blank' : undefined}
-                    rel={m.external ? 'noreferrer' : undefined}
-                    className={`pill-nav-link inline-flex items-center gap-1.5 ${pathname === m.href ? 'active' : ''}`}
-                  >
-                    {Icon && <Icon size={14} />}
-                    {m.label}
-                  </a>
-                )}
-                {hasChildren && openSub === m.id && (
-                  <div
-                    data-submenu-panel
-                    className="absolute top-full left-0 mt-2 min-w-[260px] py-2 bg-[color:var(--bg)] border border-[color:var(--border)] rounded-xl shadow-2xl z-[60]"
-                  >
-                    {/* Lien vers la racine du menu (ex: /forum lui-même) */}
-                    <a
-                      href={fullHref}
-                      onClick={() => setOpenSub(null)}
-                      className="block px-4 py-2 text-xs uppercase font-bold tracking-wider text-zinc-400 hover:text-brand-pink hover:bg-white/5 border-b border-zinc-800/50 mb-1"
-                    >
-                      Aperçu : {m.label}
-                    </a>
-                    {m.children.map((c) => (
-                      <a
-                        key={c.id}
-                        href={c.external ? c.href : `${localePrefix}${c.href}`}
-                        target={c.external ? '_blank' : undefined}
-                        onClick={() => setOpenSub(null)}
-                        className="block px-4 py-2 text-sm hover:bg-white/5 hover:text-brand-pink transition"
-                        style={{ color: 'var(--fg)' }}
-                      >
-                        {c.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <a
+                key={m.href}
+                href={fullHref}
+                className={`gld-nav-link ${isActive ? 'active' : ''}`}
+              >
+                {m.label}
+              </a>
             );
           })}
-          {/* Mega-menus interactifs avec données live */}
-          <MegaMenuTrigger label="Photos" type="gallery" locale={locale} />
-          <MegaMenuTrigger label="Boutique" type="shop" locale={locale} />
+          {/* CTA principal du header */}
+          <a href={supportHref} className="gld-header-cta">
+            {t('nousSoutenir')}
+          </a>
+          {/* Contact en dernier, discret */}
+          <a
+            href={contactHref}
+            className={`gld-nav-link ${pathname === '/contact' ? 'active' : ''}`}
+          >
+            {t('contact')}
+          </a>
         </nav>
 
-        {/* DYNAMIC ISLAND SEARCH (desktop) */}
-        <div className="hidden md:flex flex-1 justify-end mx-4">
-          <DynamicIslandSearch scope="public" />
-        </div>
-
-        <div className="hidden lg:flex items-center gap-3">
+        {/* Right cluster — desktop */}
+        <div className="hidden lg:flex items-center gap-2 shrink-0">
+          <div className="hidden xl:block w-44">
+            <DynamicIslandSearch scope="public" />
+          </div>
           <CartBadge />
           <ThemeToggle />
           <select
@@ -198,34 +122,34 @@ export function Navbar() {
               const newLocale = e.target.value;
               window.location.href = `/${newLocale}${pathname === '/' ? '' : pathname}`;
             }}
-            className="bg-transparent border border-[color:var(--border)] rounded-full px-3 py-1 text-xs"
+            className="bg-transparent border border-[color:var(--border)] rounded-full px-2.5 py-1 text-xs"
             style={{ color: 'var(--fg)' }}
+            aria-label="Langue"
           >
             {LOCALES.map((l) => (
               <option key={l} value={l} style={{ background: 'var(--bg)', color: 'var(--fg)' }}>{l.toUpperCase()}</option>
             ))}
           </select>
-          {/* User menu (login / mon-espace / logout) */}
           {!isLogged ? (
             <a
               href="/admin/login"
-              className="inline-flex items-center gap-1.5 text-sm font-bold text-[color:var(--fg)] hover:text-[color:var(--accent)] px-3 py-2 rounded-full border border-[color:var(--border)] hover:border-[color:var(--accent)] transition"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border border-[color:var(--border)] hover:border-[color:var(--accent)] hover:text-[color:var(--accent)] transition"
+              style={{ color: 'var(--fg)' }}
               title="Se connecter"
             >
-              <LogIn size={14} /> Connexion
+              <LogIn size={13} />
             </a>
           ) : (
             <div className="relative">
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="inline-flex items-center gap-2 text-sm font-bold px-3 py-1.5 rounded-full border border-[color:var(--accent)] hover:bg-[color:var(--accent)]/10 transition"
-                style={{ color: 'var(--accent)' }}
+                className="inline-flex items-center gap-2 text-xs font-semibold px-2.5 py-1 rounded-full border border-[color:var(--border)] hover:border-[color:var(--accent)] transition"
+                style={{ color: 'var(--fg)' }}
               >
-                <span className="w-7 h-7 rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-600 text-white grid place-items-center text-xs">
+                <span className="w-6 h-6 rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-600 text-white grid place-items-center text-[10px] font-bold">
                   {(session?.user?.name || session?.user?.email || '?').charAt(0).toUpperCase()}
                 </span>
-                <span className="hidden xl:inline max-w-[100px] truncate">{session?.user?.name || session?.user?.email?.split('@')[0]}</span>
-                <ChevronDown size={12} className={`transition ${userMenuOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown size={11} className={`transition ${userMenuOpen ? 'rotate-180' : ''}`} />
               </button>
               {userMenuOpen && (
                 <div className="absolute top-full right-0 mt-2 min-w-[220px] py-2 bg-[color:var(--bg)] border border-[color:var(--border)] rounded-xl shadow-2xl z-[60]">
@@ -265,73 +189,120 @@ export function Navbar() {
               )}
             </div>
           )}
-          <a
-            href={`${locale !== 'fr' ? `/${locale}` : ''}/participer`}
-            className="border-2 border-[color:var(--accent)] text-[color:var(--accent)] uppercase text-sm font-bold tracking-wider px-5 py-2 rounded-full hover:bg-[color:var(--accent)] hover:text-white transition"
-          >
-            {t('participate')}
-          </a>
         </div>
 
+        {/* Mobile — burger top-right + CTA visible */}
         <div className="lg:hidden flex items-center gap-2">
           <CartBadge />
-          <ThemeToggle />
-          {/* Login mobile : icône simple */}
-          {!isLogged ? (
-            <a href="/admin/login" aria-label="Connexion" className="p-1.5 rounded-full border border-[color:var(--border)]" style={{ color: 'var(--fg)' }}>
-              <LogIn size={16} />
-            </a>
-          ) : (
-            <a href="/mon-espace" aria-label="Mon espace" className="w-8 h-8 rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-600 text-white grid place-items-center text-xs font-bold">
-              {(session?.user?.name || session?.user?.email || '?').charAt(0).toUpperCase()}
-            </a>
-          )}
-          <button onClick={() => setOpen(!open)} aria-label="menu" style={{ color: 'var(--fg)' }}>
-            {open ? <X /> : <Menu />}
+          <a
+            href={supportHref}
+            className="gld-header-cta !text-[11px] !px-3 !py-1.5"
+          >
+            {t('nousSoutenir')}
+          </a>
+          <button
+            onClick={() => setOpen(!open)}
+            aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
+            className="w-11 h-11 grid place-items-center rounded-full border border-[color:var(--border)] hover:border-[color:var(--accent)] transition"
+            style={{ color: 'var(--fg)' }}
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
 
-      {open && (
-        <nav className="lg:hidden border-t border-white/10 px-6 py-4 flex flex-col gap-3 bg-black/95 backdrop-blur-xl mt-2">
-          {/* Dynamic Island search en haut du menu mobile */}
-          <div className="pb-2 border-b border-white/10">
+      {/* Mobile drawer — full-screen */}
+      <div
+        className={`lg:hidden fixed inset-0 z-[55] transition-opacity duration-300 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        style={{ background: 'rgba(0,0,0,0.7)' }}
+        onClick={() => setOpen(false)}
+        aria-hidden={!open}
+      />
+      <nav
+        className={`lg:hidden fixed top-0 right-0 bottom-0 w-full sm:w-[420px] max-w-full z-[60] transform transition-transform duration-300 ease-out ${open ? 'translate-x-0' : 'translate-x-full'}`}
+        style={{ background: 'var(--bg)', borderLeft: '1px solid var(--border)' }}
+        aria-hidden={!open}
+      >
+        <div className="flex items-center justify-between px-6 py-5 border-b border-[color:var(--border)]">
+          <span className="font-display font-black text-base tracking-wider" style={{ color: 'var(--accent)' }}>MENU</span>
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Fermer"
+            className="w-11 h-11 grid place-items-center rounded-full border border-[color:var(--border)]"
+            style={{ color: 'var(--fg)' }}
+          >
+            <X size={20} />
+          </button>
+        </div>
+        <div className="px-6 py-6 flex flex-col gap-1 overflow-y-auto" style={{ height: 'calc(100% - 73px)' }}>
+          <div className="pb-3 mb-3 border-b border-[color:var(--border)]">
             <DynamicIslandSearch scope="public" fullWidth />
           </div>
-          {items.map((m) => {
-            const localePrefix = locale !== 'fr' ? `/${locale}` : '';
+          {navItems.map((m) => {
+            const fullHref = `${localePrefix}${m.href}`;
+            const isActive = pathname === m.href;
             return (
-              <div key={m.id}>
-                <a href={m.external ? m.href : `${localePrefix}${m.href}`}
-                   onClick={() => setOpen(false)}
-                   className="text-white/90 hover:text-brand-pink uppercase text-sm font-semibold block">
-                  {m.label}
-                </a>
-                {m.children?.length > 0 && (
-                  <div className="ml-4 mt-2 flex flex-col gap-2">
-                    {m.children.map((c) => (
-                      <a key={c.id} href={c.external ? c.href : `${localePrefix}${c.href}`}
-                         className="text-white/70 hover:text-brand-pink text-sm">{c.label}</a>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <a
+                key={m.href}
+                href={fullHref}
+                onClick={() => setOpen(false)}
+                className={`min-h-[52px] flex items-center text-lg font-medium px-2 border-b border-[color:var(--border)]/40 ${isActive ? 'text-[color:var(--accent)]' : ''}`}
+                style={{ color: isActive ? undefined : 'var(--fg)' }}
+              >
+                {m.label}
+              </a>
             );
           })}
-          <a href={`${locale !== 'fr' ? `/${locale}` : ''}/participer`} onClick={() => setOpen(false)}
-             className="border-2 border-brand-pink text-brand-pink uppercase text-sm font-bold tracking-wider px-5 py-2 rounded-full text-center mt-2">
-            {t('participate')}
+          <a
+            href={contactHref}
+            onClick={() => setOpen(false)}
+            className="min-h-[52px] flex items-center text-lg font-medium px-2 border-b border-[color:var(--border)]/40"
+            style={{ color: 'var(--fg)' }}
+          >
+            {t('contact')}
           </a>
-          <div className="flex items-center gap-2 pt-2">
-            {LOCALES.map((l) => (
-              <a key={l} href={`/${l}${pathname === '/' ? '' : pathname}`}
-                 className={`text-xs px-3 py-1 rounded-full border ${l === locale ? 'border-brand-pink text-brand-pink' : 'border-white/20 text-white/70'}`}>
-                {l.toUpperCase()}
-              </a>
-            ))}
+          <a
+            href={supportHref}
+            onClick={() => setOpen(false)}
+            className="gld-cta-primary mt-6 w-full justify-center"
+          >
+            {t('nousSoutenir')}
+          </a>
+          <div className="flex items-center justify-between gap-3 mt-6 pt-4 border-t border-[color:var(--border)]">
+            <ThemeToggle />
+            <div className="flex items-center gap-1.5">
+              {LOCALES.map((l) => (
+                <a
+                  key={l}
+                  href={`/${l}${pathname === '/' ? '' : pathname}`}
+                  className={`text-xs px-3 py-2 min-h-[40px] inline-flex items-center rounded-full border ${l === locale ? 'border-[color:var(--accent)] text-[color:var(--accent)]' : 'border-[color:var(--border)] text-[color:var(--fg-muted)]'}`}
+                >
+                  {l.toUpperCase()}
+                </a>
+              ))}
+            </div>
           </div>
-        </nav>
-      )}
+          {!isLogged ? (
+            <a
+              href="/admin/login"
+              onClick={() => setOpen(false)}
+              className="mt-4 min-h-[48px] flex items-center justify-center gap-2 rounded-full border border-[color:var(--border)] text-sm font-semibold"
+              style={{ color: 'var(--fg)' }}
+            >
+              <LogIn size={14} /> Connexion
+            </a>
+          ) : (
+            <a
+              href="/mon-espace"
+              onClick={() => setOpen(false)}
+              className="mt-4 min-h-[48px] flex items-center justify-center gap-2 rounded-full border border-[color:var(--border)] text-sm font-semibold"
+              style={{ color: 'var(--fg)' }}
+            >
+              <User size={14} /> Mon espace
+            </a>
+          )}
+        </div>
+      </nav>
     </header>
   );
 }

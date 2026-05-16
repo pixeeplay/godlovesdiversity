@@ -8,7 +8,13 @@
     "posters": "Posters",
     "about": "About",
     "newsletter": "Newsletter",
-    "blog": "Blog"
+    "blog": "Blog",
+    "leMessage": "The Message",
+    "laCommunaute": "The Community",
+    "laGalerie": "The Gallery",
+    "quiSommesNous": "Who we are",
+    "nousSoutenir": "Support us",
+    "contact": "Contact"
   },
   "home": {
     "tagline": "God loves diversity",

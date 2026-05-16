@@ -1,0 +1,40 @@
+services:
+  cam-agent:
+    image: python:3.11-slim
+    container_name: cam-agent
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: >
+      bash -c "pip install -r requirements.txt -q &&
+               uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    environment:
+      # === Réseau Tailscale (IPs privées) ===
+      FRIGATE_URL: "http://100.x.x.x:5000"     # CHANGE THIS — IP Tailscale du Mac Mini
+      OLLAMA_URL: "http://100.x.x.x:11434"     # CHANGE THIS — IP Tailscale du Mac Mini
+      HA_URL: "http://100.x.x.x:8123"          # CHANGE THIS — IP Tailscale du Raspberry Pi
+      HA_TOKEN: "eyJ..."                        # CHANGE THIS — Long-lived access token HA
+
+      # === LLM Vision ===
+      OLLAMA_MODEL: "qwen2.5vl:7b"             # ou llama3.2-vision:11b
+
+      # === Frigate ===
+      FRIGATE_API_KEY: ""                       # Laisser vide si pas d'auth Frigate
+
+      # === Sécurité API ===
+      API_SECRET_KEY: "ChangeMoi2026!"          # CHANGE THIS
+
+    labels:
+      # Traefik — cam.pixeeplay.com
+      traefik.enable: "true"
+      traefik.http.routers.cam-agent.rule: "Host(`cam.pixeeplay.com`)"
+      traefik.http.routers.cam-agent.entrypoints: "https"
+      traefik.http.routers.cam-agent.tls.certresolver: "letsencrypt"
+      traefik.http.services.cam-agent.loadbalancer.server.port: "8000"
+    restart: unless-stopped
+    networks:
+      - coolify
+
+networks:
+  coolify:
+    external: true

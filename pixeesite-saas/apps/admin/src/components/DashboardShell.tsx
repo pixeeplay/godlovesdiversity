@@ -44,7 +44,7 @@ export function DashboardShell({ user, orgs, children }: { user: any; orgs: Org[
     {
       title: 'Boutique', emoji: '🛒',
       items: [
-        { href: `/dashboard/orgs/${slug}/shop`, icon: '📦', label: 'Produits' },
+        { href: `/dashboard/orgs/${slug}/shop`, icon: '🛒', label: 'Boutique (tout)' },
         { href: `/dashboard/orgs/${slug}/orders`, icon: '🧾', label: 'Commandes' },
         { href: `/dashboard/orgs/${slug}/dropshipping`, icon: '📥', label: 'Dropshipping' },
       ],

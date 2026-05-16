@@ -1,0 +1,12 @@
+# Traefik dynamic config — Tailscale IP whitelist
+# Place this file in your Traefik providers.file directory
+# On Coolify, typically: /data/coolify/proxy/dynamic/
+
+http:
+  middlewares:
+    tailscale-only:
+      ipWhiteList:
+        sourceRange:
+          - "100.0.0.0/8"      # Tailscale network
+          - "127.0.0.1/32"     # localhost
+          - "172.16.0.0/12"    # Docker internal

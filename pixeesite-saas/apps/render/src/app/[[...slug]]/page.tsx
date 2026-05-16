@@ -135,10 +135,69 @@ async function renderSitePage(
       .filter((s: SiteFooterSocial) => s.label && s.url);
   }
 
+  // Schema.org JSON-LD : Organization + WebSite + WebPage (+ Product/Article si bloc présent)
+  const pageMeta: any = page.meta || {};
+  const reqHeaders = headers();
+  const host = reqHeaders.get('host') || `${orgSlug}.pixeeplay.com`;
+  const proto = host.includes('localhost') ? 'http' : 'https';
+  const fullUrl = `${proto}://${host}${pagePath === '/' ? '' : pagePath}`;
+  const jsonLd: any[] = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: org.name,
+      url: `${proto}://${host}`,
+      ...(org.logoUrl ? { logo: org.logoUrl } : {}),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: site.name,
+      url: `${proto}://${host}`,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${proto}://${host}/search?q={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: pageMeta.title || page.title,
+      ...(pageMeta.description ? { description: pageMeta.description } : {}),
+      url: fullUrl,
+      isPartOf: { '@type': 'WebSite', name: site.name },
+    },
+  ];
+
+  // Schema additionnel selon les blocs présents
+  for (const b of blocks) {
+    if ((b as any).type === 'cta' && (b as any).data?.label) {
+      // pas de schema pour CTA, skip
+    }
+  }
+  const hasArticleBlock = blocks.some((b: any) => b.type === 'text' && /<article|<h1/.test(String(b.data?.html || '')));
+  if (hasArticleBlock && pageMeta.description) {
+    jsonLd.push({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: pageMeta.title || page.title,
+      description: pageMeta.description,
+      ...(pageMeta.ogImage ? { image: pageMeta.ogImage } : {}),
+      url: fullUrl,
+      publisher: { '@type': 'Organization', name: org.name },
+    });
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <GoogleFontsLoader theme={theme} />
       <EffectsStyles />
+      <script
+        type="application/ld+json"
+        // JSON.stringify, injecté dans le DOM — pas de XSS si data est string.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+      />
       <SiteHeader
         siteName={site.name}
         siteSlug={siteSlugPrefix}

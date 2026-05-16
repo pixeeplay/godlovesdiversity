@@ -1,132 +1,80 @@
-import { Link } from '@/i18n/routing';
-import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { Heart, BookOpen, Handshake, Users, Download } from 'lucide-react';
+import { setRequestLocale } from 'next-intl/server';
 import { getAllSettings } from '@/lib/settings';
-import { HeroBannerCarousel } from '@/components/HeroBannerCarousel';
-import { HeroAIVisualsBanner } from '@/components/HeroAIVisualsBanner';
-import { NeonHeart } from '@/components/NeonHeart';
-import { PhotoCarousel } from '@/components/PhotoCarousel';
-import { NewsCarousel } from '@/components/NewsCarousel';
-import { YoutubeCarousel } from '@/components/YoutubeCarousel';
+import { HeroFixed } from '@/components/home/HeroFixed';
+import { AccrocheZone } from '@/components/home/AccrocheZone';
+import { PartageLumiereSection } from '@/components/home/PartageLumiereSection';
+import { GalerieMosaique } from '@/components/home/GalerieMosaique';
+import { ActualitesMedias } from '@/components/home/ActualitesMedias';
 import { PartnersBand } from '@/components/PartnersBand';
-import { ProductsCarousel } from '@/components/ProductsCarousel';
-import { PosterThumbnail } from '@/components/PosterThumbnail';
 import { prisma } from '@/lib/prisma';
 import { publicUrl } from '@/lib/storage';
 
-// SSR : la home appelle Prisma à chaque requête.
-// (Coolify n'a pas DATABASE_URL au build → on ne peut pas faire d'ISR pour le moment.)
+// SSR : on appelle Prisma à chaque requête (DATABASE_URL absent au build).
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('home');
   const s = await getAllSettings();
-
-  const v = (key: string, fallback: string) => s[`home.${key}`] || fallback;
-  const titleA = s['home.hero.titleA'] || 'GOD';
-  const titleB = s['home.hero.titleB'] || 'LOVES DIVERSITY';
-  const subtitle = v('hero.subtitle',
-    "Dieu n'est pas opposé aux personnes LGBT. L'amour, la justice et la compassion sont au cœur des grandes religions monothéistes."
-  );
-  const ctaPrimary = v('hero.ctaPrimary', 'Comprendre le message');
-  const ctaSecondary = v('hero.ctaSecondary', 'Voir les photos');
-  const pillarsTitle = v('pillars.title', 'L\'AMOUR EST UNIVERSEL');
-  const postersTitle = v('posters.title', 'TÉLÉCHARGEZ L\'AFFICHE');
-  const postersText = v('posters.text', 'Imprimez, affichez, prenez une photo et soyez acteur du changement !');
   const logoUrl = s['site.logoUrl'];
-  const hashtag = s['campaign.hashtag'] || '#GodLovesDiversity';
+  const localePrefix = locale !== 'fr' ? `/${locale}` : '';
 
-  const pillars = [
-    {
-      icon: Heart,
-      color: '#FF2BB1',
-      title: v('pillar1.title', 'DIEU EST AMOUR'),
-      text: v('pillar1.text', 'Au cœur des trois grandes religions monothéistes, Dieu est amour, miséricorde et compassion.')
-    },
-    {
-      icon: BookOpen,
-      color: '#FBBF24',
-      title: v('pillar2.title', 'LES TEXTES SONT CONTEXTUALISÉS'),
-      text: v('pillar2.text', 'Les passages souvent cités doivent être compris dans leur contexte historique, culturel et social.')
-    },
-    {
-      icon: Handshake,
-      color: '#34D399',
-      title: v('pillar3.title', 'L\'INTERPRÉTATION EST HUMAINE'),
-      text: v('pillar3.text', 'Les traductions et interprétations ont été influencées par des normes culturelles pas toujours en accord avec l\'amour universel.')
-    },
-    {
-      icon: Users,
-      color: '#8B5CF6',
-      title: v('pillar4.title', 'FOI ET DIVERSITÉ SONT COMPATIBLES'),
-      text: v('pillar4.text', 'De nombreuses communautés religieuses inclusives existent et accueillent les personnes LGBT+.')
-    }
-  ];
-
+  // ─── Photos approuvées (max 12 pour Zone 2, 8 pour Zone 3) ──────────
   const recentPhotos = await prisma.photo.findMany({
     where: { status: 'APPROVED' },
     orderBy: { createdAt: 'desc' },
-    take: 12
-  });
+    take: 20
+  }).catch(() => []);
   const photoItems = recentPhotos.map((p) => ({
     id: p.id,
     url: publicUrl(p.storageKey),
-    isDemo: p.storageKey?.startsWith('demo/') || false,
     caption: p.caption,
+    author: p.authorName,
     placeName: p.placeName,
-    placeType: p.placeType,
     city: p.city,
-    country: p.country,
-    author: p.authorName
+    country: p.country
   }));
 
-  // Vidéos YouTube
+  // ─── Vidéos YouTube publiées (on prend la 1ère pour Zone 4) ─────────
   const videos = await prisma.youtubeVideo.findMany({
     where: { published: true },
     orderBy: { order: 'asc' },
-    take: 12
-  });
+    take: 6
+  }).catch(() => []);
 
-  // Ticker items + montants donation depuis settings
-  const tickerRaw = s['donate.tickerItems'] || '';
-  const tickerItems = tickerRaw.split('\n').map(x => x.trim()).filter(Boolean);
-  const amountsRaw = s['donate.amounts'] || '5,10';
-  const donateAmounts = amountsRaw.split(',').map(x => Number(x.trim())).filter(n => n > 0);
-
+  // ─── Articles récents (max 4 pour Zone 4) ───────────────────────────
   const recentArticles = await prisma.article.findMany({
     where: { published: true, locale },
     orderBy: { publishedAt: 'desc' },
     take: 8
-  });
+  }).catch(() => []);
   const articleItems = recentArticles.map((a) => ({
-    id: a.id, title: a.title, slug: a.slug, excerpt: a.excerpt,
-    coverImage: a.coverImage, coverVideo: a.coverVideo,
-    publishedAt: a.publishedAt?.toISOString() || null, tags: a.tags
+    id: a.id,
+    title: a.title,
+    slug: a.slug,
+    excerpt: a.excerpt,
+    coverImage: a.coverImage,
+    publishedAt: a.publishedAt?.toISOString() || null
   }));
 
-  // Récupère bannières dynamiques (FR par défaut, fallback hardcodé)
-  // Filtre par calendrier d'activation : on charge tout puis on filtre côté JS
-  // (pour gérer aussi le linkedThemeSlug qui demande de croiser avec Theme actif)
+  // ─── Bannière active pour le Hero (on garde le MESSAGE actuel) ──────
+  // Le brief demande de conserver le message actuel : on reprend la 1ère bannière
+  // publiée et active. Sinon fallback hardcodé identique à l'ancien.
   const now = new Date();
   const allBanners = await prisma.banner.findMany({
     where: { locale, published: true },
     orderBy: { order: 'asc' }
   }).catch(() => []);
 
-  // Charge thème actif (manuel ou auto) pour résoudre linkedThemeSlug
   let activeThemeSlug: string | null = null;
   try {
-    const t = await prisma.theme.findFirst({ where: { active: true }, select: { slug: true } });
-    if (t) activeThemeSlug = t.slug;
+    const theme = await prisma.theme.findFirst({ where: { active: true }, select: { slug: true } });
+    if (theme) activeThemeSlug = theme.slug;
   } catch {}
 
   function isBannerActive(b: any): boolean {
-    // Si lié à un thème : visible seulement si ce thème est actif
     if (b.linkedThemeSlug) return activeThemeSlug === b.linkedThemeSlug;
-    // Sinon : check fenêtre date
     if (b.activeFrom && now < new Date(b.activeFrom)) return false;
     if (b.activeUntil && now > new Date(b.activeUntil)) return false;
     return true;
@@ -140,139 +88,61 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     }).catch(() => []);
     banners = altAll.filter(isBannerActive);
   }
-  if (banners.length === 0) {
-    banners = [{
-      id: 'default', order: 1, locale, published: true,
-      eyebrow: 'Mouvement interreligieux • 2026',
-      title: 'GOD LOVES DIVERSITY',
-      subtitle, accentColor: '#FF2BB1',
-      cta1Text: 'COMPRENDRE LE MESSAGE', cta1Url: '/argumentaire',
-      cta2Text: 'VOIR LES PHOTOS', cta2Url: '/galerie',
-      mediaUrl: null, mediaType: null,
-      createdAt: new Date(), updatedAt: new Date()
-    } as any];
-  }
+  const hero = banners[0] || {
+    eyebrow: 'Mouvement interreligieux • 2026',
+    title: 'GOD LOVES DIVERSITY',
+    subtitle: "Dieu n'est pas opposé aux personnes LGBT. L'amour, la justice et la compassion sont au cœur des grandes religions monothéistes.",
+    accentColor: '#FF2BB1',
+    cta1Text: 'COMPRENDRE LE MESSAGE',
+    cta1Url: `${localePrefix}/le-message`,
+    cta2Text: 'VOIR LES PHOTOS',
+    cta2Url: `${localePrefix}/galerie`,
+    mediaUrl: null,
+    mediaType: null
+  };
 
   return (
     <>
-      {/* ═══ HERO BANNER CAROUSEL ═══ */}
-      <HeroBannerCarousel banners={banners} logoUrl={logoUrl || null} />
+      {/* ═══ HERO FIXE (anti carrousel) ═══ */}
+      <HeroFixed
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        subtitle={hero.subtitle}
+        ctaText={hero.cta1Text}
+        ctaUrl={hero.cta1Url}
+        ctaSecondaryText={hero.cta2Text}
+        ctaSecondaryUrl={hero.cta2Url}
+        accentColor={hero.accentColor}
+        logoUrl={logoUrl || null}
+        mediaUrl={hero.mediaUrl}
+        mediaType={hero.mediaType}
+      />
 
-      {/* ═══ VISUELS IA HERO (générés depuis /admin/ai) ═══ */}
-      <div className="container-wide pt-6"><HeroAIVisualsBanner height={360} /></div>
+      {/* ═══ ZONE 1 — Accroche typo "L'amour est universel." ═══ */}
+      <AccrocheZone />
 
-      {/* ═══ PILIERS « L'AMOUR EST UNIVERSEL » ═══ */}
-      <section className="py-20" style={{ background: 'var(--bg)' }}>
-        <div className="container-wide">
-          <div className="text-center mb-16">
-            <h2 className="font-display text-3xl md:text-5xl font-black tracking-wide">{pillarsTitle}</h2>
-            <div className="mx-auto mt-3 h-1 w-16 bg-brand-pink rounded-full" />
-          </div>
+      {/* ═══ ZONE 2 — Partage ta lumière (texte + 12 photos + 2 CTAs) ═══ */}
+      <PartageLumiereSection
+        photos={photoItems}
+        participateHref={`${localePrefix}/participer`}
+        posterHref="/posters/gld-A3.pdf"
+      />
 
-          <div className="grid md:grid-cols-4 gap-0 max-w-6xl mx-auto">
-            {pillars.map((p, i) => {
-              const Icon = p.icon;
-              return (
-                <div
-                  key={i}
-                  className={`px-6 py-4 text-center ${i < 3 ? 'md:border-r md:border-white/10' : ''}`}
-                >
-                  <div className="flex justify-center mb-5">
-                    <Icon size={56} strokeWidth={1.5} style={{ color: p.color }} />
-                  </div>
-                  <h3 className="font-display font-bold text-sm tracking-widest mb-3">{p.title}</h3>
-                  <div className="mx-auto h-px w-10 bg-white/20 mb-3" />
-                  <p className="text-sm text-white/70 leading-relaxed">{p.text}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      {/* ═══ ZONE 3 — Galerie mosaïque 8 photos + CTA communauté ═══ */}
+      <GalerieMosaique
+        photos={photoItems}
+        galerieHref={`${localePrefix}/galerie`}
+      />
 
-      {/* ═══ BOUTIQUE — produits défilants (remonté pour visibilité) ═══ */}
-      <ProductsCarousel />
+      {/* ═══ ZONE 4 — Actualités / Médias modulaire ═══ */}
+      <ActualitesMedias
+        articles={articleItems}
+        videos={videos}
+        locale={locale}
+      />
 
-      {/* ═══ TÉLÉCHARGEZ L'AFFICHE ═══ */}
-      <PostersShowcase title={postersTitle} text={postersText} />
-
-      {/* ═══ CARROUSEL PHOTOS (auto-scroll infini) ═══ */}
-      <PhotoCarousel photos={photoItems} title="Galerie" />
-
-      {/* ═══ CARROUSEL VIDÉOS YOUTUBE ═══ */}
-      {videos.length > 0 && <YoutubeCarousel videos={videos} />}
-
-      {/* ═══ CARROUSEL ACTUS ═══ */}
-      {articleItems.length > 0 && <NewsCarousel articles={articleItems} />}
-
-      {/* ═══ PARTENAIRES ═══ */}
+      {/* ═══ PARTENAIRES — logos N&B (composant existant) ═══ */}
       <PartnersBand />
     </>
   );
 }
-
-/* ─── Section affiches — utilise les VRAIES affiches en DB (image preview ou page 1 du PDF) ─── */
-async function PostersShowcase({ title, text }: { title: string; text: string }) {
-  // Charge les 3 premières affiches publiées
-  let posters: any[] = [];
-  try {
-    posters = await prisma.poster.findMany({
-      where: { published: true },
-      orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
-      take: 3
-    });
-  } catch { posters = []; }
-
-  return (
-    <section className="py-20" style={{ background: 'var(--hero-bg, #0a0314)' }}>
-      <div className="container-wide grid lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 className="font-display text-3xl md:text-5xl font-black tracking-wide">{title}</h2>
-          <div className="mt-3 h-1 w-16 bg-brand-pink rounded-full" />
-          <p className="mt-6 text-white/75 max-w-md leading-relaxed">{text}</p>
-          <Link
-            href="/affiches"
-            className="mt-8 inline-flex items-center gap-2 bg-brand-pink hover:bg-brand-rose text-white font-bold uppercase text-xs tracking-widest px-6 py-3 rounded-full transition shadow-[0_0_30px_rgba(255,43,177,.4)]"
-          >
-            <Download size={14} /> Télécharger
-          </Link>
-        </div>
-        {/* Vraies miniatures depuis la DB */}
-        <div className="flex items-end justify-center gap-4 flex-wrap">
-          {posters.length === 0 ? (
-            <p className="text-white/40 text-sm italic">Affiches en préparation…</p>
-          ) : posters.map((p, i) => {
-            // Tailles décroissantes pour effet "vitrine"
-            const sizes = [{ w: 160, h: 226 }, { w: 130, h: 184 }, { w: 100, h: 178 }];
-            const sz = sizes[i] || sizes[0];
-            const hasImage = !!p.thumbnailKey;
-            const isImageFile = /\.(png|jpe?g|webp|gif)$/i.test(p.fileKey || '');
-            // Si on a un thumbnailKey → image. Sinon si fileKey est une image → l'utiliser comme thumbnail.
-            const imageUrl = hasImage ? publicUrl(p.thumbnailKey) : (isImageFile ? publicUrl(p.fileKey) : null);
-            return (
-              <Link key={p.id} href="/affiches" className="flex flex-col items-center gap-2 group">
-                <div
-                  className="rounded-lg overflow-hidden bg-black border border-white/10 shadow-[0_0_30px_rgba(255,43,177,.25)] relative group-hover:scale-105 transition"
-                  style={{ width: sz.w, height: sz.h }}
-                >
-                  {imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={imageUrl} alt={p.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <PosterThumbnail pdfUrl={publicUrl(p.fileKey)} format={p.format} alt={p.title} />
-                  )}
-                  <div className="absolute top-2 left-2 bg-brand-pink text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
-                    {p.format}
-                  </div>
-                </div>
-                <span className="text-xs text-white/60 font-mono">{p.format}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-

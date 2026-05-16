@@ -31,5 +31,6 @@ export type { SiteTheme } from './Theme';
 // Renderer
 export { PageBlocksRenderer, BLOCK_TYPES } from './PageBlocksRenderer';
 export type { Block, BlockType } from './PageBlocksRenderer';
+export { ABBlockWrapper } from './ABBlockWrapper';
 
-export const PIXEESITE_BLOCKS_VERSION = '0.2.0';
+export const PIXEESITE_BLOCKS_VERSION = '0.3.0';

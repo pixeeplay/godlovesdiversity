@@ -43,6 +43,26 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
   return NextResponse.json(product);
 }
 
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  try { await requireOrgMember(slug, ['owner', 'admin', 'editor']); } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 403 }); }
+  const url = new URL(req.url);
+  const id = url.searchParams.get('id');
+  if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
+  const b = await req.json();
+  const data: any = {};
+  for (const k of ['name', 'description', 'priceCents', 'currency', 'images', 'inventory', 'category', 'active', 'variants']) {
+    if (b[k] !== undefined) data[k] = b[k];
+  }
+  // Slug renaming uniquement si fourni explicitement
+  if (typeof b.slug === 'string' && b.slug.trim()) {
+    data.slug = slugify(b.slug);
+  }
+  const db = await getTenantPrisma(slug);
+  const updated = await db.product.update({ where: { id }, data });
+  return NextResponse.json({ ok: true, product: updated });
+}
+
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   try { await requireOrgMember(slug, ['owner', 'admin']); } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 403 }); }
